@@ -33,7 +33,7 @@ ng serve
 
 ---
 
-## 🔗 PHÍA API (.NET Core Backend)
+##  PHÍA API (.NET Core Backend)
 
 1. Di chuyển vào thư mục API:
 ```bash
