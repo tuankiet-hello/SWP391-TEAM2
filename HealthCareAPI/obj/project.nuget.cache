@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "HlnQCadOBr0=",
+  "dgSpecHash": "im/jVP6hPX4=",
   "success": true,
   "projectFilePath": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
   "expectedPackageFiles": [
@@ -26,6 +26,7 @@
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.design\\9.0.5\\microsoft.entityframeworkcore.design.9.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\9.0.5\\microsoft.entityframeworkcore.relational.9.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\9.0.5\\microsoft.entityframeworkcore.sqlserver.9.0.5.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\9.0.5\\microsoft.entityframeworkcore.tools.9.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\9.0.5\\microsoft.extensions.caching.abstractions.9.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.caching.memory\\9.0.5\\microsoft.extensions.caching.memory.9.0.5.nupkg.sha512",
