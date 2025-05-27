@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HealthCareAPI 
+namespace HealthCareAPI.Entities
 {
   [Table("Admin")]
     public class Admin
@@ -13,6 +13,7 @@ namespace HealthCareAPI
         [ForeignKey("AccountID")]
         public Account? Account { get; set; }
         [Required]
+        [Column(TypeName = "nvarchar(50)")]
         public required string FullName { get; set; }
   
 

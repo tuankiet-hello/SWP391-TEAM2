@@ -1,30 +1,24 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HealthCareAPI 
+namespace HealthCareAPI.Entities
 {
-  [Table("Feedback")]
+    [Table("Feedback")]
     public class Feedback
     {
         [Key]
-        [Required]
-        public required string FeedbackID { get; set; }
-        [Required]
+        public int FeedbackID { get; set; }
         public int ConsultantID { get; set; }
-
-        [Required]
         public int CustomerID { get; set; }
-        [Required]
-        public required string Comment { get; set; }
-        [Required]
-        public required string Rating { get; set; }
-        public required string CreateAt { get; set; }
-        
-        [ForeignKey(nameof(ConsultantID))]
+        [Column(TypeName = "nvarchar(100)")]
+        public string Comment { get; set; } = "";
+        public int Rating { get; set; }
+        public required DateTime CreateAt { get; set; }
+
+        [ForeignKey("ConsultantID")]
         public Consultant Consultant { get; set; } = null!;
 
-        [ForeignKey(nameof(CustomerID))]
+        [ForeignKey("CustomerID")]
         public Customer Customer { get; set; } = null!;
-
     }
 }

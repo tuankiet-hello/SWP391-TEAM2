@@ -1,20 +1,21 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HealthCareAPI 
+namespace HealthCareAPI.Entities
 {
-  [Table("Menstrual_cycle")]
-    public class ConsMenstrual_cycleultant
+    [Table("Menstrual_cycle")]
+    public class Menstrual_cycle
     {
         [Key]
         public required int CycleID { get; set; }
         [Required]
-        public  int CustomerID { get; set; }
+        public int CustomerID { get; set; }
         public DateTime Start_date { get; set; }
         public DateTime End_date { get; set; }
-        public required string Reminder_enabled { get; set; }
-        public required string Note { get; set; }
+        public required bool Reminder_enabled { get; set; }
+        [Column(TypeName = "nvarchar(100)")]
+        public string Note { get; set; } = "";
         [ForeignKey("CustomerID")]
         public Customer Customer { get; set; } = null!; 
     }
-}
+} 

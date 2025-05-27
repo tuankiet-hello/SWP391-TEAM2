@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HealthCareAPI 
+namespace HealthCareAPI.Entities
 {
-  [Table("Appoinment")]
+    [Table("Appoinment")]
     public class Appoinment
     {
         [Key]
@@ -16,14 +16,13 @@ namespace HealthCareAPI
         public int CustomerID { get; set; }
 
         public DateTime AppointmentTime { get; set; }
+
         public bool Status { get; set; }
 
-        [ForeignKey(nameof(ConsultantID))]
+        [ForeignKey("ConsultantID")]
         public Consultant Consultant { get; set; } = null!;
 
-        [ForeignKey(nameof(CustomerID))]
+        [ForeignKey("CustomerID")]
         public Customer Customer { get; set; } = null!;
-
-
     }
 }

@@ -1,18 +1,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HealthCareAPI 
+namespace HealthCareAPI.Entities
 {
-  [Table("Tests")]
+    [Table("Tests")]
     public class Test
     {
         [Key]
         public int TestID { get; set; }
+        [Column(TypeName = "nvarchar(50)")]
         public required string TestName { get; set; }
-        public required string Price { get; set; }
-        public required string Description { get; set; }
-        public required string Active { get; set; }
 
-
+        public double Price { get; set; }
+        [Column(TypeName = "nvarchar(200)")]
+        public string Description { get; set; } = "";
+        public bool Active { get; set; }
     }
 }
