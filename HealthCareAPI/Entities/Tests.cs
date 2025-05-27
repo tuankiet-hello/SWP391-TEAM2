@@ -6,7 +6,8 @@ namespace HealthCareAPI
   [Table("Tests")]
     public class Test
     {
-        public required string TestID { get; set; }
+        [Key]
+        public int TestID { get; set; }
         public required string TestName { get; set; }
         public required string Price { get; set; }
         public required string Description { get; set; }

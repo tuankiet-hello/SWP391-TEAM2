@@ -6,16 +6,19 @@ namespace HealthCareAPI
   [Table("Account")]
     public class Account
     {
+        [Key]
+        public int AccountID { get; set; }
         [Required]
-        [StringLength(5)]
-        public required string AccountID { get; set; }
+        [StringLength(50)]
+        [Column( TypeName = "varchar")]
+        public string Username { get; set; } = "";
         [Required]
-        [StringLength(5)]
-        
-        public required string Username { get; set; }
-        public required string Password { get; set; }
-        public required string Role { get; set; }
-        public required string CreateAt { get; set; }
+        [Column(TypeName = "varchar")]
+        [StringLength(50)]
+        public string Password { get; set; } ="";
+        [Required]
+        [Column(TypeName = "varchar")]
+        public string Role { get; set; } = "";
 
     }
 }

@@ -7,10 +7,11 @@ namespace HealthCareAPI
     public class Admin
     {
         [Key]
+        public int  AdminID { get; set; }
         [Required]
-        public required string AdminID { get; set; }
-        [Required]
-        public required string AccountID { get; set; }
+        public required int AccountID { get; set;}
+        [ForeignKey("AccountID")]
+        public Account? Account { get; set; }
         [Required]
         public required string FullName { get; set; }
   

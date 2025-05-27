@@ -7,12 +7,13 @@ namespace HealthCareAPI
     public class Consultant
     {
         [Key]
-        public required string ConsultantID { get; set; }
-        public required string AccountID { get; set; }
+        public int ConsultantID { get; set; }
+        public  int AccountID { get; set; }
         public required string FullName { get; set; }
         public required string Degree { get; set; }
         public required string Experience { get; set; }
         public required string Consulting_schedule { get; set; }
-
+        [ForeignKey("AccountID")]
+        public Account Account { get; set; } = null!;
     }
 }

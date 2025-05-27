@@ -7,13 +7,13 @@ namespace HealthCareAPI
     public class Staff
     {
         [Key]
+        public int StaffID { get; set; }
         [Required]
-        public required string StaffID { get; set; }
-        [Required]
-        public required string AccountID { get; set; }
+        public required int AccountID { get; set; }
         [Required]
         public required string FullName { get; set; }
         public required string Degree { get; set; }
-
+        [ForeignKey("AccountID")]
+        public Account Account { get; set; } = null!;   
     }
 }

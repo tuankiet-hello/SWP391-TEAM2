@@ -7,12 +7,14 @@ namespace HealthCareAPI
     public class ConsMenstrual_cycleultant
     {
         [Key]
-        public required string CycleID { get; set; }
-        public required string CustomerID { get; set; }
-        public required string Start_date { get; set; }
-        public required string End_date { get; set; }
+        public required int CycleID { get; set; }
+        [Required]
+        public  int CustomerID { get; set; }
+        public DateTime Start_date { get; set; }
+        public DateTime End_date { get; set; }
         public required string Reminder_enabled { get; set; }
         public required string Note { get; set; }
-
+        [ForeignKey("CustomerID")]
+        public Customer Customer { get; set; } = null!; 
     }
 }
