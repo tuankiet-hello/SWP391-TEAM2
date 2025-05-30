@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HealthCareAPI.Enum;
 
 namespace HealthCareAPI.Entities
 {
@@ -8,17 +9,24 @@ namespace HealthCareAPI.Entities
     {
         [Key]
         public int BookingID { get; set; }
-        public int CustomerID { get; set; }
+
+        public Guid CustomerID { get; set; }  // Đổi sang Guid
+
         public int TestID { get; set; }
-        [Column(TypeName = "nvarchar(50)")] 
+
+        [Column(TypeName = "nvarchar(50)")]
         public required string Result { get; set; }
-        public DateTime BookingTime { get; set; }
-        public  bool Status { get; set; } 
 
-        [ForeignKey("CustomerID")]
-        public Customer Customer { get; set; } = null!;
+        public DateOnly BookingDate { get; set; }
 
-        [ForeignKey("TestID")]
+        public TimeOnly BookingTime { get; set; }
+
+        public StatusType Status { get; set; }
+
+        [ForeignKey(nameof(CustomerID))]
+        public Account Customer { get; set; } = null!;  // Navigation tới Account
+
+        [ForeignKey(nameof(TestID))]
         public Test Test { get; set; } = null!;
     }
 }

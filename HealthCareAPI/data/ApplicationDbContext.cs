@@ -1,35 +1,29 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using HealthCareAPI.Entities;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthCareAPI
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<Account, IdentityRole<Guid>, Guid>
     {
         public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
        {
            builder.AddFilter(DbLoggerCategory.Query.Name, LogLevel.Information);
            builder.AddConsole();
        });
-        private const string connectSql = @"
-        Data Source=localhost,1433;
-        Initial Catalog=HealthCareDB;
-        User ID=sa;
-        Password=12345;
-        TrustServerCertificate=True;";
+
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
+
         }
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Consultant> Consultants { get; set; }
-        public DbSet<Manager> Managers { get; set; }
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<Staff> Staff { get; set; }
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestBooking> TestBookings { get; set; }
-        public DbSet<Menstrual_cycle> Menstrual_Cycles { get; set; }
+        public DbSet<MenstrualCycle> Menstrual_Cycles { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Appoinment> Appoinments { get; set; }
 
@@ -43,10 +37,10 @@ namespace HealthCareAPI
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appoinment>()
-                .HasOne(a => a.Customer)
-                .WithMany(c => c.Appoinments)
-                .HasForeignKey(a => a.CustomerID)
-                .OnDelete(DeleteBehavior.Restrict); // <- Tắt cascade delete
+        .HasOne(a => a.Customer)
+        .WithMany()
+        .HasForeignKey(a => a.CustomerId)
+        .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Appoinment>()
                 .HasOne(a => a.Consultant)
@@ -65,6 +59,15 @@ namespace HealthCareAPI
                 .WithMany(c => c.Feedbacks)
                 .HasForeignKey(f => f.ConsultantID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Account>().ToTable("Users");
+            modelBuilder.Entity<IdentityRole<Guid>>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles");
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins");
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens");
+
         }
 
     }

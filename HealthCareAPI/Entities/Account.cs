@@ -1,23 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthCareAPI.Entities
 {
-    [Table("Account")]
-    public class Account
+    public class Account : IdentityUser<Guid>
     {
-        [Key]
-        public int AccountID { get; set; }
-        [Required]
-        [MaxLength(50)]
-        [Column(TypeName = "varchar(50)")]
-        public required string Username { get; set; }
-        [Required]
-        [MaxLength(50)]
-        [Column(TypeName = "varchar(50)")]
-        public required string Password { get; set; }
-        [Required]
-        [Column(TypeName = "nvarchar(20)")]
-        public required string Role { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DateOfBirth { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HealthCareAPI.Entities
@@ -8,17 +8,21 @@ namespace HealthCareAPI.Entities
     {
         [Key]
         public int FeedbackID { get; set; }
-        public int ConsultantID { get; set; }
-        public int CustomerID { get; set; }
+
+        public Guid ConsultantID { get; set; }  // FK đến Account.Id
+        public Guid CustomerID { get; set; }    // FK đến Account.Id
+
         [Column(TypeName = "nvarchar(100)")]
-        public string Comment { get; set; } = "";
+        public string? Comment { get; set; }
+
         public int Rating { get; set; }
-        public required DateTime CreateAt { get; set; }
 
-        [ForeignKey("ConsultantID")]
-        public Consultant Consultant { get; set; } = null!;
+        public DateTime CreateAt { get; set; }
 
-        [ForeignKey("CustomerID")]
-        public Customer Customer { get; set; } = null!;
+        [ForeignKey(nameof(ConsultantID))]
+        public Account Consultant { get; set; } = null!;
+
+        [ForeignKey(nameof(CustomerID))]
+        public Account Customer { get; set; } = null!;
     }
 }
