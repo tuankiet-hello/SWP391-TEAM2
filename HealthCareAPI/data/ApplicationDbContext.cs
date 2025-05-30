@@ -36,30 +36,33 @@ namespace HealthCareAPI
         //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); // đừng quên gọi base để Identity hoạt động đúng
+
             modelBuilder.Entity<Appoinment>()
-        .HasOne(a => a.Customer)
-        .WithMany()
-        .HasForeignKey(a => a.CustomerId)
-        .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(a => a.Customer)
+                .WithMany()
+                .HasForeignKey(a => a.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Appoinment>()
                 .HasOne(a => a.Consultant)
-                .WithMany(c => c.Appoinments)
-                .HasForeignKey(a => a.ConsultantID)
-                .OnDelete(DeleteBehavior.Restrict); // <- Tắt cascade delete
+                .WithMany()
+                .HasForeignKey(a => a.ConsultantId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Customer)
-                .WithMany(c => c.Feedbacks)
+                .WithMany()
                 .HasForeignKey(f => f.CustomerID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Consultant)
-                .WithMany(c => c.Feedbacks)
+                .WithMany()
                 .HasForeignKey(f => f.ConsultantID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Rename default Identity tables (optional)
             modelBuilder.Entity<Account>().ToTable("Users");
             modelBuilder.Entity<IdentityRole<Guid>>().ToTable("Roles");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles");
@@ -67,7 +70,6 @@ namespace HealthCareAPI
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins");
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens");
-
         }
 
     }
