@@ -10,10 +10,10 @@ namespace HealthCareAPI
     public class ApplicationDbContext : IdentityDbContext<Account, IdentityRole<Guid>, Guid>
     {
         public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
-       {
-           builder.AddFilter(DbLoggerCategory.Query.Name, LogLevel.Information);
-           builder.AddConsole();
-       });
+        {
+            builder.AddFilter(DbLoggerCategory.Query.Name, LogLevel.Information);
+            builder.AddConsole();
+        });
 
 
         public ApplicationDbContext(DbContextOptions options) : base(options)

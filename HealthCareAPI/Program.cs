@@ -1,5 +1,7 @@
-using HealthCareAPI;
-using Microsoft.EntityFrameworkCore;
+using HealthCareAPI.Extensions; //Import các extension
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace HealthCareAPI
 {
@@ -9,13 +11,17 @@ namespace HealthCareAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Cấu hình controller và cho swagger đọc đc điểm cuối của api
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            // Cấu hình swagger, identity, jwt, và database
+            builder.Services.ConfigureSwagger();
+            builder.Services.ConfigureIdentity();
+            builder.Services.ConfigureJwt(builder.Configuration);
+            builder.Services.ConfigureDatabase(builder.Configuration);
+
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -26,12 +32,16 @@ namespace HealthCareAPI
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthCare API V1");
-                    c.RoutePrefix = string.Empty; // Swagger UI as default page
+                    c.RoutePrefix = string.Empty;
                 });
             }
 
             app.UseHttpsRedirection();
-            app.MapControllers(); // This is important to map attribute-based controllers.
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.MapControllers();
 
             app.Run();
         }
