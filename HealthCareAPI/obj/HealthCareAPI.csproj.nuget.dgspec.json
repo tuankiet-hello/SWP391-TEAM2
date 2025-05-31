@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FPTU\\Semester5\\SWP391\\SWP391_PROJECT\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj": {}
+    "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj": {}
   },
   "projects": {
-    "D:\\FPTU\\Semester5\\SWP391\\SWP391_PROJECT\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj": {
+    "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPTU\\Semester5\\SWP391\\SWP391_PROJECT\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
+        "projectUniqueName": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
         "projectName": "HealthCareAPI",
-        "projectPath": "D:\\FPTU\\Semester5\\SWP391\\SWP391_PROJECT\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
+        "projectPath": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
         "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-        "outputPath": "D:\\FPTU\\Semester5\\SWP391\\SWP391_PROJECT\\SWP391-TEAM2\\HealthCareAPI\\obj\\",
+        "outputPath": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

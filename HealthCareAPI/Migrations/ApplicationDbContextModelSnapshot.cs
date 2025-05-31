@@ -24,51 +24,79 @@ namespace HealthCareAPI.Migrations
 
             modelBuilder.Entity("HealthCareAPI.Entities.Account", b =>
                 {
-                    b.Property<int>("AccountID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountID"));
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
+                    b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
 
-                    b.HasKey("AccountID");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
-                    b.ToTable("Account");
-                });
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-            modelBuilder.Entity("HealthCareAPI.Entities.Admin", b =>
-                {
-                    b.Property<int>("AdminID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminID"));
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AccountID")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
-                    b.HasKey("AdminID");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AccountID");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
-                    b.ToTable("Admin");
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("HealthCareAPI.Entities.Appoinment", b =>
@@ -79,88 +107,25 @@ namespace HealthCareAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentID"));
 
-                    b.Property<DateTime>("AppointmentTime")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid>("AccountID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ConsultantID")
-                        .HasColumnType("int");
+                    b.Property<DateOnly>("AppointmentDate")
+                        .HasColumnType("date")
+                        .HasColumnName("Appointment Date");
 
-                    b.Property<int>("CustomerID")
-                        .HasColumnType("int");
+                    b.Property<TimeOnly>("AppointmentTime")
+                        .HasColumnType("time")
+                        .HasColumnName("Appointment Time");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.HasKey("AppointmentID");
 
-                    b.HasIndex("ConsultantID");
-
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("AccountID");
 
                     b.ToTable("Appoinment");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Consultant", b =>
-                {
-                    b.Property<int>("ConsultantID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConsultantID"));
-
-                    b.Property<int>("AccountID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Consulting_schedule")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Degree")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Experience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ConsultantID");
-
-                    b.HasIndex("AccountID");
-
-                    b.ToTable("Consultants");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Customer", b =>
-                {
-                    b.Property<int>("CustomerID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"));
-
-                    b.Property<int>("AccountID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Date_of_Birth")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("Gender")
-                        .HasColumnType("bit");
-
-                    b.HasKey("CustomerID");
-
-                    b.HasIndex("AccountID");
-
-                    b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("HealthCareAPI.Entities.Feedback", b =>
@@ -171,58 +136,26 @@ namespace HealthCareAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackID"));
 
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<Guid>("AccountID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ConsultantID")
-                        .HasColumnType("int");
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("CustomerID")
-                        .HasColumnType("int");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.HasKey("FeedbackID");
 
-                    b.HasIndex("ConsultantID");
-
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("AccountID");
 
                     b.ToTable("Feedback");
                 });
 
-            modelBuilder.Entity("HealthCareAPI.Entities.Manager", b =>
-                {
-                    b.Property<int>("ManagerID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ManagerID"));
-
-                    b.Property<int>("AccountID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Degree")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ManagerID");
-
-                    b.HasIndex("AccountID");
-
-                    b.ToTable("Manager");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Menstrual_cycle", b =>
+            modelBuilder.Entity("HealthCareAPI.Entities.MenstrualCycle", b =>
                 {
                     b.Property<int>("CycleID")
                         .ValueGeneratedOnAdd()
@@ -230,53 +163,26 @@ namespace HealthCareAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CycleID"));
 
-                    b.Property<int>("CustomerID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AccountID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("End_date")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("End_date")
+                        .HasColumnType("date");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("Reminder_enabled")
-                        .HasColumnType("bit");
+                    b.Property<int>("Reminder_enabled")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Start_date")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("Start_date")
+                        .HasColumnType("date");
 
                     b.HasKey("CycleID");
 
-                    b.HasIndex("CustomerID");
-
-                    b.ToTable("Menstrual_cycle");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Staff", b =>
-                {
-                    b.Property<int>("StaffID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffID"));
-
-                    b.Property<int>("AccountID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Degree")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("StaffID");
-
                     b.HasIndex("AccountID");
 
-                    b.ToTable("Staff");
+                    b.ToTable("Menstrual_cycle");
                 });
 
             modelBuilder.Entity("HealthCareAPI.Entities.Test", b =>
@@ -287,11 +193,10 @@ namespace HealthCareAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TestID"));
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
+                    b.Property<int>("Active")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<double>("Price")
@@ -314,73 +219,198 @@ namespace HealthCareAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingID"));
 
-                    b.Property<DateTime>("BookingTime")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid>("AccountID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CustomerID")
-                        .HasColumnType("int");
+                    b.Property<DateOnly>("BookingDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("BookingTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Result")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("TestID")
                         .HasColumnType("int");
 
                     b.HasKey("BookingID");
 
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("AccountID");
 
                     b.HasIndex("TestID");
 
                     b.ToTable("TestBooking");
                 });
 
-            modelBuilder.Entity("HealthCareAPI.Entities.Admin", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.HasOne("HealthCareAPI.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Navigation("Account");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            Name = "staff",
+                            NormalizedName = "STAFF"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            Name = "consultant",
+                            NormalizedName = "CONSULTANT"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            Name = "manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
+                            Name = "customer",
+                            NormalizedName = "CUSTOMER"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("UserTokens", (string)null);
                 });
 
             modelBuilder.Entity("HealthCareAPI.Entities.Appoinment", b =>
-                {
-                    b.HasOne("HealthCareAPI.Entities.Consultant", "Consultant")
-                        .WithMany("Appoinments")
-                        .HasForeignKey("ConsultantID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HealthCareAPI.Entities.Customer", "Customer")
-                        .WithMany("Appoinments")
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Consultant");
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Consultant", b =>
-                {
-                    b.HasOne("HealthCareAPI.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Customer", b =>
                 {
                     b.HasOne("HealthCareAPI.Entities.Account", "Account")
                         .WithMany()
@@ -393,25 +423,6 @@ namespace HealthCareAPI.Migrations
 
             modelBuilder.Entity("HealthCareAPI.Entities.Feedback", b =>
                 {
-                    b.HasOne("HealthCareAPI.Entities.Consultant", "Consultant")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("ConsultantID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HealthCareAPI.Entities.Customer", "Customer")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Consultant");
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Manager", b =>
-                {
                     b.HasOne("HealthCareAPI.Entities.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountID")
@@ -421,18 +432,7 @@ namespace HealthCareAPI.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("HealthCareAPI.Entities.Menstrual_cycle", b =>
-                {
-                    b.HasOne("HealthCareAPI.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Staff", b =>
+            modelBuilder.Entity("HealthCareAPI.Entities.MenstrualCycle", b =>
                 {
                     b.HasOne("HealthCareAPI.Entities.Account", "Account")
                         .WithMany()
@@ -445,9 +445,9 @@ namespace HealthCareAPI.Migrations
 
             modelBuilder.Entity("HealthCareAPI.Entities.TestBooking", b =>
                 {
-                    b.HasOne("HealthCareAPI.Entities.Customer", "Customer")
+                    b.HasOne("HealthCareAPI.Entities.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("CustomerID")
+                        .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -457,23 +457,60 @@ namespace HealthCareAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Account");
 
                     b.Navigation("Test");
                 });
 
-            modelBuilder.Entity("HealthCareAPI.Entities.Consultant", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.Navigation("Appoinments");
-
-                    b.Navigation("Feedbacks");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("HealthCareAPI.Entities.Customer", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.Navigation("Appoinments");
+                    b.HasOne("HealthCareAPI.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("Feedbacks");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("HealthCareAPI.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealthCareAPI.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("HealthCareAPI.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

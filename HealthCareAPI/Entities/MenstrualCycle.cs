@@ -11,7 +11,7 @@ namespace HealthCareAPI.Entities
         public int CycleID { get; set; }
 
         [Required]
-        public Guid CustomerID { get; set; }   // Account.Id kiểu Guid
+        public Guid AccountID { get; set; }   // Account.Id kiểu Guid
 
         public DateOnly Start_date { get; set; }
         public DateOnly End_date { get; set; }
@@ -22,7 +22,7 @@ namespace HealthCareAPI.Entities
         [Column(TypeName = "nvarchar(100)")]
         public string? Note { get; set; }
 
-        [ForeignKey(nameof(CustomerID))]
-        public Account Customer { get; set; } = null!;
+        [ForeignKey(nameof(AccountID))]
+        public Account Account { get; set; } = null!;
     }
 } 

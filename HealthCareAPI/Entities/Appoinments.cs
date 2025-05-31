@@ -6,12 +6,10 @@ namespace HealthCareAPI.Entities
     [Table("Appoinment")]
     public class Appoinment
     {
-
         [Key]
         public int AppointmentID { get; set; }
 
-        public Guid ConsultantId { get; set; } // FK đến Account.Id
-        public Guid CustomerId { get; set; }   // FK đến Account.Id
+        public Guid AccountID { get; set; } // FK đến Account.Id
 
         [Column("Appointment Date", TypeName = "date")]
         public DateOnly AppointmentDate { get; set; }
@@ -22,10 +20,7 @@ namespace HealthCareAPI.Entities
         //"HH:mm:ss.fffffff"
         public bool Status { get; set; }
 
-        [ForeignKey(nameof(ConsultantId))]
-        public Account Consultant { get; set; } = null!;
-
-        [ForeignKey(nameof(CustomerId))]
-        public Account Customer { get; set; } = null!;
+        [ForeignKey(nameof(AccountID))]
+        public Account Account { get; set; } = null!;
     }
 }

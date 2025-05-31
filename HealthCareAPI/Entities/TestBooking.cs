@@ -10,7 +10,7 @@ namespace HealthCareAPI.Entities
         [Key]
         public int BookingID { get; set; }
 
-        public Guid CustomerID { get; set; }  // Đổi sang Guid
+        public Guid AccountID { get; set; }  // Đổi sang Guid
 
         public int TestID { get; set; }
 
@@ -23,8 +23,8 @@ namespace HealthCareAPI.Entities
 
         public StatusType Status { get; set; }
 
-        [ForeignKey(nameof(CustomerID))]
-        public Account Customer { get; set; } = null!;  // Navigation tới Account
+        [ForeignKey(nameof(AccountID))]
+        public Account Account { get; set; } = null!;
 
         [ForeignKey(nameof(TestID))]
         public Test Test { get; set; } = null!;

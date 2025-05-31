@@ -9,8 +9,7 @@ namespace HealthCareAPI.Entities
         [Key]
         public int FeedbackID { get; set; }
 
-        public Guid ConsultantID { get; set; }  // FK đến Account.Id
-        public Guid CustomerID { get; set; }    // FK đến Account.Id
+        public Guid AccountID { get; set; }  // FK đến Account.Id
 
         [Column(TypeName = "nvarchar(100)")]
         public string? Comment { get; set; }
@@ -19,10 +18,7 @@ namespace HealthCareAPI.Entities
 
         public DateTime CreateAt { get; set; }
 
-        [ForeignKey(nameof(ConsultantID))]
-        public Account Consultant { get; set; } = null!;
-
-        [ForeignKey(nameof(CustomerID))]
-        public Account Customer { get; set; } = null!;
+        [ForeignKey(nameof(AccountID))]
+        public Account Account { get; set; } = null!;
     }
 }

@@ -1,13 +1,17 @@
-using HealthCareAPI.Extensions; //Import các extension
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using HealthCareAPI.Repositories;
+using HealthCareAPI.data;
+using Microsoft.AspNetCore.Identity;
+using HealthCareAPI.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthCareAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -15,15 +19,86 @@ namespace HealthCareAPI
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
 
-            // Cấu hình swagger, identity, jwt, và database
-            builder.Services.ConfigureSwagger();
-            builder.Services.ConfigureIdentity();
-            builder.Services.ConfigureJwt(builder.Configuration);
-            builder.Services.ConfigureDatabase(builder.Configuration);
+            // Cấu hình swagger trực tiếp
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "HealthCare API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Description = "Enter 'Bearer' [space] and then your token",
+                    Name = "Authorization",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type=Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
+            });
+
+            // Cấu hình Identity chuẩn
+            builder.Services.AddIdentity<Account, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Cấu hình JWT trực tiếp
+            var jwt = builder.Configuration.GetSection("Jwt");
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwt["Issuer"],
+                    ValidAudience = jwt["Audience"],
+                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwt["Key"]))
+                };
+            });
 
             builder.Services.AddAuthorization();
 
+            // Đăng ký UnitOfWork và GenericRepository
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Đăng ký các repository cụ thể
+            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+            builder.Services.AddScoped<IAppoinmentRepository, AppoinmentRepository>();
+            builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+            builder.Services.AddScoped<IMenstrualCycleRepository, MenstrualCycleRepository>();
+            builder.Services.AddScoped<ITestBookingRepository, TestBookingRepository>();
+            builder.Services.AddScoped<ITestsRepository, TestsRepository>();
+
+            // Đăng ký ApplicationDbContext vào DI
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
             var app = builder.Build();
+
+            // Seed dữ liệu mẫu (user, role)
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                await SeedData.InitializeAsync(services);
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
