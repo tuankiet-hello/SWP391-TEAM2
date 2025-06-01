@@ -1,20 +1,20 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\",
+  "WorkspaceRootPath": "D:\\Ki5\\SWP\\SWP391-TEAM2\\",
   "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|d:\\fptu\\semester5\\swp391\\swp_new\\swp391-team2\\healthcareapi\\healthcareapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|solutionrelative:healthcareapi\\healthcareapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|d:\\fptu\\semester5\\swp391\\swp_new\\swp391-team2\\healthcareapi\\controller\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|d:\\ki5\\swp\\swp391-team2\\healthcareapi\\healthcareapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|solutionrelative:healthcareapi\\healthcareapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|d:\\ki5\\swp\\swp391-team2\\healthcareapi\\controller\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|solutionrelative:healthcareapi\\controller\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|d:\\fptu\\semester5\\swp391\\swp_new\\swp391-team2\\healthcareapi\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|d:\\ki5\\swp\\swp391-team2\\healthcareapi\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2528CEEB-477D-EAA6-FDE9-18B211004203}|HealthCareAPI\\HealthCareAPI.csproj|solutionrelative:healthcareapi\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -25,28 +25,27 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HealthCareAPI",
-              "DocumentMoniker": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
+              "DocumentIndex": 1,
+              "Title": "HealthCareAPI.csproj",
+              "DocumentMoniker": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
               "RelativeDocumentMoniker": "HealthCareAPI\\HealthCareAPI.csproj",
-              "ToolTip": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
+              "ToolTip": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
               "RelativeToolTip": "HealthCareAPI\\HealthCareAPI.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-05-31T18:57:32.337Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-31T18:57:32.337Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Microsoft.Common.CurrentVersion.targets",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ViewState": "AgIAAN4UAAAAAAAAAAAewPMUAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAPAUAAAAAAAAAAAewPMUAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
               "WhenOpened": "2025-05-31T18:57:23.848Z",
               "EditorCaption": ""
@@ -55,31 +54,25 @@
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "LoginDTO.cs",
-              "DocumentMoniker": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\DTOs\\LoginDTO.cs",
+              "DocumentMoniker": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\DTOs\\LoginDTO.cs",
               "RelativeDocumentMoniker": "HealthCareAPI\\DTOs\\LoginDTO.cs",
-              "ToolTip": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\DTOs\\LoginDTO.cs",
+              "ToolTip": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\DTOs\\LoginDTO.cs",
               "RelativeToolTip": "HealthCareAPI\\DTOs\\LoginDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAswAoAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswAsAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T18:54:20.816Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+              "WhenOpened": "2025-05-31T18:54:20.816Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\Controller\\AuthController.cs",
+              "DocumentMoniker": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\Controller\\AuthController.cs",
               "RelativeDocumentMoniker": "HealthCareAPI\\Controller\\AuthController.cs",
-              "ToolTip": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\Controller\\AuthController.cs",
+              "ToolTip": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\Controller\\AuthController.cs",
               "RelativeToolTip": "HealthCareAPI\\Controller\\AuthController.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAA0wCoAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T18:54:17.712Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-31T18:54:17.712Z"
             }
           ]
         }
