@@ -36,8 +36,6 @@ namespace HealthCareAPI
         {
             base.OnModelCreating(modelBuilder); // đừng quên gọi base để Identity hoạt động đúng
 
-            // Đã bỏ các Fluent API liên quan đến Customer/Consultant vì chỉ còn AccountID
-
             // Đổi tên bảng Identity mặc định, không override property
             modelBuilder.Entity<Account>().ToTable("Users");
             modelBuilder.Entity<IdentityRole<Guid>>().ToTable("Roles");

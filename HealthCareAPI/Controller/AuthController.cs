@@ -63,5 +63,58 @@ namespace HealthCareAPI.Controller
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null)
+                return BadRequest("Email không tồn tại");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            // TODO: Gửi token qua email thực tế. Ở đây trả về token để test
+            return Ok(new { message = "Token reset password đã được gửi!", token });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null)
+                return BadRequest("Email không tồn tại");
+
+            var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+            if (result.Succeeded)
+                return Ok(new { message = "Đặt lại mật khẩu thành công!" });
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok(new { message = "Đăng xuất thành công!" });
+        }
+
+        [HttpPut("edit-profile")]
+        public async Task<IActionResult> EditProfile([FromBody] EditProfileDTO dto)
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("User không tồn tại");
+
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.DateOfBirth = dto.DateOfBirth;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+                return Ok(new { message = "Cập nhật thông tin thành công!" });
+            return BadRequest(result.Errors);
+        }
     }
 } 

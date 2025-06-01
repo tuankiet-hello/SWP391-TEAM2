@@ -41,5 +41,18 @@ namespace HealthCareAPI.Repositories
         {
             _context.Dispose();
         }
+
+        public IAccountRepository AccountRepository => _accountRepository ??= new AccountRepository(_context);
+        private IAccountRepository _accountRepository;
+        public IAppoinmentRepository AppoinmentRepository => _appoinmentRepository ??= new AppoinmentRepository(_context);
+        private IAppoinmentRepository _appoinmentRepository;
+        public IFeedbackRepository FeedbackRepository => _feedbackRepository ??= new FeedbackRepository(_context);
+        private IFeedbackRepository _feedbackRepository;
+        public IMenstrualCycleRepository MenstrualCycleRepository => _menstrualCycleRepository ??= new MenstrualCycleRepository(_context);
+        private IMenstrualCycleRepository _menstrualCycleRepository;
+        public ITestBookingRepository TestBookingRepository => _testBookingRepository ??= new TestBookingRepository(_context);
+        private ITestBookingRepository _testBookingRepository;
+        public ITestsRepository TestsRepository => _testsRepository ??= new TestsRepository(_context);
+        private ITestsRepository _testsRepository;
     }
 } 

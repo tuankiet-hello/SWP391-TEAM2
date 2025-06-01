@@ -7,5 +7,11 @@ namespace HealthCareAPI.Repositories
     {
         IGenericRepository<T> Repository<T>() where T : class;
         Task<int> CompleteAsync();
+        IAccountRepository AccountRepository { get; }
+        IAppoinmentRepository AppoinmentRepository { get; }
+        IFeedbackRepository FeedbackRepository { get; }
+        IMenstrualCycleRepository MenstrualCycleRepository { get; }
+        ITestBookingRepository TestBookingRepository { get; }
+        ITestsRepository TestsRepository { get; }
     }
 } 

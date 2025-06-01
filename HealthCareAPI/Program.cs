@@ -79,14 +79,6 @@ namespace HealthCareAPI
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            // Đăng ký các repository cụ thể
-            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-            builder.Services.AddScoped<IAppoinmentRepository, AppoinmentRepository>();
-            builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-            builder.Services.AddScoped<IMenstrualCycleRepository, MenstrualCycleRepository>();
-            builder.Services.AddScoped<ITestBookingRepository, TestBookingRepository>();
-            builder.Services.AddScoped<ITestsRepository, TestsRepository>();
-
             // Đăng ký ApplicationDbContext vào DI
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
