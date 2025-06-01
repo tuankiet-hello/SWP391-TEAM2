@@ -105,7 +105,13 @@ namespace HealthCareAPI
                     c.RoutePrefix = "swagger";
                 });
             }
-
+            app.UseHttpsRedirection();
+            app.UseCors(options =>
+                        {
+                            options.AllowAnyHeader();
+                            options.AllowAnyMethod();
+                            options.AllowAnyOrigin();
+                        });
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

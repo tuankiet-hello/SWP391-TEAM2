@@ -7763,23 +7763,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {},
+    "C:\\Users\\LENOVO\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
+      "projectUniqueName": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
       "projectName": "HealthCareAPI",
-      "projectPath": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\Ki5\\SWP\\SWP391-TEAM2\\HealthCareAPI\\obj\\",
+      "projectPath": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
+      "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
+      "outputPath": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
