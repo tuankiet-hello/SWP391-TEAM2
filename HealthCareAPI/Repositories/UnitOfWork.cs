@@ -41,9 +41,6 @@ namespace HealthCareAPI.Repositories
         {
             _context.Dispose();
         }
-
-        public IAccountRepository AccountRepository => _accountRepository ??= new AccountRepository(_context);
-        private IAccountRepository _accountRepository;
         public IAppoinmentRepository AppoinmentRepository => _appoinmentRepository ??= new AppoinmentRepository(_context);
         private IAppoinmentRepository _appoinmentRepository;
         public IFeedbackRepository FeedbackRepository => _feedbackRepository ??= new FeedbackRepository(_context);

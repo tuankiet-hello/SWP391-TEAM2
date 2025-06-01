@@ -16,16 +16,22 @@ namespace HealthCareAPI.Controller
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserManager<Account> userManager, SignInManager<Account> signInManager, IConfiguration configuration)
+        public AuthController(UserManager<Account> userManager,
+                       SignInManager<Account> signInManager,
+                       IConfiguration configuration,
+                       RoleManager<IdentityRole<Guid>> roleManager) // thêm tham số này
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _roleManager = roleManager;  // gán biến ở đây
         }
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO dto)
@@ -116,5 +122,68 @@ namespace HealthCareAPI.Controller
                 return Ok(new { message = "Cập nhật thông tin thành công!" });
             return BadRequest(result.Errors);
         }
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterAccountDTO dto)
+        {
+            // 1. Validate dữ liệu đầu vào
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                                       .SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage);
+                return BadRequest(new { message = "Dữ liệu không hợp lệ", errors });
+            }
+
+            // 2. Kiểm tra username đã tồn tại chưa
+            var existingUser = await _userManager.FindByNameAsync(dto.UserName);
+            if (existingUser != null)
+            {
+                return BadRequest(new { message = "Username đã tồn tại" });
+            }
+
+            // 3. Kiểm tra email đã tồn tại chưa
+            var existingEmail = await _userManager.FindByEmailAsync(dto.Email);
+            if (existingEmail != null)
+            {
+                return BadRequest(new { message = "Email đã tồn tại" });
+            }
+
+            // 4. Tạo user mới (để password hash do UserManager xử lý)
+            var user = new Account
+            {
+                UserName = dto.UserName,
+                Email = dto.Email,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                DateOfBirth = dto.DateOfBirth
+            };
+
+            var result = await _userManager.CreateAsync(user, dto.Password);
+
+            if (result.Succeeded)
+            {
+                // 5. Gán role Customer mặc định
+                if (!await _roleManager.RoleExistsAsync("Customer"))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole<Guid>("Customer"));
+                }
+                await _userManager.AddToRoleAsync(user, "Customer");
+
+                // 6. Tạo token xác nhận email
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = System.Net.WebUtility.UrlEncode(token);
+
+                var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-email?userId={user.Id}&token={encodedToken}";
+
+                // 7. Gửi link xác nhận (tạm in ra console)
+                Console.WriteLine("Link xác nhận email: " + confirmationLink);
+
+                return Ok(new { message = "Đăng ký thành công! Vui lòng kiểm tra email để xác nhận." });
+            }
+
+            // Trả lỗi nếu tạo user thất bại
+            return BadRequest(result.Errors);
+        }
+
     }
 } 

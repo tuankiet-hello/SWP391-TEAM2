@@ -1064,3 +1064,9 @@ D:\FPTU\Semester5\SWP391\SWP_NEW\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\Hea
 D:\FPTU\Semester5\SWP391\SWP_NEW\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\HealthCareAPI.pdb
 D:\FPTU\Semester5\SWP391\SWP_NEW\SWP391-TEAM2\HealthCareAPI\obj\Debug\net8.0\HealthCareAPI.genruntimeconfig.cache
 D:\FPTU\Semester5\SWP391\SWP_NEW\SWP391-TEAM2\HealthCareAPI\obj\Debug\net8.0\ref\HealthCareAPI.dll
+D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll

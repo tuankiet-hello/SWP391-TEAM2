@@ -46,11 +46,14 @@ namespace HealthCareAPI
                     }
                 });
             });
-
-            // Cấu hình Identity chuẩn
-            builder.Services.AddIdentity<Account, IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //cấu hình AddIdentity
+            builder.Services.AddIdentity<Account, IdentityRole<Guid>>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true; // Yêu cầu xác nhận email
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
             // Cấu hình JWT trực tiếp
             var jwt = builder.Configuration.GetSection("Jwt");
@@ -99,7 +102,7 @@ namespace HealthCareAPI
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthCare API V1");
-                    c.RoutePrefix = string.Empty;
+                    c.RoutePrefix = "swagger";
                 });
             }
 
