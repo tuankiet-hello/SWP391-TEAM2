@@ -1,6 +1,27 @@
 [
   {
     "ContainingType": "HealthCareAPI.Controller.AuthController",
+    "Method": "ConfirmEmail",
+    "RelativePath": "api/Auth/confirm-email",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "token",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HealthCareAPI.Controller.AuthController",
     "Method": "EditProfile",
     "RelativePath": "api/Auth/edit-profile",
     "HttpMethod": "PUT",

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -188,6 +189,22 @@ namespace HealthCareAPI.Controller
 
             // Trả lỗi nếu tạo user thất bại
             return BadRequest(result.Errors);
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(Guid userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+                return BadRequest(new { message = "Người dùng không tồn tại." });
+
+            var decodedToken = WebUtility.UrlDecode(token);
+
+            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+            if (result.Succeeded)
+                return Ok(new { message = "Tài khoản đã được xác thực thành công." });
+
+            return BadRequest(new { message = "Token không hợp lệ hoặc đã hết hạn.", errors = result.Errors });
         }
 
     }
