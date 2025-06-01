@@ -186,7 +186,7 @@ namespace HealthCareAPI.Controller
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var encodedToken = System.Net.WebUtility.UrlEncode(token);
 
-                var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-email?userId={user.Id}&token={encodedToken}";
+                var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-email?email={user.Email}&token={encodedToken}";
 
                 // 7. Gửi link xác nhận (tạm in ra console)
                 Console.WriteLine("Link xác nhận email: " + confirmationLink);
@@ -199,9 +199,9 @@ namespace HealthCareAPI.Controller
         }
 
         [HttpGet("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(Guid userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByEmailAsync(email.ToString());
             if (user == null)
                 return BadRequest(new { message = "Người dùng không tồn tại." });
 
