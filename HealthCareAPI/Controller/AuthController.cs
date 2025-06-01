@@ -84,8 +84,15 @@ namespace HealthCareAPI.Controller
                 return BadRequest("Email không tồn tại");
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            // TODO: Gửi token qua email thực tế. Ở đây trả về token để test
-            return Ok(new { message = "Token reset password đã được gửi!", token });
+            var encodedToken = System.Net.WebUtility.UrlEncode(token);
+
+            // Link frontend sẽ xử lý: ví dụ trang reset password ở FE là /reset-password
+            var resetLink = $"https://frontend-url.com/reset-password?email={user.Email}&token={token}";
+
+            // TODO: Gửi resetLink qua email thực tế/ tạm thời gửi qua console
+            Console.WriteLine($"Link reset password: {resetLink}");
+
+            return Ok(new { message = "Đã gửi đường dẫn đặt lại mật khẩu qua email.", token });
         }
 
         [HttpPost("reset-password")]
