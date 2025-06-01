@@ -1070,4 +1070,7 @@ D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\obj\Debug\net8.0\HealthCareAPI.pdb
 D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\obj\Debug\net8.0\HealthCareAPI.genruntimeconfig.cache
 D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\obj\Debug\net8.0\ref\HealthCareAPI.dll
 D:\Ki5\SWP\SWP391-TEAM2\HealthCareAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\FPTU\Semester5\SWP391\SWP_NEW\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+D:\FPTU\Semester5\SWP391\SWP_NEW\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\MailKit.dll
+D:\FPTU\Semester5\SWP391\SWP_NEW\SWP391-TEAM2\HealthCareAPI\bin\Debug\net8.0\MimeKit.dll
 D:\FPTU\Semester5\SWP391\SWP_NEW\SWP391-TEAM2\HealthCareAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

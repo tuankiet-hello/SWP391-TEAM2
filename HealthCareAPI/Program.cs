@@ -6,6 +6,7 @@ using HealthCareAPI.data;
 using Microsoft.AspNetCore.Identity;
 using HealthCareAPI.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace HealthCareAPI
 {
@@ -86,6 +87,13 @@ namespace HealthCareAPI
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddScoped<HealthCareAPI.Services.EmailService>();
+
+            builder.Services.Configure<Microsoft.AspNetCore.Identity.DataProtectionTokenProviderOptions>(opt =>
+            {
+                opt.TokenLifespan = TimeSpan.FromMinutes(5);
+            });
+
             var app = builder.Build();
 
             // Seed dữ liệu mẫu (user, role)
@@ -102,7 +110,7 @@ namespace HealthCareAPI
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthCare API V1");
-                    c.RoutePrefix = "swagger";
+                    c.RoutePrefix = string.Empty;//"swagger"
                 });
             }
             app.UseHttpsRedirection();
@@ -118,6 +126,20 @@ namespace HealthCareAPI
             app.UseAuthorization();
 
             app.MapControllers();
+
+            // Chạy job xóa user chưa xác nhận mỗi 1 phút
+            var cancellationTokenSource = new CancellationTokenSource();
+            _ = Task.Run(async () =>
+            {
+                while (!cancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    using (var scope = app.Services.CreateScope())
+                    {
+                        await SeedData.DeleteUnconfirmedUsersAsync(scope.ServiceProvider);
+                    }
+                    await Task.Delay(TimeSpan.FromMinutes(1), cancellationTokenSource.Token);
+                }
+            });
 
             app.Run();
         }

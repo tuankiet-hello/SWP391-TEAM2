@@ -53,5 +53,22 @@ namespace HealthCareAPI.data
                 }
             }
         }
+
+        public static async Task DeleteUnconfirmedUsersAsync(IServiceProvider services)
+        {
+            using var scope = services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Account>>();
+            var now = DateTime.UtcNow;
+            var users = await db.Users
+                .Where(u => !u.EmailConfirmed)
+                .ToListAsync();
+            foreach (var user in users)
+            {
+                // Xóa user chưa xác nhận (nếu cần logic khác thì bổ sung)
+                // Ví dụ: chỉ xóa user chưa xác nhận, không cần kiểm tra CreatedAt nữa
+                await userManager.DeleteAsync(user);
+            }
+        }
     }
 } 

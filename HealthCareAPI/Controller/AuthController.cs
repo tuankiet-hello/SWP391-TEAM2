@@ -10,6 +10,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using HealthCareAPI.Services;
 
 namespace HealthCareAPI.Controller
 {
@@ -21,16 +22,19 @@ namespace HealthCareAPI.Controller
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly EmailService _emailService;
 
         public AuthController(UserManager<Account> userManager,
                        SignInManager<Account> signInManager,
                        IConfiguration configuration,
-                       RoleManager<IdentityRole<Guid>> roleManager) // thêm tham số này
+                       RoleManager<IdentityRole<Guid>> roleManager,
+                       EmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
-            _roleManager = roleManager;  // gán biến ở đây
+            _roleManager = roleManager;
+            _emailService = emailService;
         }
 
 
@@ -89,8 +93,14 @@ namespace HealthCareAPI.Controller
             // Link frontend sẽ xử lý: ví dụ trang reset password ở FE là /reset-password
             var resetLink = $"https://frontend-url.com/reset-password?email={user.Email}&token={token}";
 
-            // TODO: Gửi resetLink qua email thực tế/ tạm thời gửi qua console
-            Console.WriteLine($"Link reset password: {resetLink}");
+            try
+            {
+                await _emailService.SendEmailAsync(user.Email, "Đặt lại mật khẩu", $"<p>Chào {user.FirstName},</p><p>Bạn vừa yêu cầu đặt lại mật khẩu. Vui lòng nhấn vào link sau để đặt lại mật khẩu: <a href='{resetLink}'>Đặt lại mật khẩu</a></p>");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Email không tồn tại hoặc không gửi được. Vui lòng nhập lại email hợp lệ." });
+            }
 
             return Ok(new { message = "Đã gửi đường dẫn đặt lại mật khẩu qua email.", token });
         }
@@ -168,7 +178,7 @@ namespace HealthCareAPI.Controller
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                DateOfBirth = dto.DateOfBirth
+                DateOfBirth = dto.DateOfBirth,
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
@@ -187,9 +197,29 @@ namespace HealthCareAPI.Controller
                 var encodedToken = System.Net.WebUtility.UrlEncode(token);
 
                 var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-email?email={user.Email}&token={encodedToken}";
-
-                // 7. Gửi link xác nhận (tạm in ra console)
-                Console.WriteLine("Link xác nhận email: " + confirmationLink);
+                var emailBody = $@"
+<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+  <h2 style='text-align:center;margin-bottom:24px;'>Chào mừng đến với <b>Health Care System!</b></h2>
+  <p>Xin chào,</p>
+  <p>Cảm ơn bạn đã đăng ký tài khoản tại <b>Health Care System</b>.</p>
+  <p>Vui lòng nhấp vào nút bên dưới để xác nhận địa chỉ email của bạn:</p>
+  <div style='text-align:center;margin:32px 0;'>
+    <a href='{confirmationLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Xác nhận email</a>
+  </div>
+  <p style='margin-top:32px;'>Sau khi xác nhận, bạn có thể đăng nhập và sử dụng đầy đủ các tính năng của Health Care System.</p>
+  <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+  <p style='font-size:13px;color:#aaa;text-align:center;'>Email này được gửi tự động, vui lòng không trả lời.</p>
+</div>
+";
+                try
+                {
+                    await _emailService.SendEmailAsync(user.Email, "Xác nhận đăng ký tài khoản - Health Care System", emailBody);
+                }
+                catch (Exception ex)
+                {
+                    await _userManager.DeleteAsync(user); // Xóa user nếu gửi mail thất bại
+                    return BadRequest(new { message = "Email không tồn tại hoặc không gửi được. Vui lòng nhập lại email hợp lệ." });
+                }
 
                 return Ok(new { message = "Đăng ký thành công! Vui lòng kiểm tra email để xác nhận." });
             }
@@ -211,7 +241,45 @@ namespace HealthCareAPI.Controller
             if (result.Succeeded)
                 return Ok(new { message = "Tài khoản đã được xác thực thành công." });
 
-            return BadRequest(new { message = "Token không hợp lệ hoặc đã hết hạn.", errors = result.Errors });
+            // Log chi tiết lỗi
+            return BadRequest(new { message = "Token không hợp lệ hoặc đã hết hạn.", errors = result.Errors, token = decodedToken });
+        }
+
+        [HttpPost("resend-confirm-email")]
+        public async Task<IActionResult> ResendConfirmEmail([FromBody] ForgotPasswordDTO dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null)
+                return BadRequest(new { message = "Email không tồn tại." });
+            if (user.EmailConfirmed)
+                return BadRequest(new { message = "Email đã được xác nhận." });
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var encodedToken = System.Net.WebUtility.UrlEncode(token);
+            var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-email?email={user.Email}&token={encodedToken}";
+            var emailBody = $@"
+<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+  <h2 style='text-align:center;margin-bottom:24px;'>Chào mừng đến với <b>Health Care System!</b></h2>
+  <p>Xin chào,</p>
+  <p>Bạn vừa yêu cầu gửi lại email xác nhận tài khoản tại <b>Health Care System</b>.</p>
+  <p>Vui lòng nhấp vào nút bên dưới để xác nhận địa chỉ email của bạn:</p>
+  <div style='text-align:center;margin:32px 0;'>
+    <a href='{confirmationLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Xác nhận email</a>
+  </div>
+  <p style='margin-top:32px;'>Sau khi xác nhận, bạn có thể đăng nhập và sử dụng đầy đủ các tính năng của Health Care System.</p>
+  <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+  <p style='font-size:13px;color:#aaa;text-align:center;'>Email này được gửi tự động, vui lòng không trả lời.</p>
+</div>
+";
+            try
+            {
+                await _emailService.SendEmailAsync(user.Email, "Gửi lại xác nhận đăng ký tài khoản - Health Care System", emailBody);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Email không tồn tại hoặc không gửi được. Vui lòng nhập lại email hợp lệ." });
+            }
+            return Ok(new { message = "Đã gửi lại email xác nhận. Vui lòng kiểm tra hộp thư." });
         }
 
     }
