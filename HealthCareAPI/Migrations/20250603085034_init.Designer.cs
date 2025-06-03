@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthCareAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250603061652_addCreateAt")]
-    partial class addCreateAt
+    [Migration("20250603085034_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

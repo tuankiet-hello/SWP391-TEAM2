@@ -74,7 +74,7 @@ namespace HealthCareAPI.Controller
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(2),
+                expires: DateTime.UtcNow.AddHours(2),
                 signingCredentials: creds
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

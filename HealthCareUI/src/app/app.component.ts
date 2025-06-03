@@ -3,10 +3,8 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  template: '<router-outlet></router-outlet>',
+  standalone: true,
+  imports: [RouterOutlet]
 })
-export class AppComponent {
-  title = 'HealthCareUI';
-}
+export class AppComponent {}

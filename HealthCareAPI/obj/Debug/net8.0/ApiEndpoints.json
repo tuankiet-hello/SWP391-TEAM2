@@ -8,8 +8,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
-        "Type": "System.Guid",
+        "Name": "email",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -89,6 +89,22 @@
       {
         "Name": "dto",
         "Type": "HealthCareAPI.DTOs.RegisterAccountDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HealthCareAPI.Controller.AuthController",
+    "Method": "ResendConfirmEmail",
+    "RelativePath": "api/Auth/resend-confirm-email",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "HealthCareAPI.DTOs.ForgotPasswordDTO",
         "IsRequired": true
       }
     ],
