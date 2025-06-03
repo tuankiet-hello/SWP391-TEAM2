@@ -61,7 +61,7 @@ namespace HealthCareAPI.data
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Account>>();
             var now = DateTime.UtcNow;
             var users = await db.Users
-                .Where(u => !u.EmailConfirmed)
+                .Where(u => !u.EmailConfirmed && u.CreatedAt <= now.AddHours(-1))
                 .ToListAsync();
             foreach (var user in users)
             {
