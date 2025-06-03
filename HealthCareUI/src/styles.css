@@ -1,12 +1,54 @@
-/* You can add global styles to this file, and also import other style files */
-:root {
-    --color-primary: #114b97;
-    --color-primary-light: #3bb6f5;
-    --color-secondary: #1a4fa0;
-    --color-accent: #ff3b3b;
-    --color-bg: #f7fbff;
-    --color-white: #fff;
-    --color-text: #222;
-    --color-footer-bg: #114b97;
-    --color-footer-link-hover: #3bb6f5;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* :root {
+  --color-primary: #114b97;
+  --color-primary-light: #3bb6f5;
+  --color-secondary: #1a4fa0;
+  --color-accent: #ff3b3b;
+  --color-bg: #f7fbff;
+  --color-white: #fff;
+  --color-text: #222;
+  --color-footer-bg: #114b97;
+  --color-footer-link-hover: #3bb6f5;
+} */
+
+
+html, body {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  background: #f8fafc;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+* {
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.main-content {
+  flex: 1 0 auto;
+}
+
+body {
+  max-width: 100vw;
+  margin: 0 auto;
+  padding: 0 16px;
+  background: var(--color-bg, #f7fbff);
+}
+
+@media (max-width: 1400px) {
+  body {
+    max-width: 100vw;
+    padding: 0 8px;
   }
+}
+
