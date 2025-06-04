@@ -1,6 +1,6 @@
 .header {
-  width: 100vw;
-  min-width: 100vw;
+  max-width: 99.5vw;
+  /* min-width: 100vw; */
   background: #042145;
   color: #fff;
   display: flex;
@@ -205,6 +205,87 @@
   margin-right: 0;
 }
 
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #1756a9;
+  cursor: pointer;
+  margin-left: 16px;
+}
+
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 24px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(23,86,169,0.13);
+  border-radius: 12px;
+  list-style: none;
+  padding: 16px 0;
+  min-width: 180px;
+  z-index: 1000;
+}
+.mobile-nav.open {
+  display: block;
+}
+.mobile-nav li {
+  padding: 8px 24px;
+}
+.mobile-nav li a {
+  color: #1756a9;
+  text-decoration: none;
+  font-weight: 600;
+  display: block;
+}
+.mobile-nav li a:hover {
+  color: #3bb6f5;
+}
+
+.mobile-search {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  padding: 0 24px;
+}
+.mobile-search input {
+  flex: 1;
+  padding: 6px 12px;
+  border-radius: 16px 0 0 16px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+.mobile-search .header-search-btn {
+  border-radius: 0 16px 16px 0;
+  border: none;
+  background: #f7fbff;
+  margin-left: -4px;
+}
+.mobile-login-btn {
+  width: 90%;
+  background: linear-gradient(90deg, #00b4d8 0%, #0077b6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 12px 5% 0 5%;
+}
+
+@media (max-width: 1200px) {
+  .header-nav,
+  .header-actions {
+    display: none;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
+
 @media (max-width: 900px) {
   .header-inner {
     flex-direction: row;
@@ -215,8 +296,10 @@
     flex-wrap: nowrap;
   }
   .header-nav {
-    gap: 12px;
-    flex-wrap: nowrap;
+    display: none;
+  }
+  .menu-toggle {
+    display: block;
   }
   .header-search {
     margin: 10px 0 0 0;
@@ -229,8 +312,6 @@
     white-space: nowrap;
   }
   .header-actions {
-    margin-left: 0;
-    margin-right: 4px;
-    gap: 6px;
+    display: none;
   }
 }

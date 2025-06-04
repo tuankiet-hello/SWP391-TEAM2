@@ -10,7 +10,10 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  menuOpen = false;
   constructor(library: FaIconLibrary) {
     library.addIcons(faSearch);
   }
+  toggleMenu() { this.menuOpen = !this.menuOpen; }
+  closeMenu() { this.menuOpen = false; }
 }

@@ -1,3 +1,8 @@
+.container{
+  padding: 0;
+  margin: 0 auto;
+}
+
 /* Services */
 .services {
   padding: 32px 5vw;
@@ -146,17 +151,17 @@
 .infor-list {
   display: flex;
   justify-content: center;
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   width: 100%;
 }
 
 .infor-card {
   background: #fff;
-  border-radius: 18px;
+  border-radius: 40px;
   box-shadow: 0 2px 12px rgba(23,86,169,0.06);
   padding: 24px 18px;
-  max-width: 900px;
+  max-width: 676px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -171,9 +176,8 @@
   max-width: 220px;
   height: auto;
   object-fit: cover;
-  border-radius: 18px;
+  border-radius: 32px;
   box-shadow: 0 4px 18px rgba(23,86,169,0.13);
-  /* margin-right: 20px; */
 }
 
 .infor-card p {
