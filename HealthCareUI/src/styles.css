@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --primary: #6C5CE7;     /* tím lam */
+  --secondary: #55EFC4;   /* xanh mint */
+  --accent: #F78FB3;      /* hồng pastel */
+  --bg: #F8F9FA;          /* trắng xám */
+  --text: #2D3436;        /* xám đen */
+}
