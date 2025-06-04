@@ -44,6 +44,8 @@
     color: #2D3436;
   }
 
+  
+  input[type="text"],
   input[type="email"],
   input[type="password"] {
     width: 100%;
