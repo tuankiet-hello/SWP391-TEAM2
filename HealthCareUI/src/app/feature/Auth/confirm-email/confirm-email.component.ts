@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-confirm-email',
   templateUrl: './confirm-email.component.html',
-  styleUrls: ['./confirm-email.component.css']
+  styleUrls: ['./confirm-email.component.css'],
+  imports: [CommonModule]
 })
 export class ConfirmEmailComponent implements OnInit {
   status: 'pending' | 'success' | 'error' = 'pending';

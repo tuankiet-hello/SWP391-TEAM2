@@ -29,6 +29,7 @@
   <ItemGroup>
     <Folder Include="Mappings\" />
     <Folder Include="Controller\" />
+    <Folder Include="Migrations\" />
     <Folder Include="Repositories\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Services\Implementations\" />

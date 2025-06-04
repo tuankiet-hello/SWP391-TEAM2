@@ -1,0 +1,47 @@
+<header class="header">
+  <div class="header-inner">
+    <div class="header-logo-row">
+      <img src="assets/logo.jpg" alt="Logo" class="header-logo" />
+      <span class="header-title">Gen Health Clinic</span>
+    </div>
+    <nav class="header-nav">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/services" routerLinkActive="active">Services</a>
+      <a routerLink="/blog" routerLinkActive="active">Blog</a>
+      <a routerLink="/about" routerLinkActive="active">About</a>
+      <a routerLink="/contact" routerLinkActive="active">Contact</a>
+    </nav>
+    <button class="menu-toggle" (click)="toggleMenu()">
+      <span class="menu-icon">&#9776;</span>
+    </button>
+    <ul class="mobile-nav" [class.open]="menuOpen">
+      <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
+      <li><a routerLink="/services" (click)="closeMenu()">Services</a></li>
+      <li><a routerLink="/blog" (click)="closeMenu()">Blog</a></li>
+      <li><a routerLink="/about" (click)="closeMenu()">About</a></li>
+      <li><a routerLink="/contact" (click)="closeMenu()">Contact</a></li>
+      <li>
+        <div class="mobile-search">
+          <input type="text" placeholder="Search..." />
+          <button class="header-search-btn">
+            <img src="assets/search.svg" alt="Search" style="width:22px;height:22px;" />
+          </button>
+        </div>
+      </li>
+      <li>
+        <button class="mobile-login-btn">Login</button>
+      </li>
+    </ul>
+    <div class="header-actions">
+      <div class="header-search">
+        <input type="text" placeholder="Search..." />
+        <button class="header-search-btn">
+          <img src="assets/search.svg" alt="Search" style="width:22px;height:22px;" />
+        </button>
+      </div>
+      <div class="header-login">
+        <button>Login</button>
+      </div>
+    </div>
+  </div>
+</header>
