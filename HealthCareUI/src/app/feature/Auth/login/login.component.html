@@ -1,33 +1,57 @@
 
 <div class="container">
-  
+
      <div class="login-wrapper">
         <div class="login-left">
             <img src="https://img.freepik.com/premium-vector/vector-character-plan_1064626-160.jpg" alt="Booking illustration">
         </div>
 
         <div class="login-right">
-            <form>
+          <form #loginForm="ngForm">
                 <h1>LOGIN</h1>
 
-                <label for="loginInput">EMAIL OR USERNAME *</label>
-                <input type="text" id="loginInput" placeholder="name@example.com or username" required>
+                <label for="loginInput">EMAIL OR USERNAME</label>
+                <input type="text"
+                        id="loginInput"
+                        name="loginInput"
+                        placeholder="email@domain.com or username"
+                        required
+                        [(ngModel)]="loginData.username"
+                        #loginInput="ngModel"
+                        class="input">
 
-                <label for="password">PASSWORD *</label>
-                <input type="password" id="password" placeholder="Enter password" required>
+                <label for="password">PASSWORD</label>
+                <div class="pass_field">
+                  <input [type]="showPassword ? 'text' : 'password'"
+                          id="password"
+                          name="password"
+                          placeholder="Enter password"
+                          required
+                          [(ngModel)]="loginData.password"
+                          #password="ngModel"
+                          class="input">
 
-                <button type="submit">Log in now</button>
+                  <p type="button"
+                          class="toggle-password"
+                          (click)="togglePasswordVisibility()">
+                    <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                  </p>
+                </div>
+
+                <button type="submit"
+                        [disabled]="!loginForm.valid"
+                        class="login-btn">
+                  Log in now
+                </button>
 
             <div class="actions">
                 <a [routerLink]="['/registration']">Create new account</a>
                 <!-- <a [routerLink]="['/forgot-password']">Forgot Password</a> -->
             </div>
 
-            
-
             <hr>
             <div>
-                &copy; 2025 HealthCareSystem. All rights reserved.
+                &copy; 2025 GenHealth. All rights reserved.
             </div>
             </form>
         </div>
