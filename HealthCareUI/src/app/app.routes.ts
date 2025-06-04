@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './feature/home/home.component';
-import { ConfirmEmailComponent, LoginComponent, RegistrationComponent, ResetPasswordComponent } from './feature/Auth';
+import { ConfirmEmailComponent, ForgotPasswordComponent, LoginComponent, RegistrationComponent, ResetPasswordComponent } from './feature/Auth';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -10,4 +10,5 @@ export const routes: Routes = [
   { path: 'confirm-email', component: ConfirmEmailComponent },
   { path: 'login', component: LoginComponent},
   { path: 'reset-password', component: ResetPasswordComponent},
+  { path: 'forgot-password', component:ForgotPasswordComponent}
 ];
