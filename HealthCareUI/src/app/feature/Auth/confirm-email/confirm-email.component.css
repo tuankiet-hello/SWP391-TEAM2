@@ -1,31 +1,128 @@
-.success{
-  background:#e3f2fd;
-  color:#222;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.error{
-  background:#ffebee;
-  color:#b71c1c;
+.email-confirmation {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(76, 133, 179, 0.2);
+  text-align: center;
+  color: #2d3436;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-.status{
-  max-width:500px;
-  margin:40px auto;
-  padding:32px 24px;
-  border-radius:12px;
-  font-family:sans-serif;
-  box-shadow:0 2px 8px
-  rgba(0,0,0,0.08);
-  text-align:center;
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #6c5ce7;
 }
 
-.login{
-  background:#1976d2;
-  color:#fff;
-  padding:12px 32px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:18px;
-  display:inline-block;
+.confirmation-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.email-icon, .success-icon, .error-icon {
+  width: 120px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  object-fit: contain;
+}
+
+.confirmation-content h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #2d3436;
+}
+
+.confirmation-content p {
+  font-size: 15px;
+  margin: 6px 0;
+}
+
+.email-address {
+  font-weight: bold;
+  color: #0984e3;
+  font-size: 16px;
+}
+
+.resend-section {
+  margin-top: 20px;
+}
+
+.resend-button {
+  background-color: #6c5ce7;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.resend-button:hover {
+  background-color: #392b94;
+}
+
+.back-login {
+  margin-top: 25px;
+}
+
+.back-login a {
+  color: #2d3436;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-login a:hover {
+  text-decoration: underline;
+}
+
+/* Success state */
+.success h2 {
+  color: #00b894;
+}
+
+/* Error state */
+.error h2 {
+  color: #d63031;
+}
+
+/* Loading spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #6c5ce7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

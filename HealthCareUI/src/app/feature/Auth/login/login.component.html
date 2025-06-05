@@ -8,12 +8,7 @@
 
         <div class="login-right">
           <form #loginForm="ngForm">
-            <div class="conta">
               <h1>LOGIN</h1>
-              <a [routerLink]="['/home']" class="backhome">Back to home page</a>
-            </div>
-
-
                 <label for="loginInput">EMAIL OR USERNAME</label>
                 <input type="text"
                         id="loginInput"
@@ -45,14 +40,17 @@
                 <button type="submit"
                         [disabled]="!loginForm.valid"
                         class="login-btn">
-                  Log in now
+                  LOGIN
                 </button>
 
             <div class="actions">
                 <a [routerLink]="['/registration']">Create new account</a>
                 <a [routerLink]="['/forgot-password']">Forgot Password</a>
             </div>
-
+            <div class="back-home">
+              <a [routerLink]="['/home']">← Back home</a>
+          </div>
+       
             <hr>
             <div>
                 &copy; 2025 GenHealth. All rights reserved.
