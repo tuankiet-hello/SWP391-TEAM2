@@ -90,7 +90,7 @@ namespace HealthCareAPI.Controller
             var encodedToken = System.Net.WebUtility.UrlEncode(token);
 
             // Link frontend sẽ xử lý: ví dụ trang reset password ở FE là /reset-password
-            var resetLink = $"https://frontend-url.com/reset-password?email={user.Email}&token={token}";
+            var resetLink = $"https://frontend-url.com/reset-password?email={user.Email}&token={encodedToken}";
 
             try
             {
@@ -235,14 +235,15 @@ namespace HealthCareAPI.Controller
             if (user == null)
                 return BadRequest(new { message = "Người dùng không tồn tại." });
 
-            var decodedToken = WebUtility.UrlDecode(token);
+             //var decodedToken =System.Net.WebUtility.UrlDecode(token);
+             //không cần decode nữa vì ConfirmEmailAsync tự decode r 
 
-            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+            var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
                 return Ok(new { message = "Tài khoản đã được xác thực thành công." });
 
             // Log chi tiết lỗi
-            return BadRequest(new { message = "Token không hợp lệ hoặc đã hết hạn.", errors = result.Errors, token = decodedToken });
+            return BadRequest(new { message = "Token không hợp lệ hoặc đã hết hạn.", errors = result.Errors}); 
         }
 
         [HttpPost("resend-confirm-email")]
