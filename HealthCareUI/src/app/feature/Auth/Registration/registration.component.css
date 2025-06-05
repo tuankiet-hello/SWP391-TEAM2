@@ -15,7 +15,7 @@
 .login-wrapper {
   display: block;
   width: 940px;
-  height: 780px;
+  height: 650px;
   max-width: 90%;
   border: 2px solid black;
   border-radius: 10px;
@@ -27,7 +27,7 @@
 }
 .content {
   display: flex;
-  height: 97.5%;
+  height: 97%;
   /* border: 1px solid black; */
   width: 100%;
   padding-top: 10px;
@@ -57,19 +57,20 @@
 .login-right {
   flex: 1;
   padding: 20px;
+  /* padding-top: 0; */
   /* height: 100%; */
   width: 50%;
 
   .title {
     font-size: 20px;
     font-weight: 600;
-    margin-bottom: 19px;
+    margin-bottom: 10px;
     text-align: center;
   }
 
   label {
     display: block;
-    margin: 0.5rem 0 0.25rem;
+    margin: 0.25rem 0 0.25rem;
     font-weight: 600;
     color: var(--text);
     font-size: 12px;
@@ -117,10 +118,6 @@
     &:hover:not(:disabled) {
       background-color: #392b94;
     }
-  }
-
-  .button-container {
-    margin-top: 15px;
   }
 
   .button-container button:disabled {
@@ -185,44 +182,44 @@
   border-top: 1px solid #eee;
 }
 .gender-container {
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    margin-top: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  margin-top: 10px;
+}
 
-  .gender-label {
-    font-weight: bold;
-    margin-bottom: 6px;
-  }
+.gender-label {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
 
-  .gender-options {
-    display: flex;
-    gap: 30px; /* khoảng cách đều giữa Male và Female */
-    padding-left: 0px; /* căn trái thẳng hàng với GENDER */
-  }
+.gender-options {
+  display: flex;
+  gap: 30px; /* khoảng cách đều giữa Male và Female */
+  padding-left: 0px; /* căn trái thẳng hàng với GENDER */
+}
 
-  .gender-options label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-  }
+.gender-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
 
-  input[type="radio"] {
-    accent-color: #007bff;
-    transform: scale(1.2);
-    cursor: pointer;
-  }
-  .back-login{
-    margin-top: 15px;
-  }
-  .back-login a{
-  color: #2D3436;
+input[type="radio"] {
+  accent-color: #007bff;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.back-login {
+  margin-top: 10px;
+}
+.back-login a {
+  color: #2d3436;
   text-decoration: none;
   font-size: 0.9rem;
-  }
-  .back-login a:hover {
+}
+.back-login a:hover {
   text-decoration: underline;
 }
 
@@ -295,16 +292,6 @@
 
 .resend-button:hover {
   background-color: #392b94;
-}
-
-.back-login {
-  margin-top: 25px;
-}
-
-.back-login a {
-  color: #2d3436;
-  text-decoration: none;
-  font-size: 0.9rem;
 }
 
 .back-login a:hover {

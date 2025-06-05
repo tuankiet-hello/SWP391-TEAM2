@@ -38,7 +38,7 @@ namespace HealthCareAPI.Controller
         }
 
 
-        [HttpPost("login")]
+       [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO dto)
         {
             Account user = null;
@@ -48,13 +48,12 @@ namespace HealthCareAPI.Controller
                 user = await _userManager.FindByNameAsync(dto.UsernameOrEmail);
 
             if (user == null)
-                return Unauthorized("Invalid username/email or password");
+                return Unauthorized("Invalid username/email");  // Riêng biệt
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
             if (!result.Succeeded)
-                return Unauthorized("Invalid username/email or password");
+                return Unauthorized("Invalid password");  // Riêng biệt
 
-            // Tạo JWT token
             var token = await GenerateJwtToken(user);
             return Ok(new { token });
         }
