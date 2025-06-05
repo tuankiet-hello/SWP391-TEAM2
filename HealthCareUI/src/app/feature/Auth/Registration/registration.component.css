@@ -15,7 +15,7 @@
 .login-wrapper {
   display: block;
   width: 940px;
-  height: 620px;
+  height: 780px;
   max-width: 90%;
   border: 2px solid black;
   border-radius: 10px;
@@ -199,3 +199,14 @@
     transform: scale(1.2);
     cursor: pointer;
   }
+  .back-login{
+    margin-top: 15px;
+  }
+  .back-login a{
+  color: #2D3436;
+  text-decoration: none;
+  font-size: 0.9rem;
+  }
+  .back-login a:hover {
+  text-decoration: underline;
+}

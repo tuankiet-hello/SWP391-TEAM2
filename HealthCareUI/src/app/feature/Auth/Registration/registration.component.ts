@@ -12,35 +12,35 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
-  registrationForm: FormGroup;
-  showPassword: boolean = false;
+  // registrationForm: FormGroup;
+  // showPassword: boolean = false;
 
-  constructor(private fb: FormBuilder) {
-    this.registrationForm = this.fb.group({
-      fullName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
-  }
+  // constructor(private fb: FormBuilder) {
+  //   this.registrationForm = this.fb.group({
+  //     fullName: ['', Validators.required],
+  //     email: ['', [Validators.required, Validators.email]],
+  //     password: ['', [Validators.required, Validators.minLength(6)]]
+  //   });
+  // }
 
-  togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
-  }
+  // togglePasswordVisibility(): void {
+  //   this.showPassword = !this.showPassword;
+  // }
 
-  onSubmit(): void {
-    if (this.registrationForm.valid) {
-      console.log('Form Submitted', this.registrationForm.value);
-      // TODO: Implement registration logic
-    }
-  }
+  // onSubmit(): void {
+  //   if (this.registrationForm.valid) {
+  //     console.log('Form Submitted', this.registrationForm.value);
+  //     // TODO: Implement registration logic
+  //   }
+  // }
 
-  handleGoogleSignup(): void {
-    console.log('Google signup clicked');
-    // TODO: Implement Google signup
-  }
+  // handleGoogleSignup(): void {
+  //   console.log('Google signup clicked');
+  //   // TODO: Implement Google signup
+  // }
 
-  handleFacebookSignup(): void {
-    console.log('Facebook signup clicked');
-    // TODO: Implement Facebook signup
-  }
+  // handleFacebookSignup(): void {
+  //   console.log('Facebook signup clicked');
+  //   // TODO: Implement Facebook signup
+  // }
 }
