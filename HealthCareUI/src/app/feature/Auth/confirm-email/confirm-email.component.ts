@@ -30,13 +30,7 @@ export class ConfirmEmailComponent implements OnInit {
       const status = params['status'];
       this.token = params['token'] || '';
       this.email = params['email'] || '';
-
-      console.log('Raw URL params:', { 
-        email: this.email, 
-        token: this.token, 
-        status 
-      });
-
+      
       // Cập nhật payload với giá trị nguyên bản từ URL
       this.payload = {
         email: this.email,
