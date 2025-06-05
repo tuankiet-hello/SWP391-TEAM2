@@ -137,7 +137,7 @@ namespace HealthCareAPI
                     {
                         await SeedData.DeleteUnconfirmedUsersAsync(scope.ServiceProvider);
                     }
-                    await Task.Delay(TimeSpan.FromMinutes(1), cancellationTokenSource.Token);
+                    await Task.Delay(TimeSpan.FromHours(1), cancellationTokenSource.Token);
                 }
             });
 
