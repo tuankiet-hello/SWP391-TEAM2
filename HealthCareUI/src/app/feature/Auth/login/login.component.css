@@ -170,3 +170,13 @@
   max-height: 41.71px;
   min-width: 375px;
 }
+
+.conta{
+  display: flex;
+  justify-content: space-between;
+}
+
+.backhome{
+  display: flex;
+  align-self: center;
+}

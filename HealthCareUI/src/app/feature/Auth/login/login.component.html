@@ -8,7 +8,11 @@
 
         <div class="login-right">
           <form #loginForm="ngForm">
-                <h1>LOGIN</h1>
+            <div class="conta">
+              <h1>LOGIN</h1>
+              <a [routerLink]="['/home']" class="backhome">Back to home page</a>
+            </div>
+
 
                 <label for="loginInput">EMAIL OR USERNAME</label>
                 <input type="text"
