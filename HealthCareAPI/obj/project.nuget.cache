@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0GCFTvmGO6E=",
+  "dgSpecHash": "CkMtoqS+ggI=",
   "success": true,
-  "projectFilePath": "D:\\FPTU\\Semester5\\SWP391\\SWP_NEW\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
+  "projectFilePath": "D:\\FPTU\\Semester5\\SWP391\\SWP391_GenderHealth\\SWP391-TEAM2\\HealthCareAPI\\HealthCareAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LENOVO\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\LENOVO\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
