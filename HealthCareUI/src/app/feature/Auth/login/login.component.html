@@ -1,61 +1,86 @@
-
 <div class="container">
-
-     <div class="login-wrapper">
-        <div class="login-left">
-            <img src="https://img.freepik.com/premium-vector/vector-character-plan_1064626-160.jpg" alt="Booking illustration">
-        </div>
-
-        <div class="login-right">
-          <form #loginForm="ngForm">
-              <h1>LOGIN</h1>
-                <label for="loginInput">EMAIL OR USERNAME</label>
-                <input type="text"
-                        id="loginInput"
-                        name="loginInput"
-                        placeholder="email@domain.com or username"
-                        required
-                        [(ngModel)]="loginData.username"
-                        #loginInput="ngModel"
-                        class="input">
-
-                <label for="password">PASSWORD</label>
-                <div class="pass_field">
-                  <input [type]="showPassword ? 'text' : 'password'"
-                          id="password"
-                          name="password"
-                          placeholder="Enter password"
-                          required
-                          [(ngModel)]="loginData.password"
-                          #password="ngModel"
-                          class="input">
-
-                  <p type="button"
-                          class="toggle-password"
-                          (click)="togglePasswordVisibility()">
-                    <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                  </p>
-                </div>
-
-                <button type="submit"
-                        [disabled]="!loginForm.valid"
-                        class="login-btn">
-                  LOGIN
-                </button>
-
-            <div class="actions">
-                <a [routerLink]="['/registration']">Create new account</a>
-                <a [routerLink]="['/forgot-password']">Forgot Password</a>
-            </div>
-            <div class="back-home">
-              <a [routerLink]="['/home']">← Back home</a>
-          </div>
-       
-            <hr>
-            <div>
-                &copy; 2025 GenHealth. All rights reserved.
-            </div>
-            </form>
-        </div>
+  <div class="login-wrapper">
+    <div class="login-left">
+      <img
+        src="https://img.freepik.com/premium-vector/vector-character-plan_1064626-160.jpg"
+        alt="Booking illustration"
+      />
     </div>
+
+    <div class="login-right">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <h1>LOGIN</h1>
+
+        <label for="loginInput">EMAIL OR USERNAME</label>
+        <input
+          type="text"
+          id="loginInput"
+          placeholder="email@domain.com or username"
+          formControlName="UsernameOrEmail"
+          class="input"
+        />
+        <div
+          *ngIf="
+            loginForm.get('UsernameOrEmail')?.touched &&
+            loginForm.get('UsernameOrEmail')?.invalid
+          "
+          class="text-danger"
+        >
+          Username or Email is required.
+        </div>
+
+        <label for="password">PASSWORD</label>
+        <div class="pass_field">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            placeholder="Enter password"
+            formControlName="password"
+            class="input"
+          />
+          <p
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+          >
+            <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+          </p>
+        </div>
+        <div
+          *ngIf="
+            loginForm.get('password')?.touched &&
+            loginForm.get('password')?.invalid
+          "
+          class="text-danger"
+        >
+          <div *ngIf="loginForm.get('password')?.errors?.['required']">
+            Password is required.
+          </div>
+          <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
+            Password must be at least 6 characters.
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid || isSubmitting"
+          class="login-btn"
+        >
+          LOGIN
+        </button>
+
+        <div class="actions">
+          <a [routerLink]="['/registration']">Create new account</a>
+          <a [routerLink]="['/forgot-password']">Forgot Password</a>
+        </div>
+
+        <div class="back-home">
+          <a [routerLink]="['/home']">← Back home</a>
+        </div>
+
+        <hr />
+        <div>&copy; 2025 GenHealth. All rights reserved.</div>
+      </form>
+    </div>
+  </div>
 </div>

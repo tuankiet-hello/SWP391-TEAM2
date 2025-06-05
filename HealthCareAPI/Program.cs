@@ -110,7 +110,7 @@ namespace HealthCareAPI
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthCare API V1");
-                    c.RoutePrefix = string.Empty;//"swagger"
+                    c.RoutePrefix = "swagger";//string.Empty
                 });
             }
             app.UseHttpsRedirection();

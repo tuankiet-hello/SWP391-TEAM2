@@ -1,9 +1,8 @@
 :host {
-  display: block;
-  background-color: #F8F9FA;
-  min-height: 80vh;
-  max-height: 600px;
-  padding-top:20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .login-wrapper {
@@ -33,7 +32,7 @@
   padding: 3rem;
 
   h2 {
-    color: #2D3436; ;
+    color: #2d3436;
     margin-bottom: 1.5rem;
   }
 
@@ -41,9 +40,8 @@
     display: block;
     margin: 0.5rem 0 0.25rem;
     font-weight: 600;
-    color: #2D3436;
+    color: #2d3436;
   }
-
 
   input[type="text"],
   input[type="email"],
@@ -68,7 +66,7 @@
   button[type="submit"] {
     width: 100%;
     padding: 0.75rem;
-    background-color: #6C5CE7;  ;
+    background-color: #6c5ce7;
     color: white;
     border: none;
     border-radius: 6px;
@@ -89,7 +87,7 @@
 
     a {
       text-decoration: none;
-      color: #2D3436;
+      color: #2d3436;
 
       &:hover {
         text-decoration: underline;
@@ -109,15 +107,15 @@
       flex: 1;
       padding: 0.5rem;
       margin: 0 0.25rem;
-      border: 1px solid #6C5CE7;  ;
+      border: 1px solid #6c5ce7;
       background-color: white;
-      color:#6C5CE7;  ;
+      color: #6c5ce7;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
 
       &:hover {
-        background-color: #6C5CE7;  ;
+        background-color: #6c5ce7;
         color: white;
       }
     }
@@ -161,17 +159,17 @@
   padding-left: 10px;
 }
 
-.pass_field{
+.pass_field {
   display: flex;
 }
 
-.input{
+.input {
   max-width: 415px;
   max-height: 41.71px;
   min-width: 375px;
 }
 
-.conta{
+.conta {
   display: flex;
   justify-content: space-between;
 }
@@ -180,10 +178,10 @@
   text-align: center;
 }
 .back-home a {
-  color: #2D3436;
+  color: #2d3436;
   text-decoration: none;
   font-size: 0.9rem;
 }
- .back-home a:hover {
+.back-home a:hover {
   text-decoration: underline;
 }

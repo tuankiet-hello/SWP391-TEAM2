@@ -38,7 +38,7 @@ namespace HealthCareAPI.Controller
         }
 
 
-        [HttpPost("login")]
+       [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO dto)
         {
             Account user = null;
@@ -48,13 +48,12 @@ namespace HealthCareAPI.Controller
                 user = await _userManager.FindByNameAsync(dto.UsernameOrEmail);
 
             if (user == null)
-                return Unauthorized("Invalid username/email or password");
+                return Unauthorized("Invalid username/email");  // Riêng biệt
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
             if (!result.Succeeded)
-                return Unauthorized("Invalid username/email or password");
+                return Unauthorized("Invalid password");  // Riêng biệt
 
-            // Tạo JWT token
             var token = await GenerateJwtToken(user);
             return Ok(new { token });
         }
@@ -91,7 +90,7 @@ namespace HealthCareAPI.Controller
             var encodedToken = System.Net.WebUtility.UrlEncode(token);
 
             // Link frontend sẽ xử lý: ví dụ trang reset password ở FE là /reset-password
-            var resetLink = $"https://frontend-url.com/reset-password?email={user.Email}&token={token}";
+            var resetLink = $"https://frontend-url.com/reset-password?email={user.Email}&token={encodedToken}";
 
             try
             {
@@ -236,14 +235,15 @@ namespace HealthCareAPI.Controller
             if (user == null)
                 return BadRequest(new { message = "Người dùng không tồn tại." });
 
-            var decodedToken = WebUtility.UrlDecode(token);
+             //var decodedToken =System.Net.WebUtility.UrlDecode(token);
+             //không cần decode nữa vì ConfirmEmailAsync tự decode r 
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
                 return Ok(new { message = "Tài khoản đã được xác thực thành công." });
 
             // Log chi tiết lỗi
-            return BadRequest(new { message = "Token không hợp lệ hoặc đã hết hạn.", errors = result.Errors, token = decodedToken });
+            return BadRequest(new { message = "Token không hợp lệ hoặc đã hết hạn.", errors = result.Errors}); 
         }
 
         [HttpPost("resend-confirm-email")]
