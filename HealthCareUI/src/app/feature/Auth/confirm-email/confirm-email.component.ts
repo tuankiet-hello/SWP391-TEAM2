@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-confirm-email',
   standalone: true,
-  imports: [CommonModule,RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './confirm-email.component.html',
   styleUrls: ['./confirm-email.component.css']
 })
@@ -16,6 +16,9 @@ export class ConfirmEmailComponent implements OnInit {
   email: string = '';
   token: string = '';
 
+  // Payload object để gửi đến API
+  payload: { email: string; token: string } = { email: '', token: '' };
+
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -23,87 +26,72 @@ export class ConfirmEmailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Lấy các tham số từ URL
     this.route.queryParams.subscribe(params => {
-      this.email = params['email'] || '';
+      const status = params['status'];
       this.token = params['token'] || '';
-      const status = params['status'] || '';
+      this.email = params['email'] || '';
+
+      console.log('Raw URL params:', { 
+        email: this.email, 
+        token: this.token, 
+        status 
+      });
+
+      // Cập nhật payload với giá trị nguyên bản từ URL
+      this.payload = {
+        email: this.email,
+        token: this.token
+      };
 
       if (status === 'registration') {
-        // Hiển thị màn hình đăng ký thành công
         this.status = 'registration';
       } else if (this.email && this.token) {
-        // Xác nhận email
         this.confirmEmail();
-      } else if (!this.email) {
+      } else {
         this.status = 'error';
-        this.message = 'Thiếu thông tin xác nhận email.';
+        this.message = 'Thiếu thông tin xác nhận email';
       }
     });
   }
 
   confirmEmail() {
     this.status = 'pending';
+    console.log('Sending confirmation request with payload:', this.payload);
 
-    // Log thông tin debug
-    console.log('Attempting to confirm email with:', {
-      email: this.email,
-      token: this.token
+    // Gửi request với payload nguyên bản
+    this.http.get('https://localhost:7132/api/Auth/confirm-email', {
+      params: this.payload
+    }).subscribe({
+      next: (response: any) => {
+        console.log('Success:', response);
+        this.status = 'success';
+        this.message = response.message || 'Xác nhận email thành công!';
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 3000);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.status = 'error';
+        this.message = error.error?.message || 'Xác nhận email thất bại. Vui lòng thử lại.';
+      }
     });
-
-    // Tạo payload cho request
-    const payload = {
-      email: this.email,
-      token: this.token
-    };
-
-    // Gọi API với phương thức POST thay vì GET
-    this.http.post('https://localhost:7132/api/auth/confirm-email', payload)
-      .subscribe({
-        next: (response: any) => {
-          console.log('Confirmation successful:', response);
-          this.status = 'success';
-          this.message = 'Xác nhận email thành công! Bạn có thể đăng nhập ngay bây giờ.';
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 3000);
-        },
-        error: (error) => {
-          console.error('Confirmation failed:', error);
-          this.status = 'error';
-          if (error.error && typeof error.error === 'string') {
-            this.message = error.error;
-          } else if (error.error && error.error.message) {
-            this.message = error.error.message;
-          } else {
-            this.message = 'Token không hợp lệ hoặc đã hết hạn.';
-          }
-        }
-      });
   }
 
   resendConfirmationEmail() {
-    if (this.email) {
-      // Log thông tin debug
-      console.log('Attempting to resend confirmation email to:', this.email);
-
-      this.http.post('https://localhost:7132/api/auth/resend-confirm-email', { email: this.email })
-        .subscribe({
-          next: (response: any) => {
-            console.log('Resend confirmation successful:', response);
-            alert('Đã gửi lại email xác nhận. Vui lòng kiểm tra hộp thư của bạn.');
-          },
-          error: (error) => {
-            console.error('Resend confirmation failed:', error);
-            if (error.error && typeof error.error === 'string') {
-              alert(error.error);
-            } else if (error.error && error.error.message) {
-              alert(error.error.message);
-            } else {
-              alert('Không thể gửi lại email xác nhận. Vui lòng thử lại sau.');
-            }
-          }
-        });
+    if (!this.email) {
+      alert('Email không hợp lệ');
+      return;
     }
+
+    this.http.post('https://localhost:7132/api/Auth/resend-confirm-email', { email: this.email })
+      .subscribe({
+        next: (response: any) => {
+          alert('Đã gửi lại email xác nhận. Vui lòng kiểm tra hộp thư của bạn.');
+        },
+        error: (error) => {
+          alert(error.error?.message || 'Không thể gửi lại email xác nhận. Vui lòng thử lại sau.');
+        }
+      });
   }
 }
