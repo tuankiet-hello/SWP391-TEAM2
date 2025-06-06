@@ -30,9 +30,7 @@ export class ConfirmEmailComponent implements OnInit {
       const status = params['status'];
       this.token = params['token'] || '';
       this.email = params['email'] || '';
-<<<<<<< HEAD
-      
-=======
+
 
       console.log('Raw URL params:', {
         email: this.email,
@@ -40,7 +38,7 @@ export class ConfirmEmailComponent implements OnInit {
         status,
       });
 
->>>>>>> 27877c0f11b7a86fa017f2a06e27bdc2e4fe1b47
+
       // Cập nhật payload với giá trị nguyên bản từ URL
       this.payload = {
         email: this.email,
@@ -74,7 +72,7 @@ export class ConfirmEmailComponent implements OnInit {
           this.message = response.message || 'Xác nhận email thành công!';
           setTimeout(() => {
             this.router.navigate(['/login']);
-          }, 3000);
+          }, 5000);
         },
         error: (error) => {
           console.error('Error:', error);
