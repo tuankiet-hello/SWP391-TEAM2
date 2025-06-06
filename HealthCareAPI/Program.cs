@@ -94,6 +94,17 @@ namespace HealthCareAPI
                 opt.TokenLifespan = TimeSpan.FromMinutes(5);
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularDev",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")  //CHO PHÉP Angular đọc thuộc tính error mà be trả về
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
             var app = builder.Build();
 
             // Seed dữ liệu mẫu (user, role)
@@ -110,7 +121,8 @@ namespace HealthCareAPI
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthCare API V1");
-                    c.RoutePrefix = "swagger";//string.Empty
+                    // c.RoutePrefix = "swagger";
+                    c.RoutePrefix = string.Empty;
                 });
             }
             app.UseHttpsRedirection();
@@ -121,13 +133,14 @@ namespace HealthCareAPI
                             options.AllowAnyOrigin();
                         });
             app.UseHttpsRedirection();
+            app.UseCors("AllowAngularDev");
 
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
 
-            // Chạy job xóa user chưa xác nhận mỗi 1 phút
+            // Chạy job xóa user chưa xác nhận mỗi 60 phút
             var cancellationTokenSource = new CancellationTokenSource();
             _ = Task.Run(async () =>
             {
