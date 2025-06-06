@@ -32,6 +32,7 @@ export class ConfirmEmailComponent implements OnInit {
       this.email = params['email'] || '';
 
 
+
       console.log('Raw URL params:', {
         email: this.email,
         token: this.token,
@@ -71,7 +72,7 @@ export class ConfirmEmailComponent implements OnInit {
           this.message = response.message || 'Xác nhận email thành công!';
           setTimeout(() => {
             this.router.navigate(['/login']);
-          }, 3000);
+          }, 5000);
         },
         error: (error) => {
           console.error('Error:', error);

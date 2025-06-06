@@ -11,6 +11,7 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <h1>LOGIN</h1>
 
+        <!-- USERNAME OR EMAIL -->
         <label for="loginInput">EMAIL OR USERNAME</label>
         <input
           type="text"
@@ -26,9 +27,15 @@
           "
           class="text-danger"
         >
-          Username or Email is required.
+          <small *ngIf="loginForm.get('UsernameOrEmail')?.errors?.['required']">
+            *Username or Email is required.
+          </small>
+          <small *ngIf="loginForm.get('UsernameOrEmail')?.errors?.['backend']">
+            {{ loginForm.get('UsernameOrEmail')?.errors?.['backend'] }}
+          </small>
         </div>
 
+        <!-- PASSWORD -->
         <label for="password">PASSWORD</label>
         <div class="pass_field">
           <input
@@ -53,22 +60,32 @@
           "
           class="text-danger"
         >
-          <div *ngIf="loginForm.get('password')?.errors?.['required']">
-            Password is required.
-          </div>
-          <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
-            Password must be at least 6 characters.
-          </div>
+          <small *ngIf="loginForm.get('password')?.errors?.['required']">
+            *Password is required.
+          </small>
+          <small *ngIf="loginForm.get('password')?.errors?.['backend']">
+            {{ loginForm.get('password')?.errors?.['backend'] }}
+          </small>
         </div>
 
+        <!-- BACKEND ERROR TỔNG -->
+        <!-- <div *ngIf="loginForm.errors?.['backend']" class="text-danger mt-2">
+          <small>{{ loginForm.errors["backend"] }}</small>
+        </div> -->
+
+        <!-- NÚT ĐĂNG NHẬP -->
         <button
           type="submit"
           [disabled]="loginForm.invalid || isSubmitting"
           class="login-btn"
         >
-          LOGIN
+          <ng-container *ngIf="!isSubmitting">LOGIN</ng-container>
+          <ng-container *ngIf="isSubmitting">
+            <i class="fas fa-spinner fa-spin"></i> Logging in...
+          </ng-container>
         </button>
 
+        <!-- LINKS -->
         <div class="actions">
           <a [routerLink]="['/registration']">Create new account</a>
           <a [routerLink]="['/forgot-password']">Forgot Password</a>

@@ -94,6 +94,17 @@ namespace HealthCareAPI
                 opt.TokenLifespan = TimeSpan.FromMinutes(5);
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularDev",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")  //CHO PHÉP Angular đọc thuộc tính error mà be trả về
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
             var app = builder.Build();
 
             // Seed dữ liệu mẫu (user, role)
@@ -122,6 +133,7 @@ namespace HealthCareAPI
                             options.AllowAnyOrigin();
                         });
             app.UseHttpsRedirection();
+            app.UseCors("AllowAngularDev");
 
             app.UseAuthentication();
             app.UseAuthorization();

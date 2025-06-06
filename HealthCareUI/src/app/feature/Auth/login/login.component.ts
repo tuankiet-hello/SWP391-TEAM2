@@ -40,31 +40,43 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isSubmitting = true;
-      const formData = this.loginForm.value;
+      const { UsernameOrEmail, password } = this.loginForm.value;
 
-      const payload = {
-        UsernameOrEmail: formData.UsernameOrEmail,
-        password: formData.password,
-      };
-      let message = '';
+      const payload = { UsernameOrEmail, password };
+
       this.http
         .post('https://localhost:5169/api/auth/login', payload)
         .subscribe({
           next: (response: any) => {
             console.log('Login thành công:', response);
+            localStorage.setItem('accessToken', response.token); //lưu token
             this.router.navigate(['/home']);
           },
           error: (error) => {
-            if (typeof error.error === 'string') {
-              message = error.error;
-            } else if (error.error && typeof error.error === 'object') {
-              message = error.error.message ?? JSON.stringify(error.error);
-            } else {
-              message = 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
-            }
-
-            alert(message);
             this.isSubmitting = false;
+
+            // 👉 Reset các lỗi cũ
+            this.loginForm.get('UsernameOrEmail')?.setErrors(null);
+            this.loginForm.get('password')?.setErrors(null);
+            this.loginForm.setErrors(null);
+
+            const message = error.error;
+
+            if (typeof message === 'string') {
+              if (message.includes('username') || message.includes('email')) {
+                this.loginForm
+                  .get('UsernameOrEmail')
+                  ?.setErrors({ backend: '*' + message });
+              } else if (message.includes('password')) {
+                this.loginForm
+                  .get('password')
+                  ?.setErrors({ backend: '*' + message });
+              }
+            } else {
+              this.loginForm.setErrors({
+                backend: 'Đăng nhập thất bại. Vui lòng thử lại.',
+              });
+            }
           },
         });
     }
