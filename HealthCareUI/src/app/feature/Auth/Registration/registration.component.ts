@@ -67,7 +67,7 @@ export class RegistrationComponent {
 
       // Gọi API đăng ký
       this.http
-        .post('https://localhost:7132/api/auth/register', payload)
+        .post('https://localhost:5169/api/auth/register', payload)
         .subscribe({
           next: (response: any) => {
             // Chuyển đến trang xác nhận email với email đã đăng ký

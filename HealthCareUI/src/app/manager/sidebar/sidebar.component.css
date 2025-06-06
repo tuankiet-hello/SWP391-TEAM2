@@ -1,0 +1,97 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}/* set về 0 cho dễ tính toán */
+
+html {
+  font-size: 62.5%;
+  font-family: sans-serif;
+}
+body {
+  font-size: 1.6rem;
+}/* set lại font chữ */
+
+.container {
+  width: 200px;
+  background: #2f3e4e;
+  color: white;
+  padding: 15px;
+  height: 100vh;
+}
+
+.new-btn {
+  background-color: #1866ba;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Khi rê chuột vào */
+.new-btn:hover {
+  background-color: #1f74d1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Khi nhấn giữ */
+.new-btn:active {
+  background-color: #155a9a;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.fas{
+  width: 20px;
+  margin-right: 5px;
+}
+
+.menu li {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.menu li.active {
+  background: #44566c;
+}
+
+.menu li {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+}
+
+/* Hiệu ứng gạch bên trái khi hover */
+.menu li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #1866ba;
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  transform-origin: top;
+}
+
+.menu li:hover::before {
+  transform: scaleY(1);
+}
+
+.menu li:hover {
+  background-color: #3b4b5f;
+  color: #fff;
+}
+

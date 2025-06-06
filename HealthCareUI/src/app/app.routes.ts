@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './feature/home/home.component';
-import { ConfirmEmailComponent, ForgotPasswordComponent, 
+import { ConfirmEmailComponent, ForgotPasswordComponent,
         LoginComponent, RegistrationComponent, ResetPasswordComponent } from './feature/Auth';
+import { ManagerUsersComponent } from './manager';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -9,12 +10,13 @@ export const routes: Routes = [
   //pathMatch là khi đường dẫn URL là hoàn toàn rỗng (''), thì mới chuyển hướng sang /home.
 
 
-  { path: 'home', component: HomeComponent},
-  { path: 'login', component: LoginComponent},
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'confirm-email', component: ConfirmEmailComponent },
-  { path: 'reset-password', component: ResetPasswordComponent},
-  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'manager-user', component: ManagerUsersComponent },
 
 
   //cái này phải để cuối cùng

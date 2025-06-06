@@ -30,9 +30,7 @@ export class ConfirmEmailComponent implements OnInit {
       const status = params['status'];
       this.token = params['token'] || '';
       this.email = params['email'] || '';
-<<<<<<< HEAD
-      
-=======
+
 
       console.log('Raw URL params:', {
         email: this.email,
@@ -40,7 +38,6 @@ export class ConfirmEmailComponent implements OnInit {
         status,
       });
 
->>>>>>> 27877c0f11b7a86fa017f2a06e27bdc2e4fe1b47
       // Cập nhật payload với giá trị nguyên bản từ URL
       this.payload = {
         email: this.email,
@@ -64,7 +61,7 @@ export class ConfirmEmailComponent implements OnInit {
 
     // Gửi request với payload nguyên bản
     this.http
-      .get('https://localhost:7132/api/Auth/confirm-email', {
+      .get('https://localhost:5169/api/Auth/confirm-email', {
         params: this.payload,
       })
       .subscribe({
@@ -93,7 +90,7 @@ export class ConfirmEmailComponent implements OnInit {
     }
 
     this.http
-      .post('https://localhost:7132/api/Auth/resend-confirm-email', {
+      .post('https://localhost:5169/api/Auth/resend-confirm-email', {
         email: this.email,
       })
       .subscribe({
