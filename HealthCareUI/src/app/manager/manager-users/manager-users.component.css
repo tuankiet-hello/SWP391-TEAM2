@@ -1,101 +1,216 @@
-*{
+/* Reset */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}/* set về 0 cho dễ tính toán */
+}
 
 html {
   font-size: 62.5%;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
 }
+
 body {
   font-size: 1.6rem;
-}/* set lại font chữ */
+  line-height: 1.5;
+}
 
+/* Container chính */
 .user-manager {
   display: flex;
-  height: 100vh;
-  font-family: Arial, sans-serif;
-  width: 100vw;
+  max-height: 100vh - 64px; /* Giả sử header cao 64px */
+  max-width: 100vw;
+  overflow: hidden;
   position: relative;
+  width: 100vw;
   left: 50%;
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
 }
 
+/* Sidebar - giữ nguyên (nếu có style riêng thì tốt) */
+/* Bạn có thể thêm style sidebar nếu muốn */
+
+/* Main Content */
 .main {
   flex: 1;
   display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  margin: 10px;
+  padding: 15px;
 }
 
-.user-list {
-  flex: 1;
-  border-right: 1px solid #ccc;
-  padding: 10px;
-  overflow-y: auto;
-}
-
+/* Header user list */
 .user-list-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+.content{
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  margin-top: 10px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-}
-
-tr.selected {
-  background-color: #eef6ff;
-}
-
-/* icon status */
-.status-icon {
-  transition: transform 0.2s ease, color 0.3s ease;
-  cursor: pointer;
-}
-
-.status-icon:hover {
-  transform: scale(1.2) rotate(-5deg);
-  filter: brightness(1.2);
-}
-
-/* khung search */
+/* Search */
 .search-wrapper {
   position: relative;
   width: 100%;
-  max-width: 250px;
+  max-width: 600px;
 }
 
 .search-icon {
   position: absolute;
   top: 50%;
-  left: 12px;
+  left: 15px;
   transform: translateY(-50%);
-  color: #888;
+  color: #999;
+  font-size: 1.4rem;
   pointer-events: none;
 }
 
 .search-box {
-  width: 200%;
-  padding: 5px 5px 5px 35px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
+  width: 100%;
+  padding: 6px 8px 6px 40px;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
   outline: none;
+  font-size: 1.1rem;
   transition: all 0.3s ease;
-  background-color: #fff;
-  font-size: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  background-color: #fafafa;
 }
 
 .search-box:focus {
-  border-color: #1866ba;
-  box-shadow: 0 0 5px rgba(24, 102, 186, 0.4);
+  border-color: #1890ff;
+  box-shadow: 0 0 8px rgba(24, 144, 255, 0.6);
+  background-color: #fff;
 }
+
+/* bảng */
+nz-table {
+  width: 100%;
+  font-size: 1.4rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+  padding: 12px 15px !important;
+  border-bottom: 1px solid #eee !important;
+  vertical-align: middle;
+  font-weight: 500;
+}
+
+th:first-child, td:first-child {
+  text-align: center;
+  width: 60px;
+  font-weight: 600;
+  color: #333;
+}
+
+th, td {
+  text-align: left;
+}
+
+.operation-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: 0.3s;
+}
+
+.eye {
+  background-color: #e1d5fa;
+}
+
+.edit {
+  background-color: #c9e6fb;
+}
+
+.lock {
+  background-color: #f9d0d0;
+}
+
+.icon-box i {
+  font-size: 18px;
+}
+
+.icon-box.eye i {
+  color: #7e57c2;
+}
+
+.icon-box.edit i {
+  color: #1e88e5;
+}
+
+.icon-box.lock i {
+  color: #d32f2f;
+}
+
+.icon-box:hover {
+  transform: scale(1.1);
+}
+
+.taghead {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tag.user {
+  background-color: #e0f7fa;
+  color: #0097a7;
+}
+
+.tag.verified {
+  background-color: #e8f5e9;
+  color: #388e3c;
+  display: flex;
+  justify-self: center;
+}
+
+.tag.active {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  display: flex;
+  justify-self: center;
+}
+
+.nohead, .rolehead, .verifiedhead, .activehead, .operationhead {
+  display: flex;
+  justify-content: center;
+}
+

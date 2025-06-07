@@ -2,7 +2,12 @@
 <div class="container">
 
 
-<app-header></app-header>
+<app-header
+  (scrollToContact)="scrollToFooter()"
+  (scrollToServices)="scrollToServicesSection()"
+  (scrollToBlogs)="scrollToBlogsSection()"
+></app-header>
+
 <div class="home-container">
 
 <!-- Giới thiệu cơ sở y tế -->
@@ -18,7 +23,7 @@
   </div>
 </section>
 
-<section class="services">
+<section class="services" id="services">
   <h2>Dịch Vụ Nổi Bật</h2>
   <div class="service-list">
     <div class="service-card">
@@ -49,7 +54,7 @@
 </section>
 
 <!-- Blog chia sẻ -->
-<section class="blog">
+<section class="blog" id="blogs">
   <h2>Chia Sẻ Kinh Nghiệm</h2>
   <div class="blog-list">
     <div class="blog-card">
@@ -76,5 +81,7 @@
 </div>
 
 <!-- Footer -->
-<app-footer></app-footer>
+<footer id="footer">
+  <app-footer></app-footer>
+</footer>
 </div>

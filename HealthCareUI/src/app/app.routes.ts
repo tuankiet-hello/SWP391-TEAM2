@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './feature/home/home.component';
+import { HomeComponent } from './feature/client/home/home.component';
 import { ConfirmEmailComponent, ForgotPasswordComponent,
-        LoginComponent, RegistrationComponent, ResetPasswordComponent } from './feature/Auth';
+        LoginComponent, RegistrationComponent, ResetPasswordComponent } from './feature/auth';
 import { ManagerUsersComponent } from './manager';
+
 
 export const routes: Routes = [
   //cái này để trên cùng

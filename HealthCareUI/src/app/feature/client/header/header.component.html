@@ -8,10 +8,10 @@
 
     <nav class="header-nav">
       <a routerLink="/home" routerLinkActive="active"><i class="fas fa-home"></i></a>
-      <a routerLink="/services" routerLinkActive="active">Services</a>
-      <a routerLink="/blog" routerLinkActive="active">Blog</a>
+      <a href="#" (click)="onServicesClick($event)">Services</a>
+      <a href="#" (click)="onBlogClick($event)">Blogs</a>
       <a routerLink="/about" routerLinkActive="active">About</a>
-      <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      <a href="#" (click)="onContactClick($event)">Contact</a>
     </nav>
 
     <button class="menu-toggle" (click)="toggleMenu()">
@@ -20,10 +20,10 @@
 
     <ul class="mobile-nav" [class.open]="menuOpen">
       <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
-      <li><a routerLink="/services" (click)="closeMenu()">Services</a></li>
-      <li><a routerLink="/blog" (click)="closeMenu()">Blog</a></li>
+      <li><a href="#" (click)="onServicesMobileNavClick($event)">Services</a></li>
+      <li><a href="#" (click)="onBlogMobileNavClick($event)">Blogs</a></li>
       <li><a routerLink="/about" (click)="closeMenu()">About</a></li>
-      <li><a routerLink="/contact" (click)="closeMenu()">Contact</a></li>
+      <li><a href="#" (click)="onContactMobileNavClick($event)">Contact</a></li>
       <li>
         <div class="mobile-search">
           <input type="text" placeholder="Search..." />
