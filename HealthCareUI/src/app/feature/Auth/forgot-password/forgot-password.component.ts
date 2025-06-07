@@ -36,7 +36,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     const email = this.forgotForm.value.email;
 
-    this.http.post('https://your-api.com/api/forgot-password', { email }).subscribe({
+    this.http.post('https://localhost:7132/api/Auth/forgot-password', { email }).subscribe({
       next: () => {
         alert('A reset link has been sent to your email.');
         this.forgotForm.reset();

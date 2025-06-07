@@ -90,11 +90,25 @@ namespace HealthCareAPI.Controller
             var encodedToken = System.Net.WebUtility.UrlEncode(token);
 
             // Link frontend sẽ xử lý: ví dụ trang reset password ở FE là /reset-password
-            var resetLink = $"https://frontend-url.com/reset-password?email={user.Email}&token={encodedToken}";
 
+            var resetLink = $"{_configuration["ClientUrl"]}/reset-password?email={user.Email}&token={encodedToken}";
+            var emailBody = $@"
+                    <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+                      <h2 style='text-align:center;margin-bottom:24px;'>Chào mừng đến với <b>Health Care System!</b></h2>
+                      <p>Xin chào,</p>
+                      <p>Cảm ơn bạn đã đăng ký tài khoản tại <b>Health Care System</b>.</p>
+                      <p>Vui lòng nhấp vào nút bên dưới để xác nhận thay đổi mật khẩu của bạn:</p>
+                      <div style='text-align:center;margin:32px 0;'>
+                        <a href='{resetLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Xác nhận email</a>
+                      </div>
+                      <p style='margin-top:32px;'>Sau khi xác nhận, bạn có thể đặt lại mật khẩu và đăng nhập sử dụng đầy đủ các tính năng của Health Care System.</p>
+                      <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+                      <p style='font-size:13px;color:#aaa;text-align:center;'>Email này được gửi tự động, vui lòng không trả lời.</p>
+                    </div>
+                    ";
             try
             {
-                await _emailService.SendEmailAsync(user.Email, "Đặt lại mật khẩu", $"<p>Chào {user.FirstName},</p><p>Bạn vừa yêu cầu đặt lại mật khẩu. Vui lòng nhấn vào link sau để đặt lại mật khẩu: <a href='{resetLink}'>Đặt lại mật khẩu</a></p>");
+                await _emailService.SendEmailAsync(user.Email, "Xác nhận đặt lại mật khẩu - Health Care System", emailBody);
             }
             catch (Exception ex)
             {
@@ -108,10 +122,11 @@ namespace HealthCareAPI.Controller
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
+            var decodeToken = WebUtility.HtmlDecode(dto.Token);
             if (user == null)
                 return BadRequest("Email không tồn tại");
 
-            var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, decodeToken, dto.NewPassword);
             if (result.Succeeded)
                 return Ok(new { message = "Đặt lại mật khẩu thành công!" });
             return BadRequest(result.Errors);
