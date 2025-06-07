@@ -13,5 +13,5 @@ export const appConfig: ApplicationConfig = {
 };
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7132'
+  apiUrl: 'https://localhost:5169'
 };

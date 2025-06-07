@@ -1,0 +1,59 @@
+<app-header></app-header>
+<div class="user-manager">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- User List -->
+    <div class="user-list">
+      <div class="user-list-header">
+        <div class="search-wrapper">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" placeholder="Search..." class="search-box" />
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 41.78px;">No.</th>
+            <th style="width: 150px;">First Name</th>
+            <th style="width: 250px;">Last Name</th>
+            <th style="width: 300px;">Email</th>
+            <th style="width: 150px;">Date of birth</th>
+            <th style="width: 50px;">Role</th>
+            <th style="width: 40px;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let user of users; let i = index"> nào lấy từ database lên thì bỏ zô -->
+          <tr>
+            <td style="justify-self: center;">
+              <!-- #{{ (i + 1) < 10 ? '00' + (i + 1) : (i + 1) < 100 ? '0' + (i + 1) : (i + 1) }} -->
+               1
+            </td>
+            <td>firstname</td>
+            <td>lastname</td>
+            <td>email</td>
+            <td>date of birth</td>
+            <td>consultant</td>
+            <td>
+              <!--
+              <i
+                [ngClass]="user.status === 'active' ? 'fas fa-lock-open' : 'fas fa-lock'"
+                [style.color]="user.status === 'active' ? 'green' : 'gray'"
+                [attr.title]="user.status === 'active' ? 'Account is active (unlocked)' : 'Account is inactive (locked)'"
+                class="status-icon">
+              </i>
+              {{ user.status }}
+              -->
+              <i class="fas fa-lock-open" style="color: green;" title="Account is active (unlocked)"></i>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

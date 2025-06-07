@@ -32,12 +32,12 @@ export class ConfirmEmailComponent implements OnInit {
       this.email = params['email'] || '';
 
 
+
       console.log('Raw URL params:', {
         email: this.email,
         token: this.token,
         status,
       });
-
 
       // Cập nhật payload với giá trị nguyên bản từ URL
       this.payload = {
@@ -62,7 +62,7 @@ export class ConfirmEmailComponent implements OnInit {
 
     // Gửi request với payload nguyên bản
     this.http
-      .get('https://localhost:7132/api/Auth/confirm-email', {
+      .get('https://localhost:5169/api/Auth/confirm-email', {
         params: this.payload,
       })
       .subscribe({
@@ -91,7 +91,7 @@ export class ConfirmEmailComponent implements OnInit {
     }
 
     this.http
-      .post('https://localhost:7132/api/Auth/resend-confirm-email', {
+      .post('https://localhost:5169/api/Auth/resend-confirm-email', {
         email: this.email,
       })
       .subscribe({

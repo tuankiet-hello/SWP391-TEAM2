@@ -45,7 +45,7 @@ export class LoginComponent {
       const payload = { UsernameOrEmail, password };
 
       this.http
-        .post('https://localhost:7132/api/auth/login', payload)
+        .post('https://localhost:5169/api/auth/login', payload)
         .subscribe({
           next: (response: any) => {
             console.log('Login thành công:', response);

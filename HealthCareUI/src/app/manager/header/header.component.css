@@ -1,0 +1,62 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}/* set về 0 cho dễ tính toán */
+
+html {
+  font-size: 62.5%;
+  font-family: Arial, sans-serif;
+}
+body {
+  font-size: 1.6rem;
+}/* set lại font chữ */
+
+/* đống này là header */
+.header{
+  background: #042145;
+  color: #fff;
+  padding: 8px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding-left: 20px;
+}
+
+.header p {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.header-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.header-logo {
+  height: 48px;
+  width: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(23,86,169,0.10);
+  border: 2px solid #fff;
+  background: #fff;
+  transition: box-shadow 0.2s;
+}
+
+.header-logo:hover {
+  box-shadow: 0 4px 16px rgba(23,86,169,0.18);
+}
