@@ -113,7 +113,7 @@ export class ResetPasswordComponent implements OnInit {
           this.resetForm.disable();
           setTimeout(() => {
             this.router.navigate(['/login']);
-          }, 3000);
+          }, 5000);
         },
         error: (error: HttpErrorResponse) => {
           console.error('Chi tiết lỗi:', {
