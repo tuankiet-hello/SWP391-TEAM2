@@ -6,6 +6,7 @@
   <!-- Main Content -->
   <div class="main">
     <!-- User List -->
+
     <div class="user-list">
       <div class="user-list-header">
         <div class="content">User Management</div>
@@ -16,44 +17,83 @@
         </div>
       </div>
 
-      <!-- dùng nz-table -->
-      <nz-table
-      [nzBordered]="true"
-      [nzShowPagination]="false">
-        <thead>
-          <tr>
-            <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
-            <th><span class="taghead namehead" style="width: 200px;">Full Name</span></th>
-            <th><span class="taghead mailhaed" style="width: 220px;">Email</span></th>
-            <th><span class="taghead rolehead" style="width: 90px;">Role</span></th>
-            <th><span class="taghead verifiedhead" style="width: 130px;">Email Confirm</span></th>
-            <th><span class="taghead activehead" style="width: 135px;">Account Status</span></th>
-            <th><span class="taghead operationhead" style="width: 150px;">Operations</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- <tr *ngFor="let user of users; let i = index"> nào lấy từ database lên thì bỏ zô -->
-          <tr>
-            <td><span class="tag no">1</span></td>
-            <td><span class="tag name">Trần Dương Hữu Đức</span></td>
-            <td><span class="tag mail">ducnguyen437&#64;gmail.com</span></td>
-            <td><span class="tag user">consultant</span></td>
-            <td><span class="tag verified">uncofirm</span></td>
-            <td><span class="tag active">active</span></td>
-            <td div class="operation-icons">
-              <div class="icon-box eye" title="View">
-                <i class="fa-solid fa-eye"></i>
-              </div>
-              <div class="icon-box edit" title="Edit">
-                <i class="fa-solid fa-edit"></i>
-              </div>
-              <div class="icon-box lock" title="Lock">
-                <i class="fa-solid fa-lock"></i>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+      <div class="user-list-scrollable">
+        <!-- dùng nz-table -->
+        <nz-table [nzData]="displayedUsers"
+        [nzFrontPagination]="false"
+        [nzShowPagination]="false">
+
+          <thead>
+            <tr>
+              <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
+              <th><span class="taghead namehead" style="width: 200px;">Full Name</span></th>
+              <th><span class="taghead mailhaed" style="width: 220px;">Email</span></th>
+              <th><span class="taghead rolehead" style="width: 90px;">Role</span></th>
+              <th><span class="taghead verifiedhead" style="width: 130px;">Email Confirm</span></th>
+              <th><span class="taghead activehead" style="width: 135px;">Account Status</span></th>
+              <th><span class="taghead operationhead" style="width: 150px;">Operations</span></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let user of displayedUsers; let i = index">
+              <td><span class="tag no">{{ (currentPage - 1) * pageSize + i + 1 }}</span></td>
+              <td><span class="tag name">{{ user.fullName }}</span></td>
+              <td><span class="tag mail">{{ user.email }}</span></td>
+              <td><span class="tag user">{{ user.role }}</span></td>
+              <td><span class="tag verified">
+                {{ user.emailConfirmed ? 'Confirmed' : 'Unconfirmed' }}
+              </span></td>
+              <td><span class="tag active">{{ user.accountStatus }}</span></td>
+              <td div class="operation-icons">
+                <div class="icon-box eye" title="View" (click)="viewUserDetail(user.id)">
+                  <i class="fa-solid fa-eye"></i>
+                </div>
+                <div class="icon-box edit" title="Edit">
+                  <i class="fa-solid fa-edit"></i>
+                </div>
+                <div class="icon-box lock" title="Lock">
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+
+      <!-- phân trang -->
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages); let idx = index"
+          [class.active]="currentPage === idx + 1"
+          (click)="goToPage(idx + 1)"
+        >
+          {{ idx + 1 }}
+        </button>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      </div>
+
+      <!-- nếu ko có data -->
+      <p *ngIf="users.length === 0" class="no-data-text">No users found.</p>
+
+      <nz-modal
+        [(nzVisible)]="isModalVisible"
+        (nzOnCancel)="handleModalCancel()"
+        [nzFooter]="null"
+        nzTitle="User Details"
+      >
+        <ng-container *ngIf="selectedUser">
+          <p><strong>Full Name:</strong> {{ selectedUser.user.firstName }} {{ selectedUser.user.lastName }}</p>
+          <p><strong>Email:</strong> {{ selectedUser.user.email }}</p>
+          <p><strong>Username:</strong> {{ selectedUser.user.userName }}</p>
+          <p><strong>Date of Birth:</strong> {{ selectedUser.user.dateOfBirth }}</p>
+          <p><strong>Roles:</strong> {{ selectedUser.roles.join(', ') }}</p>
+        </ng-container>
+      </nz-modal>
     </div>
+
   </div>
 </div>

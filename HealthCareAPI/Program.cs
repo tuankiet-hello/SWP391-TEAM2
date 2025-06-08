@@ -141,18 +141,18 @@ namespace HealthCareAPI
             app.MapControllers();
 
             // Chạy job xóa user chưa xác nhận mỗi 60 phút
-            var cancellationTokenSource = new CancellationTokenSource();
-            _ = Task.Run(async () =>
-            {
-                while (!cancellationTokenSource.Token.IsCancellationRequested)
-                {
-                    using (var scope = app.Services.CreateScope())
-                    {
-                        await SeedData.DeleteUnconfirmedUsersAsync(scope.ServiceProvider);
-                    }
-                    await Task.Delay(TimeSpan.FromHours(1), cancellationTokenSource.Token);
-                }
-            });
+            // var cancellationTokenSource = new CancellationTokenSource();
+            // _ = Task.Run(async () =>
+            // {
+            //     while (!cancellationTokenSource.Token.IsCancellationRequested)
+            //     {
+            //         using (var scope = app.Services.CreateScope())
+            //         {
+            //             await SeedData.DeleteUnconfirmedUsersAsync(scope.ServiceProvider);
+            //         }
+            //         await Task.Delay(TimeSpan.FromHours(1), cancellationTokenSource.Token);
+            //     }
+            // });
 
             app.Run();
         }
