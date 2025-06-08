@@ -5,18 +5,26 @@ import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, FontAwesomeModule],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent {
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
+  showConfirmPassword = false;
+  showPassword = false;
   registrationForm: FormGroup;
   isSubmitting = false;
-
+  regexpassword =
+    '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
+  regexusername = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$';
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -25,12 +33,19 @@ export class RegistrationComponent {
     this.registrationForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
-        firstname: ['', Validators.required],
-        lastname: ['', Validators.required],
-        username: ['', Validators.required],
-        password: ['', [Validators.required, Validators.minLength(6)]],
+        username: [
+          '',
+          [Validators.required, Validators.pattern(this.regexusername)],
+        ],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.pattern(this.regexpassword),
+          ],
+        ],
         confirmPassword: ['', Validators.required],
-        dateOfBirth: ['', Validators.required],
       },
       { validators: this.passwordMatchValidator }
     );
@@ -48,7 +63,12 @@ export class RegistrationComponent {
     }
     return null;
   }
-
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
   onSubmit(): void {
     if (this.registrationForm.valid) {
       this.isSubmitting = true;
@@ -57,17 +77,14 @@ export class RegistrationComponent {
       // Tạo payload theo format API yêu cầu
       const payload = {
         email: formData.email,
-        firstName: formData.firstname,
-        lastName: formData.lastname,
         userName: formData.username,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
-        dateOfBirth: formData.dateOfBirth,
       };
 
       // Gọi API đăng ký
       this.http
-        .post('https://localhost:5169/api/auth/register', payload)
+        .post('http://localhost:5169/api/auth/register', payload)
         .subscribe({
           next: (response: any) => {
             // Chuyển đến trang xác nhận email với email đã đăng ký

@@ -1,103 +1,101 @@
 <div class="container">
   <div class="login-wrapper">
-    <div class="login-left">
-      <img
-        src="https://img.freepik.com/premium-vector/vector-character-plan_1064626-160.jpg"
-        alt="Booking illustration"
-      />
-    </div>
-
-    <div class="login-right">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <h1>LOGIN</h1>
-
-        <!-- USERNAME OR EMAIL -->
-        <label for="loginInput">EMAIL OR USERNAME</label>
-        <input
-          type="text"
-          id="loginInput"
-          placeholder="email@domain.com or username"
-          formControlName="UsernameOrEmail"
-          class="input"
+    <div class="content">
+      <div class="login-left">
+        <img
+          src="https://img.freepik.com/premium-vector/vector-character-plan_1064626-160.jpg"
+          alt="Booking illustration"
         />
-        <div
-          *ngIf="
-            loginForm.get('UsernameOrEmail')?.touched &&
-            loginForm.get('UsernameOrEmail')?.invalid
-          "
-          class="text-danger"
-        >
-          <small *ngIf="loginForm.get('UsernameOrEmail')?.errors?.['required']">
-            *Username or Email is required.
-          </small>
-          <small *ngIf="loginForm.get('UsernameOrEmail')?.errors?.['backend']">
-            {{ loginForm.get('UsernameOrEmail')?.errors?.['backend'] }}
-          </small>
-        </div>
+      </div>
 
-        <!-- PASSWORD -->
-        <label for="password">PASSWORD</label>
-        <div class="pass_field">
+      <div class="login-right">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="title">LOGIN</div>
+
+          <!-- USERNAME OR EMAIL -->
+          <label for="loginInput">EMAIL OR USERNAME</label>
           <input
-            [type]="showPassword ? 'text' : 'password'"
-            id="password"
-            placeholder="Enter password"
-            formControlName="password"
+            type="text"
+            id="loginInput"
+            placeholder="email@domain.com or username"
+            formControlName="UsernameOrEmail"
             class="input"
           />
-          <p
-            type="button"
-            class="toggle-password"
-            (click)="togglePasswordVisibility()"
+          <div class="error">
+            <span
+              *ngIf="loginForm.get('UsernameOrEmail')?.touched && loginForm.get('UsernameOrEmail')?.errors?.['required']"
+            >
+              *Username or Email is required.
+            </span>
+            <span
+              *ngIf="loginForm.get('UsernameOrEmail')?.touched && loginForm.get('UsernameOrEmail')?.errors?.['backend']"
+            >
+              {{ loginForm.get('UsernameOrEmail')?.errors?.['backend'] }}
+            </span>
+          </div>
+
+          <!-- PASSWORD -->
+          <label for="password">PASSWORD</label>
+          <div class="pass_field">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              placeholder="Enter password"
+              formControlName="password"
+              class="input"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+            >
+              <fa-icon [icon]="showPassword ? faEyeSlash : faEye"></fa-icon>
+            </button>
+          </div>
+          <div class="error">
+            <span
+              *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']"
+            >
+              *Password is required.
+            </span>
+            <span
+              *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['backend']"
+            >
+              {{ loginForm.get('password')?.errors?.['backend'] }}
+            </span>
+          </div>
+
+          <!-- BACKEND ERROR TỔNG -->
+          <!-- <div *ngIf="loginForm.errors?.['backend']" class="text-danger mt-2">
+            <small>{{ loginForm.errors["backend"] }}</small>
+          </div> -->
+
+          <!-- NÚT ĐĂNG NHẬP -->
+          <button
+            type="submit"
+            [disabled]="loginForm.invalid || isSubmitting"
+            class="login-btn"
           >
-            <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-          </p>
-        </div>
-        <div
-          *ngIf="
-            loginForm.get('password')?.touched &&
-            loginForm.get('password')?.invalid
-          "
-          class="text-danger"
-        >
-          <small *ngIf="loginForm.get('password')?.errors?.['required']">
-            *Password is required.
-          </small>
-          <small *ngIf="loginForm.get('password')?.errors?.['backend']">
-            {{ loginForm.get('password')?.errors?.['backend'] }}
-          </small>
-        </div>
+            <ng-container *ngIf="!isSubmitting">LOGIN</ng-container>
+            <ng-container *ngIf="isSubmitting">
+              <i class="fas fa-spinner fa-spin"></i> Logging in...
+            </ng-container>
+          </button>
 
-        <!-- BACKEND ERROR TỔNG -->
-        <!-- <div *ngIf="loginForm.errors?.['backend']" class="text-danger mt-2">
-          <small>{{ loginForm.errors["backend"] }}</small>
-        </div> -->
+          <!-- LINKS -->
+          <div class="actions">
+            <a [routerLink]="['/registration']">Create new account</a>
+            <a [routerLink]="['/forgot-password']">Forgot Password</a>
+          </div>
 
-        <!-- NÚT ĐĂNG NHẬP -->
-        <button
-          type="submit"
-          [disabled]="loginForm.invalid || isSubmitting"
-          class="login-btn"
-        >
-          <ng-container *ngIf="!isSubmitting">LOGIN</ng-container>
-          <ng-container *ngIf="isSubmitting">
-            <i class="fas fa-spinner fa-spin"></i> Logging in...
-          </ng-container>
-        </button>
+          <div class="back-home">
+            <a [routerLink]="['/home']">← Back home</a>
+          </div>
 
-        <!-- LINKS -->
-        <div class="actions">
-          <a [routerLink]="['/registration']">Create new account</a>
-          <a [routerLink]="['/forgot-password']">Forgot Password</a>
-        </div>
-
-        <div class="back-home">
-          <a [routerLink]="['/home']">← Back home</a>
-        </div>
-
-        <hr />
-        <div>&copy; 2025 GenHealth. All rights reserved.</div>
-      </form>
+          <hr />
+          <div>&copy; 2025 GenHealth. All rights reserved.</div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
