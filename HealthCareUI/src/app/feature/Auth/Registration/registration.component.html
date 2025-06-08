@@ -10,8 +10,9 @@
 
       <div class="login-right">
         <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-          <div class="title">Sign Up</div>
+          <div class="title">SIGN UP</div>
 
+          <!-- EMAIL -->
           <label for="email">EMAIL *</label>
           <input
             type="email"
@@ -19,49 +20,20 @@
             formControlName="email"
             placeholder="name@example.com"
           />
-          <div
-            class="error"
-            *ngIf="
-              registrationForm.get('email')?.touched &&
-              registrationForm.get('email')?.errors
-            "
-          >
-            <span *ngIf="registrationForm.get('email')?.errors?.['required']"
-              >Email is required</span
+          <div class="error">
+            <span
+              *ngIf="registrationForm.get('email')?.touched && registrationForm.get('email')?.errors?.['required']"
             >
-            <span *ngIf="registrationForm.get('email')?.errors?.['email']"
-              >Invalid email format</span
+              *Email is required
+            </span>
+            <span
+              *ngIf="registrationForm.get('email')?.touched && registrationForm.get('email')?.errors?.['email']"
             >
+              *Invalid email format
+            </span>
           </div>
 
-          <label for="firstname">FIRST NAME *</label>
-          <input
-            type="text"
-            id="firstname"
-            formControlName="firstname"
-            placeholder="Enter first name"
-          />
-          <div
-            class="error"
-            *ngIf="registrationForm.get('firstname')?.touched && registrationForm.get('firstname')?.errors?.['required']"
-          >
-            First name is required
-          </div>
-
-          <label for="lastname">LAST NAME *</label>
-          <input
-            type="text"
-            id="lastname"
-            formControlName="lastname"
-            placeholder="Enter last name"
-          />
-          <div
-            class="error"
-            *ngIf="registrationForm.get('lastname')?.touched && registrationForm.get('lastname')?.errors?.['required']"
-          >
-            Last name is required
-          </div>
-
+          <!-- USERNAME -->
           <label for="username">USERNAME *</label>
           <input
             type="text"
@@ -69,60 +41,97 @@
             formControlName="username"
             placeholder="Enter username"
           />
-          <div
-            class="error"
-            *ngIf="registrationForm.get('username')?.touched && registrationForm.get('username')?.errors?.['required']"
-          >
-            Username is required
+          <div class="error">
+            <span
+              *ngIf="registrationForm.get('username')?.touched && registrationForm.get('username')?.errors?.['required']"
+            >
+              *Username is required
+            </span>
+            <span
+              *ngIf="
+          registrationForm.get('username')?.touched &&
+          registrationForm.get('username')?.errors?.['pattern'] &&
+          registrationForm.get('username')?.value
+        "
+            >
+              *Username must contain both letters and numbers
+            </span>
           </div>
 
+          <!-- PASSWORD -->
           <label for="password">PASSWORD *</label>
-          <input
-            type="password"
-            id="password"
-            formControlName="password"
-            placeholder="Enter password"
-          />
-          <div
-            class="error"
-            *ngIf="
-              registrationForm.get('password')?.touched &&
-              registrationForm.get('password')?.errors
-            "
-          >
-            <span *ngIf="registrationForm.get('password')?.errors?.['required']"
-              >Password is required</span
+          <div class="pass_field">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              placeholder="Enter password"
+              formControlName="password"
+              class="input"
+            />
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="toggle-password"
             >
+              <fa-icon [icon]="showPassword ? faEyeSlash : faEye"></fa-icon>
+            </button>
+          </div>
+          <div class="error">
             <span
-              *ngIf="registrationForm.get('password')?.errors?.['minlength']"
-              >Password must be at least 6 characters</span
+              *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.['required']"
             >
+              *Password is required
+            </span>
+            <!-- <span
+              *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.['minlength']"
+            >
+              *Password must be at least 6 characters
+            </span> -->
+            <span
+              *ngIf="
+                    registrationForm.get('password')?.touched &&
+                    registrationForm.get('password')?.errors?.['pattern'] &&
+                    registrationForm.get('password')?.value
+                  "
+            >
+              *Password must be at least 6 characters long, start with an
+              uppercase letter, and include at least one special character.
+            </span>
           </div>
 
+          <!-- CONFIRM PASSWORD -->
           <label for="confirmPassword">CONFIRM PASSWORD *</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            formControlName="confirmPassword"
-            placeholder="Enter confirm password"
-          />
-          <div
-            class="error"
-            *ngIf="
-              registrationForm.get('confirmPassword')?.touched &&
-              registrationForm.get('confirmPassword')?.errors
-            "
-          >
+          <div class="pass_field">
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="Enter confirm password"
+            />
+            <button
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              class="toggle-password"
+            >
+              <fa-icon
+                [icon]="showConfirmPassword ? faEyeSlash : faEye"
+              ></fa-icon>
+            </button>
+          </div>
+          <div class="error">
             <span
-              *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']"
-              >Confirm password is required</span
+              *ngIf="registrationForm.get('confirmPassword')?.touched && registrationForm.get('confirmPassword')?.errors?.['required']"
             >
-            <span *ngIf="registrationForm.errors?.['passwordMismatch']"
-              >Passwords do not match</span
+              *Confirm password is requireds
+            </span>
+            <span
+              *ngIf="registrationForm.get('confirmPassword')?.touched && registrationForm.errors?.['passwordMismatch']"
             >
+              *Passwords do not match
+            </span>
           </div>
 
-          <label for="dateOfBirth">DATE OF BIRTH *</label>
+          <!-- <label for="dateOfBirth">DATE OF BIRTH *</label>
           <input
             type="date"
             id="dateOfBirth"
@@ -134,7 +143,7 @@
             *ngIf="registrationForm.get('dateOfBirth')?.touched && registrationForm.get('dateOfBirth')?.errors?.['required']"
           >
             Date of birth is required
-          </div>
+          </div> -->
 
           <div class="button-container">
             <button

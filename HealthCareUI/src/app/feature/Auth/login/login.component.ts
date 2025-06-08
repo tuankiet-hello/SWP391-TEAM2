@@ -9,6 +9,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
   showPassword = false;
   loginForm: FormGroup;
   isSubmitting = false;
@@ -45,7 +48,7 @@ export class LoginComponent {
       const payload = { UsernameOrEmail, password };
 
       this.http
-        .post('https://localhost:5169/api/auth/login', payload)
+        .post('http://localhost:5169/api/auth/login', payload)
         .subscribe({
           next: (response: any) => {
             console.log('Login thành công:', response);

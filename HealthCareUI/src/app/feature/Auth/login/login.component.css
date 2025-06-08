@@ -6,13 +6,24 @@
 }
 
 .login-wrapper {
-  display: flex;
-  max-width: 1000px;
-  margin: auto;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+  display: block;
+  width: 940px;
+  height: 650px;
+  max-width: 90%;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 0px 0px 14px #4c85b3;
+  padding: 0;
   background-color: #fff;
-  border-radius: 8px;
   overflow: hidden;
+  text-align: center;
+}
+.content {
+  display: flex;
+  height: 97%;
+  /* border: 1px solid black; */
+  width: 100%;
+  padding-top: 10px;
 }
 
 .login-left {
@@ -30,6 +41,7 @@
 .login-right {
   flex: 1;
   padding: 3rem;
+  padding-top: 7rem;
 
   h2 {
     color: #2d3436;
@@ -38,19 +50,27 @@
 
   label {
     display: block;
-    margin: 0.5rem 0 0.25rem;
+    margin: 0.15rem 0 0.25rem;
     font-weight: 600;
     color: #2d3436;
+    text-align: left;
   }
 
   input[type="text"],
-  input[type="email"],
-  input[type="password"] {
+  input[type="email"] {
     width: 100%;
     padding: 0.75rem;
     margin-bottom: 0rem;
     border: 1px solid #ccc;
     border-radius: 6px;
+  }
+  input[type="password"] {
+    width: 100%;
+    /* padding: 0.5rem 2.5rem 0.5rem 0.75rem; */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    height: 41.71px;
   }
 
   .checkbox-row {
@@ -72,14 +92,19 @@
     border-radius: 6px;
     font-weight: bold;
     margin-bottom: 1rem;
-    margin-top: 1rem;
+    margin-top: 10px;
     cursor: pointer;
 
     &:hover {
       background-color: #392b94;
     }
   }
-
+  .title {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: left;
+  }
   .actions {
     display: flex;
     justify-content: space-between;
@@ -141,18 +166,18 @@
 }
 
 /* nút show pass */
-.password-wrapper {
+/* .password-wrapper {
   position: relative;
   width: 100%;
-}
+} */
 
-.password-wrapper input {
+/* .password-wrapper input {
   width: 100%;
-  padding-right: 60px; /* khoảng trống cho nút */
+  padding-right: 60px;  khoảng trống cho nút
   box-sizing: border-box;
-}
+} */
 
-.toggle-password {
+/* .toggle-password {
   max-width: 41.71px;
   max-height: 41.71px;
   padding-bottom: 10px;
@@ -163,13 +188,29 @@
 .pass_field {
   display: flex;
   height: 45px;
+} */
+.pass_field {
+  display: flex;
+  position: relative;
 }
 
-.input {
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+}
+
+/* .input {
   max-width: 415px;
   max-height: 41.71px;
   min-width: 375px;
-}
+} */
 
 .conta {
   display: flex;
@@ -187,6 +228,14 @@
 .back-home a:hover {
   text-decoration: underline;
 }
-small {
+.error {
+  color: #dc3545;
+  font-size: 12px;
+  min-height: 16px; /* Luôn giữ chiều cao để không dịch layout */
+  text-align: left;
+  padding-left: 4px;
+  line-height: 16px;
+}
+span {
   color: red;
 }
