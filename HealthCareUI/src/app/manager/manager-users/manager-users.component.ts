@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HeaderComponent } from '../header/header.component';
 
-import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { AccountDetailDTO, AccountTableDTO, UserService } from './services/user.service';
+import { UserViewComponent } from './user-view/user-view.component';
 
 @Component({
   selector: 'app-manager-users',
@@ -20,7 +21,8 @@ import { AccountDetailDTO, AccountTableDTO, UserService } from './services/user.
     HeaderComponent,
     NzTableModule,
     NzInputModule,
-    NzModalModule
+    NzModalModule,
+    UserViewComponent
   ],
   templateUrl: './manager-users.component.html',
   styleUrl: './manager-users.component.css'
@@ -40,7 +42,9 @@ export class ManagerUsersComponent implements OnInit  {
   totalUsers = 0;
   totalPages = 0;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();

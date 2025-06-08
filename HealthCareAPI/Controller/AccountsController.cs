@@ -49,11 +49,32 @@ namespace HealthCareAPI.Controller
                     Email = user.Email,
                     Role = roles.FirstOrDefault() ?? "Customer",
                     EmailConfirmed = user.EmailConfirmed,
-                    AccountStatus = user.LockoutEnabled ? "Locked" : "Active"
+                    AccountStatus = user.LockoutEnd == null ? "Active" : "Inactive"
                 });
             }
             return Ok(result);
         }
-            }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AccountDetailDTO>> GetUserById( string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+            var roles = await _userManager.GetRolesAsync(user);
+            var dto = new AccountDetailDTO
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                UserName = user.UserName,
+                DateOfBirth = user.DateOfBirth,
+                Roles = roles.ToList(),
+                EmailConfirmed = user.EmailConfirmed,
+                AccountStatus = user.LockoutEnd == null ? "Active" : "Inactive" // Tuỳ thuộc vào logic của bạn
+            };
+            return Ok(dto);
+        }
+
+    }
 }
 

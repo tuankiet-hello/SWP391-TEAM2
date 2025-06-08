@@ -61,6 +61,12 @@
         </nz-table>
       </div>
 
+      <app-user-view
+        *ngIf="isModalVisible && selectedUser"
+        [user]="selectedUser"
+        (close)="handleModalCancel()"
+      ></app-user-view>
+
       <!-- phân trang -->
       <div class="pagination-controls">
         <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
@@ -86,11 +92,11 @@
         nzTitle="User Details"
       >
         <ng-container *ngIf="selectedUser">
-          <p><strong>Full Name:</strong> {{ selectedUser.user.firstName }} {{ selectedUser.user.lastName }}</p>
-          <p><strong>Email:</strong> {{ selectedUser.user.email }}</p>
-          <p><strong>Username:</strong> {{ selectedUser.user.userName }}</p>
-          <p><strong>Date of Birth:</strong> {{ selectedUser.user.dateOfBirth }}</p>
-          <p><strong>Roles:</strong> {{ selectedUser.roles.join(', ') }}</p>
+          <p><strong>Full Name:</strong> {{ selectedUser.firstName }} {{ selectedUser.lastName }}</p>
+          <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+          <p><strong>Username:</strong> {{ selectedUser.userName }}</p>
+          <p><strong>Date of Birth:</strong> {{ selectedUser.dateOfBirth }}</p>
+          <p><strong>Role:</strong> {{ selectedUser.roles}}</p>
         </ng-container>
       </nz-modal>
     </div>
