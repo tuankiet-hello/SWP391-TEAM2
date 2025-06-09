@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -10,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -26,8 +26,8 @@ export class LoginComponent {
   isSubmitting = false;
 
   constructor(
+    private authService: AuthService,
     private fb: FormBuilder,
-    private http: HttpClient,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -44,44 +44,41 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.isSubmitting = true;
       const { UsernameOrEmail, password } = this.loginForm.value;
-
       const payload = { UsernameOrEmail, password };
 
-      this.http
-        .post('http://localhost:5169/api/auth/login', payload)
-        .subscribe({
-          next: (response: any) => {
-            console.log('Login thành công:', response);
-            localStorage.setItem('accessToken', response.token); //lưu token
-            this.router.navigate(['/home']);
-          },
-          error: (error) => {
-            this.isSubmitting = false;
+      this.authService.login(payload).subscribe({
+        next: (response: any) => {
+          console.log('Login thành công:', response);
+          localStorage.setItem('accessToken', response.token); // lưu token
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          this.isSubmitting = false;
 
-            // 👉 Reset các lỗi cũ
-            this.loginForm.get('UsernameOrEmail')?.setErrors(null);
-            this.loginForm.get('password')?.setErrors(null);
-            this.loginForm.setErrors(null);
+          // 👉 Reset các lỗi cũ
+          this.loginForm.get('UsernameOrEmail')?.setErrors(null);
+          this.loginForm.get('password')?.setErrors(null);
+          this.loginForm.setErrors(null);
 
-            const message = error.error;
+          const message = error.error;
 
-            if (typeof message === 'string') {
-              if (message.includes('username') || message.includes('email')) {
-                this.loginForm
-                  .get('UsernameOrEmail')
-                  ?.setErrors({ backend: '*' + message });
-              } else if (message.includes('password')) {
-                this.loginForm
-                  .get('password')
-                  ?.setErrors({ backend: '*' + message });
-              }
-            } else {
-              this.loginForm.setErrors({
-                backend: 'Đăng nhập thất bại. Vui lòng thử lại.',
-              });
+          if (typeof message === 'string') {
+            if (message.includes('username') || message.includes('email')) {
+              this.loginForm
+                .get('UsernameOrEmail')
+                ?.setErrors({ backend: '*' + message });
+            } else if (message.includes('password')) {
+              this.loginForm
+                .get('password')
+                ?.setErrors({ backend: '*' + message });
             }
-          },
-        });
+          } else {
+            this.loginForm.setErrors({
+              backend: 'Đăng nhập thất bại. Vui lòng thử lại.',
+            });
+          }
+        },
+      });
     }
   }
 }

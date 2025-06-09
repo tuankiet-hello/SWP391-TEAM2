@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,7 +15,9 @@ export class ForgotPasswordComponent implements OnInit {
   forgotForm!: FormGroup;
   isSubmitting = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.forgotForm = this.fb.group({
@@ -33,10 +36,9 @@ export class ForgotPasswordComponent implements OnInit {
     if (this.forgotForm.invalid) return;
 
     this.isSubmitting = true;
-
     const email = this.forgotForm.value.email;
 
-    this.http.post('https://localhost:7132/api/Auth/forgot-password', { email }).subscribe({
+    this.authService.forgotPassword(email).subscribe({
       next: () => {
         alert('A reset link has been sent to your email.');
         this.forgotForm.reset();

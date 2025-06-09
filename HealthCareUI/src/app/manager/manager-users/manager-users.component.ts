@@ -8,7 +8,7 @@ import { HeaderComponent } from '../header/header.component';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { AccountDetailDTO, AccountTableDTO, UserService } from './services/user.service';
+import { AccountDetailDTO, AccountTableDTO, UserService } from '../../../services/manager-user.service';
 import { UserViewComponent } from './user-view/user-view.component';
 
 @Component({

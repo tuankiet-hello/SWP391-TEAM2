@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-registration',
@@ -26,8 +27,8 @@ export class RegistrationComponent {
     '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
   regexusername = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$';
   constructor(
+    private authService: AuthService,
     private fb: FormBuilder,
-    private http: HttpClient,
     private router: Router
   ) {
     this.registrationForm = this.fb.group(
@@ -69,12 +70,12 @@ export class RegistrationComponent {
   toggleConfirmPasswordVisibility() {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
+  // component.ts
   onSubmit(): void {
     if (this.registrationForm.valid) {
       this.isSubmitting = true;
       const formData = this.registrationForm.value;
 
-      // Tạo payload theo format API yêu cầu
       const payload = {
         email: formData.email,
         userName: formData.username,
@@ -82,37 +83,31 @@ export class RegistrationComponent {
         confirmPassword: formData.confirmPassword,
       };
 
-      // Gọi API đăng ký
-      this.http
-        .post('http://localhost:5169/api/auth/register', payload)
-        .subscribe({
-          next: (response: any) => {
-            // Chuyển đến trang xác nhận email với email đã đăng ký
-            this.router.navigate(['/confirm-email'], {
-              queryParams: {
-                email: formData.email,
-                status: 'registration',
-              },
-            });
-          },
-          error: (error) => {
-            console.error('Registration error:', error);
-            if (error.error && typeof error.error === 'object') {
-              // Xử lý validation errors từ server
-              if (error.error.errors) {
-                const errorMessages = Object.values(error.error.errors).flat();
-                alert(errorMessages.join('\n'));
-              } else if (error.error.message) {
-                alert(error.error.message);
-              }
-            } else {
-              alert('Đăng ký thất bại. Vui lòng thử lại.');
+      this.authService.register(payload).subscribe({
+        next: (response: any) => {
+          this.router.navigate(['/confirm-email'], {
+            queryParams: {
+              email: formData.email,
+              status: 'registration',
+            },
+          });
+        },
+        error: (error) => {
+          console.error('Registration error:', error);
+          if (error.error && typeof error.error === 'object') {
+            if (error.error.errors) {
+              const errorMessages = Object.values(error.error.errors).flat();
+              alert(errorMessages.join('\n'));
+            } else if (error.error.message) {
+              alert(error.error.message);
             }
-            this.isSubmitting = false;
-          },
-        });
+          } else {
+            alert('Đăng ký thất bại. Vui lòng thử lại.');
+          }
+          this.isSubmitting = false;
+        },
+      });
     } else {
-      // Đánh dấu tất cả các trường là đã touched để hiển thị validation messages
       Object.keys(this.registrationForm.controls).forEach((key) => {
         const control = this.registrationForm.get(key);
         if (control) {
@@ -121,4 +116,5 @@ export class RegistrationComponent {
       });
     }
   }
+
 }

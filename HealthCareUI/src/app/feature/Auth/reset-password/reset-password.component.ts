@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -21,9 +22,9 @@ export class ResetPasswordComponent implements OnInit {
   errorMessage = '';
 
   constructor(
+    private authService: AuthService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private http: HttpClient,
     private router: Router
   ) {
     this.resetForm = this.fb.group(
@@ -47,7 +48,7 @@ export class ResetPasswordComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.token = params['token'] || '';
       this.email = params['email'] || '';
-      
+
       if (!this.token || !this.email) {
         this.errorMessage = 'Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn';
         this.resetForm.disable();
@@ -62,10 +63,9 @@ export class ResetPasswordComponent implements OnInit {
     const cpwd = form.get('confirmPassword')?.value;
     return pwd === cpwd ? null : { mismatch: true };
   }
-
   onSubmit() {
     if (this.isLoading) return;
-    
+
     this.submitted = true;
     this.errorMessage = '';
     this.message = '';
@@ -103,60 +103,58 @@ export class ResetPasswordComponent implements OnInit {
       passwordLength: payload.newPassword.length
     });
 
-    this.http
-      .post('https://localhost:7132/api/Auth/reset-password', payload)
-      .subscribe({
-        next: (response: any) => {
-          console.log('Success:', response);
-          this.message = 'Đổi mật khẩu thành công! Đang chuyển hướng về trang đăng nhập...';
-          this.resetForm.reset();
-          this.resetForm.disable();
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 5000);
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Chi tiết lỗi:', {
-            status: error.status,
-            statusText: error.statusText,
-            error: error.error,
-            message: error.message
-          });
+    this.authService.resetPassword(payload).subscribe({
+      next: (response: any) => {
+        console.log('Success:', response);
+        this.message = 'Đổi mật khẩu thành công! Đang chuyển hướng về trang đăng nhập...';
+        this.resetForm.reset();
+        this.resetForm.disable();
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 5000);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Chi tiết lỗi:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message
+        });
 
-          if (error.status === 400) {
-            if (error.error?.message) {
-              this.errorMessage = error.error.message;
-            } else if (error.error?.errors) {
-              const errors = error.error.errors;
-              console.log('Validation errors:', errors);
-              
-              if (errors.NewPassword) {
-                this.errorMessage = errors.NewPassword[0];
-              } else if (errors.ConfirmPassword) {
-                this.errorMessage = errors.ConfirmPassword[0];
-              } else if (errors.Token) {
-                this.errorMessage = 'Token không hợp lệ hoặc đã hết hạn';
-              } else if (errors.Email) {
-                this.errorMessage = 'Email không hợp lệ';
-              } else {
-                // Log tất cả các lỗi để debug
-                const errorKeys = Object.keys(errors);
-                console.log('Các trường bị lỗi:', errorKeys);
-                this.errorMessage = 'Vui lòng kiểm tra lại thông tin và thử lại';
-              }
+        if (error.status === 400) {
+          if (error.error?.message) {
+            this.errorMessage = error.error.message;
+          } else if (error.error?.errors) {
+            const errors = error.error.errors;
+            console.log('Validation errors:', errors);
+
+            if (errors.NewPassword) {
+              this.errorMessage = errors.NewPassword[0];
+            } else if (errors.ConfirmPassword) {
+              this.errorMessage = errors.ConfirmPassword[0];
+            } else if (errors.Token) {
+              this.errorMessage = 'Token không hợp lệ hoặc đã hết hạn';
+            } else if (errors.Email) {
+              this.errorMessage = 'Email không hợp lệ';
             } else {
-              this.errorMessage = 'Đổi mật khẩu thất bại. Vui lòng thử lại sau.';
+              // Log tất cả các lỗi để debug
+              const errorKeys = Object.keys(errors);
+              console.log('Các trường bị lỗi:', errorKeys);
+              this.errorMessage = 'Vui lòng kiểm tra lại thông tin và thử lại';
             }
-          } else if (error.status === 404) {
-            this.errorMessage = 'Không tìm thấy tài khoản với email này';
           } else {
-            this.errorMessage = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
+            this.errorMessage = 'Đổi mật khẩu thất bại. Vui lòng thử lại sau.';
           }
-        },
-        complete: () => {
-          this.isLoading = false;
+        } else if (error.status === 404) {
+          this.errorMessage = 'Không tìm thấy tài khoản với email này';
+        } else {
+          this.errorMessage = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
         }
-      });
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
   // Helper methods for template
