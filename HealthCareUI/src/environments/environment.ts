@@ -1,5 +1,7 @@
-export const environment = {
+import { environment } from "../app/app.config";
+
+export const environments = {
   production: false,
-  apiAuthUrl: 'http://localhost:5000/api/auth',
-  apiAccountsUrl: 'http://localhost:5000/api/accounts'
+  apiAuthUrl: environment + '/api/auth',
+  apiAccountsUrl: environment + '/api/accounts'
 };
