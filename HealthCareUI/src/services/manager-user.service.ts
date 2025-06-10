@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environments } from '../environments/environment';
 
 export interface AccountTableDTO {
   id: string;
@@ -23,7 +24,7 @@ export interface AccountDetailDTO {
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private apiUrl = 'http://localhost:5169/api/accounts';
+  private apiUrl = environments.apiAccountsUrl;
 
   constructor(private http: HttpClient) {}
 

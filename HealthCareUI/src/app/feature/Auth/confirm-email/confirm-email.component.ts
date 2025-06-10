@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-confirm-email',
@@ -21,6 +22,7 @@ export class ConfirmEmailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private authService: AuthService,
     private http: HttpClient,
     private router: Router
   ) {}
@@ -58,28 +60,22 @@ export class ConfirmEmailComponent implements OnInit {
     this.status = 'pending';
     console.log('Sending confirmation request with payload:', this.payload);
 
-    // Gửi request với payload nguyên bản
-    this.http
-      .get('http://localhost:5169/api/Auth/confirm-email', {
-        params: this.payload,
-      })
-      .subscribe({
-        next: (response: any) => {
-          console.log('Success:', response);
-          this.status = 'success';
-          this.message = response.message || 'Xác nhận email thành công!';
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 5000);
-        },
-        error: (error) => {
-          console.error('Error:', error);
-          this.status = 'error';
-          this.message =
-            error.error?.message ||
-            'Xác nhận email thất bại. Vui lòng thử lại.';
-        },
-      });
+    this.authService.confirmEmail(this.payload).subscribe({
+      next: (response: any) => {
+        console.log('Success:', response);
+        this.status = 'success';
+        this.message = response.message || 'Xác nhận email thành công!';
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 5000);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.status = 'error';
+        this.message =
+          error.error?.message || 'Xác nhận email thất bại. Vui lòng thử lại.';
+      },
+    });
   }
 
   resendConfirmationEmail() {
@@ -88,22 +84,16 @@ export class ConfirmEmailComponent implements OnInit {
       return;
     }
 
-    this.http
-      .post('https://localhost:5169/api/Auth/resend-confirm-email', {
-        email: this.email,
-      })
-      .subscribe({
-        next: (response: any) => {
-          alert(
-            'Đã gửi lại email xác nhận. Vui lòng kiểm tra hộp thư của bạn.'
-          );
-        },
-        error: (error) => {
-          alert(
-            error.error?.message ||
-              'Không thể gửi lại email xác nhận. Vui lòng thử lại sau.'
-          );
-        },
-      });
+    this.authService.resendConfirmationEmail(this.email).subscribe({
+      next: (response: any) => {
+        alert('Đã gửi lại email xác nhận. Vui lòng kiểm tra hộp thư của bạn.');
+      },
+      error: (error) => {
+        alert(
+          error.error?.message ||
+            'Không thể gửi lại email xác nhận. Vui lòng thử lại sau.'
+        );
+      },
+    });
   }
 }
