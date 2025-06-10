@@ -19,13 +19,13 @@ namespace HealthCareAPI.DTOs
         [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "Họ là bắt buộc")]
-        public string FirstName { get; set; }
+        // [Required(ErrorMessage = "Họ là bắt buộc")]
+        // public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Tên là bắt buộc")]
-        public string LastName { get; set; }
+        // [Required(ErrorMessage = "Tên là bắt buộc")]
+        // public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Ngày sinh là bắt buộc")]
-        public DateOnly DateOfBirth { get; set; }
+        // [Required(ErrorMessage = "Ngày sinh là bắt buộc")]
+        // public DateOnly DateOfBirth { get; set; }
     }
 }

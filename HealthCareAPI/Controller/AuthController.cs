@@ -190,9 +190,6 @@ namespace HealthCareAPI.Controller
             {
                 UserName = dto.UserName,
                 Email = dto.Email,
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                DateOfBirth = dto.DateOfBirth,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -250,7 +247,7 @@ namespace HealthCareAPI.Controller
             if (user == null)
                 return BadRequest(new { message = "Người dùng không tồn tại." });
 
-             //var decodedToken =System.Net.WebUtility.UrlDecode(token);
+            //  var decodedToken =System.Net.WebUtility.UrlDecode(token);
              //không cần decode nữa vì ConfirmEmailAsync tự decode r 
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
