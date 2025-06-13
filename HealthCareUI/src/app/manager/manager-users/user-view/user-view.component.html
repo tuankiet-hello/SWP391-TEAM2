@@ -3,13 +3,13 @@
     <span class="close-button" (click)="onClose()">&times;</span>
     <div *ngIf="user">
       <div class="user-avatar">
-        <span>{{ user.firstName[0] }}{{ user.lastName[0] }}</span>
+        <span>{{ user.firstName ? user.firstName[0] : '' }}{{ user.lastName ? user.lastName[0] : '' }}</span>
       </div>
       <h3 class="modal-title">User Details</h3>
       <div class="user-details-list">
         <div class="detail-row">
           <span class="detail-label">Full Name:</span>
-          <span class="detail-value">{{ user.firstName }} {{ user.lastName }}</span>
+          <span class="detail-value">{{ (user.firstName ? user.firstName : '') + (user.lastName ? ' ' + user.lastName : '') }}</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Email:</span>
@@ -36,7 +36,7 @@
           </span>
         </div>
         <div class="detail-row">
-          <span class="detail-label">Account Status:</span>
+          <span class="detail-label">Status:</span>
           <span class="detail-value">
             <span [ngClass]="user.accountStatus === 'Active' ? 'status-active' : 'status-inactive'">
               {{ user.accountStatus }}
