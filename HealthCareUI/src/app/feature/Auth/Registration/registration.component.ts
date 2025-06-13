@@ -43,7 +43,7 @@ export class RegistrationComponent {
           [
             Validators.required,
             Validators.minLength(6),
-            Validators.pattern(this.regexpassword),
+            Validators.pattern( /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/ ),
           ],
         ],
         confirmPassword: ['', Validators.required],

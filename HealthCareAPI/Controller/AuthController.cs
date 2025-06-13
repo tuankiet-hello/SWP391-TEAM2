@@ -190,9 +190,6 @@ namespace HealthCareAPI.Controller
             {
                 UserName = dto.UserName,
                 Email = dto.Email,
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                DateOfBirth = dto.DateOfBirth,
                 CreatedAt = DateTime.UtcNow
             };
 
