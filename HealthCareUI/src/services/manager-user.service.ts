@@ -24,7 +24,7 @@ export interface AccountDetailDTO {
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private apiUrl = environment.apiUrl + '/api/Accounts';
+  private apiUrl = environment.apiUrl + '/api/accounts';
 
   constructor(private http: HttpClient) {}
 
