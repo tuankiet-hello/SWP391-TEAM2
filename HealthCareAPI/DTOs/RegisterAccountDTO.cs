@@ -18,6 +18,7 @@ namespace HealthCareAPI.DTOs
         [Required(ErrorMessage = "Xác nhận mật khẩu là bắt buộc")]
         [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp")]
         public string ConfirmPassword { get; set; }
+<<<<<<< HEAD
 
         // [Required(ErrorMessage = "Họ là bắt buộc")]
         // public string FirstName { get; set; }
@@ -27,5 +28,7 @@ namespace HealthCareAPI.DTOs
 
         // [Required(ErrorMessage = "Ngày sinh là bắt buộc")]
         // public DateOnly DateOfBirth { get; set; }
+=======
+>>>>>>> c14af6ea200a95fbc1c15719349a3f4bb7972a40
     }
 }

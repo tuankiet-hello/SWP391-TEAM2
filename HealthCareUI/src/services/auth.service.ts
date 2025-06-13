@@ -5,7 +5,7 @@ import { environment } from "../app/app.config";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = environment + '/api/auth';
+  private apiUrl = environment.apiUrl + '/api/Auth';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+    return this.http.post(`${this.apiUrl}/forgot-password`, {email});
   }
 
   login(payload: { UsernameOrEmail: string; password: string }): Observable<any> {
