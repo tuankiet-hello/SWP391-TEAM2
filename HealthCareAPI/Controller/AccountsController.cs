@@ -75,6 +75,55 @@ namespace HealthCareAPI.Controller
             return Ok(dto);
         }
 
+
+        [HttpPost("create-user")]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO dto)
+        {
+            // 1. Validate dữ liệu đầu vào
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                                       .SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage);
+                return BadRequest(new { message = "Dữ liệu không hợp lệ", errors });
+            }
+
+            // 2. Kiểm tra username đã tồn tại chưa
+            var existingUser = await _userManager.FindByNameAsync(dto.UserName);
+            if (existingUser != null)
+            {
+                return BadRequest(new { message = "Username đã tồn tại" });
+            }
+
+            // 3. Kiểm tra email đã tồn tại chưa
+            var existingEmail = await _userManager.FindByEmailAsync(dto.Email);
+            if (existingEmail != null)
+            {
+                return BadRequest(new { message = "Email đã tồn tại" });
+            }
+
+            // 4. Tạo user mới (để password hash do UserManager xử lý)
+            var user = new Account
+            {
+                UserName = dto.UserName,
+                Email = dto.Email,
+                EmailConfirmed = true,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            var result = await _userManager.CreateAsync(user, dto.Password);
+
+            if (result.Succeeded)
+            {
+
+                await _userManager.AddToRoleAsync(user, dto.Role);
+                return Ok(new { message = "Create User Successfully!" });
+            }
+
+            // Trả lỗi nếu tạo user thất bại
+            return BadRequest(result.Errors);
+        }
+
     }
 }
 

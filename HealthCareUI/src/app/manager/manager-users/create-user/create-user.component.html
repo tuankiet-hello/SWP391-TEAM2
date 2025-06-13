@@ -1,160 +1,113 @@
-<div class="container">
-  <div class="login-wrapper">
-    <div class="content">
-      <!-- <div class="login-left">
-        <img
-          src="https://img.freepik.com/premium-vector/patients-doctor-advertising-health-insurance_179970-165.jpg"
-          alt="Booking illustration"
-        />
-      </div> -->
+<!-- Modal popup -->
+<div class="modal-backdrop">
+  <div class="modal-form" *ngIf="createUserForm">
+    <h2 class="title">CREATE USER</h2>
 
-      <div class="login-right">
-        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-          <div class="title">New User</div>
-
-          <!-- EMAIL -->
-          <label for="email">EMAIL *</label>
-          <input
-            type="email"
-            id="email"
-            formControlName="email"
-            placeholder="name@example.com"
-          />
-          <div class="error">
-            <span
-              *ngIf="registrationForm.get('email')?.touched && registrationForm.get('email')?.errors?.['required']"
-            >
-              *Email is required
-            </span>
-            <span
-              *ngIf="registrationForm.get('email')?.touched && registrationForm.get('email')?.errors?.['email']"
-            >
-              *Invalid email format
-            </span>
-          </div>
-
-          <!-- USERNAME -->
-          <label for="username">USERNAME *</label>
-          <input
-            type="text"
-            id="username"
-            formControlName="username"
-            placeholder="Enter username"
-          />
-          <div class="error">
-            <span
-              *ngIf="registrationForm.get('username')?.touched && registrationForm.get('username')?.errors?.['required']"
-            >
-              *Username is required
-            </span>
-            <span
-              *ngIf="
-          registrationForm.get('username')?.touched &&
-          registrationForm.get('username')?.errors?.['pattern'] &&
-          registrationForm.get('username')?.value
-          "
-            >
-              *Username must contain both letters and numbers
-            </span>
-          </div>
-
-          <!-- PASSWORD -->
-          <label for="password">PASSWORD *</label>
-          <div class="pass_field">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              id="password"
-              placeholder="Enter password"
-              formControlName="password"
-              class="input"
-            />
-            <button
-              type="button"
-              (click)="togglePasswordVisibility()"
-              class="toggle-password"
-            >
-              <fa-icon [icon]="showPassword ? faEyeSlash : faEye"></fa-icon>
-            </button>
-          </div>
-          <div class="error">
-            <span
-              *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.['required']"
-            >
-              *Password is required
-            </span>
-            <!-- <span
-              *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.['minlength']"
-            >
-              *Password must be at least 6 characters
-            </span> -->
-            <span
-              *ngIf="
-                    registrationForm.get('password')?.touched &&
-                    registrationForm.get('password')?.errors?.['pattern'] &&
-                    registrationForm.get('password')?.value
-                  "
-            >
-              *Password must be at least 6 characters long, start with an
-              uppercase letter, and include at least one special character.
-            </span>
-          </div>
-
-          <!-- CONFIRM PASSWORD -->
-          <label for="confirmPassword">CONFIRM PASSWORD *</label>
-          <div class="pass_field">
-            <input
-              [type]="showConfirmPassword ? 'text' : 'password'"
-              id="confirmPassword"
-              formControlName="confirmPassword"
-              placeholder="Enter confirm password"
-            />
-            <button
-              type="button"
-              (click)="toggleConfirmPasswordVisibility()"
-              class="toggle-password"
-            >
-              <fa-icon
-                [icon]="showConfirmPassword ? faEyeSlash : faEye"
-              ></fa-icon>
-            </button>
-          </div>
-          <div class="error">
-            <span
-              *ngIf="registrationForm.get('confirmPassword')?.touched && registrationForm.get('confirmPassword')?.errors?.['required']"
-            >
-              *Confirm password is requireds
-            </span>
-            <span
-              *ngIf="registrationForm.get('confirmPassword')?.touched && registrationForm.errors?.['passwordMismatch']"
-            >
-              *Passwords do not match
-            </span>
-          </div>
-
-          <!-- <label for="dateOfBirth">DATE OF BIRTH *</label>
-          <input
-            type="date"
-            id="dateOfBirth"
-            formControlName="dateOfBirth"
-            required
-          />
-          <div
-            class="error"
-            *ngIf="registrationForm.get('dateOfBirth')?.touched && registrationForm.get('dateOfBirth')?.errors?.['required']"
-          >
-            Date of birth is required
-          </div> -->
-
-          <div class="button-container">
-            <button
-              type="submit"
-              [disabled]="registrationForm.invalid || isSubmitting"
-            >
-              {{ isSubmitting ? "Signing up..." : "Sign Up" }}
-            </button>
-          </div>
-        </form>
+    <form [formGroup]="createUserForm" (ngSubmit)="submitForm()">
+      <label>Email *</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="name@example.com"
+      />
+      <div class="error">
+        <span
+          *ngIf="createUserForm.get('email')?.touched && createUserForm.get('email')?.errors?.['required']"
+        >
+          *Email is required
+        </span>
+        <span
+          *ngIf="createUserForm.get('email')?.touched && createUserForm.get('email')?.errors?.['email']"
+        >
+          *Invalid email format
+        </span>
       </div>
-    </div>
+
+      <label>Username *</label>
+      <input
+        type="text"
+        formControlName="username"
+        placeholder="Enter username"
+      />
+      <div class="error">
+        <span
+          *ngIf="createUserForm.get('username')?.touched && createUserForm.get('username')?.errors?.['required']"
+        >
+          *Username is required
+        </span>
+        <span
+          *ngIf="
+      createUserForm.get('username')?.touched &&
+      createUserForm.get('username')?.errors?.['pattern'] &&
+      createUserForm.get('username')?.value
+    "
+        >
+          *Username must contain both letters and numbers
+        </span>
+      </div>
+
+      <label>Password *</label>
+      <div class="password-field">
+        <input
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="Enter password"
+        />
+        <span class="toggle" (click)="hidePassword = !hidePassword">👁️</span>
+      </div>
+      <div class="error">
+        <span
+          *ngIf="createUserForm.get('password')?.touched && createUserForm.get('password')?.errors?.['required']"
+        >
+          *Password is required
+        </span>
+        <span
+          *ngIf="
+                createUserForm.get('password')?.touched &&
+                createUserForm.get('password')?.errors?.['pattern'] &&
+                createUserForm.get('password')?.value
+              "
+        >
+          *Password must be at least 6 characters long and include at least
+          letter and uppercase letter, one special character.
+        </span>
+      </div>
+
+      <label>Confirm Password *</label>
+      <div class="password-field">
+        <input
+          [type]="hideConfirm ? 'password' : 'text'"
+          formControlName="confirmPassword"
+          placeholder="Enter confirm password"
+        />
+        <span class="toggle" (click)="hideConfirm = !hideConfirm">👁️</span>
+      </div>
+      <div class="error">
+        <span
+          *ngIf="createUserForm.get('confirmPassword')?.touched && createUserForm.errors?.['passwordMismatch']"
+        >
+          *Passwords do not match
+        </span>
+      </div>
+
+      <label>Role *</label>
+      <select formControlName="role">
+        <option value="" disabled selected>Select role</option>
+        <option value="admin">Admin</option>
+        <option value="Staff">Staff</option>
+        <option value="Manager">Manager</option>
+        <option value="Consultant">Consultant</option>
+      </select>
+
+      <button
+        class="btn-submit"
+        type="submit"
+        [disabled]="createUserForm.invalid"
+      >
+        Create
+      </button>
+    </form>
+
+    <button class="btn-cancel" (click)="closeModal()">Cancel</button>
   </div>
 </div>

@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace HealthCareAPI.DTOs
 {
-    public class RegisterAccountDTO
+    public class CreateUserDTO
     {
-        [Required(ErrorMessage = "Tên đăng nhập là bắt buộc")]
+         [Required(ErrorMessage = "Tên đăng nhập là bắt buộc")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Email là bắt buộc")]
@@ -18,5 +18,8 @@ namespace HealthCareAPI.DTOs
         [Required(ErrorMessage = "Xác nhận mật khẩu là bắt buộc")]
         [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp")]
         public string ConfirmPassword { get; set; }
+
+        public string Role {get; set;}
+        public bool EmailConfirmed { get; set; }
     }
 }

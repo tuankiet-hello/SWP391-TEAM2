@@ -1,37 +1,26 @@
-import { Router } from '@angular/router';
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from '../../../../services/auth.service';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { UserService } from '../../../../services/manager-user.service';
 @Component({
-  selector: 'app-registration',
+  selector: 'app-create-user',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, FontAwesomeModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css'],
 })
-export class RegistrationComponent {
-  faEye = faEye;
-  faEyeSlash = faEyeSlash;
-  showConfirmPassword = false;
-  showPassword = false;
-  registrationForm: FormGroup;
-  isSubmitting = false;
-  regexpassword =
-    '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
+export class CreateUserComponent implements OnInit {
+  @Output() close = new EventEmitter<void>();
+  // showModal = false;
+  hidePassword = true;
+  hideConfirm = true;
+  createUserForm!: FormGroup;
   regexusername = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$';
-  constructor(
-    private authService: AuthService,
-    private fb: FormBuilder,
-    private router: Router
-  ) {
-    this.registrationForm = this.fb.group(
+  constructor(private fb: FormBuilder, private userService: UserService) {}
+
+  ngOnInit(): void {
+    this.createUserForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
         username: [
@@ -43,57 +32,48 @@ export class RegistrationComponent {
           [
             Validators.required,
             Validators.minLength(6),
-            Validators.pattern(this.regexpassword),
+            Validators.pattern(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/
+            ),
           ],
         ],
         confirmPassword: ['', Validators.required],
+        role: ['', Validators.required],
       },
       { validators: this.passwordMatchValidator }
     );
+    // console.log('CreateUserComponent rendered');
+  }
+  passwordMatchValidator(group: FormGroup) {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
-  passwordMatchValidator(form: FormGroup) {
-    const password = form.get('password');
-    const confirmPassword = form.get('confirmPassword');
-    if (
-      password &&
-      confirmPassword &&
-      password.value !== confirmPassword.value
-    ) {
-      return { passwordMismatch: true };
-    }
-    return null;
+  closeModal() {
+    this.close.emit();
   }
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
-  }
-  toggleConfirmPasswordVisibility() {
-    this.showConfirmPassword = !this.showConfirmPassword;
-  }
-  // component.ts
-  onSubmit(): void {
-    if (this.registrationForm.valid) {
-      this.isSubmitting = true;
-      const formData = this.registrationForm.value;
 
+  submitForm() {
+    console.log('GỌI submitForm()');
+    // console.log('Valid:', this.createUserForm.valid);
+    // console.log('Errors:', this.createUserForm.errors);
+
+    if (this.createUserForm.valid) {
+      const formData = { ...this.createUserForm.value };
       const payload = {
         email: formData.email,
         userName: formData.username,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
+        role: formData.role,
       };
-
-      this.authService.register(payload).subscribe({
+      this.userService.createUser(payload).subscribe({
         next: (response: any) => {
-          this.router.navigate(['/confirm-email'], {
-            queryParams: {
-              email: formData.email,
-              status: 'registration',
-            },
-          });
+          console.log('Thành Công');
         },
         error: (error) => {
-          console.error('Registration error:', error);
+          console.error('CreateUser error:', error);
           if (error.error && typeof error.error === 'object') {
             if (error.error.errors) {
               const errorMessages = Object.values(error.error.errors).flat();
@@ -102,18 +82,14 @@ export class RegistrationComponent {
               alert(error.error.message);
             }
           } else {
-            alert('Đăng ký thất bại. Vui lòng thử lại.');
+            alert('Thêm thất bại. Vui lòng thử lại.');
           }
-          this.isSubmitting = false;
+          // this.isSubmitting = false;
         },
       });
+      this.closeModal();
     } else {
-      Object.keys(this.registrationForm.controls).forEach((key) => {
-        const control = this.registrationForm.get(key);
-        if (control) {
-          control.markAsTouched();
-        }
-      });
+      console.warn('Form KHÔNG hợp lệ', this.createUserForm);
     }
   }
 }
