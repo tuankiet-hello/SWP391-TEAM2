@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HealthCareAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Test : Migration
+    public partial class Again : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

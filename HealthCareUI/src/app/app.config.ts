@@ -17,10 +17,10 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(BrowserAnimationsModule),
     provideAnimations(),
     { provide: NZ_I18N, useValue: en_US }, // đổi ngôn ngữ ở đây
-    provideNzConfig({}) // nếu muốn cấu hình thêm cho toàn bộ ng-zorro
-  ]
+    provideNzConfig({}), // nếu muốn cấu hình thêm cho toàn bộ ng-zorro
+  ],
 };
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5000'
+  apiUrl: 'http://localhost:5000',
 };

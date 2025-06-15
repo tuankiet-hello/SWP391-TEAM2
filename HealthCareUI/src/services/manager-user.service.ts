@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from "../app/app.config";
+import { environment } from '../app/app.config';
 
 export interface AccountTableDTO {
   id: string;
@@ -34,5 +34,14 @@ export class UserService {
 
   getUserById(id: string): Observable<AccountDetailDTO> {
     return this.http.get<AccountDetailDTO>(`${this.apiUrl}/${id}`);
+  }
+  createUser(payload: {
+    email: string;
+    userName: string;
+    password: string;
+    confirmPassword: string;
+    role: string;
+  }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/create-user`, payload);
   }
 }

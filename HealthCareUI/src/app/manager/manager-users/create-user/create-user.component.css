@@ -1,0 +1,95 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 95%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: black;
+  }
+
+  label {
+    margin-top: 0.75rem;
+    font-weight: 500;
+    color: black;
+  }
+
+  input,
+  select {
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    background-color: white;
+  }
+
+  .password-field {
+    position: relative;
+
+    input {
+      padding-right: 2rem;
+    }
+
+    .toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+
+  .btn-submit {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .btn-submit:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+
+  .btn-cancel {
+    margin-top: 0.75rem;
+    background: none;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    text-align: center;
+  }
+}
+.error {
+  color: #dc3545;
+  font-size: 12px;
+  min-height: 16px; /* Luôn giữ chiều cao để không dịch layout */
+  text-align: left;
+  padding-left: 4px;
+  line-height: 16px;
+}

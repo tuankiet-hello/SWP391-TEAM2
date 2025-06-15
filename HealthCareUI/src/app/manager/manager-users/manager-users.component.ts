@@ -8,7 +8,11 @@ import { HeaderComponent } from '../header/header.component';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { AccountDetailDTO, AccountTableDTO, UserService } from '../../../services/manager-user.service';
+import {
+  AccountDetailDTO,
+  AccountTableDTO,
+  UserService,
+} from '../../../services/manager-user.service';
 import { UserViewComponent } from './user-view/user-view.component';
 
 @Component({
@@ -22,12 +26,12 @@ import { UserViewComponent } from './user-view/user-view.component';
     NzTableModule,
     NzInputModule,
     NzModalModule,
-    UserViewComponent
+    UserViewComponent,
   ],
   templateUrl: './manager-users.component.html',
-  styleUrl: './manager-users.component.css'
+  styleUrl: './manager-users.component.css',
 })
-export class ManagerUsersComponent implements OnInit  {
+export class ManagerUsersComponent implements OnInit {
   emptyText = 'No users found';
 
   users: AccountTableDTO[] = [];
@@ -42,16 +46,14 @@ export class ManagerUsersComponent implements OnInit  {
   totalUsers = 0;
   totalPages = 0;
 
-  constructor(
-    private userService: UserService
-  ) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
   loadUsers(): void {
-    this.userService.getAllUsers().subscribe(data => {
+    this.userService.getAllUsers().subscribe((data) => {
       this.users = data;
       this.totalUsers = this.users.length;
       this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
@@ -86,7 +88,7 @@ export class ManagerUsersComponent implements OnInit  {
   }
 
   viewUserDetail(id: string): void {
-    this.userService.getUserById(id).subscribe(user => {
+    this.userService.getUserById(id).subscribe((user) => {
       this.selectedUser = user;
       this.isModalVisible = true;
     });

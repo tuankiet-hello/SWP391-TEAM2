@@ -1,5 +1,11 @@
 <div class="container">
-  <button class="new-btn">+ New User</button>
+  <!-- Nút mở modal -->
+  <button class="new-btn" (click)="openModal()">+ New User</button>
+
+  <!-- Render modal nếu showModal === true -->
+  <app-create-user *ngIf="showModal" (close)="closeModal()"></app-create-user>
+  <!-- <p *ngIf="showModal">Modal should show!</p> -->
+
   <ul class="menu">
     <li class="active"><i class="fas fa-users"></i> Users</li>
     <li><i class="fas fa-user-shield"></i> Roles</li>

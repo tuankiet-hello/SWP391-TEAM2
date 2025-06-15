@@ -94,8 +94,8 @@
                     registrationForm.get('password')?.value
                   "
             >
-              *Password must be at least 6 characters long
-               and include at least  letter  and uppercase letter, one special character.
+              *Password must be at least 6 characters long and include at least
+              letter and uppercase letter, one special character.
             </span>
           </div>
 
@@ -119,11 +119,11 @@
             </button>
           </div>
           <div class="error">
-            <span
+            <!-- <span
               *ngIf="registrationForm.get('confirmPassword')?.touched && registrationForm.get('confirmPassword')?.errors?.['required']"
             >
               *Confirm password is requireds
-            </span>
+            </span> -->
             <span
               *ngIf="registrationForm.get('confirmPassword')?.touched && registrationForm.errors?.['passwordMismatch']"
             >
