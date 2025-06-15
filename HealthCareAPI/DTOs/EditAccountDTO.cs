@@ -1,4 +1,5 @@
-public class AccountDetailDTO
+public class EditAccountDTO
+
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -9,5 +10,4 @@ public class AccountDetailDTO
     public bool EmailConfirmed { get; set; }
     public string AccountStatus { get; set; } // Hoặc dùng enum nếu có
 
-    
 }
