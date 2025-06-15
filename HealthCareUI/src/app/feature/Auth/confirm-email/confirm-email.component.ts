@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../services/auth.service';
 
@@ -23,7 +22,6 @@ export class ConfirmEmailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
-    private http: HttpClient,
     private router: Router
   ) {}
 

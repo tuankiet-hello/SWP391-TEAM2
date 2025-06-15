@@ -56,7 +56,7 @@ namespace HealthCareAPI.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AccountDetailDTO>> GetUserById( string id)
+        public async Task<ActionResult<AccountDetailDTO>> GetUserById(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
@@ -122,6 +122,49 @@ namespace HealthCareAPI.Controller
 
             // Trả lỗi nếu tạo user thất bại
             return BadRequest(result.Errors);
+        }
+
+        // [Authorize(Role = "Admin")]
+        [HttpPatch("{id}/ban")]
+        public async Task<IActionResult> BanUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            // Bắt buộc set cả 2 thuộc tính
+            if (user.LockoutEnabled == true)
+            {
+                user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(100);
+                user.LockoutEnabled = false;
+            }else return BadRequest(new { message = "Tài khoản đã bị khóa" });
+            
+            
+            var result = await _userManager.UpdateAsync(user);
+            
+            return result.Succeeded 
+                ? Ok(new { message = "Đã khóa tài khoản thành công" })
+                : BadRequest(result.Errors);
+        }
+
+        // [Authorize(Role = "Admin")]
+        [HttpPatch("{id}/unban")]
+        public async Task<IActionResult> UnbanUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            // Reset cả 2 thuộc tính
+            if (user.LockoutEnabled == false)
+            {
+                user.LockoutEnabled = true;
+                user.LockoutEnd = null;
+            }else return BadRequest(new { message = "Tài khoản chưa bị khóa" });
+            
+            var result = await _userManager.UpdateAsync(user);
+            
+            return result.Succeeded 
+                ? Ok(new { message = "Đã mở khóa tài khoản" })
+                : BadRequest(result.Errors);
         }
 
     }

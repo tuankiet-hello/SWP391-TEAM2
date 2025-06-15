@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component} from '@angular/core';
 import { CreateUserComponent } from '../manager-users/create-user/create-user.component';
 import { CommonModule } from '@angular/common';
 

@@ -35,6 +35,7 @@ export class UserService {
   getUserById(id: string): Observable<AccountDetailDTO> {
     return this.http.get<AccountDetailDTO>(`${this.apiUrl}/${id}`);
   }
+
   createUser(payload: {
     email: string;
     userName: string;
@@ -43,5 +44,13 @@ export class UserService {
     role: string;
   }): Observable<any> {
     return this.http.post(`${this.apiUrl}/create-user`, payload);
+  }
+
+  banUser(id: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/ban`, {});
+  }
+
+  unbanUser(id: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/unban`, {});
   }
 }

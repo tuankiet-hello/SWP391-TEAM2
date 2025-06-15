@@ -5,13 +5,15 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
+  // standalone: true,
   imports: [RouterModule, FontAwesomeModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
   menuOpen = false;
-  constructor(library: FaIconLibrary) {
+  constructor(
+    library: FaIconLibrary) {
     library.addIcons(faSearch);
   }
   toggleMenu() { this.menuOpen = !this.menuOpen; }
@@ -63,4 +65,9 @@ export class HeaderComponent {
       blogs.scrollIntoView({ behavior: 'smooth' });
     }
   }
+
+  // logout() {
+  //   this.authService.logout();
+  //   this.router.navigate(['/login']);
+  // }
 }

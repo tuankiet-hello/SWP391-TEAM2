@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HeaderComponent } from '../header/header.component';
 
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule} from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import {
@@ -97,5 +96,35 @@ export class ManagerUsersComponent implements OnInit {
   handleModalCancel(): void {
     this.isModalVisible = false;
     this.selectedUser = undefined;
+  }
+
+  toggleBanUser(user: AccountTableDTO) { // <--- Sửa thành AccountTableDTO
+    if (user.accountStatus === 'Inactive') {
+      this.unbanUser(user.id);
+    } else {
+      this.banUser(user.id);
+    }
+  }
+
+  banUser(userId: string) { // <--- Sửa thành string
+    this.userService.banUser(userId).subscribe({
+      next: () => {
+        const user = this.users.find(u => u.id === userId);
+        if (user) user.accountStatus = 'Inactive';
+        this.updateDisplayedUsers(); // Cập nhật lại UI
+      },
+      error: (err) => console.error('Ban failed:', err)
+    });
+  }
+
+  unbanUser(userId: string) { // <--- Sửa thành string
+    this.userService.unbanUser(userId).subscribe({
+      next: () => {
+        const user = this.users.find(u => u.id === userId);
+        if (user) user.accountStatus = 'Active';
+        this.updateDisplayedUsers(); // Cập nhật lại UI
+      },
+      error: (err) => console.error('Unban failed:', err)
+    });
   }
 }

@@ -36,4 +36,12 @@ export class AuthService {
                           confirmPassword: string; }): Observable<any> {
     return this.http.post(`${this.apiUrl}/reset-password`, payload);
   }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('accessToken');
+  }
+
+  logout() {
+    return localStorage.removeItem('accessToken');
+  }
 }

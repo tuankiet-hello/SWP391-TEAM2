@@ -35,6 +35,9 @@
       <li>
         <div class="header-login">
           <button [routerLink]="['/login']">Login</button>
+          <!-- <button *ngIf="authService.isLoggedIn()" >Logout</button> -->
+<!-- *ngIf="!authService.isLoggedIn()"  -->
+          <!-- (click)="logout()" -->
         </div>
       </li>
     </ul>
