@@ -14,7 +14,6 @@ using HealthCareAPI.Entities; // <-- nơi chứa class Account
 
 // Nếu có dùng DTO như AccountDTO, AccountTableDTO,...
 using HealthCareAPI.DTOs;
-
 namespace HealthCareAPI.Controller
 {
 
@@ -56,7 +55,7 @@ namespace HealthCareAPI.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AccountDetailDTO>> GetUserById( string id)
+        public async Task<ActionResult<AccountDetailDTO>> GetUserById(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
@@ -68,10 +67,44 @@ namespace HealthCareAPI.Controller
                 Email = user.Email,
                 UserName = user.UserName,
                 DateOfBirth = user.DateOfBirth,
-                Roles = roles.ToList(),
+                Roles = roles.FirstOrDefault(),
                 EmailConfirmed = user.EmailConfirmed,
                 AccountStatus = user.LockoutEnd == null ? "Active" : "Inactive" // Tuỳ thuộc vào logic của bạn
             };
+            return Ok(dto);
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<EditAccountDTO>> EditUserByID(string id, [FromBody] EditAccountDTO dto)
+        {
+            //tìm user theo id
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+            //set lại các inf theo dto cập nhật từ body req
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.Email = dto.Email;
+            user.UserName = dto.UserName;
+            user.DateOfBirth = dto.DateOfBirth;
+            user.EmailConfirmed = dto.EmailConfirmed;
+
+            // Cập nhật trạng thái tài khoản
+            if (dto.AccountStatus == "Inactive")
+                user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(100);
+            else
+                user.LockoutEnd = null;
+
+            // Xử lý role: Xóa hết role cũ, gán role mới
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            if (currentRoles.Any())
+                await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            if (!string.IsNullOrEmpty(dto.Roles))
+                await _userManager.AddToRoleAsync(user, dto.Roles);
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
             return Ok(dto);
         }
 

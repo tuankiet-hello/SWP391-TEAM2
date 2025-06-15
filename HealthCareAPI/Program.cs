@@ -121,8 +121,8 @@ namespace HealthCareAPI
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HealthCare API V1");
-                    // c.RoutePrefix = "swagger";
-                    c.RoutePrefix = string.Empty;
+                     c.RoutePrefix = "swagger";
+                    //c.RoutePrefix = string.Empty;
                 });
             }
             app.UseHttpsRedirection();
