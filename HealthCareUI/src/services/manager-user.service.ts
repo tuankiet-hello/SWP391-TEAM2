@@ -17,7 +17,7 @@ export interface AccountDetailDTO {
   email: string;
   userName: string;
   dateOfBirth: string;
-  roles: string[];
+  roles: string;
   emailConfirmed: boolean;
   accountStatus: string;
 }

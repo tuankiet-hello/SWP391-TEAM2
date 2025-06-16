@@ -33,6 +33,7 @@ export class UserEditComponent implements OnInit {
   @Input() userId!: string;
   @Input() user!: AccountDetailDTO;
   @Output() close = new EventEmitter<void>();
+  @Output() updated = new EventEmitter<AccountDetailDTO>();
   regexusername = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$';
 
   fb = inject(FormBuilder);
@@ -90,7 +91,13 @@ export class UserEditComponent implements OnInit {
       roles: formData.roles,
     };
     this.userService.editUser(this.userId, payload).subscribe({
-      next: () => alert('User updated successfully'),
+      next: () => {
+        // Lấy lại thông tin user vừa update (nếu muốn chắc chắn)
+        this.userService.getUserById(this.userId).subscribe((updatedUser) => {
+          this.updated.emit(updatedUser); // emit user mới về cha
+          alert('User updated successfully');
+        });
+      },
       error: (err) => {
         alert('Update failed ');
         console.error('EditUser error:', err.error.errors);
