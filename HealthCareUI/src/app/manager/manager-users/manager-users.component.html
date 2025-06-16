@@ -26,11 +26,71 @@
           <thead>
             <tr>
               <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
-              <th><span class="taghead namehead" style="width: 200px;">Full Name</span></th>
-              <th><span class="taghead mailhaed" style="width: 250px;">Email</span></th>
-              <th><span class="taghead rolehead" style="width: 90px;">Role</span></th>
-              <th><span class="taghead verifiedhead" style="width: 130px;">Email Confirm</span></th>
-              <th><span class="taghead activehead" style="width: 90px;">Status</span></th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead namehead" style="width: 190px;">Full Name</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.fullName"
+                    [nzActive]="!!filter.fullNameSort"
+                    [nzDropdownMenu]="fullNameMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead mailhaed" style="width: 240px;">Email</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.email"
+                    [nzActive]="!!filter.emailSort"
+                    [nzDropdownMenu]="emailMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead rolehead" style="width: 90px;">Role</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.role"
+                    [nzActive]="!!filter.role"
+                    [nzDropdownMenu]="roleMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead verifiedhead" style="width: 130px;">Email Confirm</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.emailConfirmed"
+                    [nzActive]="!!filter.emailConfirmed"
+                    [nzDropdownMenu]="emailConfirmedMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead activehead" style="width: 70px;">Status</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.status"
+                    [nzActive]="!!filter.status"
+                    [nzDropdownMenu]="statusMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
               <th><span class="taghead operationhead" style="width: 150px;">Operations</span></th>
             </tr>
           </thead>
@@ -109,6 +169,50 @@
         </ng-container>
       </nz-modal>
     </div>
+
+    <!-- Dropdown filter menu  -->
+    <nz-dropdown-menu #fullNameMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setFullNameSort('')">None</li>
+        <li nz-menu-item (click)="setFullNameSort('az')">A → Z</li>
+        <li nz-menu-item (click)="setFullNameSort('za')">Z → A</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #emailMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setEmailSort('')">None</li>
+        <li nz-menu-item (click)="setEmailSort('az')">A → Z</li>
+        <li nz-menu-item (click)="setEmailSort('za')">Z → A</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #roleMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setRole('')">All</li>
+        <li nz-menu-item (click)="setRole('admin')">Admin</li>
+        <li nz-menu-item (click)="setRole('customer')">Customer</li>
+        <li nz-menu-item (click)="setRole('staff')">Staff</li>
+        <li nz-menu-item (click)="setRole('consultant')">Consultant</li>
+        <li nz-menu-item (click)="setRole('manager')">Manager</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #emailConfirmedMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setEmailConfirmed('')">All</li>
+        <li nz-menu-item (click)="setEmailConfirmed('true')">Confirmed</li>
+        <li nz-menu-item (click)="setEmailConfirmed('false')">Unconfirmed</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #statusMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setStatus('')">All</li>
+        <li nz-menu-item (click)="setStatus('Active')">Active</li>
+        <li nz-menu-item (click)="setStatus('Inactive')">Inactive</li>
+      </ul>
+    </nz-dropdown-menu>
 
   </div>
 </div>
