@@ -13,40 +13,85 @@
         <div class="search-wrapper">
           <i class="fas fa-search search-icon"></i>
           <!-- dùng nz-input -->
-          <input nz-input placeholder="Search by name, email, role..." class="search-box" />
+          <input
+            nz-input
+            placeholder="Search by name, email, role..."
+            class="search-box"
+          />
         </div>
       </div>
 
       <div class="user-list-scrollable">
         <!-- dùng nz-table -->
-        <nz-table [nzData]="displayedUsers"
-        [nzFrontPagination]="false"
-        [nzShowPagination]="false">
-
+        <nz-table
+          [nzData]="displayedUsers"
+          [nzFrontPagination]="false"
+          [nzShowPagination]="false"
+        >
           <thead>
             <tr>
-              <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
-              <th><span class="taghead namehead" style="width: 200px;">Full Name</span></th>
-              <th><span class="taghead mailhaed" style="width: 250px;">Email</span></th>
-              <th><span class="taghead rolehead" style="width: 90px;">Role</span></th>
-              <th><span class="taghead verifiedhead" style="width: 130px;">Email Confirm</span></th>
-              <th><span class="taghead activehead" style="width: 90px;">Status</span></th>
-              <th><span class="taghead operationhead" style="width: 150px;">Operations</span></th>
+              <th>
+                <span class="taghead nohead" style="width: 40px">No.</span>
+              </th>
+              <th>
+                <span class="taghead namehead" style="width: 200px"
+                  >Full Name</span
+                >
+              </th>
+              <th>
+                <span class="taghead mailhaed" style="width: 250px">Email</span>
+              </th>
+              <th>
+                <span class="taghead rolehead" style="width: 90px">Role</span>
+              </th>
+              <th>
+                <span class="taghead verifiedhead" style="width: 130px"
+                  >Email Confirm</span
+                >
+              </th>
+              <th>
+                <span class="taghead activehead" style="width: 90px"
+                  >Status</span
+                >
+              </th>
+              <th>
+                <span class="taghead operationhead" style="width: 150px"
+                  >Operations</span
+                >
+              </th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let user of displayedUsers; let i = index">
-              <td><span class="tag no">{{ (currentPage - 1) * pageSize + i + 1 }}</span></td>
-              <td><span class="tag name">{{ user.fullName }}</span></td>
-              <td><span class="tag mail">{{ user.email }}</span></td>
-              <td><span class="tag user">{{ user.role }}</span></td>
-              <td><span class="tag verified">
-                {{ user.emailConfirmed ? 'Confirmed' : 'Unconfirmed' }}
-              </span></td>
-              <td><span class="tag active">{{ user.accountStatus }}</span></td>
+              <td>
+                <span class="tag no">{{
+                  (currentPage - 1) * pageSize + i + 1
+                }}</span>
+              </td>
+              <td>
+                <span class="tag name">{{ user.fullName }}</span>
+              </td>
+              <td>
+                <span class="tag mail">{{ user.email }}</span>
+              </td>
+              <td>
+                <span class="tag user">{{ user.role }}</span>
+              </td>
+              <td>
+                <span class="tag verified">
+                  {{ user.emailConfirmed ? "Confirmed" : "Unconfirmed" }}
+                </span>
+              </td>
+              <td>
+                <span class="tag active">{{ user.accountStatus }}</span>
+              </td>
               <td div class="operation-icons">
-                <div class="icon-box eye" title="View" (click)="viewUserDetail(user.id)">
+                <div
+                  class="icon-box eye"
+                  title="View"
+                  (click)="viewUserDetail(user.id)"
+                >
                   <i class="fa-solid fa-eye"></i>
                 </div>
                 <div class="icon-box edit" title="Edit">
@@ -69,7 +114,9 @@
 
       <!-- phân trang -->
       <div class="pagination-controls">
-        <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+          Prev
+        </button>
 
         <button
           *ngFor="let page of [].constructor(totalPages); let idx = index"
@@ -79,27 +126,31 @@
           {{ idx + 1 }}
         </button>
 
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </button>
       </div>
 
       <!-- nếu ko có data -->
       <p *ngIf="users.length === 0" class="no-data-text">No users found.</p>
 
-      <nz-modal
+      <!-- <nz-modal
         [(nzVisible)]="isModalVisible"
         (nzOnCancel)="handleModalCancel()"
         [nzFooter]="null"
         nzTitle="User Details"
       >
         <ng-container *ngIf="selectedUser">
-          <p><strong>Full Name:</strong> {{ selectedUser.firstName }} {{ selectedUser.lastName }}</p>
+          <p>
+            <strong>Full Name:</strong> {{ selectedUser.firstName }}
+            {{ selectedUser.lastName }}
+          </p>
           <p><strong>Email:</strong> {{ selectedUser.email }}</p>
           <p><strong>Username:</strong> {{ selectedUser.userName }}</p>
           <p><strong>Date of Birth:</strong> {{ selectedUser.dateOfBirth }}</p>
-          <p><strong>Role:</strong> {{ selectedUser.roles}}</p>
+          <p><strong>Role:</strong> {{ selectedUser.roles }}</p>
         </ng-container>
-      </nz-modal>
+      </nz-modal> -->
     </div>
-
   </div>
 </div>

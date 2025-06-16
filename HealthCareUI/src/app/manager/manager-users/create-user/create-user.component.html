@@ -98,14 +98,15 @@
         <option value="Manager">Manager</option>
         <option value="Consultant">Consultant</option>
       </select>
-
-      <button
-        class="btn-submit"
-        type="submit"
-        [disabled]="createUserForm.invalid"
-      >
-        Create
-      </button>
+      <div class="btn">
+        <button
+          class="btn-submit"
+          type="submit"
+          [disabled]="createUserForm.invalid"
+        >
+          Create
+        </button>
+      </div>
     </form>
 
     <button class="btn-cancel" (click)="closeModal()">Cancel</button>
