@@ -132,21 +132,32 @@
                 >
                   <i class="fa-solid fa-eye"></i>
                 </div>
-                <div class="icon-box edit" title="Edit">
+                <div
+                  class="icon-box edit"
+                  title="Edit"
+                  (click)="editUser(user.id)"
+                >
                   <i class="fa-solid fa-edit"></i>
                 </div>
 
-                <div class="icon-box lock"
-                    [title]="user.accountStatus === 'Inactive' ? 'Unban' : 'Ban'"
-                    (click)="toggleBanUser(user)">
-                  <i class="fa-solid"
+                <div
+                  class="icon-box lock"
+                  [title]="user.accountStatus === 'Inactive' ? 'Unban' : 'Ban'"
+                  (click)="toggleBanUser(user)"
+                >
+                  <i
+                    class="fa-solid"
                     [ngClass]="[
-                      user.accountStatus === 'Inactive' ? 'fa-unlock' : 'fa-lock',
-                      user.accountStatus === 'Inactive' ? 'unlock-icon' : 'lock-icon'
-                    ]">
+                      user.accountStatus === 'Inactive'
+                        ? 'fa-unlock'
+                        : 'fa-lock',
+                      user.accountStatus === 'Inactive'
+                        ? 'unlock-icon'
+                        : 'lock-icon'
+                    ]"
+                  >
                   </i>
                 </div>
-
               </td>
             </tr>
           </tbody>
@@ -158,6 +169,13 @@
         [user]="selectedUser"
         (close)="handleModalCancel()"
       ></app-user-view>
+
+      <app-user-edit
+        *ngIf="isEditModalVisible && selectedEditUser"
+        [user]="selectedEditUser"
+        [userId]="idChoose"
+        (close)="handleEditModalClose()"
+      ></app-user-edit>
 
       <!-- phân trang -->
       <div class="pagination-controls">

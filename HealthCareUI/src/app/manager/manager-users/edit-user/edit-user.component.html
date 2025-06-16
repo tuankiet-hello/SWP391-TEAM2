@@ -1,0 +1,89 @@
+<div class="custom-modal">
+  <div class="custom-modal-content">
+    <div class="btnclose">
+      <span class="close-button" (click)="onCancel()">&times;</span>
+    </div>
+    <h2>User Details</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>First Name:</label>
+      <input formControlName="firstName" placeholder="First Name" />
+      <div class="error">
+        <span
+          *ngIf="form.get('firstName')?.touched && form.get('firstName')?.errors?.['required']"
+        >
+          *First Name is required
+        </span>
+      </div>
+
+      <label>Last Name:</label>
+      <input formControlName="lastName" placeholder="Last Name" />
+      <div class="error">
+        <span
+          *ngIf="form.get('lastName')?.touched && form.get('lastName')?.errors?.['required']"
+        >
+          *Last Name is required
+        </span>
+      </div>
+
+      <label>Email:</label>
+      <input formControlName="email" type="email" />
+      <div class="error">
+        <span
+          *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['required']"
+        >
+          *Email is required
+        </span>
+        <span
+          *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['email']"
+        >
+          *Invalid email format
+        </span>
+      </div>
+
+      <label>Username:</label>
+      <input formControlName="userName" />
+      <div class="error">
+        <span
+          *ngIf="form.get('userName')?.touched && form.get('userName')?.errors?.['required']"
+        >
+          *Username is required
+        </span>
+        <span
+          *ngIf="
+      form.get('userName')?.touched &&
+      form.get('userName')?.errors?.['pattern'] &&
+      form.get('userName')?.value
+    "
+        >
+          *Username must contain both letters and numbers
+        </span>
+      </div>
+
+      <label>Date of Birth:</label>
+      <input formControlName="dateOfBirth" type="date" />
+
+      <label class="roles">Roles:</label>
+      <select formControlName="roles">
+        <option value="">Select role</option>
+        <option value="admin">Admin</option>
+        <option value="staff">Staff</option>
+        <option value="manager">Manager</option>
+        <option value="consultant">Consultant</option>
+        <option value="customer">Customer</option>
+      </select>
+
+      <label class="status">Status:</label>
+      <select formControlName="accountStatus">
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+
+      <div class="confirm">
+        <label>Email Confirmed:</label>
+        <input type="checkbox" formControlName="emailConfirmed" />
+      </div>
+
+      <button type="submit" [disabled]="form.invalid">Save</button>
+    </form>
+  </div>
+</div>

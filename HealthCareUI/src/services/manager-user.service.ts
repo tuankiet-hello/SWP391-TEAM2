@@ -46,6 +46,20 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/create-user`, payload);
   }
 
+  editUser(
+    id: string,
+    payload: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      userName: string;
+      dateOfBirth: string;
+      roles: string;
+    }
+  ): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, payload);
+  }
+
   banUser(id: string): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${id}/ban`, {});
   }
