@@ -1,15 +1,24 @@
 <div class="custom-modal">
   <div class="custom-modal-content">
-    <span class="close-button" (click)="onClose()">&times;</span>
+    <div class="btnclose">
+      <span class="close-button" (click)="onClose()">&times;</span>
+    </div>
+
     <div *ngIf="user">
       <div class="user-avatar">
-        <span>{{ user.firstName ? user.firstName[0] : '' }}{{ user.lastName ? user.lastName[0] : '' }}</span>
+        <span
+          >{{ user.firstName ? user.firstName[0] : ""
+          }}{{ user.lastName ? user.lastName[0] : "" }}</span
+        >
       </div>
       <h3 class="modal-title">User Details</h3>
       <div class="user-details-list">
         <div class="detail-row">
           <span class="detail-label">Full Name:</span>
-          <span class="detail-value">{{ (user.firstName ? user.firstName : '') + (user.lastName ? ' ' + user.lastName : '') }}</span>
+          <span class="detail-value">{{
+            (user.firstName ? user.firstName : "") +
+              (user.lastName ? " " + user.lastName : "")
+          }}</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Email:</span>
@@ -30,15 +39,25 @@
         <div class="detail-row">
           <span class="detail-label">Email Confirmed:</span>
           <span class="detail-value">
-            <span [ngClass]="user.emailConfirmed ? 'status-confirmed' : 'status-unconfirmed'">
-              {{ user.emailConfirmed ? 'Confirmed' : 'Unconfirmed' }}
+            <span
+              [ngClass]="
+                user.emailConfirmed ? 'status-confirmed' : 'status-unconfirmed'
+              "
+            >
+              {{ user.emailConfirmed ? "Confirmed" : "Unconfirmed" }}
             </span>
           </span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Status:</span>
           <span class="detail-value">
-            <span [ngClass]="user.accountStatus === 'Active' ? 'status-active' : 'status-inactive'">
+            <span
+              [ngClass]="
+                user.accountStatus === 'Active'
+                  ? 'status-active'
+                  : 'status-inactive'
+              "
+            >
               {{ user.accountStatus }}
             </span>
           </span>

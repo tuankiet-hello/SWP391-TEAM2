@@ -9,8 +9,16 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  animation: fadeIn 0.3s;
 }
-
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 .modal-form {
   background: white;
   padding: 2rem;
@@ -19,6 +27,7 @@
   max-width: 95%;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   display: flex;
+  animation: slideDown 0.3s;
   flex-direction: column;
 
   .title {
@@ -60,9 +69,12 @@
       cursor: pointer;
     }
   }
-
+  .btn {
+    text-align: center;
+    margin-top: 15px;
+  }
   .btn-submit {
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
     padding: 0.75rem;
     background-color: #007bff;
     color: white;
