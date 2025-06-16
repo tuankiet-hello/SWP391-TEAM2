@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HeaderComponent } from '../header/header.component';
 
-import { NzModalModule} from 'ng-zorro-antd/modal';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import {
@@ -13,7 +13,7 @@ import {
   UserService,
 } from '../../../services/manager-user.service';
 import { UserViewComponent } from './user-view/user-view.component';
-
+import { UserEditComponent } from './edit-user/edit-user.component';
 @Component({
   selector: 'app-manager-users',
   standalone: true,
@@ -26,6 +26,7 @@ import { UserViewComponent } from './user-view/user-view.component';
     NzInputModule,
     NzModalModule,
     UserViewComponent,
+    UserEditComponent,
   ],
   templateUrl: './manager-users.component.html',
   styleUrl: './manager-users.component.css',
@@ -39,6 +40,9 @@ export class ManagerUsersComponent implements OnInit {
   selectedUser?: AccountDetailDTO;
   isModalVisible: boolean = false;
 
+  selectedEditUser?: AccountDetailDTO;
+  isEditModalVisible: boolean = false;
+  idChoose: string = '';
   // Phân trang
   currentPage = 1;
   pageSize = 6; // số user trên mỗi trang
@@ -93,12 +97,29 @@ export class ManagerUsersComponent implements OnInit {
     });
   }
 
+  editUser(id: string): void {
+    this.userService.getUserById(id).subscribe({
+      next: (user) => {
+        this.selectedEditUser = user;
+        this.idChoose = id;
+        this.isEditModalVisible = true;
+      },
+      error: (err) => console.error('Load user for edit failed', err),
+    });
+  }
+
   handleModalCancel(): void {
     this.isModalVisible = false;
     this.selectedUser = undefined;
   }
 
-  toggleBanUser(user: AccountTableDTO) { // <--- Sửa thành AccountTableDTO
+  handleEditModalClose(): void {
+    this.isEditModalVisible = false;
+    this.selectedEditUser = undefined;
+  }
+
+  toggleBanUser(user: AccountTableDTO) {
+    // <--- Sửa thành AccountTableDTO
     if (user.accountStatus === 'Inactive') {
       this.unbanUser(user.id);
     } else {
@@ -106,25 +127,27 @@ export class ManagerUsersComponent implements OnInit {
     }
   }
 
-  banUser(userId: string) { // <--- Sửa thành string
+  banUser(userId: string) {
+    // <--- Sửa thành string
     this.userService.banUser(userId).subscribe({
       next: () => {
-        const user = this.users.find(u => u.id === userId);
+        const user = this.users.find((u) => u.id === userId);
         if (user) user.accountStatus = 'Inactive';
         this.updateDisplayedUsers(); // Cập nhật lại UI
       },
-      error: (err) => console.error('Ban failed:', err)
+      error: (err) => console.error('Ban failed:', err),
     });
   }
 
-  unbanUser(userId: string) { // <--- Sửa thành string
+  unbanUser(userId: string) {
+    // <--- Sửa thành string
     this.userService.unbanUser(userId).subscribe({
       next: () => {
-        const user = this.users.find(u => u.id === userId);
+        const user = this.users.find((u) => u.id === userId);
         if (user) user.accountStatus = 'Active';
         this.updateDisplayedUsers(); // Cập nhật lại UI
       },
-      error: (err) => console.error('Unban failed:', err)
+      error: (err) => console.error('Unban failed:', err),
     });
   }
 }

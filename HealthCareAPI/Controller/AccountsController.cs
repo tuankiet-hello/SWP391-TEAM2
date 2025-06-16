@@ -74,7 +74,7 @@ namespace HealthCareAPI.Controller
             return Ok(dto);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<EditAccountDTO>> EditUserByID(string id, [FromBody] EditAccountDTO dto)
+        public async Task<ActionResult<EditAccountDTO>> EditUserByID(string id, [FromBody] AccountDetailDTO dto)
         {
             //tìm user theo id
             var user = await _userManager.FindByIdAsync(id);
