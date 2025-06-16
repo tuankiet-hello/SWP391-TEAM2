@@ -31,6 +31,7 @@ import { UserEditComponent } from './edit-user/edit-user.component';
     NzInputModule,
     NzModalModule,
     UserViewComponent,
+    UserEditComponent,
     NzSelectModule,
     NzDropDownModule,
     NzIconModule,
