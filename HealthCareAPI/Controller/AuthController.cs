@@ -97,11 +97,11 @@ namespace HealthCareAPI.Controller
                       <h2 style='text-align:center;margin-bottom:24px;'>Chào mừng đến với <b>Health Care System!</b></h2>
                       <p>Xin chào,</p>
                       <p>Cảm ơn bạn đã đăng ký tài khoản tại <b>Health Care System</b>.</p>
-                      <p>Vui lòng nhấp vào nút bên dưới để xác nhận thay đổi mật khẩu của bạn:</p>
+                      <p>Vui lòng nhấp vào nút bên dưới để thay đổi mật khẩu của bạn:</p>
                       <div style='text-align:center;margin:32px 0;'>
                         <a href='{resetLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Xác nhận email</a>
                       </div>
-                      <p style='margin-top:32px;'>Sau khi xác nhận, bạn có thể đặt lại mật khẩu và đăng nhập sử dụng đầy đủ các tính năng của Health Care System.</p>
+                      <p style='margin-top:32px;'>Sau khi đặt lại mật khẩu bạn có thể đăng nhập và sử dụng đầy đủ các tính năng của Health Care System.</p>
                       <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
                       <p style='font-size:13px;color:#aaa;text-align:center;'>Email này được gửi tự động, vui lòng không trả lời.</p>
                     </div>
@@ -135,7 +135,7 @@ namespace HealthCareAPI.Controller
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            // await _signInManager.SignOutAsync(); do dùng jwt nên tạm thười ko cần
             return Ok(new { message = "Đăng xuất thành công!" });
         }
 

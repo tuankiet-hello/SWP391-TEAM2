@@ -97,9 +97,18 @@
                 <div class="icon-box edit" title="Edit">
                   <i class="fa-solid fa-edit"></i>
                 </div>
-                <div class="icon-box lock" title="Lock">
-                  <i class="fa-solid fa-lock"></i>
+
+                <div class="icon-box lock"
+                    [title]="user.accountStatus === 'Inactive' ? 'Unban' : 'Ban'"
+                    (click)="toggleBanUser(user)">
+                  <i class="fa-solid"
+                    [ngClass]="[
+                      user.accountStatus === 'Inactive' ? 'fa-unlock' : 'fa-lock',
+                      user.accountStatus === 'Inactive' ? 'unlock-icon' : 'lock-icon'
+                    ]">
+                  </i>
                 </div>
+
               </td>
             </tr>
           </tbody>
