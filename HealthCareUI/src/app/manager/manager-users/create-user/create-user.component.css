@@ -34,7 +34,7 @@
     text-align: center;
     font-weight: bold;
     font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 15px;
     color: black;
   }
 
@@ -52,6 +52,7 @@
     border-radius: 6px;
     width: 100%;
     background-color: white;
+    color: black;
   }
 
   .password-field {
@@ -75,11 +76,13 @@
   }
   .btn-submit {
     /* margin-top: 1.5rem; */
-    padding: 0.75rem;
+    padding: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
   }
@@ -99,7 +102,7 @@
 }
 .error {
   color: #dc3545;
-  font-size: 12px;
+  font-size: 10px;
   min-height: 16px; /* Luôn giữ chiều cao để không dịch layout */
   text-align: left;
   padding-left: 4px;

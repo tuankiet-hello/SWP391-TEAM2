@@ -60,11 +60,19 @@ form {
   flex-direction: column;
   /* gap: 5px; */
 }
-
+.controlName {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
 /* Label và input */
 label {
   font-weight: 500;
   color: #374151;
+}
+.fn,
+.ln {
+  padding-left: 45px;
 }
 
 input,
@@ -129,14 +137,14 @@ button[disabled] {
 .error {
   color: #dc3545;
   font-size: 10px;
-  min-height: 16px; /* Luôn giữ chiều cao để không dịch layout */
+  min-height: 14px; /* Luôn giữ chiều cao để không dịch layout */
   text-align: left;
   padding-left: 4px;
   line-height: 16px;
 }
 .roles {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 .status {
-  margin-top: 16px;
+  margin-top: 14px;
 }

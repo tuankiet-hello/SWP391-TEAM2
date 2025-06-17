@@ -6,7 +6,7 @@ import {
   LoginComponent,
   RegistrationComponent,
   ResetPasswordComponent,
-} from './feature/auth';
+} from './feature/Auth';
 import { ManagerUsersComponent } from './manager';
 
 export const routes: Routes = [

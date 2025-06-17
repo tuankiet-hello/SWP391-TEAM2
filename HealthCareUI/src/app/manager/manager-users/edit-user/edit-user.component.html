@@ -5,24 +5,29 @@
     </div>
     <h2>User Details</h2>
     <form [formGroup]="form" (ngSubmit)="submit()">
-      <label>First Name:</label>
-      <input formControlName="firstName" placeholder="First Name" />
-      <div class="error">
-        <span
-          *ngIf="form.get('firstName')?.touched && form.get('firstName')?.errors?.['required']"
-        >
-          *First Name is required
-        </span>
-      </div>
-
-      <label>Last Name:</label>
-      <input formControlName="lastName" placeholder="Last Name" />
-      <div class="error">
-        <span
-          *ngIf="form.get('lastName')?.touched && form.get('lastName')?.errors?.['required']"
-        >
-          *Last Name is required
-        </span>
+      <div class="controlName">
+        <div class="left">
+          <label class="fn">First Name</label>
+          <input formControlName="firstName" placeholder="First Name" />
+          <div class="error">
+            <span
+              *ngIf="form.get('firstName')?.touched && form.get('firstName')?.errors?.['required']"
+            >
+              *First Name is required
+            </span>
+          </div>
+        </div>
+        <div class="right">
+          <label class="ln">Last Name</label>
+          <input formControlName="lastName" placeholder="Last Name" />
+          <div class="error">
+            <span
+              *ngIf="form.get('lastName')?.touched && form.get('lastName')?.errors?.['required']"
+            >
+              *Last Name is required
+            </span>
+          </div>
+        </div>
       </div>
 
       <label>Email:</label>
