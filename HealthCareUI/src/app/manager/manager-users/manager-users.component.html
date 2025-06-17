@@ -11,12 +11,14 @@
       <div class="user-list-header">
         <div class="content">User Management</div>
         <div class="search-wrapper">
-          <i class="fas fa-search search-icon"></i>
+          <nz-icon nzType="search" class="search-icon"></nz-icon>
           <!-- dùng nz-input -->
           <input
             nz-input
             placeholder="Search by name, email"
             class="search-box"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchChange()"
           />
         </div>
       </div>
@@ -175,6 +177,7 @@
         [user]="selectedEditUser"
         [userId]="idChoose"
         (close)="handleEditModalClose()"
+        (updated)="handleUserUpdated($event)"
       ></app-user-edit>
 
       <!-- phân trang -->

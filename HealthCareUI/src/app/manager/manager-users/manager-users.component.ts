@@ -10,8 +10,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import { FilterOutline } from '@ant-design/icons-angular/icons';
+import { SearchOutline } from '@ant-design/icons-angular/icons';
 import {
   AccountDetailDTO,
   AccountTableDTO,
@@ -35,10 +38,9 @@ import { UserEditComponent } from './edit-user/edit-user.component';
     NzSelectModule,
     NzDropDownModule,
     NzIconModule,
-    // NzIconModule.forRoot([FilterOutline])
   ],
   providers: [
-    { provide: NZ_ICONS, useValue: [FilterOutline] }
+    { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
   ],
   templateUrl: './manager-users.component.html',
   styleUrl: './manager-users.component.css',
@@ -56,13 +58,19 @@ export class ManagerUsersComponent implements OnInit {
   selectedEditUser?: AccountDetailDTO;
   isEditModalVisible: boolean = false;
   idChoose: string = '';
+  searchTerm: string = '';
+
   // Phân trang
   currentPage = 1;
   pageSize = 6; // số user trên mỗi trang
   totalUsers = 0;
   totalPages = 0;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private modal: NzModalService,
+    private message: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -101,6 +109,10 @@ export class ManagerUsersComponent implements OnInit {
     }
   }
 
+  onSearchChange() {
+    this.applyFilters();
+  }
+
   viewUserDetail(id: string): void {
     this.userService.getUserById(id).subscribe((user) => {
       this.selectedUser = user;
@@ -129,34 +141,140 @@ export class ManagerUsersComponent implements OnInit {
     this.selectedEditUser = undefined;
   }
 
-  toggleBanUser(user: AccountTableDTO) {
-    // <--- Sửa thành AccountTableDTO
-    if (user.accountStatus === 'Inactive') {
-      this.unbanUser(user.id);
-    } else {
-      this.banUser(user.id);
+  handleUserUpdated(updatedUser: AccountDetailDTO) {
+    const idx = this.users.findIndex(u => u.id === this.idChoose);
+    if (idx !== -1) {
+      this.users[idx].fullName = `${updatedUser.firstName} ${updatedUser.lastName}`;
+      this.users[idx].email = updatedUser.email;
+      this.users[idx].role = updatedUser.roles;
+      this.users[idx].emailConfirmed = updatedUser.emailConfirmed;
+      this.users[idx].accountStatus = updatedUser.accountStatus;
     }
+
+    // Cập nhật filteredUsers theo filter hiện tại, nhưng KHÔNG reset currentPage
+    this.filteredUsers = this.users.filter(user => {
+      // chỉ filter role, hoặc bổ sung các điều kiện filter khác nếu đang dùng
+      let match = true;
+      if (this.filter.role) {
+        match = match && user.role === this.filter.role;
+      }
+      if (this.filter.status) {
+        match = match && user.accountStatus === this.filter.status;
+      }
+      // bổ sung các filter khác nếu có
+      return match;
+    });
+
+    // Cập nhật lại số lượng user và tổng số trang nếu cần
+    this.totalUsers = this.filteredUsers.length;
+    this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
+
+    // Nếu trang hiện tại không còn user nào mà không phải trang 1, thì lùi về trang trước
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    if (this.currentPage > 1 && startIndex >= this.totalUsers) {
+      this.currentPage--;
+    }
+
+    // Cập nhật lại displayedUsers cho trang hiện tại
+    this.updateDisplayedUsers();
+    this.message.success('User updated successfully!');
+    this.handleEditModalClose();
+  }
+
+  toggleBanUser(user: AccountTableDTO) {
+    const isBan = user.accountStatus !== 'Inactive';
+    const action = isBan ? 'Ban' : 'Unban';
+    const confirmText = isBan
+      ? 'Are you sure you want to ban this user?'
+      : 'Are you sure you want to unban this user?';
+
+    this.modal.confirm({
+      nzTitle: `${action} user`,
+      nzContent: confirmText,
+      nzOkText: action,
+      nzOkType: 'primary',
+      nzOkDanger: isBan,
+      nzOnOk: () => {
+        if (isBan) {
+          this.banUser(user.id);
+        } else {
+          this.unbanUser(user.id);
+        }
+      },
+      nzCancelText: 'Cancel'
+    });
   }
 
   banUser(userId: string) {
     this.userService.banUser(userId).subscribe({
       next: () => {
-        const user = this.users.find((u) => u.id === userId);
+        const user = this.users.find(u => u.id === userId);
         if (user) user.accountStatus = 'Inactive';
-        this.applyFilters(); // Cập nhật lại filter và phân trang
+
+        // Cập nhật filteredUsers theo filter hiện tại, KHÔNG reset currentPage
+        this.filteredUsers = this.users.filter(user => {
+          let match = true;
+          if (this.filter.role) match = match && user.role === this.filter.role;
+          if (this.filter.emailConfirmed) match = match && (
+            this.filter.emailConfirmed === 'true' ? user.emailConfirmed : !user.emailConfirmed
+          );
+          if (this.filter.status) match = match && user.accountStatus === this.filter.status;
+          return match;
+        });
+
+        this.totalUsers = this.filteredUsers.length;
+        this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
+
+        // Nếu trang hiện tại không còn user nào mà không phải trang 1, thì lùi về trang trước
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        if (this.currentPage > 1 && startIndex >= this.totalUsers) {
+          this.currentPage--;
+        }
+
+        this.updateDisplayedUsers();
+        this.message.success('User banned successfully!');
       },
-      error: (err) => console.error('Ban failed:', err),
+      error: (err) => {
+        this.message.error('Ban failed. Please try again!');
+        console.error('Ban failed:', err);
+      },
     });
   }
+
 
   unbanUser(userId: string) {
     this.userService.unbanUser(userId).subscribe({
       next: () => {
-        const user = this.users.find((u) => u.id === userId);
+        const user = this.users.find(u => u.id === userId);
         if (user) user.accountStatus = 'Active';
-        this.applyFilters(); // Cập nhật lại filter và phân trang
+
+        // Cập nhật filteredUsers theo filter hiện tại, KHÔNG reset currentPage
+        this.filteredUsers = this.users.filter(user => {
+          let match = true;
+          if (this.filter.role) match = match && user.role === this.filter.role;
+          if (this.filter.emailConfirmed) match = match && (
+            this.filter.emailConfirmed === 'true' ? user.emailConfirmed : !user.emailConfirmed
+          );
+          if (this.filter.status) match = match && user.accountStatus === this.filter.status;
+          return match;
+        });
+
+        this.totalUsers = this.filteredUsers.length;
+        this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
+
+        // Nếu trang hiện tại không còn user nào mà không phải trang 1, thì lùi về trang trước
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        if (this.currentPage > 1 && startIndex >= this.totalUsers) {
+          this.currentPage--;
+        }
+
+        this.updateDisplayedUsers();
+        this.message.success('User unbanned successfully!');
       },
-      error: (err) => console.error('Unban failed:', err)
+      error: (err) => {
+        this.message.error('Unban failed. Please try again!');
+        console.error('Unban failed:', err);
+      }
     });
   }
 
@@ -178,6 +296,15 @@ export class ManagerUsersComponent implements OnInit {
 
   applyFilters() {
     let filtered = [...this.users];
+
+    // Search theo tên hoặc email
+    if (this.searchTerm && this.searchTerm.trim() !== '') {
+      const search = this.searchTerm.trim().toLowerCase();
+      filtered = filtered.filter(user =>
+        user.fullName.toLowerCase().includes(search) ||
+        user.email.toLowerCase().includes(search)
+      );
+    }
 
     // Filter Role
     if (this.filter.role) {
