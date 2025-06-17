@@ -4,6 +4,9 @@ import {
   inject,
   Input,
   OnInit,
+  signal,
+  computed,
+  effect,
   Output,
   EventEmitter,
 } from '@angular/core';
@@ -21,12 +24,12 @@ import {
 
 @Component({
   standalone: true,
-  selector: 'app-user-edit',
+  selector: 'app-edit-customer',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.css'],
+  templateUrl: './edit-customer.component.html',
+  styleUrls: ['./edit-customer.component.css'],
 })
-export class UserEditComponent implements OnInit {
+export class EditCustomerComponent implements OnInit {
   @Input() userId!: string;
   @Input() user!: AccountDetailDTO;
   @Output() close = new EventEmitter<void>();

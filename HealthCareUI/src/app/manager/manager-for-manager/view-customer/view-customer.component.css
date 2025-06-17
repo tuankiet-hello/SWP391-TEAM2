@@ -1,0 +1,143 @@
+.custom-modal {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 41, 59, 0.75); /* Màu tối sang trọng */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.custom-modal-content {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(30, 41, 59, 0.2);
+  width: 95%;
+  max-width: 420px;
+  padding: 36px 28px 28px 28px;
+  position: relative;
+  animation: slideDown 0.3s;
+  position: relative;
+  overflow: visible;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close-button {
+  /* position: absolute; */
+  top: 18px;
+  right: 24px;
+  font-size: 28px;
+  color: #64748b;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-button:hover {
+  color: #ef4444;
+}
+
+.user-avatar {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.12);
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: 18px;
+  color: #1e293b;
+  letter-spacing: 0.5px;
+}
+
+.user-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.detail-value {
+  font-size: 1rem;
+  color: #334155;
+  text-align: right;
+}
+
+.status-confirmed {
+  color: #22c55e; /* xanh lá */
+  font-weight: 600;
+}
+.status-unconfirmed {
+  color: #f59e42; /* cam */
+  font-weight: 600;
+}
+.status-active {
+  color: #2563eb; /* xanh dương */
+  font-weight: 600;
+}
+.status-inactive {
+  color: #ef4444; /* đỏ */
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .custom-modal-content {
+    padding: 22px 8px 16px 8px;
+    max-width: 98vw;
+  }
+  .user-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+  }
+}
+.btnclose {
+  text-align: right;
+}

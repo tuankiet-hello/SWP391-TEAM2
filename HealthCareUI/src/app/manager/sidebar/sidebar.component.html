@@ -1,15 +1,42 @@
 <div class="container">
   <!-- Nút mở modal -->
-  <button class="new-btn" (click)="openModal()">+ New User</button>
+  <button class="new-btn" (click)="openUserModal()">+ New User</button>
+<button class="new-btn" (click)="openCustomerModal()">+ New Customer</button>
 
   <!-- Render modal nếu showModal === true -->
-  <app-create-user *ngIf="showModal" (close)="closeModal()"></app-create-user>
-  <!-- <p *ngIf="showModal">Modal should show!</p> -->
+  <app-create-user *ngIf="modalType === 'user'" (close)="closeModal()"></app-create-user>
+<app-create-customer *ngIf="modalType === 'customer'" (close)="closeModal()"></app-create-customer>
 
   <ul class="menu">
-    <li class="active"><i class="fas fa-users"></i> Users</li>
-    <li><i class="fas fa-user-shield"></i> Roles</li>
-    <li><i class="fas fa-gavel"></i> Rules</li>
-    <li><i class="fas fa-chart-bar"></i> Dashboard</li>
+    <li routerLinkActive="active">
+      <a class="menu-item" [routerLink]="['/manager-users']" >
+        <nz-icon nzType="team" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Manager Users</span>
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a class="menu-item" [routerLink]="['/manager-customers']">
+        <nz-icon nzType="team" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Manager Users</span>
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a class="menu-item">
+        <nz-icon nzType="message" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Feedbacks</span>
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a class="menu-item">
+        <nz-icon nzType="clock-circle" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Set working time</span>
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a class="menu-item">
+        <nz-icon nzType="bar-chart" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Dashboard</span>
+      </a>
+    </li>
   </ul>
 </div>

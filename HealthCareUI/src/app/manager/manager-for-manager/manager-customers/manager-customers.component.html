@@ -1,0 +1,252 @@
+<app-header></app-header>
+<div class="user-manager">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- User List -->
+
+    <div class="user-list">
+      <div class="user-list-header">
+        <div class="content">User Management</div>
+        <div class="search-wrapper">
+          <nz-icon nzType="search" class="search-icon"></nz-icon>
+          <!-- dùng nz-input -->
+          <input
+            nz-input
+            placeholder="Search by name, email"
+            class="search-box"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchChange()"
+          />
+        </div>
+      </div>
+
+      <div class="user-list-scrollable">
+        <!-- dùng nz-table -->
+        <nz-table
+          [nzData]="displayedUsers"
+          [nzFrontPagination]="false"
+          [nzShowPagination]="false"
+        >
+          <thead>
+            <tr>
+              <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead namehead" style="width: 190px;">Full Name</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.fullName"
+                    [nzActive]="!!filter.fullNameSort"
+                    [nzDropdownMenu]="fullNameMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead mailhaed" style="width: 240px;">Email</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.email"
+                    [nzActive]="!!filter.emailSort"
+                    [nzDropdownMenu]="emailMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead rolehead" style="width: 90px;">Role</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.role"
+                    [nzActive]="!!filter.role"
+                    [nzDropdownMenu]="roleMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead verifiedhead" style="width: 130px;">Email Confirm</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.emailConfirmed"
+                    [nzActive]="!!filter.emailConfirmed"
+                    [nzDropdownMenu]="emailConfirmedMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead activehead" style="width: 70px;">Status</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.status"
+                    [nzActive]="!!filter.status"
+                    [nzDropdownMenu]="statusMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+              <th><span class="taghead operationhead" style="width: 150px;">Operations</span></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let user of displayedUsers; let i = index">
+              <td>
+                <span class="tag no">{{
+                  (currentPage - 1) * pageSize + i + 1
+                }}</span>
+              </td>
+              <td>
+                <span class="tag name">{{ user.fullName }}</span>
+              </td>
+              <td>
+                <span class="tag mail">{{ user.email }}</span>
+              </td>
+              <td>
+                <span class="tag user">{{ user.role }}</span>
+              </td>
+              <td>
+                <span class="tag verified">
+                  {{ user.emailConfirmed ? "Confirmed" : "Unconfirmed" }}
+                </span>
+              </td>
+              <td>
+                <span class="tag active">{{ user.accountStatus }}</span>
+              </td>
+              <td class="operation-icons">
+                <div
+                  class="icon-box eye"
+                  title="View"
+                  (click)="viewUserDetail(user.id)"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </div>
+                <div
+                  class="icon-box edit"
+                  title="Edit"
+                  (click)="editUser(user.id)"
+                >
+                  <i class="fa-solid fa-edit"></i>
+                </div>
+
+                <div
+                  class="icon-box lock"
+                  [title]="user.accountStatus === 'Inactive' ? 'Unban' : 'Ban'"
+                  (click)="toggleBanUser(user)"
+                >
+                  <i
+                    class="fa-solid"
+                    [ngClass]="[
+                      user.accountStatus === 'Inactive'
+                        ? 'fa-unlock'
+                        : 'fa-lock',
+                      user.accountStatus === 'Inactive'
+                        ? 'unlock-icon'
+                        : 'lock-icon'
+                    ]"
+                  >
+                  </i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+
+      <app-view-customer
+        *ngIf="isModalVisible && selectedUser"
+        [user]="selectedUser"
+        (close)="handleModalCancel()"
+      ></app-view-customer>
+
+      <app-edit-customer
+        *ngIf="isEditModalVisible && selectedEditUser"
+        [user]="selectedEditUser"
+        [userId]="idChoose"
+        (close)="handleEditModalClose()"
+        (updated)="handleUserUpdated($event)"
+      ></app-edit-customer>
+
+      <!-- phân trang -->
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+          Prev
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages); let idx = index"
+          [class.active]="currentPage === idx + 1"
+          (click)="goToPage(idx + 1)"
+        >
+          {{ idx + 1 }}
+        </button>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </button>
+      </div>
+
+      <!-- nếu ko có data -->
+      <p *ngIf="users.length === 0" class="no-data-text">No users found.</p>
+
+    </div>
+
+    <!-- Dropdown filter menu  -->
+    <nz-dropdown-menu #fullNameMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setFullNameSort('')">None</li>
+        <li nz-menu-item (click)="setFullNameSort('az')">A → Z</li>
+        <li nz-menu-item (click)="setFullNameSort('za')">Z → A</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #emailMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setEmailSort('')">None</li>
+        <li nz-menu-item (click)="setEmailSort('az')">A → Z</li>
+        <li nz-menu-item (click)="setEmailSort('za')">Z → A</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #roleMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setRole('')">All</li>
+        <!-- <li nz-menu-item (click)="setRole('admin')">Admin</li> -->
+        <li nz-menu-item (click)="setRole('customer')">Customer</li>
+        <li nz-menu-item (click)="setRole('staff')">Staff</li>
+        <li nz-menu-item (click)="setRole('consultant')">Consultant</li>
+        <li nz-menu-item (click)="setRole('manager')">Manager</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #emailConfirmedMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setEmailConfirmed('')">All</li>
+        <li nz-menu-item (click)="setEmailConfirmed('true')">Confirmed</li>
+        <li nz-menu-item (click)="setEmailConfirmed('false')">Unconfirmed</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #statusMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setStatus('')">All</li>
+        <li nz-menu-item (click)="setStatus('Active')">Active</li>
+        <li nz-menu-item (click)="setStatus('Inactive')">Inactive</li>
+      </ul>
+    </nz-dropdown-menu>
+
+  </div>
+</div>

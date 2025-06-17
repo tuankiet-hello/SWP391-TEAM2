@@ -1,13 +1,18 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './feature/client/home/home.component';
+
 import {
   ConfirmEmailComponent,
   ForgotPasswordComponent,
   LoginComponent,
   RegistrationComponent,
   ResetPasswordComponent,
-} from './feature/Auth';
-import { ManagerUsersComponent } from './manager';
+} from './feature/auth';
+
+import {
+  ManagerCustomersComponent,
+  ManagerUsersComponent
+} from './manager';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -20,7 +25,8 @@ export const routes: Routes = [
   { path: 'confirm-email', component: ConfirmEmailComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'manager-user', component: ManagerUsersComponent },
+  { path: 'manager-users', component: ManagerUsersComponent },
+  { path: 'manager-customers', component: ManagerCustomersComponent },
 
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home

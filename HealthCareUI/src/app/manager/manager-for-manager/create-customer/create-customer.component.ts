@@ -8,7 +8,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { EyeOutline, EyeInvisibleOutline } from '@ant-design/icons-angular/icons';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 @Component({
-  selector: 'app-create-user',
+  selector: 'app-create-customer',
   standalone: true,
   imports: [
     CommonModule,
@@ -18,47 +18,28 @@ import { NZ_ICONS } from 'ng-zorro-antd/icon';
   providers: [
     { provide: NZ_ICONS, useValue: [EyeOutline, EyeInvisibleOutline] }
   ],
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css'],
+  templateUrl: './create-customer.component.html',
+  styleUrls: ['./create-customer.component.css'],
 })
-export class CreateUserComponent implements OnInit {
+export class CreateCustomerComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   // showModal = false;
   hidePassword = true;
   hideConfirm = true;
   createUserForm!: FormGroup;
-  regexusername = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$';
+  // regexusername = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$';
   constructor(private fb: FormBuilder, private userService: UserService) {}
 
   ngOnInit(): void {
     this.createUserForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
-        username: [
-          '',
-          [Validators.required, Validators.pattern(this.regexusername)],
-        ],
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(6),
-            Validators.pattern(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/
-            ),
-          ],
-        ],
-        confirmPassword: ['', Validators.required],
+        username: ['', Validators.required],
+        password: [{ value: '12345aA@', disabled: true }], // disabled, không validator
+        confirmPassword: [{ value: '12345aA@', disabled: true }],
         role: ['', Validators.required],
       },
-      { validators: this.passwordMatchValidator }
     );
-    // console.log('CreateUserComponent rendered');
-  }
-  passwordMatchValidator(group: FormGroup) {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
   closeModal() {
@@ -66,17 +47,13 @@ export class CreateUserComponent implements OnInit {
   }
 
   submitForm() {
-    console.log('GỌI submitForm()');
-    // console.log('Valid:', this.createUserForm.valid);
-    // console.log('Errors:', this.createUserForm.errors);
-
     if (this.createUserForm.valid) {
-      const formData = { ...this.createUserForm.value };
+      const formData = { ...this.createUserForm.getRawValue() };
       const payload = {
         email: formData.email,
         userName: formData.username,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
+        password: "12345aA@", // Mặc định, không cần nhập
+        confirmPassword: "12345aA@", // Mặc định, không cần nhập
         role: formData.role,
       };
       this.userService.createUser(payload).subscribe({

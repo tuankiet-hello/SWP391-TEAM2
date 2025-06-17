@@ -1,22 +1,53 @@
 import { Component} from '@angular/core';
-import { CreateUserComponent } from '../manager-users/create-user/create-user.component';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import {
+  TeamOutline,
+  UserOutline,
+  MessageOutline,
+  ClockCircleOutline,
+  BarChartOutline
+} from '@ant-design/icons-angular/icons';
+
+import { CreateUserComponent } from '../manager-users/create-user/create-user.component';
+import { CreateCustomerComponent } from '../manager-for-manager/create-customer/create-customer.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, CreateUserComponent],
+  imports: [
+    CommonModule,
+    CreateUserComponent,
+    CreateCustomerComponent,
+    NzIconModule,
+    RouterModule
+  ],
+  providers: [
+  { provide: NZ_ICONS, useValue: [
+      TeamOutline,
+      UserOutline,
+      MessageOutline,
+      ClockCircleOutline,
+      BarChartOutline
+    ]
+  }
+],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
-  // @Output() close = new EventEmitter<void>();
-  showModal = false;
-  closeModal() {
-    this.showModal = false;
+  modalType: 'user' | 'customer' | null = null;
+
+  openUserModal() {
+    this.modalType = 'user';
   }
-  openModal() {
-    console.log('CLICK! 🔥'); // 👈 thêm dòng này
-    this.showModal = true;
+  openCustomerModal() {
+    this.modalType = 'customer';
+  }
+  closeModal() {
+    this.modalType = null;
   }
 }

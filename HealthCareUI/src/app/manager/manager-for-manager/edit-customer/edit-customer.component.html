@@ -7,7 +7,7 @@
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div class="controlName">
         <div class="left">
-          <label class="fn">First Name</label>
+          <label class="fn">First Name:</label>
           <input formControlName="firstName" placeholder="First Name" />
           <div class="error">
             <span
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="right">
-          <label class="ln">Last Name</label>
+          <label class="ln">Last Name:</label>
           <input formControlName="lastName" placeholder="Last Name" />
           <div class="error">
             <span
@@ -70,7 +70,7 @@
       <label class="roles">Roles:</label>
       <select formControlName="roles">
         <option value="">Select role</option>
-        <option value="admin">Admin</option>
+        <!-- <option value="admin">Admin</option> -->
         <option value="staff">Staff</option>
         <option value="manager">Manager</option>
         <option value="consultant">Consultant</option>
