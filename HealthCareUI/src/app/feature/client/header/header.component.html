@@ -1,13 +1,14 @@
 <header class="header">
   <div class="header-inner">
-
     <div class="header-logo-row">
       <img src="assets/logo.jpg" alt="Logo" class="header-logo" />
-      <span class="header-title">Gen Health Clinic</span>
+      <span class="header-title">GenHealthClinic</span>
     </div>
 
     <nav class="header-nav">
-      <a routerLink="/home" routerLinkActive="active"><i class="fas fa-home"></i></a>
+      <a routerLink="/home" routerLinkActive="active"
+        ><i class="fas fa-home"></i
+      ></a>
       <a href="#" (click)="onServicesClick($event)">Services</a>
       <a href="#" (click)="onBlogClick($event)">Blogs</a>
       <a routerLink="/about" routerLinkActive="active">About</a>
@@ -20,7 +21,9 @@
 
     <ul class="mobile-nav" [class.open]="menuOpen">
       <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
-      <li><a href="#" (click)="onServicesMobileNavClick($event)">Services</a></li>
+      <li>
+        <a href="#" (click)="onServicesMobileNavClick($event)">Services</a>
+      </li>
       <li><a href="#" (click)="onBlogMobileNavClick($event)">Blogs</a></li>
       <li><a routerLink="/about" (click)="closeMenu()">About</a></li>
       <li><a href="#" (click)="onContactMobileNavClick($event)">Contact</a></li>
@@ -28,7 +31,11 @@
         <div class="mobile-search">
           <input type="text" placeholder="Search..." />
           <button class="header-search-btn-mobile">
-            <img src="assets/search.svg" alt="Search" style="width:20px;height:20px;" />
+            <img
+              src="assets/search.svg"
+              alt="Search"
+              style="width: 20px; height: 20px"
+            />
           </button>
         </div>
       </li>
@@ -36,7 +43,7 @@
         <div class="header-login">
           <button [routerLink]="['/login']">Login</button>
           <!-- <button *ngIf="authService.isLoggedIn()" >Logout</button> -->
-<!-- *ngIf="!authService.isLoggedIn()"  -->
+          <!-- *ngIf="!authService.isLoggedIn()"  -->
           <!-- (click)="logout()" -->
         </div>
       </li>
@@ -46,14 +53,17 @@
       <div class="header-search">
         <input type="text" placeholder="Search..." />
         <button class="header-search-btn">
-          <img src="assets/search.svg" alt="Search" style="width:22px;height:22px;" />
+          <img
+            src="assets/search.svg"
+            alt="Search"
+            style="width: 22px; height: 22px"
+          />
         </button>
       </div>
 
       <div class="header-login">
         <button [routerLink]="['/login']">Login</button>
       </div>
-
     </div>
   </div>
 </header>

@@ -1,0 +1,55 @@
+<app-header></app-header>
+<div class="container">
+  <!-- <div class="head">
+    <div class="logoName">
+      <img src="assets/logo.jpg" alt="icon" />
+    </div>
+    <input type="text" placeholder="Search Test" />
+  </div> -->
+  <!-- Left Panel -->
+  <div class="content">
+    <div class="left-panel">
+      <div class="left-panel-content">
+        <div class="advice-header">
+          <img src="assets/mũi tên.png" alt="icon" width="24" />
+          <span>TƯ VẤN ONLINE MIỄN PHÍ</span>
+        </div>
+
+        <form class="form-dang-ky">
+          <input type="text" placeholder="Họ và tên" required />
+          <input type="tel" placeholder="Số điện thoại (*)" required />
+          <select>
+            <option disabled selected>Đặt lịch xét nghiệm</option>
+            <option>Tư Vấn Xét Nghiệm</option>
+            <option>Lấy Mẫu Xét Nghiệm Tại Nhà</option>
+            <option>Khác</option>
+          </select>
+          <button type="submit">GỬI THÔNG TIN</button>
+        </form>
+
+        <img
+          src="assets/bannersale.jpg"
+          alt="Khuyến mãi"
+          class="promo-banner"
+        />
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <app-appointment-card
+        *ngFor="let test of filteredTests()"
+        [imageUrl]="test.imageUrl"
+        [title]="test.title"
+        [price]="test.price"
+      ></app-appointment-card>
+    </div>
+  </div>
+</div>
+<!-- Chatbox -->
+<!-- <div class="chatbox">
+  <iframe src="https://chat.example.com/widget" frameborder="0"></iframe>
+</div> -->
+<footer id="footer">
+  <app-footer></app-footer>
+</footer>

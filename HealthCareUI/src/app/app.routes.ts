@@ -1,18 +1,15 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './feature/client/home/home.component';
-
+import { SexualTestingComponent } from './feature/client/sexual-testing/sexual-testing.component';
 import {
   ConfirmEmailComponent,
   ForgotPasswordComponent,
   LoginComponent,
   RegistrationComponent,
   ResetPasswordComponent,
-} from './feature/auth';
+} from './feature/Auth';
 
-import {
-  ManagerCustomersComponent,
-  ManagerUsersComponent
-} from './manager';
+import { ManagerCustomersComponent, ManagerUsersComponent } from './manager';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -27,7 +24,7 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'manager-users', component: ManagerUsersComponent },
   { path: 'manager-customers', component: ManagerCustomersComponent },
-
+  { path: 'SexualTestingComponent', component: SexualTestingComponent },
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní
