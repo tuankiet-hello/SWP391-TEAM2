@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,12 +9,12 @@ import {
   UserOutline,
   MessageOutline,
   ClockCircleOutline,
-  BarChartOutline
+  BarChartOutline,
 } from '@ant-design/icons-angular/icons';
-
+import { Router } from '@angular/router';
 import { CreateUserComponent } from '../manager-users/create-user/create-user.component';
 import { CreateCustomerComponent } from '../manager-for-manager/create-customer/create-customer.component';
-
+import { AuthService } from '../../../services/auth.service';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -23,23 +23,33 @@ import { CreateCustomerComponent } from '../manager-for-manager/create-customer/
     CreateUserComponent,
     CreateCustomerComponent,
     NzIconModule,
-    RouterModule
+    RouterModule,
   ],
   providers: [
-  { provide: NZ_ICONS, useValue: [
-      TeamOutline,
-      UserOutline,
-      MessageOutline,
-      ClockCircleOutline,
-      BarChartOutline
-    ]
-  }
-],
+    {
+      provide: NZ_ICONS,
+      useValue: [
+        TeamOutline,
+        UserOutline,
+        MessageOutline,
+        ClockCircleOutline,
+        BarChartOutline,
+      ],
+    },
+  ],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
   modalType: 'user' | 'customer' | null = null;
+  role: string | null = null;
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    console.log('✅ Header ngOnInit called');
+    this.role = this.authService.getRoleFromToken();
+    console.log('🧑‍💼 role:', this.role);
+  }
 
   openUserModal() {
     this.modalType = 'user';

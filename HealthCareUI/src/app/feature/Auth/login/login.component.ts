@@ -10,7 +10,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../../services/auth.service';
-
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -28,7 +28,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
       UsernameOrEmail: ['', Validators.required],
@@ -52,6 +53,12 @@ export class LoginComponent {
           this.isLogin = true;
           localStorage.setItem('accessToken', response.token); // lưu token
           const role = this.authService.getRoleFromToken();
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+
+          if (returnUrl) {
+            this.router.navigateByUrl(returnUrl);
+            return;
+          }
           console.log('Đăng nhập với role:', role);
 
           switch (role?.toLowerCase()) {

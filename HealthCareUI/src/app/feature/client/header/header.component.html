@@ -27,26 +27,6 @@
       <li><a href="#" (click)="onBlogMobileNavClick($event)">Blogs</a></li>
       <li><a routerLink="/about" (click)="closeMenu()">About</a></li>
       <li><a href="#" (click)="onContactMobileNavClick($event)">Contact</a></li>
-      <li>
-        <div class="mobile-search">
-          <input type="text" placeholder="Search..." />
-          <button class="header-search-btn-mobile">
-            <img
-              src="assets/search.svg"
-              alt="Search"
-              style="width: 20px; height: 20px"
-            />
-          </button>
-        </div>
-      </li>
-      <li>
-        <div class="header-login">
-          <button [routerLink]="['/login']">Login</button>
-          <!-- <button *ngIf="authService.isLoggedIn()" >Logout</button> -->
-          <!-- *ngIf="!authService.isLoggedIn()"  -->
-          <!-- (click)="logout()" -->
-        </div>
-      </li>
     </ul>
 
     <div class="header-actions">
@@ -62,7 +42,17 @@
       </div>
 
       <div class="header-login">
-        <button [routerLink]="['/login']">Login</button>
+        <div *ngIf="!isLoggedIn">
+          <button [routerLink]="['/login']">Login</button>
+        </div>
+
+        <!-- Nếu đã đăng nhập -->
+        <div class="isLogin" *ngIf="isLoggedIn">
+          <div class="role">
+            {{ userName | titlecase }}
+          </div>
+          <button (click)="logout()">Logout</button>
+        </div>
       </div>
     </div>
   </div>
