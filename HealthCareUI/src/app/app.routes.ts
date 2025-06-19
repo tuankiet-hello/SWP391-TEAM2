@@ -8,7 +8,6 @@ import {
   ResetPasswordComponent,
 } from './feature/Auth';
 
-
 import { ManagerCustomersComponent, ManagerUsersComponent } from './manager';
 
 import {
@@ -17,10 +16,9 @@ import {
   Blog2Component,
   Blog3Component,
   Blog4Component,
-  Blog5Component
+  Blog5Component,
 } from './feature/client';
 import { ManageServiceComponent } from './manager/manager-for-manager/manage-service/manage-service.component';
-
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -29,12 +27,23 @@ export const routes: Routes = [
 
   //Client routes
   { path: 'home', component: HomeComponent },
-  { path: 'blog/top-7-things-you-should-know-about-stis', component: Blog1Component },
+  {
+    path: 'blog/top-7-things-you-should-know-about-stis',
+    component: Blog1Component,
+  },
   { path: 'blog/how-safe-are-condoms', component: Blog2Component },
-  { path: 'blog/how-to-talk-about-sex-with-your-teen', component: Blog3Component },
-  { path: 'blog/fetal-development-stages-of-growth', component: Blog4Component },
-  { path: 'blog/sexually-transmitted-infections-stis', component: Blog5Component },
-
+  {
+    path: 'blog/how-to-talk-about-sex-with-your-teen',
+    component: Blog3Component,
+  },
+  {
+    path: 'blog/fetal-development-stages-of-growth',
+    component: Blog4Component,
+  },
+  {
+    path: 'blog/sexually-transmitted-infections-stis',
+    component: Blog5Component,
+  },
 
   //Authentication routes
   { path: 'login', component: LoginComponent },
@@ -46,8 +55,8 @@ export const routes: Routes = [
   //Manager routes
   { path: 'manager-users', component: ManagerUsersComponent },
   { path: 'manager-customers', component: ManagerCustomersComponent },
-  {path :'manage-service',component: ManageServiceComponent},
-  { path: 'SexualTestingComponent', component: SexualTestingComponent },
+  { path: 'manage-service', component: ManageServiceComponent },
+  { path: 'sexual-testing', component: SexualTestingComponent },
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní
