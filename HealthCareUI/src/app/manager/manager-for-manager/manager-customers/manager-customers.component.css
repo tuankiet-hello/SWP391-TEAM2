@@ -18,7 +18,7 @@ body {
 }
 
 /* Container chính */
-.user-manager {
+.customer-manager {
   display: flex;
   max-height: 682px;
   max-width: 100vw;
@@ -330,10 +330,3 @@ nz-filter-trigger[nzactive="true"] .anticon {
   transition: background 0.5s, color 0.5s;
 }
 
-/* Menu dài sẽ có scroll */
-/* .nz-dropdown-menu, .ant-dropdown-menu {
-  max-height: 200px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #e0e0e0 #fff;
-} */
