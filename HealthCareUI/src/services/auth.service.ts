@@ -5,7 +5,7 @@ import { environment } from '../app/app.config';
 import { jwtDecode } from 'jwt-decode';
 
 export interface JwtPayload {
-  name: string;
+  unique_name: string;
   nameid: string;
   role: string | string[];
 }
@@ -75,6 +75,19 @@ export class AuthService {
       }
 
       return decoded.role;
+    } catch (e) {
+      console.error('Token decode failed:', e);
+      return null;
+    }
+  }
+  getUserNameToken(): string | null {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return null;
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+
+      return decoded.unique_name;
     } catch (e) {
       console.error('Token decode failed:', e);
       return null;

@@ -1,20 +1,20 @@
 <div class="header-container">
   <div class="left-header">
     <img src="assets/logo.jpg" alt="Logo" class="header-logo" />
-    <p>Gen Health Manager System</p>
+    <p>GenHealth Manager System</p>
   </div>
   <div class="right-header">
     <div class="user-info">
-      <span >
-        Helllo, <!-- class="user-name" {{ userName }} -->
+      <span class="userName">
+        {{ userName }}
+        <!-- class="user-name" {{ userName }} -->
       </span>
       <img src="assets/user-icon.png" alt="User Icon" class="user-icon" />
     </div>
     <div class="header-logout">
-      <button >Logout</button>
+      <button>Logout</button>
       <!--  [routerLink]="['/logout']" -->
     </div>
     <!-- (click)="logout()" -->
   </div>
 </div>
-

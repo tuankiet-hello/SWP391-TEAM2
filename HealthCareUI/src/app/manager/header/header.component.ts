@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
-
+import { AuthService } from '../../../services/auth.service';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  // constructor(
-  //   public authService: AuthService,
-  //   private router: Router) {}
+  userName: string | null = null;
+  constructor(private authService: AuthService, private router: Router) {}
 
-  // logout() {
-  //   this.authService.logout();
-  //   this.router.navigate(['/home']);
-  // }
+  ngOnInit(): void {
+    console.log('✅ Header ngOnInit called');
+    this.userName = this.authService.getUserNameToken();
+  }
 }
