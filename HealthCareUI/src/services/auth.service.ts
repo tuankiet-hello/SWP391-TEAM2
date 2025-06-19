@@ -1,7 +1,14 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { environment } from "../app/app.config";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../app/app.config';
+import { jwtDecode } from 'jwt-decode';
+
+export interface JwtPayload {
+  name: string;
+  nameid: string;
+  role: string | string[];
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -20,20 +27,31 @@ export class AuthService {
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/forgot-password`, {email});
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
   }
 
-  login(payload: { UsernameOrEmail: string; password: string }): Observable<any> {
+  login(payload: {
+    UsernameOrEmail: string;
+    password: string;
+  }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, payload);
   }
 
-  register(payload: { email: string; userName: string; password: string;
-                      confirmPassword: string; }): Observable<any> {
+  register(payload: {
+    email: string;
+    userName: string;
+    password: string;
+    confirmPassword: string;
+  }): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, payload);
   }
 
-  resetPassword(payload: {email: string; token: string; newPassword: string;
-                          confirmPassword: string; }): Observable<any> {
+  resetPassword(payload: {
+    email: string;
+    token: string;
+    newPassword: string;
+    confirmPassword: string;
+  }): Observable<any> {
     return this.http.post(`${this.apiUrl}/reset-password`, payload);
   }
 
@@ -43,5 +61,23 @@ export class AuthService {
 
   logout() {
     return localStorage.removeItem('accessToken');
+  }
+
+  getRoleFromToken(): string | null {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return null;
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+
+      if (Array.isArray(decoded.role)) {
+        return decoded.role[0]; // nếu có nhiều role thì lấy cái đầu tiên
+      }
+
+      return decoded.role;
+    } catch (e) {
+      console.error('Token decode failed:', e);
+      return null;
+    }
   }
 }

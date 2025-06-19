@@ -24,7 +24,7 @@ export class LoginComponent {
   showPassword = false;
   loginForm: FormGroup;
   isSubmitting = false;
-
+  isLogin = false;
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
@@ -49,8 +49,28 @@ export class LoginComponent {
       this.authService.login(payload).subscribe({
         next: (response: any) => {
           console.log('Login thành công:', response);
+          this.isLogin = true;
           localStorage.setItem('accessToken', response.token); // lưu token
-          this.router.navigate(['/home']);
+          const role = this.authService.getRoleFromToken();
+          console.log('Đăng nhập với role:', role);
+
+          switch (role?.toLowerCase()) {
+            case 'admin':
+              this.router.navigate(['/manager-users']);
+              break;
+            case 'manager':
+              this.router.navigate(['/manager-users']);
+              break;
+            case 'staff':
+              this.router.navigate(['/manager-users']);
+              break;
+            case 'customer':
+              this.router.navigate(['/home']);
+              break;
+            default:
+              this.router.navigate(['/home']);
+              break;
+          }
         },
         error: (error) => {
           this.isSubmitting = false;

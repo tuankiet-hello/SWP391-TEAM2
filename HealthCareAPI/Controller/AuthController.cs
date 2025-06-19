@@ -61,12 +61,18 @@ namespace HealthCareAPI.Controller
         private async Task<string> GenerateJwtToken(Account user)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
-            var claims = new[]
+            var roles = await _userManager.GetRolesAsync(user);
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
             };
+            //gen jwt thêm phần key:value của role nè, tí decode ra mới có role để phân quyền
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim("role", role));
+            }
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
