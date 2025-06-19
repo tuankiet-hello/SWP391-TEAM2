@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using HealthCareAPI.Enum;
 
 namespace HealthCareAPI.Entities
 {
@@ -14,11 +13,12 @@ namespace HealthCareAPI.Entities
         [Column(TypeName = "nvarchar(50)")]
         public string TestName { get; set; } = null!;
 
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
+        [Required]
         [Column(TypeName = "nvarchar(200)")]
-        public string? Description { get; set;}
+        public string Description { get; set; } = null!;
 
-        public ActivityTest Active { get; set; }
+        public bool Active { get; set; }
     }
 }

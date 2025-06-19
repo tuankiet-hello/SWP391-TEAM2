@@ -7,12 +7,13 @@ import {
   LoginComponent,
   RegistrationComponent,
   ResetPasswordComponent,
-} from './feature/auth';
+} from './feature/Auth';
 
 import {
   ManagerCustomersComponent,
   ManagerUsersComponent
 } from './manager';
+import { ManageServiceComponent } from './manager/manager-for-manager/manage-service/manage-service.component';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -27,7 +28,7 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'manager-users', component: ManagerUsersComponent },
   { path: 'manager-customers', component: ManagerCustomersComponent },
-
+  {path :'manage-service',component: ManageServiceComponent},
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní

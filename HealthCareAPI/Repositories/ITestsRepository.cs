@@ -1,9 +1,15 @@
+﻿using HealthCareAPI.DTOs;
 using HealthCareAPI.Entities;
 
 namespace HealthCareAPI.Repositories
 {
     public interface ITestsRepository : IGenericRepository<Test>
     {
-        // Thêm các method đặc thù cho Tests nếu cần
+
+        //Interface này kế thừa từ generic repository và
+        //bổ sung các hàm đặc thù cho Test.
+        Task<IEnumerable<Test>> EditActiveTestsAsync(Test test);
+        Task<Test> GetTestByNameAsync(string name);
+
     }
-} 
+}
