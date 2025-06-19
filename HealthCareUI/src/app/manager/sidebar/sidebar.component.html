@@ -1,20 +1,39 @@
 <div class="container">
   <!-- Nút mở modal -->
-  <button class="new-btn" (click)="openUserModal()">+ New User</button>
-<button class="new-btn" (click)="openCustomerModal()">+ New Customer</button>
+  <button class="new-btn" *ngIf="role === 'admin'" (click)="openUserModal()">
+    + New User
+  </button>
+  <button
+    class="new-btn"
+    *ngIf="role === 'manager'"
+    (click)="openCustomerModal()"
+  >
+    + New Customer
+  </button>
 
   <!-- Render modal nếu showModal === true -->
-  <app-create-user *ngIf="modalType === 'user'" (close)="closeModal()"></app-create-user>
-<app-create-customer *ngIf="modalType === 'customer'" (close)="closeModal()"></app-create-customer>
+  <div class="createAdmin">
+    <app-create-user
+      *ngIf="modalType === 'user'"
+      (close)="closeModal()"
+    ></app-create-user>
+  </div>
+
+  <div class="createManager">
+    <app-create-customer
+      *ngIf="modalType === 'customer'"
+      (close)="closeModal()"
+    ></app-create-customer>
+  </div>
 
   <ul class="menu">
-    <li routerLinkActive="active">
-      <a class="menu-item" [routerLink]="['/manager-users']" >
+    <li routerLinkActive="active" *ngIf="role === 'admin'">
+      <a class="menu-item" [routerLink]="['/manager-users']">
         <nz-icon nzType="team" nzTheme="outline"></nz-icon>
         <span class="menu-text">Manager Users</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" *ngIf="role === 'manager'">
       <a class="menu-item" [routerLink]="['/manager-customers']">
         <nz-icon nzType="team" nzTheme="outline"></nz-icon>
         <span class="menu-text">Manager Users</span>
@@ -36,6 +55,12 @@
       <a class="menu-item">
         <nz-icon nzType="bar-chart" nzTheme="outline"></nz-icon>
         <span class="menu-text">Dashboard</span>
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a class="menu-item" [routerLink]="['/manage-service']">
+        <nz-icon nzType="database" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Categories Service</span>
       </a>
     </li>
   </ul>

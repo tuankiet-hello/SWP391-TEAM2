@@ -1,8 +1,10 @@
-<div class="card">
-  <img [src]="imageUrl" alt="xét nghiệm" class="image" />
-  <div class="info">
-    <h3>{{ title }}</h3>
-    <p class="price">{{ price }}</p>
-    <button class="btn">Đặt lịch ngay</button>
+<form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+  <div class="card">
+    <img [src]="imageUrl" alt="xét nghiệm" class="image" />
+    <div class="info">
+      <h3>{{ title }}</h3>
+      <p class="price">{{ price }}</p>
+      <button class="btn" type="submit">Đặt lịch ngay</button>
+    </div>
   </div>
-</div>
+</form>
