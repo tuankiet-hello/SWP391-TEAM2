@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using HealthCareAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
+using HealthCareAPI.Services;
 
 namespace HealthCareAPI
 {
@@ -86,7 +87,8 @@ namespace HealthCareAPI
             // Đăng ký ApplicationDbContext vào DI
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+            builder.Services.AddScoped<ITestsRepository, TestsRepository>();
+            builder.Services.AddScoped<TestService>();
             builder.Services.AddScoped<HealthCareAPI.Services.EmailService>();
 
             builder.Services.Configure<Microsoft.AspNetCore.Identity.DataProtectionTokenProviderOptions>(opt =>

@@ -18,6 +18,7 @@ import {
   Blog4Component,
   Blog5Component,
 } from './feature/client';
+import { ManageServiceComponent } from './manager/manager-for-manager/manage-service/manage-service.component';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -54,6 +55,7 @@ export const routes: Routes = [
   //Manager routes
   { path: 'manager-users', component: ManagerUsersComponent },
   { path: 'manager-customers', component: ManagerCustomersComponent },
+  { path: 'manage-service', component: ManageServiceComponent },
   { path: 'SexualTestingComponent', component: SexualTestingComponent },
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home

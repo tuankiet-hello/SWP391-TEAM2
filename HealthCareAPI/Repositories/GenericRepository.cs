@@ -1,4 +1,4 @@
-using HealthCareAPI;
+﻿using HealthCareAPI;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,9 +10,10 @@ namespace HealthCareAPI.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
+        //file này dùng để giao tiếp với db
         protected readonly ApplicationDbContext _context;
-        private readonly DbSet<T> _dbSet;
-
+        protected readonly DbSet<T> _dbSet;
+        //hàm khởi tạo dbContext
         public GenericRepository(ApplicationDbContext context)
         {
             _context = context;
