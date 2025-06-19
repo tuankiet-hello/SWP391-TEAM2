@@ -56,7 +56,7 @@ export const routes: Routes = [
   { path: 'manager-users', component: ManagerUsersComponent },
   { path: 'manager-customers', component: ManagerCustomersComponent },
   { path: 'manage-service', component: ManageServiceComponent },
-  { path: 'SexualTestingComponent', component: SexualTestingComponent },
+  { path: 'sexual-testing', component: SexualTestingComponent },
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní
