@@ -1,6 +1,9 @@
 .header {
-  max-width: 99.5vw;
-  /* min-width: 100vw; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1001;
   background: #042145;
   color: #fff;
   display: flex;
@@ -9,11 +12,6 @@
   padding: 0;
   box-shadow: 0 2px 8px rgba(23,86,169,0.08);
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
 }
 
 .header-inner {
