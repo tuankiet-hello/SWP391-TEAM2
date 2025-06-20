@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   FontAwesomeModule,
@@ -6,21 +6,39 @@ import {
 } from '@fortawesome/angular-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../../services/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DoCheck } from '@angular/core';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-header',
   // standalone: true,
-  imports: [RouterModule, FontAwesomeModule, CommonModule],
+  imports: [
+    RouterModule,
+    FontAwesomeModule,
+    CommonModule,
+    FormsModule,
+    NzInputModule,
+    NzAutocompleteModule
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
+
 })
 export class HeaderComponent implements DoCheck {
   menuOpen = false;
   role: string | null = null;
   isLoggedIn = false;
   userName: string | null = null;
+
+  @Input() blogs: any[] = [];
+  searchValue = '';
+  filteredBlogs: any[] = [];
+  overlayStyle = { 'z-index': '2000', 'margin-top': '20px' };
+
   constructor(
     library: FaIconLibrary,
     private authService: AuthService,
@@ -28,6 +46,7 @@ export class HeaderComponent implements DoCheck {
   ) {
     library.addIcons(faSearch);
   }
+
   ngDoCheck(): void {
     const currentLoginStatus = this.authService.isLoggedIn();
     if (this.isLoggedIn !== currentLoginStatus) {
@@ -96,14 +115,45 @@ export class HeaderComponent implements DoCheck {
     }
   }
 
-  // logout() {
-  //   this.authService.logout();
-  //   this.router.navigate(['/login']);
-  // }
+  @Output() scrollToAbout = new EventEmitter<void>();
+
+  onAboutClick(event: Event) {
+    event.preventDefault(); // Ngăn reload
+    this.scrollToAbout.emit(); // Gửi sự kiện lên HomeComponent
+  }
+
+  onAboutMobileNavClick(event: Event) {
+    event.preventDefault(); // Ngăn reload/chuyển trang
+    this.closeMenu();
+
+    const about = document.getElementById('about');
+    if (about) {
+      about.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   logout(): void {
     this.authService.logout();
     this.isLoggedIn = false;
     this.role = null;
     this.router.navigate(['/home']);
+  }
+
+  @Output() search = new EventEmitter<string>();
+
+  onInputChange() {
+    const search = this.searchValue.trim().toLowerCase();
+    this.filteredBlogs = !search
+      ? []
+      : this.blogs.filter(blog =>
+          blog.title.toLowerCase().includes(search) ||
+          blog.desc.toLowerCase().includes(search)
+        );
+  }
+
+  goToBlog(link: string) {
+    this.router.navigate([link]);
+    this.searchValue = '';
+    this.filteredBlogs = [];
   }
 }

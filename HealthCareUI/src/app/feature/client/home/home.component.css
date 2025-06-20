@@ -161,7 +161,7 @@
   border-radius: 40px;
   box-shadow: 0 2px 12px rgba(23, 86, 169, 0.06);
   padding: 24px 18px;
-  max-width: 676px;
+  max-width: 1000px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -173,7 +173,7 @@
 .infor-img img {
   width: 100%;
   min-width: 0;
-  max-width: 220px;
+  max-width: 250px;
   height: auto;
   object-fit: cover;
   border-radius: 32px;
@@ -189,7 +189,8 @@
   word-break: break-word;
   min-width: 0;
   flex: 1 1 0;
-  max-width: 420px;
+  max-width: 650px;
+  text-align: justify;
 }
 
 @media (max-width: 900px) {

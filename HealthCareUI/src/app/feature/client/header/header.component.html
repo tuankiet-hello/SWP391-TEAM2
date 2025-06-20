@@ -11,7 +11,7 @@
       ></a>
       <a href="#" (click)="onServicesClick($event)">Services</a>
       <a href="#" (click)="onBlogClick($event)">Blogs</a>
-      <a routerLink="/about" routerLinkActive="active">About</a>
+      <a href="#" (click)="onAboutClick($event)">About</a>
       <a href="#" (click)="onContactClick($event)">Contact</a>
     </nav>
 
@@ -21,24 +21,39 @@
 
     <ul class="mobile-nav" [class.open]="menuOpen">
       <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
-      <li>
-        <a href="#" (click)="onServicesMobileNavClick($event)">Services</a>
-      </li>
+      <li><a href="#" (click)="onServicesMobileNavClick($event)">Services</a></li>
       <li><a href="#" (click)="onBlogMobileNavClick($event)">Blogs</a></li>
-      <li><a routerLink="/about" (click)="closeMenu()">About</a></li>
+      <li><a href="#" (click)="onAboutMobileNavClick($event)">About</a></li>
       <li><a href="#" (click)="onContactMobileNavClick($event)">Contact</a></li>
     </ul>
 
     <div class="header-actions">
       <div class="header-search">
-        <input type="text" placeholder="Search..." />
-        <button class="header-search-btn">
-          <img
-            src="assets/search.svg"
-            alt="Search"
-            style="width: 22px; height: 22px"
-          />
+        <input
+          nz-input
+          [(ngModel)]="searchValue"
+          [nzAutocomplete]="auto"
+          (input)="onInputChange()"
+          placeholder="Search blog..."
+          style="width: 260px"
+        />
+        <button class="header-search-btn" type="button">
+          <img src="assets/search.svg" alt="Search" style="width: 22px; height: 22px" />
         </button>
+        <nz-autocomplete #auto [nzOverlayStyle]="overlayStyle">
+          <nz-auto-option
+            *ngFor="let blog of filteredBlogs"
+            [nzValue]="blog.title"
+            (click)="goToBlog(blog.link)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <img [src]="blog.img" width="36" height="36" style="border-radius:6px;object-fit:cover;">
+              <div>
+                <div style="font-weight:600;color:#1756a9;">{{ blog.title }}</div>
+                <div style="font-size:0.96em;color:#666;">{{ blog.desc }}</div>
+              </div>
+            </div>
+          </nz-auto-option>
+        </nz-autocomplete>
       </div>
 
       <div class="header-login">

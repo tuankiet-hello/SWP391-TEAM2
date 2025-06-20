@@ -3,25 +3,32 @@
     (scrollToContact)="scrollToFooter()"
     (scrollToServices)="scrollToServicesSection()"
     (scrollToBlogs)="scrollToBlogsSection()"
+    (scrollToAbout)="scrollToAboutSection()"
+    [blogs]="blogs"
   ></app-header>
 
   <div class="home-container">
     <!-- Giới thiệu cơ sở y tế -->
-    <section class="infor">
-      <h2>Giới Thiệu Cơ Sở Y Tế</h2>
+    <section class="infor" id="about">
+      <h2>Medical Facility Introduction</h2>
       <div class="infor-list">
         <div class="infor-card">
           <div class="infor-img">
             <img
-              src="https://img.freepik.com/free-photo/medical-team-discussing-diagnosis_1098-18667.jpg?w=740&t=st=1717920000~exp=1717920600~hmac=demo"
-              alt="Cơ sở y tế"
+              src="assets/medical-facility.jpg"
+              alt="Introduction"
             />
           </div>
           <p>
-            Chúng tôi cam kết mang đến dịch vụ y tế chất lượng cao, bảo mật
-            thông tin, tận tâm chăm sóc sức khỏe sinh sản cho cộng đồng. Đội ngũ
-            bác sĩ giàu kinh nghiệm, trang thiết bị hiện đại, không gian thân
-            thiện.
+            At our medical center, we are dedicated to delivering high-quality
+            healthcare, ensuring information security, and offering specialized
+            reproductive health services for the community. Our experienced team
+            of doctors, modern facilities, and welcoming atmosphere are here to
+            support your well-being every step of the way. <br>
+            We are committed to providing high-quality medical services,
+            information security, and dedicated reproductive health care
+            for the community. Experienced team of doctors, modern equipment,
+            and friendly space.
           </p>
         </div>
       </div>

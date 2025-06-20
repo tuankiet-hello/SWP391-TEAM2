@@ -40,6 +40,13 @@ export class HomeComponent {
     }
   }
 
+  scrollToAboutSection() {
+    const element = document.getElementById('about');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   blogs = [
     {
       img: 'assets/blog1.jpg',
@@ -94,5 +101,39 @@ export class HomeComponent {
   }
   nextBlog() {
     this.currentIndex = (this.currentIndex + 1) % this.blogs.length;
+  }
+
+  searchTerm = '';
+  filteredBlogs = this.blogs;
+  highlightedIndexes: number[] = [];
+
+  onHeaderSearch(term: string) {
+    this.searchTerm = term;
+    this.highlightedIndexes = [];
+    const search = term.trim().toLowerCase();
+    if (search) {
+      this.blogs.forEach((blog, idx) => {
+        if (
+          blog.title.toLowerCase().includes(search) ||
+          blog.desc.toLowerCase().includes(search)
+        ) {
+          this.highlightedIndexes.push(idx);
+        }
+      });
+    }
+  }
+
+  applyBlogSearch() {
+    const search = this.searchTerm.trim().toLowerCase();
+    if (!search) {
+      this.filteredBlogs = this.blogs;
+    } else {
+      this.filteredBlogs = this.blogs.filter(blog =>
+        blog.title.toLowerCase().includes(search) ||
+        blog.desc.toLowerCase().includes(search)
+      );
+    }
+    // Reset carousel index nếu muốn
+    this.currentIndex = 0;
   }
 }
