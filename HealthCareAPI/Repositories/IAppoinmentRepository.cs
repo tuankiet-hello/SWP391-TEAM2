@@ -4,6 +4,8 @@ namespace HealthCareAPI.Repositories
 {
     public interface IAppoinmentRepository : IGenericRepository<Appoinment>
     {
-        // Thêm các method đặc thù cho Appoinment nếu cần
+        //lấy lịch theo ngày, tuần
+        Task<IEnumerable<Appoinment>> GetAppointmentsByDateAsync(DateOnly date);
+        Task<IEnumerable<Appoinment>> GetAppointmentsByWeekAsync(DateOnly startDate, DateOnly endDate);
     }
 } 

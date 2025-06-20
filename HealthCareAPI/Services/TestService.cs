@@ -25,7 +25,7 @@ namespace HealthCareAPI.Services
                 TestName = testDto.TestName,
                 Price = (decimal)testDto.Price,
                 Description = testDto.Description ?? string.Empty,
-                Active = testDto.Active == HealthCareAPI.Enum.ActivityTest.Active
+                Active = testDto.Active
             };
             await _unitOfWork.TestsRepository.AddAsync(test);
             await _unitOfWork.CompleteAsync();
@@ -39,7 +39,7 @@ namespace HealthCareAPI.Services
             test.TestName = testDto.TestName;
             test.Price = (decimal)testDto.Price;
             test.Description = testDto.Description ?? string.Empty;
-            test.Active = testDto.Active == HealthCareAPI.Enum.ActivityTest.Active;
+            test.Active = testDto.Active;
 
             _unitOfWork.TestsRepository.Update(test);
             await _unitOfWork.CompleteAsync();
