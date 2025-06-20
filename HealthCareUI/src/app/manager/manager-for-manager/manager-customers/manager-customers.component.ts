@@ -299,7 +299,7 @@ export class ManagerCustomersComponent implements OnInit {
     let filtered = [...this.users];
 
     // Ẩn user có role admin
-    filtered = filtered.filter(user => user.role !== 'admin');
+    filtered = filtered.filter(user => user.role !== 'admin' && user.role !== 'manager');
 
     // Search theo tên hoặc email
     if (this.searchTerm && this.searchTerm.trim() !== '') {

@@ -68,11 +68,11 @@
       <input formControlName="dateOfBirth" type="date" />
 
       <label class="roles">Roles:</label>
-      <select formControlName="roles">
+      <select formControlName="roles" [disabled]="true">
         <option value="">Select role</option>
         <!-- <option value="admin">Admin</option> -->
         <option value="staff">Staff</option>
-        <option value="manager">Manager</option>
+        <!-- <option value="manager">Manager</option> -->
         <option value="consultant">Consultant</option>
         <option value="customer">Customer</option>
       </select>
