@@ -17,7 +17,7 @@ namespace HealthCareAPI.Entities
         public DateOnly End_date { get; set; }
 
         [Required]
-        public Reminder Reminder_enabled { get; set; }
+        public bool Reminder_enabled { get; set; }
 
         [Column(TypeName = "nvarchar(100)")]
         public string? Note { get; set; }

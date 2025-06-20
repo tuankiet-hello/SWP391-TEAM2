@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HealthCareAPI.Enum;
 
 namespace HealthCareAPI.Entities
 {
@@ -18,7 +19,7 @@ namespace HealthCareAPI.Entities
         [Column("Appointment Time", TypeName = "time")]
         public TimeOnly AppointmentTime { get; set; }
         //"HH:mm:ss.fffffff"
-        public bool Status { get; set; }
+        public StatusType Status { get; set; }
 
         [ForeignKey(nameof(AccountID))]
         public Account Account { get; set; } = null!;

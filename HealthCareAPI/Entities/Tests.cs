@@ -10,7 +10,7 @@ namespace HealthCareAPI.Entities
         public int TestID { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(50)")]
+        [Column(TypeName = "nvarchar(100)")]
         public string TestName { get; set; } = null!;
 
         public decimal Price { get; set; }
