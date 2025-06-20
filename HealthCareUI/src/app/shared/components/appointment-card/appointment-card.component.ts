@@ -6,13 +6,13 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-appointment-card',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './appointment-card.component.html',
   styleUrls: ['./appointment-card.component.css'],
 })
