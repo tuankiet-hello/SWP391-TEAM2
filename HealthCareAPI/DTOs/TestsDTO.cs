@@ -6,7 +6,7 @@ namespace HealthCareAPI.DTOs
     {
         //public int TestID { get; set; }
         public string TestName { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public string? Description { get; set; }
         public ActivityTest Active { get; set; }
     }

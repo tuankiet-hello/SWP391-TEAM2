@@ -8,7 +8,7 @@ namespace HealthCareAPI.Repositories
 
         //Interface này kế thừa từ generic repository và
         //bổ sung các hàm đặc thù cho Test.
-        Task<IEnumerable<Test>> EditActiveTestsAsync(Test test);
+        Task<IEnumerable<Test>> EditActiveTestsAsync();
         Task<Test> GetTestByNameAsync(string name);
 
     }

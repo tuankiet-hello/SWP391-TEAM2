@@ -89,6 +89,8 @@ namespace HealthCareAPI
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<ITestsRepository, TestsRepository>();
             builder.Services.AddScoped<TestService>();
+            builder.Services.AddScoped<ITestBookingRepository,TestBookingRepository>();
+            builder.Services.AddScoped<TestBookingService>();
             builder.Services.AddScoped<HealthCareAPI.Services.EmailService>();
 
             builder.Services.Configure<Microsoft.AspNetCore.Identity.DataProtectionTokenProviderOptions>(opt =>

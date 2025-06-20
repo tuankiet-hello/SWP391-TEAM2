@@ -35,7 +35,6 @@ namespace HealthCareAPI
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // đừng quên gọi base để Identity hoạt động đúng
-
             // Đổi tên bảng Identity mặc định, không override property
             modelBuilder.Entity<Account>().ToTable("Users");
             modelBuilder.Entity<IdentityRole<Guid>>().ToTable("Roles");
