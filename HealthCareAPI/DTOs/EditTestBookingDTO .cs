@@ -3,10 +3,10 @@ using HealthCareAPI.Enum;
 
 namespace HealthCareAPI.DTOs
 {
-    public class TestBookingDTO
+    public class EditTestBookingDTO
     {
         //public int BookingID { get; set; }
-        public Guid AccountID { get; set; }
+        //public Guid AccountID { get; set; }
         public int TestID { get; set; }
         public string Result { get; set; }
         public DateOnly BookingDate { get; set; }

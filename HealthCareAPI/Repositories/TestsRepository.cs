@@ -10,6 +10,7 @@ namespace HealthCareAPI.Repositories
         // Thêm các method đặc thù cho Tests nếu cần
         public TestsRepository(ApplicationDbContext context) : base(context) { }
 
+
         public async Task<IEnumerable<Test>> EditActiveTestsAsync()
         {
             var activeTests = await _dbSet.Where(t => t.Active).ToListAsync();
@@ -19,12 +20,6 @@ namespace HealthCareAPI.Repositories
             }
             await _context.SaveChangesAsync();
             return activeTests; // Trả về danh sách các Test vừa chỉnh sửa
-        }
-
-
-        public Task<IEnumerable<Test>> EditActiveTestsAsync(Test test)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Test>> GetActiveTestsAsync()

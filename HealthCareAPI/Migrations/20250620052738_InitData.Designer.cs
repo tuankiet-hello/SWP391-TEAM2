@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthCareAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250619021448_FixPriceTypeToDecimal")]
-    partial class FixPriceTypeToDecimal
+    [Migration("20250620052738_InitData")]
+    partial class InitData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
