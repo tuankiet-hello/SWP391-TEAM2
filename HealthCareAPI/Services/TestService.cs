@@ -25,12 +25,20 @@ namespace HealthCareAPI.Services
                 TestName = testDto.TestName,
                 Price = (decimal)testDto.Price,
                 Description = testDto.Description ?? string.Empty,
-                Active = testDto.Active == HealthCareAPI.Enum.ActivityTest.Active
+                Active = testDto.Active 
             };
             await _unitOfWork.TestsRepository.AddAsync(test);
             await _unitOfWork.CompleteAsync();
         }
-      
+        public async Task<Test> GetByIdAsync(int id)
+        {
+            var test = await _unitOfWork.TestsRepository.GetByIdAsync(id);
+            if (test == null) throw new KeyNotFoundException("Test not found");
+            return test;
+        }
+
+
+
         public async Task UpdateTestAsync(int id, TestsDTO testDto)
         {
             var test = await _unitOfWork.TestsRepository.GetByIdAsync(id);
@@ -39,10 +47,10 @@ namespace HealthCareAPI.Services
             test.TestName = testDto.TestName;
             test.Price = (decimal)testDto.Price;
             test.Description = testDto.Description ?? string.Empty;
-            test.Active = testDto.Active == HealthCareAPI.Enum.ActivityTest.Active;
+            test.Active = testDto.Active;
 
             _unitOfWork.TestsRepository.Update(test);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync();//chỉ gọi khi edit th
         }
          public async Task DeletedTestAsync(int id)
         {
