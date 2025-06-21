@@ -25,7 +25,7 @@ namespace HealthCareAPI.Services
                 TestName = testDto.TestName,
                 Price = (decimal)testDto.Price,
                 Description = testDto.Description ?? string.Empty,
-                Active = testDto.Active 
+                Active = testDto.Active
             };
             await _unitOfWork.TestsRepository.AddAsync(test);
             await _unitOfWork.CompleteAsync();
