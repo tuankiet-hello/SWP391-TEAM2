@@ -9,7 +9,7 @@ namespace HealthCareAPI.DTOs
         public Guid AccountID { get; set; }
         public DateOnly Start_date { get; set; }
         public DateOnly End_date { get; set; }
-        public Reminder Reminder_enabled { get; set; }
+        public bool Reminder_enabled { get; set; }
         public string? Note { get; set; }
     }
 } 

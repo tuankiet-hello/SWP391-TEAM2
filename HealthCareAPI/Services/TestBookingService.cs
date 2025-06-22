@@ -2,6 +2,7 @@
 using HealthCareAPI.Entities;
 using HealthCareAPI.Enum;
 using HealthCareAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthCareAPI.Services
 {
@@ -48,6 +49,11 @@ namespace HealthCareAPI.Services
             await _unitOfWork.CompleteAsync();
         }
 
-      
+        public async Task<IEnumerable<TestBooking>> GetTestHistoryAsync(Guid accountId)
+        {
+            return await _unitOfWork.TestBookingRepository.GetHistoryWithIncludesAsync(accountId);
+        }
+
+
     }
 }

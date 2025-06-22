@@ -1,3 +1,4 @@
+
 import { Routes } from '@angular/router';
 import { SexualTestingComponent } from './feature/client/sexual-testing/sexual-testing.component';
 import {
@@ -18,7 +19,7 @@ import {
   Blog4Component,
   Blog5Component,
 } from './feature/client';
-import { ManageServiceComponent } from './manager/manager-for-manager/manage-service/manage-service.component';
+import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view-test-booking.component';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -55,9 +56,8 @@ export const routes: Routes = [
   //Manager routes
   { path: 'manager-users', component: ManagerUsersComponent },
   { path: 'manager-customers', component: ManagerCustomersComponent },
-  { path: 'manage-service', component: ManageServiceComponent },
   { path: 'sexual-testing', component: SexualTestingComponent },
-
+  { path: 'staff', component: ViewTestBookingComponent },
 
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home

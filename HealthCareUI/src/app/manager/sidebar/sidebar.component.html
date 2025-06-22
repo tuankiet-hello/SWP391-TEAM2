@@ -10,6 +10,12 @@
   >
     + New Customer
   </button>
+   <button
+    class="new-btn"
+   
+  >
+    + New Booking
+  </button>
 
   <!-- Render modal nếu showModal === true -->
   <div class="createAdmin">
@@ -25,6 +31,8 @@
       (close)="closeModal()"
     ></app-create-customer>
   </div>
+  
+  
 
   <ul class="menu">
     <li routerLinkActive="active" *ngIf="role === 'admin'">
@@ -61,6 +69,12 @@
       <a class="menu-item" [routerLink]="['/manage-service']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
         <span class="menu-text">Categories Service</span>
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a class="menu-item" [routerLink]="['/staff']">
+        <nz-icon nzType="database" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Staff</span>
       </a>
     </li>
   </ul>

@@ -8,6 +8,6 @@ namespace HealthCareAPI.DTOs
         public string TestName { get; set; }
         public decimal Price { get; set; }
         public string? Description { get; set; }
-        public ActivityTest Active { get; set; }
+        public bool Active { get; set; }
     }
 } 

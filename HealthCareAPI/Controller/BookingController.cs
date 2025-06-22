@@ -48,5 +48,12 @@ namespace HealthCareAPI.Controller
                 return NotFound(new { message = ex.Message });
             }
         }
+
+        [HttpGet("history")]
+        public async Task<IActionResult> GetTestHistory([FromQuery] Guid accountId)
+        {
+            var history = await _testBookingService.GetTestHistoryAsync(accountId);
+            return Ok(history);
+        }
     }
 }

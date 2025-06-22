@@ -4,6 +4,7 @@ using HealthCareAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HealthCareAPI.Controller
 {
@@ -24,6 +25,18 @@ namespace HealthCareAPI.Controller
             var tests = await _testService.GetAllTestsAsync();
             return Ok(tests);
         }
+
+        [HttpGet("get-by-id")]
+        public async Task<IActionResult> GetByID(int id)
+        {
+            var test = await _testService.GetByIdAsync(id);
+            if (test == null)
+            {
+                return NotFound(new { message = "Test not found" });
+            }
+            return Ok(test);
+        }
+
 
         [HttpPost("add-test")]
         public async Task<IActionResult> Create(TestsDTO test)

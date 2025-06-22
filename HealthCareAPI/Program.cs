@@ -87,10 +87,16 @@ namespace HealthCareAPI
             // Đăng ký ApplicationDbContext vào DI
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            // Đăng ký các Repository
             builder.Services.AddScoped<ITestsRepository, TestsRepository>();
-            builder.Services.AddScoped<TestService>();
             builder.Services.AddScoped<ITestBookingRepository,TestBookingRepository>();
+            builder.Services.AddScoped<IAppoinmentRepository, AppoinmentRepository>();
+
+            // Đăng ký các Service
+            builder.Services.AddScoped<TestService>();
             builder.Services.AddScoped<TestBookingService>();
+            builder.Services.AddScoped<AppoinmentService>();
+            
             builder.Services.AddScoped<HealthCareAPI.Services.EmailService>();
 
             builder.Services.Configure<Microsoft.AspNetCore.Identity.DataProtectionTokenProviderOptions>(opt =>
