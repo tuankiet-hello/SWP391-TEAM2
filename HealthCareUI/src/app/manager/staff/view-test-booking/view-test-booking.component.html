@@ -99,7 +99,7 @@
                <div
                   class="icon-box edit"
                   title="Edit"
-                 
+                 (click)="editBooking(booking.bookingID)"
                 >
                   <i class="fa-solid fa-edit"></i>
                 </div>
@@ -113,6 +113,16 @@
       [booking]="selectedBooking"
       (close)="handleModalCancel()"
     ></app-view-booking-detail>
+     
+
+   <app-edit-booking 
+  *ngIf="isEditModalVisible && selectedEditBooking && idChoose !== undefined"
+  [booking]="selectedEditBooking"
+  [bookingID]="idChoose!"
+  (close)="handleEditModalClose()"
+  (updated)="handleBookingUpdated($event)">
+</app-edit-booking>
+
 
       <!-- Pagination -->
       <div class="pagination-controls">

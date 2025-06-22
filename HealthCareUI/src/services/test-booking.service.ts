@@ -19,8 +19,8 @@ export interface Account {
 }
 
 export interface Test {
+  testID: number;
   testName: string;
-  
   description?: string;
   price?: number;
   // ... các trường khác nếu cần
@@ -46,6 +46,7 @@ export interface EditTestBookingDTO {
   status: number;
 }
 
+
 @Injectable({ providedIn: 'root' })
 export class BookingService{
     private apiUrl = environment.apiUrl + '/api/booking';
@@ -57,17 +58,16 @@ export class BookingService{
          return this.http.get<TestBookingDTO>(`${this.apiUrl}/${id}`);
        }
        
-  // editBooking(
-  //   id: string,
-  //   payload: {
-  //     firstName: string;
-  //     lastName: string;
-  //     email: string;
-  //     userName: string;
-  //     dateOfBirth: string;
-  //     roles: string;
-  //   }
-  // ): Observable<any> {
-  //   return this.http.put(`${this.apiUrl}/${id}`, payload);
-  // }
+  editBooking(
+    id: number,
+    payload: {
+       testID: number;
+        result: string;
+        bookingDate: string;
+        bookingTime: string;
+        status: number;
+    }
+  ): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, payload);
+  }
 }

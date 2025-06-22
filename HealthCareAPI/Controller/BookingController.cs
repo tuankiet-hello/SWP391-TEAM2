@@ -25,7 +25,7 @@ namespace HealthCareAPI.Controller
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByID(int id)
         {
-            var test = await _testBookingService.GetByIdAsync(id);
+            var test = await _testBookingService.GetByIdWithMoreInfAsync(id);
             if (test == null)
             {
                 return NotFound(new { message = "Booking not found" });

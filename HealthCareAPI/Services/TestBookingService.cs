@@ -48,7 +48,7 @@ namespace HealthCareAPI.Services
             _unitOfWork.TestBookingRepository.Update(testBooking);
             await _unitOfWork.CompleteAsync();
         }
-        public async Task<TestBooking> GetByIdAsync(int id)
+        public async Task<TestBooking> GetByIdWithMoreInfAsync(int id)
         {
             var test = await _unitOfWork.TestBookingRepository.GetByIdWithIncludesAsync(id);
             if (test == null) throw new KeyNotFoundException("Booking not found");
