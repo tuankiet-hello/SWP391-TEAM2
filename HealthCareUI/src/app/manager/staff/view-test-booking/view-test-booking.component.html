@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header-manager></app-header-manager>
 <div class="user-manager">
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
@@ -30,25 +30,35 @@
         >
           <thead>
             <tr>
-              <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead namehead" style="width: 170px;">Full Name</span>
+                <span class="taghead nohead" style="width: 40px">No.</span>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead namehead" style="width: 170px"
+                    >Full Name</span
+                  >
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead mailhaed" style="width: 150px;">Date Of Birth</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead mailhaed" style="width: 150px"
+                    >Date Of Birth</span
+                  >
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead rolehead" style="width: 150px;">Test Name</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead rolehead" style="width: 150px"
+                    >Test Name</span
+                  >
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead verifiedhead" style="width: 100px;">Date</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead verifiedhead" style="width: 100px"
+                    >Date</span
+                  >
                 </div>
               </th>
               <!-- <th>
@@ -57,21 +67,32 @@
                 </div>
               </th> -->
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead activehead" style="width: 70px;">Status</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead activehead" style="width: 70px"
+                    >Status</span
+                  >
                 </div>
               </th>
-              <th><span class="taghead operationhead" style="width: 100px;">Operations</span></th>
+              <th>
+                <span class="taghead operationhead" style="width: 100px"
+                  >Operations</span
+                >
+              </th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let booking of displayedTestBooking; let i = index">
               <td>
-                <span class="tag no">{{ (currentPage - 1) * pageSize + i + 1 }}</span>
+                <span class="tag no">{{
+                  (currentPage - 1) * pageSize + i + 1
+                }}</span>
               </td>
               <td>
-                <span class="tag name">{{ booking.account.firstName }} {{ booking.account.lastName }}</span>
+                <span class="tag name"
+                  >{{ booking.account.firstName }}
+                  {{ booking.account.lastName }}</span
+                >
               </td>
               <td>
                 <span class="tag name">{{ booking.account.dateOfBirth }}</span>
@@ -89,26 +110,14 @@
                 <span class="tag">{{ booking.status }}</span>
               </td>
               <td div class="operation-icons">
-                <div
-                  class="icon-box eye"
-                  title="View"
-                 
-                >
+                <div class="icon-box eye" title="View">
                   <i class="fa-solid fa-eye"></i>
                 </div>
-                <div
-                  class="icon-box edit"
-                  title="Edit"
-                 
-                >
+                <div class="icon-box edit" title="Edit">
                   <i class="fa-solid fa-edit"></i>
                 </div>
 
-               <div
-                  class="icon-box edit"
-                  title="Edit"
-                 
-                >
+                <div class="icon-box edit" title="Edit">
                   <i class="fa-solid fa-edit"></i>
                 </div>
               </td>
@@ -134,7 +143,9 @@
         </button>
       </div>
 
-      <p *ngIf="displayedTestBooking.length === 0" class="no-data-text">No test bookings found.</p>
+      <p *ngIf="displayedTestBooking.length === 0" class="no-data-text">
+        No test bookings found.
+      </p>
     </div>
   </div>
 </div>

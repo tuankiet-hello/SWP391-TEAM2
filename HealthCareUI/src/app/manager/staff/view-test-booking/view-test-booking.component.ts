@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../../sidebar/sidebar.component'
-import { HeaderComponent } from '../../header/header.component';
+import { SidebarComponent } from '../../sidebar/sidebar.component';
+import { HeaderManagerComponent } from '../../header/header.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -16,7 +16,7 @@ import { FilterOutline } from '@ant-design/icons-angular/icons';
 import { SearchOutline } from '@ant-design/icons-angular/icons';
 import {
   BookingService,
-  TestBookingDTO
+  TestBookingDTO,
 } from '../../../../services/test-booking.service';
 
 @Component({
@@ -25,7 +25,7 @@ import {
     CommonModule,
     FormsModule,
     SidebarComponent,
-    HeaderComponent,
+    HeaderManagerComponent,
     NzTableModule,
     NzInputModule,
     NzModalModule,
@@ -33,13 +33,10 @@ import {
     NzDropDownModule,
     NzIconModule,
   ],
-  providers: [
-    { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
-  ],
+  providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
   templateUrl: './view-test-booking.component.html',
-  styleUrl: './view-test-booking.component.css'
+  styleUrl: './view-test-booking.component.css',
 })
-
 export class ViewTestBookingComponent implements OnInit {
   emptyText = 'No test booking found';
 
@@ -75,8 +72,10 @@ export class ViewTestBookingComponent implements OnInit {
     // Search by user name
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
-      filtered = filtered.filter(booking =>
-        (booking.account.firstName + ' ' + booking.account.lastName).toLowerCase().includes(search)
+      filtered = filtered.filter((booking) =>
+        (booking.account.firstName + ' ' + booking.account.lastName)
+          .toLowerCase()
+          .includes(search)
       );
     }
 
@@ -119,8 +118,10 @@ export class ViewTestBookingComponent implements OnInit {
     let filtered = [...this.testBooking];
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
-      filtered = filtered.filter(booking =>
-        (booking.account.firstName + ' ' + booking.account.lastName).toLowerCase().includes(search)
+      filtered = filtered.filter((booking) =>
+        (booking.account.firstName + ' ' + booking.account.lastName)
+          .toLowerCase()
+          .includes(search)
       );
     }
     return filtered;
