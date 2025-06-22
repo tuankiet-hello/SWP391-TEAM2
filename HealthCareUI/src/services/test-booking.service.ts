@@ -19,7 +19,10 @@ export interface Account {
 }
 
 export interface Test {
+  testID: number;
   testName: string;
+  description?: string;
+  price?: number;
   // ... các trường khác nếu cần
 }
 
@@ -35,6 +38,15 @@ export interface TestBookingDTO {
   test: Test;       // Thêm dòng này
   // ... các trường khác nếu có
 }
+export interface EditTestBookingDTO {
+  testID: number;
+  result: string;
+  bookingDate: string;
+  bookingTime: string;
+  status: number;
+}
+
+
 @Injectable({ providedIn: 'root' })
 export class BookingService{
     private apiUrl = environment.apiUrl + '/api/booking';
@@ -42,5 +54,20 @@ export class BookingService{
       getAllBookings(): Observable<TestBookingDTO[]> {
         return this.http.get<TestBookingDTO[]>(this.apiUrl + '/list-booking');
       }
-     
+      getBookingById(id: number): Observable<TestBookingDTO> {
+         return this.http.get<TestBookingDTO>(`${this.apiUrl}/${id}`);
+       }
+       
+  editBooking(
+    id: number,
+    payload: {
+       testID: number;
+        result: string;
+        bookingDate: string;
+        bookingTime: string;
+        status: number;
+    }
+  ): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, payload);
+  }
 }

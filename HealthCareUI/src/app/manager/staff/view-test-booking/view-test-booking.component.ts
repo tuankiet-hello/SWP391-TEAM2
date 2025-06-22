@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
@@ -18,6 +18,9 @@ import {
   BookingService,
   TestBookingDTO,
 } from '../../../../services/test-booking.service';
+import { ViewBookingDetailComponent } from '../view-booking-detail/view-booking-detail.component';
+import { faL } from '@fortawesome/free-solid-svg-icons';
+import { EditBookingComponent } from '../edit-booking/edit-booking.component';
 
 @Component({
   selector: 'app-view-test-booking',
@@ -39,7 +42,6 @@ import {
 })
 export class ViewTestBookingComponent implements OnInit {
   emptyText = 'No test booking found';
-
   testBooking: TestBookingDTO[] = [];
   displayedTestBooking: TestBookingDTO[] = [];
   searchTerm: string = '';
