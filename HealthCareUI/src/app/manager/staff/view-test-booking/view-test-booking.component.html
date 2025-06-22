@@ -9,7 +9,7 @@
 
     <div class="user-list">
       <div class="user-list-header">
-        <div class="content">Test Booking Management</div>
+        <div class="content">Test Booking</div>
         <div class="search-wrapper">
           <nz-icon nzType="search" class="search-icon"></nz-icon>
           <input
@@ -51,11 +51,6 @@
                   <span class="taghead verifiedhead" style="width: 100px;">Date</span>
                 </div>
               </th>
-              <!-- <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead activehead" style="width: 70px;">Time</span>
-                </div>
-              </th> -->
               <th>
                 <div style="display: flex; align-items: center;">
                   <span class="taghead activehead" style="width: 70px;">Status</span>
@@ -82,28 +77,25 @@
               <td>
                 <span class="tag">{{ booking.bookingDate }}</span>
               </td>
-              <!-- <td>
-                <span class="tag">{{ booking.bookingTime }}</span>
-              </td> -->
               <td>
-                <span class="tag">{{ booking.status }}</span>
+                <span
+                  class="tag"
+                  [style.border]="'2px solid ' + statusColorMap[booking.status]"
+                  [style.color]="statusColorMap[booking.status]"
+                >
+                  {{ statusMap[booking.status] || 'Không xác định' }}
+                </span>
               </td>
+
+
               <td div class="operation-icons">
                 <div
                   class="icon-box eye"
                   title="View"
-                 
+                  (click)="viewBookingDetail(booking.bookingID)"
                 >
                   <i class="fa-solid fa-eye"></i>
                 </div>
-                <div
-                  class="icon-box edit"
-                  title="Edit"
-                 
-                >
-                  <i class="fa-solid fa-edit"></i>
-                </div>
-
                <div
                   class="icon-box edit"
                   title="Edit"
@@ -116,6 +108,11 @@
           </tbody>
         </nz-table>
       </div>
+     <app-view-booking-detail
+      *ngIf="isModalVisible && selectedBooking"
+      [booking]="selectedBooking"
+      (close)="handleModalCancel()"
+    ></app-view-booking-detail>
 
       <!-- Pagination -->
       <div class="pagination-controls">

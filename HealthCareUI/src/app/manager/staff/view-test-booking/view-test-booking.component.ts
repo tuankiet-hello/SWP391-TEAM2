@@ -18,6 +18,7 @@ import {
   BookingService,
   TestBookingDTO
 } from '../../../../services/test-booking.service';
+import { ViewBookingDetailComponent } from '../view-booking-detail/view-booking-detail.component';
 
 @Component({
   selector: 'app-view-test-booking',
@@ -32,6 +33,7 @@ import {
     NzSelectModule,
     NzDropDownModule,
     NzIconModule,
+    ViewBookingDetailComponent
   ],
   providers: [
     { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
@@ -45,7 +47,24 @@ export class ViewTestBookingComponent implements OnInit {
 
   testBooking: TestBookingDTO[] = [];
   displayedTestBooking: TestBookingDTO[] = [];
+  selectedBooking?: TestBookingDTO;
+    isModalVisible: boolean = false;
   searchTerm: string = '';
+  statusMap: { [key: number]: string } = {
+  0: 'Submited',
+  1: 'Pending',
+  2: 'Confirmed',
+  3: 'Canceled',
+  4: 'Completed',
+};
+statusColorMap: { [key: number]: string } = {
+  0: '#1976d2',
+  1: '#fbc02d',
+  2: '#388e3c',
+  3: '#d32f2f',
+  4: '#7b1fa2'
+};
+
 
   // Pagination
   currentPage = 1;
@@ -91,6 +110,19 @@ export class ViewTestBookingComponent implements OnInit {
     this.displayedTestBooking = filtered.slice(startIndex, endIndex);
   }
 
+
+    viewBookingDetail(id: number): void {
+  this.bookingService.getBookingById(id).subscribe((booking) => {
+    console.log('Booking detail:', booking); // kiểm tra booking có dữ liệu không
+    this.selectedBooking = booking;
+    this.isModalVisible = true;
+  })
+    }
+    
+    handleModalCancel(): void {
+      this.isModalVisible = false;
+      this.selectedBooking = undefined;
+    }
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;

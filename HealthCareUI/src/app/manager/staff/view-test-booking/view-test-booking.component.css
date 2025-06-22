@@ -329,6 +329,14 @@ nz-filter-trigger[nzactive="true"] .anticon {
   border-radius: 50%;
   transition: background 0.5s, color 0.5s;
 }
+.tag {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  background: #fff;
+}
+
 
 /* Menu dài sẽ có scroll */
 /* .nz-dropdown-menu, .ant-dropdown-menu {

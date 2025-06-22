@@ -26,7 +26,7 @@ namespace HealthCareAPI.Controller
             return Ok(tests);
         }
 
-        [HttpGet("get-by-id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByID(int id)
         {
             var test = await _testService.GetByIdAsync(id);

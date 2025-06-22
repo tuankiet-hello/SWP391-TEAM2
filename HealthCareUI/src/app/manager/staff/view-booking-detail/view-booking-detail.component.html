@@ -1,0 +1,74 @@
+<div class="custom-modal">
+  <div class="custom-modal-content">
+    <div class="btnclose">
+      <span class="close-button" (click)="onClose()">&times;</span>
+    </div>
+
+    <div *ngIf="booking">
+      <!-- Avatar user -->
+      <div class="user-avatar">
+        <span>
+          {{ booking.account.firstName ? booking.account.firstName[0] : '' }}
+        </span>
+      </div>
+      <h3 class="modal-title">Test Booking Details</h3>
+      <div class="user-details-list">
+        <div class="detail-row">
+          <span class="detail-label">BookingID:</span>
+          <span class="detail-value">
+            {{ booking.bookingID }} 
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Full Name:</span>
+          <span class="detail-value">
+            {{ booking.account.firstName }} {{ booking.account.lastName }}
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Date of Birth:</span>
+          <span class="detail-value">{{ booking.account.dateOfBirth }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Test Name:</span>
+          <span class="detail-value">{{ booking.test.testName }}</span>
+        </div>
+        
+        <div class="detail-row">
+          <span class="detail-label">Test Price:</span>
+          <span class="detail-value">
+            {{ booking.test.price !== undefined && booking.test.price !== null ? (booking.test.price | number) + ' VNĐ' : 'N/A' }}
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Booking Date:</span>
+          <span class="detail-value">{{ booking.bookingDate }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Booking Time:</span>
+          <span class="detail-value">{{ booking.bookingTime }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Result:</span>
+          <span class="detail-value">{{ booking.result }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Status:</span>
+          <span class="detail-value">
+            <span
+              class="booking-status"
+              [ngStyle]="{
+                'border': '2px solid ' + statusColorMap[booking.status],
+                'color': statusColorMap[booking.status]
+              }"
+            >
+              {{ statusMap[booking.status] || 'Không xác định' }}
+            </span>
+            
+          </span>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
