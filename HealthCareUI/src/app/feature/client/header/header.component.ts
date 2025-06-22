@@ -8,7 +8,6 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { DoCheck } from '@angular/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { FormsModule } from '@angular/forms';
@@ -22,13 +21,12 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     NzInputModule,
-    NzAutocompleteModule
+    NzAutocompleteModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
-
 })
-export class HeaderComponent implements DoCheck {
+export class HeaderComponent {
   menuOpen = false;
   role: string | null = null;
   isLoggedIn = false;
@@ -47,15 +45,8 @@ export class HeaderComponent implements DoCheck {
     library.addIcons(faSearch);
   }
 
-  ngDoCheck(): void {
-    const currentLoginStatus = this.authService.isLoggedIn();
-    if (this.isLoggedIn !== currentLoginStatus) {
-      this.isLoggedIn = currentLoginStatus;
-      this.role = this.authService.getRoleFromToken();
-    }
-  }
   ngOnInit(): void {
-    console.log('✅ Header ngOnInit called');
+    console.log('✅ Header-Manager ngOnInit called');
     this.isLoggedIn = this.authService.isLoggedIn();
     this.userName = this.authService.getUserNameToken();
     console.log('🔐 isLoggedIn:', this.isLoggedIn);
@@ -145,9 +136,10 @@ export class HeaderComponent implements DoCheck {
     const search = this.searchValue.trim().toLowerCase();
     this.filteredBlogs = !search
       ? []
-      : this.blogs.filter(blog =>
-          blog.title.toLowerCase().includes(search) ||
-          blog.desc.toLowerCase().includes(search)
+      : this.blogs.filter(
+          (blog) =>
+            blog.title.toLowerCase().includes(search) ||
+            blog.desc.toLowerCase().includes(search)
         );
   }
 
