@@ -28,7 +28,7 @@ export class ManagerService {
     TestName: string;
     Price: number;
     Description: string;
-    Active: boolean;
+    active: boolean;
   }): Observable<any> {
     return this.http.post(this.apiUrl + '/add-test', payload);
   }

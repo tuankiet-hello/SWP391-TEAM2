@@ -4,18 +4,13 @@
   <app-sidebar (testCreated)="handleTestCreated()"></app-sidebar>
   <!-- Main-Content -->
   <div class="main">
-    <p>Categorie Test Service</p>
     <div class="user-list">
       <div class="user-list-header">
         <div class="content">Test Management</div>
         <div class="search-wrapper">
           <nz-icon nzType="search" class="search-icon"></nz-icon>
           <!-- dùng nz-input -->
-          <input
-            nz-input
-            placeholder="Search by name, email"
-            class="search-box"
-          />
+          <input nz-input placeholder="Search by name" class="search-box" />
         </div>
         <nz-table
           [nzData]="displayedTest"
@@ -115,16 +110,23 @@
                 <span class="tag active" *ngIf="user.active === true"
                   >Active</span
                 >
-                <span class="tag active" *ngIf="user.active === false"
-                  >Active</span
+                <span class="tag inactive" *ngIf="user.active === false"
+                  >Inactive</span
                 >
               </td>
               <td div class="operation-icons">
-                <div class="icon-box edit" title="Edit">
+                <div
+                  class="icon-box edit"
+                  title="Edit"
+                  (click)="editTest(user.testID)"
+                >
                   <i class="fa-solid fa-edit"></i>
                 </div>
 
-                <div class="icon-box lock" title="lock" (click)="BanTest(i)">
+                <!-- <div
+                  class="icon-box lock"
+                  title="lock"
+                >
                   <i
                     class="fa-solid"
                     [ngClass]="[
@@ -133,12 +135,20 @@
                     ]"
                   >
                   </i>
-                </div>
+                </div> -->
               </td>
             </tr>
           </tbody>
         </nz-table>
       </div>
+
+      <app-test-edit
+        *ngIf="isEditModalVisible && selectedEditTest"
+        [user]="selectedEditTest"
+        (close)="handleEditModalClose()"
+        (updated)="loadTests()"
+      ></app-test-edit>
+
       <!-- phân trang -->
       <div class="pagination-controls">
         <button (click)="prevPage()" [disabled]="currentPage === 1">

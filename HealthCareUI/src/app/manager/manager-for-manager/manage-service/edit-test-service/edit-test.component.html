@@ -1,0 +1,40 @@
+<div class="custom-modal">
+  <div class="custom-modal-content">
+    <div class="btnclose">
+      <span class="close-button" (click)="onCancel()">&times;</span>
+    </div>
+    <h2>Edit Test</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label class="fn">Test Name</label>
+      <input formControlName="testName" placeholder="Test Name" />
+      <div class="error">
+        <span
+          *ngIf="form.get('testName')?.touched && form.get('testName')?.errors?.['required']"
+        >
+          *Test Name is required
+        </span>
+      </div>
+
+      <label>Description:</label>
+      <input formControlName="description" />
+      <div class="error">
+        <span
+          *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['required']"
+        >
+          *Description is required
+        </span>
+      </div>
+
+      <label>Price:</label>
+      <input type="text" formControlName="price" />
+
+      <label class="status">Status:</label>
+      <select formControlName="active">
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
+      </select>
+
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { HeaderManagerComponent } from '../../header/header.component';
@@ -17,7 +17,8 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-
+import { TestDTO, TestService } from '../../../../services/test.service';
+import { TestEditComponent } from './edit-test-service/edit-test.component';
 @Component({
   selector: 'app-manage-service',
   imports: [
@@ -32,6 +33,7 @@ import {
     NzDropDownModule,
     NzIconModule,
     ReactiveFormsModule,
+    TestEditComponent,
   ],
   providers: [],
   templateUrl: './manage-service.component.html',
@@ -42,26 +44,22 @@ export class ManageServiceComponent {
   role: string | null = null;
   isLoggedIn = false;
   userName: string | null = null;
-  createTestForm: FormGroup;
   isEdit = false;
+  selectedEditTest?: TestDTO;
+  isEditModalVisible: boolean = false;
+  idChoose: number = 0;
 
   currentPage = 1;
   pageSize = 5; // số user trên mỗi trang
   totalUsers = 0;
   totalPages = 0;
-
+  @Output() ban = new EventEmitter<void>();
   constructor(
     private authService: AuthService,
     private managerService: ManagerService,
-    private fb: FormBuilder
-  ) {
-    this.createTestForm = this.fb.group({
-      TestName: ['', Validators.required],
-      Price: ['', [Validators.required]],
-      Description: ['', [Validators.required]],
-      Status: [0],
-    });
-  }
+    private fb: FormBuilder,
+    private testService: TestService
+  ) {}
 
   tests: Tests[] = [];
   displayedTest: Tests[] = [];
@@ -84,30 +82,16 @@ export class ManageServiceComponent {
     // Gọi API load lại danh sách
     this.loadTests();
   }
-
-  BanTest(index: number): void {
-    this.tests[index].active = !this.tests[index].active;
-    this.loadTests();
-  }
-  onAddTest(): void {
-    // if (this.addTestForm.invalid) {
-    //   this.addTestForm.markAllAsTouched();
-    //   return;
-    // }
-
-    const payload = this.createTestForm.value;
-    this.managerService.addTest(payload).subscribe({
-      next: () => {
-        alert('✅ Thêm test thành công!');
-        this.createTestForm.reset({ Active: true }); // reset form
-        this.loadTests(); // load lại danh sách
+  editTest(id: number): void {
+    this.testService.getTestById(id).subscribe({
+      next: (user) => {
+        this.selectedEditTest = user;
+        this.isEditModalVisible = true;
       },
-      error: (err) => {
-        console.error('❌ Lỗi khi thêm test:', err);
-        alert('❌ Không thể thêm test. Kiểm tra lại!');
-      },
+      error: (err) => console.error('Load test for edit failed', err),
     });
   }
+
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
@@ -132,6 +116,10 @@ export class ManageServiceComponent {
     this.displayedTest = this.tests.slice(startIndex, endIndex);
   }
 
+  handleEditModalClose(): void {
+    this.isEditModalVisible = false;
+    this.selectedEditTest = undefined;
+  }
   ngOnInit(): void {
     console.log('✅ Sexual Testing ngOnInit called');
     this.isLoggedIn = this.authService.isLoggedIn();

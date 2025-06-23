@@ -52,19 +52,13 @@ export class CreateCustomerComponent implements OnInit {
     } else if (this.role === 'manager') {
       this.createTestForm = this.fb.group({
         TestName: ['', Validators.required],
-        Price: ['', [Validators.required]],
+        Price: ['', Validators.required],
         Description: ['', [Validators.required]],
-        Status: [0],
+        active: [true],
       });
-      console.log('popup create test');
     }
   }
   onAddTest(): void {
-    // if (this.addTestForm.invalid) {
-    //   this.addTestForm.markAllAsTouched();
-    //   return;
-    // }
-
     const payload = this.createTestForm.value;
     this.managerService.addTest(payload).subscribe({
       next: () => {

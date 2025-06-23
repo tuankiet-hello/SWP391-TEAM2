@@ -23,7 +23,7 @@ namespace HealthCareAPI.Services
             var test = new Test
             {
                 TestName = testDto.TestName,
-                Price = (decimal)testDto.Price,
+                Price = testDto.Price,
                 Description = testDto.Description ?? string.Empty,
                 Active = testDto.Active
             };

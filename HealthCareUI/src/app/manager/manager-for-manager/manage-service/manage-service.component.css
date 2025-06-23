@@ -202,8 +202,14 @@ td {
 }
 
 .tag.active {
-  background-color: #e3f2fd;
-  color: #1976d2;
+  background-color: #c9e3f6;
+  color: #0acd27;
+  display: flex;
+  justify-self: center;
+}
+.tag.inactive {
+  background-color: #c9e3f6;
+  color: #fd2323;
   display: flex;
   justify-self: center;
 }
