@@ -1,23 +1,35 @@
 <div class="container">
   <!-- Nút mở modal -->
-  <button class="new-btn" *ngIf="role === 'admin'" (click)="openUserModal()">
+  <button 
+   class="new-btn"
+   *ngIf="role === 'admin'" 
+   (click)="openUserModal()">
     + New User
   </button>
+
   <button
     class="new-btn"
     *ngIf="role === 'manager'"
-    (click)="openCustomerModal()"
-  >
+    (click)="openCustomerModal()">
     + New Customer
   </button>
+
    <button
     class="new-btn"
-   
+     *ngIf="role === 'staff'|| role === 'manager'"
+    (click)="openBookingModal()"
   >
     + New Booking
   </button>
 
   <!-- Render modal nếu showModal === true -->
+   <div class="createBooking">
+    <app-create-booking
+      *ngIf="modalType === 'booking'"
+      (close)="closeModal()"
+    ></app-create-booking>
+  </div> 
+
   <div class="createAdmin">
     <app-create-user
       *ngIf="modalType === 'user'"
@@ -71,7 +83,7 @@
         <span class="menu-text">Categories Service</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" *ngIf="role === 'manager' || role === 'staff'">
       <a class="menu-item" [routerLink]="['/staff']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
         <span class="menu-text">Staff</span>

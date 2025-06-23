@@ -11,7 +11,7 @@
   background: #fff;
   border-radius: 16px;
   padding: 32px 32px 24px 32px;
-  min-width: 370px;
+  min-width: 500px;
   max-width: 95vw;
   box-shadow: 0 8px 32px rgba(34,51,92,0.14);
   position: relative;
@@ -56,6 +56,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  /* min-width: 300px; */
   margin-bottom: 12px;
 }
 .detail-label {
@@ -69,7 +70,7 @@
   color: #222;
   text-align: right;
   max-width: 200px;
-  text-align: start;
+  /* text-align: justify; */
   word-break: break-word;
 }
 
