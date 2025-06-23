@@ -1,3 +1,4 @@
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -12,6 +13,7 @@ import { environment } from '../app/app.config';
 // }
 // Thêm các interface phụ cho rõ ràng
 export interface Account {
+  id: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
@@ -45,6 +47,18 @@ export interface EditTestBookingDTO {
   bookingTime: string;
   status: number;
 }
+export interface CreateTestBookingDTO {
+  // bookingID: number;
+  accountID: string;
+  testID: number;
+  result: string;
+  bookingDate: string;
+  bookingTime: string;
+  status: number;
+  // account: Account; // Thêm dòng này
+  // test: Test;       // Thêm dòng này
+  // ... các trường khác nếu có
+}
 
 
 @Injectable({ providedIn: 'root' })
@@ -70,4 +84,15 @@ export class BookingService{
   ): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, payload);
   }
+  addBooking(
+    payload:{
+      accountID: string;
+      testID: number;
+      result: string;
+      bookingDate: string;
+      bookingTime: string;
+      status: number;
+    }
+  ): Observable<any> {
+    return this.http.post(this.apiUrl + '/add-booking', payload);}
 }

@@ -28,6 +28,13 @@
   </button>
 
   <!-- Render modal nếu showModal === true -->
+  <div class="createBooking">
+    <app-create-booking
+      *ngIf="modalType === 'booking'"
+      (close)="closeModal()"
+    ></app-create-booking>
+  </div>
+
   <div class="createAdmin">
     <app-create-user
       *ngIf="modalType === 'user'"
@@ -80,7 +87,14 @@
         <span class="menu-text">Categories Service</span>
       </a>
     </li>
-    <li routerLinkActive="active" *ngIf="role === 'staff'">
+    <<<<<<< HEAD
+    <li routerLinkActive="active" *ngIf="role === 'staff'">=======</li>
+
+    <li
+      routerLinkActive="active"
+      *ngIf="role === 'manager' || role === 'staff'"
+    >
+      >>>>>>> f078c60ed975fa5b51166bd7162361115359354b
       <a class="menu-item" [routerLink]="['/staff']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
         <span class="menu-text">Staff</span>

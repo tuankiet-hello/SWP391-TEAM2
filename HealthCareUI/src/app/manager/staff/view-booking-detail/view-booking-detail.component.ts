@@ -13,11 +13,11 @@ export class ViewBookingDetailComponent {
 @Input() booking!: TestBookingDTO;
 @Output() close = new EventEmitter<void>();
   statusMap: { [key: number]: string } = {
-  0: 'Đã gửi',
-  1: 'Đang chờ duyệt',
-  2: 'Đã xác nhận',
-  3: 'Đã hủy',
-  4: 'Hoàn thành'
+  0: 'Submitted',
+  1: 'Pending',
+  2: 'Confirmed',
+  3: 'Canceled',
+  4: 'Completed'
 };
 statusColorMap: { [key: number]: string } = {
   0: '#1976d2',
