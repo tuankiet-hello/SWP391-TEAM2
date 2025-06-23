@@ -7,7 +7,7 @@
 
 html {
   font-size: 62.5%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f7f9fc;
   color: #333;
 }
@@ -37,7 +37,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin: 10px;
   padding: 15px;
@@ -49,7 +49,7 @@ body {
   margin-bottom: 15px;
   margin-left: 15px;
 }
-.content{
+.content {
   font-size: 36px;
   font-weight: bold;
   margin-bottom: 15px;
@@ -81,7 +81,7 @@ body {
   outline: none;
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   background-color: #fafafa;
 }
 
@@ -100,21 +100,24 @@ nz-table {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-th, td {
+th,
+td {
   padding: 12px 15px !important;
   border-bottom: 1px solid #eee !important;
   vertical-align: middle;
   font-weight: 500;
 }
 
-th:first-child, td:first-child {
+th:first-child,
+td:first-child {
   text-align: center;
   width: 60px;
   font-weight: 600;
   color: #333;
 }
 
-th, td {
+th,
+td {
   text-align: left;
 }
 
@@ -205,7 +208,11 @@ th, td {
   justify-self: center;
 }
 
-.nohead, .rolehead, .verifiedhead, .activehead, .operationhead {
+.nohead,
+.rolehead,
+.verifiedhead,
+.activehead,
+.operationhead {
   display: flex;
   justify-content: center;
 }
@@ -267,10 +274,11 @@ nz-filter-trigger[nzactive="true"] .anticon {
 }
 
 /* Bo góc nhẹ, bóng đổ mờ, padding đều giúp menu nổi bật */
-.nz-dropdown-menu, .ant-dropdown-menu {
+.nz-dropdown-menu,
+.ant-dropdown-menu {
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   padding: 8px 0;
   min-width: 170px;
   border: 1px solid #f0f0f0;
@@ -278,8 +286,14 @@ nz-filter-trigger[nzactive="true"] .anticon {
 }
 
 @keyframes dropdownFadeIn {
-  from { opacity: 0; transform: translateY(-8px);}
-  to   { opacity: 1; transform: translateY(0);}
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Mỗi item nhìn "mềm" hơn, hiệu ứng hover rõ ràng, màu sắc dịu mắt, dễ nhận biết lựa chọn */
@@ -303,7 +317,8 @@ nz-filter-trigger[nzactive="true"] .anticon {
 }
 
 /* Icon filter có nền nhẹ, hover chuyển màu giúp dễ nhận biết cột đang filter */
-.nz-filter-trigger, .ant-table-filter-trigger {
+.nz-filter-trigger,
+.ant-table-filter-trigger {
   border-radius: 50%;
   background: #f0f5ff;
   padding: 4px;
@@ -325,7 +340,7 @@ nz-filter-trigger[nzactive="true"] .anticon {
   background: #1677ff !important;
   color: #fff !important;
   font-weight: bold;
-  box-shadow: 0 2px 8px rgba(22,119,255,0.15);
+  box-shadow: 0 2px 8px rgba(22, 119, 255, 0.15);
   border-radius: 50%;
   transition: background 0.5s, color 0.5s;
 }
@@ -336,7 +351,41 @@ nz-filter-trigger[nzactive="true"] .anticon {
   font-weight: 600;
   background: #fff;
 }
-
+.Submited {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  background: #1976d2;
+}
+.Pending {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  background: #fbc02d;
+}
+.Canceled {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  background: #d32f2f;
+}
+.Confirmed {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  background: #388e3c;
+}
+.Completed {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  background: #a73cd4;
+}
 
 /* Menu dài sẽ có scroll */
 /* .nz-dropdown-menu, .ant-dropdown-menu {

@@ -4,11 +4,11 @@
       <span class="close-button" (click)="onClose()">&times;</span>
     </div>
 
-    <div *ngIf="booking">
+    <div>
       <!-- Avatar user -->
       <div class="user-avatar">
         <span>
-          {{ booking.account.firstName ? booking.account.firstName[0] : '' }}
+          {{ booking.account.firstName ? booking.account.firstName : "" }}
         </span>
       </div>
       <h3 class="modal-title">Test Booking Details</h3>
@@ -16,7 +16,7 @@
         <div class="detail-row">
           <span class="detail-label">BookingID:</span>
           <span class="detail-value">
-            {{ booking.bookingID }} 
+            {{ booking.bookingID }}
           </span>
         </div>
         <div class="detail-row">
@@ -33,11 +33,15 @@
           <span class="detail-label">Test Name:</span>
           <span class="detail-value">{{ booking.test.testName }}</span>
         </div>
-        
+
         <div class="detail-row">
           <span class="detail-label">Test Price:</span>
           <span class="detail-value">
-            {{ booking.test.price !== undefined && booking.test.price !== null ? (booking.test.price | number) + ' VNĐ' : 'N/A' }}
+            {{
+              booking.test.price !== undefined && booking.test.price !== null
+                ? (booking.test.price | number) + " VNĐ"
+                : "N/A"
+            }}
           </span>
         </div>
         <div class="detail-row">
@@ -58,16 +62,14 @@
             <span
               class="booking-status"
               [ngStyle]="{
-                'border': '2px solid ' + statusColorMap[booking.status],
-                'color': statusColorMap[booking.status]
+                border: '2px solid ' + statusColorMap[booking.status],
+                color: statusColorMap[booking.status]
               }"
             >
-              {{ statusMap[booking.status] || 'Không xác định' }}
+              {{ statusMap[booking.status] || "Không xác định" }}
             </span>
-            
           </span>
         </div>
-        
       </div>
     </div>
   </div>

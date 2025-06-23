@@ -49,14 +49,14 @@
               </th>
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead rolehead" style="width: 150px"
+                  <span class="taghead rolehead" style="width: 110px"
                     >Test Name</span
                   >
                 </div>
               </th>
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead verifiedhead" style="width: 100px"
+                  <span class="taghead verifiedhead" style="width: 120px"
                     >Date</span
                   >
                 </div>
@@ -107,13 +107,35 @@
                 <span class="tag">{{ booking.bookingTime }}</span>
               </td> -->
               <td>
-                <span class="tag">{{ booking.status }}</span>
+                <span class="Pending" *ngIf="booking.status === 1"
+                  >Pending</span
+                >
+                <span class="Confirmed" *ngIf="booking.status === 2"
+                  >Confirmed</span
+                >
+                <span class="Canceled" *ngIf="booking.status === 3"
+                  >Canceled</span
+                >
+                <span class="Completed" *ngIf="booking.status === 4"
+                  >Completed</span
+                >
+                <span class="Submited" *ngIf="booking.status === 0"
+                  >Submited</span
+                >
               </td>
               <td div class="operation-icons">
-                <div class="icon-box eye" title="View">
+                <div
+                  class="icon-box eye"
+                  title="View"
+                  (click)="openModalView(booking.bookingID)"
+                >
                   <i class="fa-solid fa-eye"></i>
                 </div>
-                <div class="icon-box edit" title="Edit">
+                <div
+                  class="icon-box edit"
+                  title="Edit"
+                  (click)="openModalEdit(booking.bookingID)"
+                >
                   <i class="fa-solid fa-edit"></i>
                 </div>
 
@@ -126,6 +148,20 @@
         </nz-table>
       </div>
 
+      <app-view-booking-detail
+        *ngIf="modalView"
+        (close)="closeModal()"
+        [booking]="bookingTest"
+      >
+      </app-view-booking-detail>
+
+      <app-edit-booking
+        *ngIf="modalEdit"
+        (close)="closeModalEdit()"
+        [bookingID]="testSelected"
+        [booking]="bookingTest"
+      >
+      </app-edit-booking>
       <!-- Pagination -->
       <div class="pagination-controls">
         <button (click)="prevPage()" [disabled]="currentPage === 1">

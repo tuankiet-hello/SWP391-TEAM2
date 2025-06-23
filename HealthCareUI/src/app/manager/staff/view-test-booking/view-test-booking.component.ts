@@ -24,6 +24,7 @@ import { EditBookingComponent } from '../edit-booking/edit-booking.component';
 
 @Component({
   selector: 'app-view-test-booking',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -35,6 +36,8 @@ import { EditBookingComponent } from '../edit-booking/edit-booking.component';
     NzSelectModule,
     NzDropDownModule,
     NzIconModule,
+    ViewBookingDetailComponent,
+    EditBookingComponent,
   ],
   providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
   templateUrl: './view-test-booking.component.html',
@@ -45,12 +48,14 @@ export class ViewTestBookingComponent implements OnInit {
   testBooking: TestBookingDTO[] = [];
   displayedTestBooking: TestBookingDTO[] = [];
   searchTerm: string = '';
-
+  modalView: boolean = false;
+  modalEdit: boolean = false;
+  testSelected!: number;
+  bookingTest!: TestBookingDTO;
   // Pagination
   currentPage = 1;
   pageSize = 5;
   totalPages = 0;
-
   constructor(
     private bookingService: BookingService,
     private modal: NzModalService,
@@ -59,6 +64,41 @@ export class ViewTestBookingComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTestBooking();
+  }
+
+  openModalView(booking: number) {
+    this.testSelected = booking;
+    this.bookingService.getBookingById(this.testSelected).subscribe({
+      next: (data) => {
+        this.bookingTest = data; // data chính là TestBookingDTO
+        this.modalView = true;
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy booking:', err);
+      },
+    });
+  }
+
+  openModalEdit(booking: number) {
+    this.testSelected = booking;
+    this.bookingService.getBookingById(this.testSelected).subscribe({
+      next: (data) => {
+        this.bookingTest = data; // data chính là TestBookingDTO
+        this.modalEdit = true;
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy booking:', err);
+      },
+    });
+    console.log(this.bookingTest);
+  }
+
+  closeModalEdit() {
+    this.modalEdit = false;
+  }
+
+  closeModal() {
+    this.modalView = false;
   }
 
   loadTestBooking(): void {
@@ -128,4 +168,6 @@ export class ViewTestBookingComponent implements OnInit {
     }
     return filtered;
   }
+
+  getTestBookingByID() {}
 }
