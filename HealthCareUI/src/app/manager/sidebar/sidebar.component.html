@@ -1,6 +1,22 @@
 <div class="container">
   <!-- Nút mở modal -->
+  <!-- role ADMIN -->
   <button class="new-btn" *ngIf="role === 'admin'" (click)="openUserModal()">
+    + New User
+  </button>
+
+  <!-- Role STAFF -->
+  <button
+    class="new-btn"
+    *ngIf="role === 'staff'"
+    (click)="openCustomerModal()"
+  >
+    + New Customer
+  </button>
+  <button class="new-btn" *ngIf="role === 'staff'">+ New Booking</button>
+
+  <!-- Role MANAGER -->
+  <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">
     + New User
   </button>
   <button
@@ -8,13 +24,7 @@
     *ngIf="role === 'manager'"
     (click)="openCustomerModal()"
   >
-    + New Customer
-  </button>
-   <button
-    class="new-btn"
-   
-  >
-    + New Booking
+    + New Test
   </button>
 
   <!-- Render modal nếu showModal === true -->
@@ -29,10 +39,9 @@
     <app-create-customer
       *ngIf="modalType === 'customer'"
       (close)="closeModal()"
+      (testCreated)="handleTestCreated()"
     ></app-create-customer>
   </div>
-  
-  
 
   <ul class="menu">
     <li routerLinkActive="active" *ngIf="role === 'admin'">
@@ -53,7 +62,7 @@
         <span class="menu-text">Feedbacks</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" *ngIf="role === 'manager'">
       <a class="menu-item">
         <nz-icon nzType="clock-circle" nzTheme="outline"></nz-icon>
         <span class="menu-text">Set working time</span>
@@ -65,13 +74,13 @@
         <span class="menu-text">Dashboard</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" *ngIf="role === 'manager'">
       <a class="menu-item" [routerLink]="['/manage-service']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
         <span class="menu-text">Categories Service</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" *ngIf="role === 'staff'">
       <a class="menu-item" [routerLink]="['/staff']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
         <span class="menu-text">Staff</span>

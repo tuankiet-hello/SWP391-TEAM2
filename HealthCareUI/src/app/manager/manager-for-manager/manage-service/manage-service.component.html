@@ -1,7 +1,7 @@
 <app-header-manager></app-header-manager>
 <div class="user-manager">
   <!-- Sidebar -->
-  <app-sidebar></app-sidebar>
+  <app-sidebar (testCreated)="handleTestCreated()"></app-sidebar>
   <!-- Main-Content -->
   <div class="main">
     <p>Categorie Test Service</p>
@@ -18,7 +18,7 @@
           />
         </div>
         <nz-table
-          [nzData]="tests"
+          [nzData]="displayedTest"
           [nzFrontPagination]="false"
           [nzShowPagination]="false"
         >
@@ -96,7 +96,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let user of tests; let i = index">
+            <tr *ngFor="let user of displayedTest; let i = index">
               <td>
                 <span class="tag no">{{
                   (currentPage - 1) * pageSize + i + 1
@@ -124,13 +124,38 @@
                   <i class="fa-solid fa-edit"></i>
                 </div>
 
-                <div class="icon-box lock" title="lock">
-                  <i class="fa-solid fa-lock"> </i>
+                <div class="icon-box lock" title="lock" (click)="BanTest(i)">
+                  <i
+                    class="fa-solid"
+                    [ngClass]="[
+                      user.active === true ? 'fa-lock' : 'fa-unlock',
+                      user.active === true ? 'unlock-icon' : 'lock-icon'
+                    ]"
+                  >
+                  </i>
                 </div>
               </td>
             </tr>
           </tbody>
         </nz-table>
+      </div>
+      <!-- phân trang -->
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+          Prev
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages); let idx = index"
+          [class.active]="currentPage === idx + 1"
+          (click)="goToPage(idx + 1)"
+        >
+          {{ idx + 1 }}
+        </button>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </button>
       </div>
     </div>
   </div>

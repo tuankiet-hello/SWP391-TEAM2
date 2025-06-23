@@ -29,78 +29,78 @@
   display: flex;
   animation: slideDown 0.3s;
   flex-direction: column;
-
-  .title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: black;
-  }
-
-  label {
-    margin-top: 0.75rem;
-    font-weight: 500;
-    color: black;
-  }
-
-  input,
-  select {
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 100%;
-    background-color: white;
-    color: black;
-  }
-
-  .password-field {
-    position: relative;
-
-    input {
-      padding-right: 2rem;
-    }
-
-    .toggle {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-    }
-  }
-
-  .btn {
-    text-align: center;
-    margin-top: 18px;
-  }
-
-  .btn-submit {
-    /* margin-top: 1.5rem; */
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .btn-submit:disabled {
-    background-color: #999;
-    cursor: not-allowed;
-  }
-
-  .btn-cancel {
-    margin-top: 0.75rem;
-    background: none;
-    border: none;
-    color: #555;
-    cursor: pointer;
-    text-align: center;
-  }
 }
+
+.modal-form .title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: black;
+}
+
+.modal-form label {
+  margin-top: 0.75rem;
+  font-weight: 500;
+  color: black;
+}
+
+.modal-form input,
+.modal-form select {
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  background-color: white;
+  color: black;
+}
+
+.modal-form .password-field {
+  position: relative;
+}
+
+.modal-form .password-field input {
+  padding-right: 2rem;
+}
+
+.modal-form .password-field .toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.modal-form .btn {
+  text-align: center;
+  margin-top: 18px;
+}
+
+.modal-form .btn-submit {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal-form .btn-submit:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.modal-form .btn-cancel {
+  margin-top: 0.75rem;
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  text-align: center;
+}
+
 .error {
   color: #dc3545;
   font-size: 10px;
@@ -135,4 +135,33 @@
 }
 .toggle:hover {
   color: #1890ff;
+}
+.form-Create {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  boder: 10px solid black;
+}
+.form-Create input,
+.form-Create select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.form-Create button {
+  background: #f57c00;
+  color: white;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease-in-out;
+}
+
+.form-Create button:hover {
+  background: #ef6c00;
 }

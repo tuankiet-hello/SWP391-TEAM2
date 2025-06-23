@@ -48,7 +48,7 @@ export class ViewTestBookingComponent implements OnInit {
 
   // Pagination
   currentPage = 1;
-  pageSize = 6;
+  pageSize = 5;
   totalPages = 0;
 
   constructor(

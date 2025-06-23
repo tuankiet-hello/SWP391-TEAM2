@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -43,14 +43,18 @@ import { AuthService } from '../../../services/auth.service';
 export class SidebarComponent {
   modalType: 'user' | 'customer' | null = null;
   role: string | null = null;
+  @Output() testCreated = new EventEmitter<void>();
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    console.log('✅ Header ngOnInit called');
+    console.log('✅ SideBar ngOnInit called');
     this.role = this.authService.getRoleFromToken();
     console.log('🧑‍💼 role:', this.role);
   }
-
+  handleTestCreated(): void {
+    // Gọi API load lại danh sách
+    this.testCreated.emit();
+  }
   openUserModal() {
     this.modalType = 'user';
   }

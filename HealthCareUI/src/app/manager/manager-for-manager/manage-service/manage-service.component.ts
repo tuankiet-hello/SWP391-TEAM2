@@ -46,7 +46,7 @@ export class ManageServiceComponent {
   isEdit = false;
 
   currentPage = 1;
-  pageSize = 6; // số user trên mỗi trang
+  pageSize = 5; // số user trên mỗi trang
   totalUsers = 0;
   totalPages = 0;
 
@@ -64,11 +64,15 @@ export class ManageServiceComponent {
   }
 
   tests: Tests[] = [];
-
+  displayedTest: Tests[] = [];
   loadTests(): void {
     this.managerService.getAllListTest().subscribe({
       next: (data) => {
         this.tests = data;
+        this.totalUsers = this.tests.length;
+        this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
+        this.currentPage = 1;
+        this.updateDisplayedUsers();
         console.log('🧪 Loaded tests from API:', this.tests);
       },
       error: (err) => {
@@ -76,7 +80,15 @@ export class ManageServiceComponent {
       },
     });
   }
+  handleTestCreated(): void {
+    // Gọi API load lại danh sách
+    this.loadTests();
+  }
 
+  BanTest(index: number): void {
+    this.tests[index].active = !this.tests[index].active;
+    this.loadTests();
+  }
   onAddTest(): void {
     // if (this.addTestForm.invalid) {
     //   this.addTestForm.markAllAsTouched();
@@ -95,6 +107,29 @@ export class ManageServiceComponent {
         alert('❌ Không thể thêm test. Kiểm tra lại!');
       },
     });
+  }
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.updateDisplayedUsers();
+  }
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateDisplayedUsers();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateDisplayedUsers();
+    }
+  }
+  updateDisplayedUsers(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.displayedTest = this.tests.slice(startIndex, endIndex);
   }
 
   ngOnInit(): void {
