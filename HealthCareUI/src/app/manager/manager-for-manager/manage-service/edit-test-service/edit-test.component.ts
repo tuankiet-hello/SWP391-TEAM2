@@ -23,7 +23,7 @@ import { TestDTO, TestService } from '../../../../../services/test.service';
   templateUrl: './edit-test.component.html',
   styleUrls: ['./edit-test.component.css'],
 })
-export class TestEditComponent implements OnInit {
+export class TestEditComponent {
   fb = inject(FormBuilder);
   form!: FormGroup;
   @Input() user!: TestDTO;

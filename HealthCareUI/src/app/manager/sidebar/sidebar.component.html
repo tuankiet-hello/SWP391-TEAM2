@@ -11,9 +11,11 @@
     *ngIf="role === 'staff'"
     (click)="openCustomerModal()"
   >
-    + New Customer
+    + New User
   </button>
-  <button class="new-btn" *ngIf="role === 'staff'">+ New Booking</button>
+  <button class="new-btn" *ngIf="role === 'staff'" (click)="openBookingModal()">
+    + New Booking
+  </button>
 
   <!-- Role MANAGER -->
   <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">

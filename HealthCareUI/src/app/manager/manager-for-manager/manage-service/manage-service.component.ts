@@ -21,6 +21,7 @@ import { TestDTO, TestService } from '../../../../services/test.service';
 import { TestEditComponent } from './edit-test-service/edit-test.component';
 @Component({
   selector: 'app-manage-service',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
