@@ -1,22 +1,18 @@
 <app-header *ngIf="role === 'customer' || role === null"></app-header>
 <div class="container">
-  <!-- <div class="head">
-    <div class="logoName">
-      <img src="assets/logo.jpg" alt="icon" />
-    </div>
-    <input type="text" placeholder="Search Test" />
-  </div> -->
-  <!-- Left Panel -->
   <div class="content">
+    <!-- Left Panel -->
     <div class="left-panel">
+      <input
+        class="searchTest"
+        placeholder="Search Test"
+        [(ngModel)]="search"
+      />
       <div class="left-panel-content">
         <div class="advice-header">
           <img src="assets/mũi tên.png" alt="icon" width="24" />
           <span *ngIf="role === 'customer' || role === null"
             >TƯ VẤN ONLINE MIỄN PHÍ</span
-          >
-          <span *ngIf="role === 'manager' || role === 'admin'"
-            >Add New Test Here !</span
           >
         </div>
 
@@ -32,38 +28,6 @@
           <button type="submit">Send Information</button>
         </form>
 
-        <form
-          class="form-Create"
-          [formGroup]="createTestForm"
-          *ngIf="role === 'manager' || role === 'admin'"
-        >
-          <input
-            type="text"
-            placeholder="Test Name"
-            required
-            formControlName="TestName"
-          />
-          <input
-            type="tel"
-            placeholder="Price"
-            required
-            formControlName="Price"
-          />
-          <input
-            type="tel"
-            placeholder="Description"
-            required
-            formControlName="Description"
-          />
-          <select formControlName="Status" placeholder="Service Status">
-            <option selected value="0">Active</option>
-            <option value="1">In-Active</option>
-          </select>
-          <button type="submit" (click)="onAddTest()" *ngIf="isEdit === false">
-            Create Test
-          </button>
-        </form>
-
         <img
           src="assets/bannersale.jpg"
           alt="Khuyến mãi"
@@ -75,32 +39,38 @@
 
     <!-- Right Panel -->
     <div class="right-panel">
-      <app-appointment-card
-        *ngFor="let t of filteredTests"
-        [imageUrl]="'assets/xn-giang-mai.jpg'"
-        [title]="t.testName"
-        [price]="t.price"
-        [description]="t.description"
-        [status]="t.active"
-        [id]="t.testID"
-      ></app-appointment-card>
+      <ng-container *ngIf="filteredTests.length > 0; else noResults">
+        <app-appointment-card
+          *ngFor="let t of filteredTests"
+          [imageUrl]="'assets/stethoscope.jpg'"
+          [title]="t.testName"
+          [price]="t.price"
+          [description]="t.description"
+          [status]="t.active"
+          [id]="t.testID"
+          (openPopup)="openBookingPopup(t.testID)"
+        ></app-appointment-card>
+      </ng-container>
+      <app-appointment-modal
+        *ngIf="showModal"
+        [show]="showModal"
+        [imageUrl]="'assets/stethoscope.jpg'"
+        [title]="selectedTest.testName"
+        [price]="selectedTest.price"
+        [description]="selectedTest.description"
+        [active]="selectedTest.active"
+        (close)="closePopup()"
+      ></app-appointment-modal>
+      <ng-template #noResults>
+        <div class="no-results">
+          <img src="assets/searchNotFound.png" alt="not found" width="300" />
+          <p>No matching tests found</p>
+        </div>
+      </ng-template>
     </div>
-    <!-- <div class="right-panel" *ngIf="role === 'customer' || role === null">
-      <app-appointment-card
-        *ngFor="let t of filteredTests"
-        [imageUrl]="'assets/xn-giang-mai.jpg'"
-        [title]="t.testName"
-        [price]="t.price"
-        [description]="t.description"
-        [status]="t.active"
-      ></app-appointment-card>
-    </div> -->
   </div>
 </div>
-<!-- Chatbox -->
-<!-- <div class="chatbox">
-  <iframe src="https://chat.example.com/widget" frameborder="0"></iframe>
-</div> -->
+
 <footer id="footer">
   <app-footer></app-footer>
 </footer>

@@ -5,14 +5,20 @@ import { AppointmentCardComponent } from '../../../../app/shared/components/appo
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
-import { ManagerService, Tests } from '../../../../services/manager.service';
+import {
+  ManagerService,
+  Tests,
+  TestsDTO,
+} from '../../../../services/manager.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AppointmentModalComponent } from '../../../appointment-popup/appointment-modal.component';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { TestDTO, TestService } from '../../../../services/test.service';
 @Component({
   selector: 'app-sexual-testing',
   standalone: true,
@@ -23,6 +29,7 @@ import {
     HeaderComponent,
     FooterComponent,
     ReactiveFormsModule,
+    AppointmentModalComponent,
   ],
   templateUrl: './sexual-testing.component.html',
   styleUrls: ['./sexual-testing.component.css'],
@@ -34,9 +41,12 @@ export class SexualTestingComponent {
   userName: string | null = null;
   createTestForm: FormGroup;
   isEdit = false;
+  showModal = false;
+  selectedTest!: TestDTO;
   constructor(
     private authService: AuthService,
     private managerService: ManagerService,
+    private testService: TestService,
     private fb: FormBuilder
   ) {
     this.createTestForm = this.fb.group({
@@ -95,5 +105,19 @@ export class SexualTestingComponent {
     return this.tests.filter((t) =>
       t.testName.toLowerCase().includes(this.search.toLowerCase())
     );
+  }
+
+  closePopup(): void {
+    this.showModal = false;
+  }
+
+  openBookingPopup(id: number): void {
+    this.testService.getTestById(id).subscribe({
+      next: (data) => {
+        this.selectedTest = data;
+        this.showModal = true;
+        console.log('đã nạp data', this.selectedTest);
+      },
+    });
   }
 }

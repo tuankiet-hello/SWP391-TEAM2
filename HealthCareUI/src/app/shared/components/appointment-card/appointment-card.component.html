@@ -1,26 +1,13 @@
-<form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="cardForm" (click)="onSubmit()">
   <div class="card">
     <img [src]="imageUrl" alt="xét nghiệm" class="image" />
     <div class="info">
       <h3>{{ title }}</h3>
-      <div class="description">{{ description }}</div>
+      <!-- <div class="description">{{ description }}</div> -->
       <p class="price">{{ price | currency : "VND" }}</p>
       <div class="in-active" *ngIf="status === false">In-Active</div>
       <div class="active" *ngIf="status === true">Active</div>
-      <button
-        class="btn"
-        type="submit"
-        *ngIf="role === 'customer' || role === null"
-      >
-        Đặt lịch ngay
-      </button>
-      <button
-        class="btn"
-        type="submit"
-        *ngIf="role === 'manager' || role === 'admin'"
-      >
-        Edit
-      </button>
+      <button class="btn" type="submit">Đặt lịch ngay</button>
     </div>
   </div>
 </form>

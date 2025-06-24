@@ -88,6 +88,7 @@ export class EditBookingComponent implements OnInit {
     this.bookingService.editBooking(this.bookingID, payload).subscribe({
       next: () => {
         this.updated.emit(payload); // emit object đã sửa về cha
+        this.onCancel();
       },
       error: (err) => {
         console.error('EditBooking error:', err.error?.errors || err);
