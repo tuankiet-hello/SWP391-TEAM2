@@ -22,6 +22,7 @@ import {
 } from '../../../services/manager-user.service';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UserEditComponent } from './edit-user/edit-user.component';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 @Component({
   selector: 'app-manager-users',
   standalone: true,
@@ -38,6 +39,7 @@ import { UserEditComponent } from './edit-user/edit-user.component';
     NzSelectModule,
     NzDropDownModule,
     NzIconModule,
+    NzTagModule
   ],
   providers: [
     { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }

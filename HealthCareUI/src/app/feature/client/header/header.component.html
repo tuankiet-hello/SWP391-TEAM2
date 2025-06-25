@@ -9,9 +9,9 @@
       <a routerLink="/home" routerLinkActive="active"
         ><i class="fas fa-home"></i
       ></a>
+      <a href="#" (click)="onAboutClick($event)">About</a>
       <a href="#" (click)="onServicesClick($event)">Services</a>
       <a href="#" (click)="onBlogClick($event)">Blogs</a>
-      <a href="#" (click)="onAboutClick($event)">About</a>
       <a href="#" (click)="onContactClick($event)">Contact</a>
     </nav>
 
@@ -21,9 +21,9 @@
 
     <ul class="mobile-nav" [class.open]="menuOpen">
       <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
+      <li><a href="#" (click)="onAboutMobileNavClick($event)">About</a></li>
       <li><a href="#" (click)="onServicesMobileNavClick($event)">Services</a></li>
       <li><a href="#" (click)="onBlogMobileNavClick($event)">Blogs</a></li>
-      <li><a href="#" (click)="onAboutMobileNavClick($event)">About</a></li>
       <li><a href="#" (click)="onContactMobileNavClick($event)">Contact</a></li>
     </ul>
 

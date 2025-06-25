@@ -22,6 +22,7 @@ import {
 } from '../../../../services/manager-user.service';
 import { ViewCustomerComponent } from '../view-customer/view-customer.component';
 import { EditCustomerComponent } from '../edit-customer/edit-customer.component';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 
 @Component({
@@ -39,6 +40,7 @@ import { EditCustomerComponent } from '../edit-customer/edit-customer.component'
       NzSelectModule,
       NzDropDownModule,
       NzIconModule,
+      NzTagModule
     ],
     providers: [
       { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }

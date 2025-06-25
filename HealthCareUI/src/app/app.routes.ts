@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { SexualTestingComponent } from './feature/client/sexual-testing/sexual-testing.component';
 import {
   ConfirmEmailComponent,
   ForgotPasswordComponent,
@@ -8,7 +7,11 @@ import {
   ResetPasswordComponent,
 } from './feature/Auth';
 
-import { ManagerCustomersComponent, ManagerUsersComponent } from './manager';
+import {
+  ManagerUsersComponent,
+  ManagerCustomersComponent,
+  ViewConsultationScheduleComponent,
+} from './manager';
 
 import {
   HomeComponent,
@@ -17,6 +20,7 @@ import {
   Blog3Component,
   Blog4Component,
   Blog5Component,
+  SexualTestingComponent,
 } from './feature/client';
 
 export const routes: Routes = [
@@ -26,6 +30,7 @@ export const routes: Routes = [
 
   //Client routes
   { path: 'home', component: HomeComponent },
+  { path: 'sexual-testing', component: SexualTestingComponent },
   {
     path: 'blog/top-7-things-you-should-know-about-stis',
     component: Blog1Component,
@@ -51,10 +56,17 @@ export const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
 
-  //Manager routes
+  //Admin routes
   { path: 'manager-users', component: ManagerUsersComponent },
+
+  //Manager routes
   { path: 'manager-customers', component: ManagerCustomersComponent },
-  { path: 'sexual-testing', component: SexualTestingComponent },
+
+  //Staff routes
+
+
+  //Consultant routes
+  { path: 'view-consultation-schedule', component: ViewConsultationScheduleComponent },
 
 
   //cái này phải để cuối cùng
