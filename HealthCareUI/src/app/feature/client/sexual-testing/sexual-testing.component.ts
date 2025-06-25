@@ -7,6 +7,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
 import { TestService } from '../../../../services/test.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AppointmentModalComponent } from '../../../appointment-popup/appointment-modal.component';
 import {
   FormBuilder,
   FormGroup,
@@ -24,6 +25,7 @@ import { TestDTO } from '../../../../services/test.service';
     HeaderComponent,
     FooterComponent,
     ReactiveFormsModule,
+    AppointmentModalComponent,
   ],
   templateUrl: './sexual-testing.component.html',
   styleUrls: ['./sexual-testing.component.css'],
@@ -35,6 +37,8 @@ export class SexualTestingComponent {
   userName: string | null = null;
   createTestForm: FormGroup;
   isEdit = false;
+  showModal = false;
+  selectedTest!: TestDTO;
   constructor(
     private authService: AuthService,
     private testService: TestService,
@@ -96,5 +100,19 @@ export class SexualTestingComponent {
     return this.tests.filter((t) =>
       t.testName.toLowerCase().includes(this.search.toLowerCase())
     );
+  }
+
+  closePopup(): void {
+    this.showModal = false;
+  }
+
+  openBookingPopup(id: number): void {
+    this.testService.getTestById(id).subscribe({
+      next: (data) => {
+        this.selectedTest = data;
+        this.showModal = true;
+        console.log('đã nạp data', this.selectedTest);
+      },
+    });
   }
 }
