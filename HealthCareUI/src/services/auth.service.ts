@@ -94,13 +94,30 @@ export class AuthService {
     }
   }
  
-  // editProfile(payload: {
-  //   id:string
-  //   token: string;
-  //   newPassword: string;
-  //   confirmPassword: string;
-  // }): Observable<any> {
-  //   return this.http.post(`${this.apiUrl}/reset-password`, payload);
-  // }
+ // Sửa trong UserService:
+getUserProfile(): Observable<{ 
+  userName: string; 
+  email: string; 
+  firstName: string; 
+  lastName: string; 
+  dateOfBirth: string; 
+}> {
+  const token = localStorage.getItem('accessToken') || '';
+  const headers = { Authorization: `Bearer ${token}` };
+  return this.http.get<{ 
+    userName: string; 
+    email: string; 
+    firstName: string; 
+    lastName: string; 
+    dateOfBirth: string; 
+  }>(`${this.apiUrl}/user-profile`, { headers });
+}
+
+
+editProfile(payload: { firstName: string; lastName: string; dateOfBirth: string }): Observable<any> {
+  const token = localStorage.getItem('accessToken') || '';
+  const headers = { Authorization: `Bearer ${token}` };
+  return this.http.put(`${this.apiUrl}/edit-profile`, payload, { headers });
+}
 
 }
