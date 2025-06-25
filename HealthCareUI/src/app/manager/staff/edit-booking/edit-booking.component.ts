@@ -1,31 +1,14 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  BookingService,
-  EditTestBookingDTO,
-  Test,
-  TestBookingDTO,
-} from '../../../../services/test-booking.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BookingService, EditTestBookingDTO, Test, TestBookingDTO } from '../../../../services/test-booking.service';
 import { TestService } from '../../../../services/test.service';
 export enum BookingStatus {
   Submitted = 0,
   Pending = 1,
   Confirmed = 2,
   Canceled = 3,
-  Completed = 4,
+  Completed = 4
 }
 @Component({
   selector: 'app-edit-booking',
@@ -34,6 +17,7 @@ export enum BookingStatus {
   templateUrl: './edit-booking.component.html',
   styleUrls: ['./edit-booking.component.css'],
 })
+
 export class EditBookingComponent implements OnInit {
   @Input() booking!: TestBookingDTO;
   @Input() bookingID!: number;
@@ -44,20 +28,19 @@ export class EditBookingComponent implements OnInit {
   fb = inject(FormBuilder);
   tests: Test[] = [];
 
-  constructor(
-    private bookingService: BookingService,
-    private testService: TestService // <- thêm dòng này
+  constructor(private bookingService: BookingService,
+     private testService: TestService // <- thêm dòng này
   ) {}
 
   ngOnInit() {
     this.buildForm();
     //Lấy danh sách test từ service
-    this.testService.getAllTests().subscribe((data) => {
-      this.tests = data;
-    });
+  this.testService.getAllTests().subscribe((data) => {
+    this.tests = data;
+  });
     if (this.booking) {
       this.form.patchValue(this.booking);
-      status: Number(this.booking.status);
+      status: Number(this.booking.status)
     }
   }
 
@@ -67,7 +50,8 @@ export class EditBookingComponent implements OnInit {
       result: [''],
       bookingDate: ['', Validators.required],
       bookingTime: ['', Validators.required],
-      status: [this.booking?.status ?? 0, Validators.required],
+     status: [this.booking?.status ?? 0, Validators.required],
+
     });
   }
 
@@ -83,7 +67,7 @@ export class EditBookingComponent implements OnInit {
       result: formData.result,
       bookingDate: formData.bookingDate,
       bookingTime: formData.bookingTime,
-      status: Number(this.form.value.status),
+      status: Number(this.form.value.status) 
     };
     this.bookingService.editBooking(this.bookingID, payload).subscribe({
       next: () => {
