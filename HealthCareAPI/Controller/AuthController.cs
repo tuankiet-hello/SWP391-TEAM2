@@ -306,6 +306,28 @@ namespace HealthCareAPI.Controller
             }
             return Ok(new { message = "Confirmation email resent. Please check your email." });
         }
+        [HttpGet("user-profile")]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("User không tồn tại");
+
+            return Ok(new
+            {
+                user.UserName,   // phải có trường này
+                user.Email,      // phải có trường này
+                user.FirstName,
+                user.LastName,
+                user.DateOfBirth
+            });
+
+        }
+
 
     }
 } 

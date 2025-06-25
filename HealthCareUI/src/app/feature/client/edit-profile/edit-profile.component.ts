@@ -1,43 +1,73 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { HeaderComponent } from './../header/header.component';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from './../../../../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-edit-profile',
-  imports: [CommonModule,
-    ReactiveFormsModule],
+  standalone: true,  // Bắt buộc phải có nếu dùng imports trong component
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule,
+  HeaderComponent,
+FooterComponent],
   templateUrl: './edit-profile.component.html',
-  styleUrl: './edit-profile.component.css'
+  styleUrls: ['./edit-profile.component.css']
 })
-export class EditProfileComponent {
+export class EditProfileComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private userService: AuthService) {}
 
   ngOnInit() {
     this.form = this.fb.group({
-       firstName: ['', Validators.required],
+      userName: [{ value: '', disabled: true }], // readonly, disabled để không sửa
+      email: [{ value: '', disabled: true }],    // readonly, disabled
+      firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
     });
-  //   this.userService.getUserProfile().subscribe(data => {
-  //   this.userName = data.userName;  // lưu riêng userName để hiển thị
-  //   this.form.patchValue({
-  //     firstName: data.firstName,
-  //     lastName: data.lastName,
-  //     dateOfBirth: data.dateOfBirth,
-  //   });
-  // });
-  }
-   submit() {
-    if (this.form.valid) {
-      console.log('Form data:', this.form.value);
-      // Gửi dữ liệu lên server hoặc xử lý tiếp
-    } else {
-      this.form.markAllAsTouched();
-    }
+
+    // Lấy dữ liệu user từ backend và gán vào form
+    this.userService.getUserProfile().subscribe({
+      next: (data) => {
+        this.form.patchValue({
+          userName: data.userName,
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          dateOfBirth: data.dateOfBirth ? data.dateOfBirth.substring(0, 10) : '' // cắt chuỗi ngày nếu có thời gian
+        });
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy profile:', err);
+      }
+    });
   }
 
-  
-  
+  submit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    // Tạo payload chỉ lấy các trường có thể sửa
+    const payload = {
+      firstName: this.form.get('firstName')?.value,
+      lastName: this.form.get('lastName')?.value,
+      dateOfBirth: this.form.get('dateOfBirth')?.value,
+    };
+
+    this.userService.editProfile(payload).subscribe({
+      next: () => {
+        alert('Cập nhật thông tin thành công!');
+      },
+      error: (err) => {
+        console.error('Lỗi khi cập nhật profile:', err);
+        alert('Cập nhật thất bại, vui lòng thử lại!');
+      }
+    });
+  }
 }
