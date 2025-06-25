@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header-manager></app-header-manager>
 <div class="user-manager">
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
@@ -30,43 +30,69 @@
         >
           <thead>
             <tr>
-              <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead namehead" style="width: 170px;">Full Name</span>
+                <span class="taghead nohead" style="width: 40px">No.</span>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead namehead" style="width: 170px"
+                    >Full Name</span
+                  >
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead mailhaed" style="width: 150px;">Date Of Birth</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead mailhaed" style="width: 150px"
+                    >Date Of Birth</span
+                  >
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead rolehead" style="width: 150px;">Test Name</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead rolehead" style="width: 110px"
+                    >Test Name</span
+                  >
                 </div>
               </th>
               <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead verifiedhead" style="width: 120px"
+                    >Date</span
+                  >
+                </div>
+              </th>
+              <!-- <th>
                 <div style="display: flex; align-items: center;">
-                  <span class="taghead verifiedhead" style="width: 100px;">Date</span>
+                  <span class="taghead activehead" style="width: 70px;">Time</span>
+                </div>
+              </th> -->
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead activehead" style="width: 70px"
+                    >Status</span
+                  >
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead activehead" style="width: 70px;">Status</span>
-                </div>
+                <span class="taghead operationhead" style="width: 100px"
+                  >Operations</span
+                >
               </th>
-              <th><span class="taghead operationhead" style="width: 100px;">Operations</span></th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let booking of displayedTestBooking; let i = index">
               <td>
-                <span class="tag no">{{ (currentPage - 1) * pageSize + i + 1 }}</span>
+                <span class="tag no">{{
+                  (currentPage - 1) * pageSize + i + 1
+                }}</span>
               </td>
               <td>
-                <span class="tag name">{{ booking.account.firstName }} {{ booking.account.lastName }}</span>
+                <span class="tag name"
+                  >{{ booking.account.firstName }}
+                  {{ booking.account.lastName }}</span
+                >
               </td>
               <td>
                 <span class="tag name">{{ booking.account.dateOfBirth }}</span>
@@ -77,30 +103,43 @@
               <td>
                 <span class="tag">{{ booking.bookingDate }}</span>
               </td>
+              <!-- <td>
+                <span class="tag">{{ booking.bookingTime }}</span>
+              </td> -->
               <td>
-                <span
-                  class="tag"
-                  [style.border]="'2px solid ' + statusColorMap[booking.status]"
-                  [style.color]="statusColorMap[booking.status]"
+                <span class="Pending" *ngIf="booking.status === 1"
+                  >Pending</span
                 >
-                  {{ statusMap[booking.status] || 'Không xác định' }}
-                </span>
+                <span class="Confirmed" *ngIf="booking.status === 2"
+                  >Confirmed</span
+                >
+                <span class="Canceled" *ngIf="booking.status === 3"
+                  >Canceled</span
+                >
+                <span class="Completed" *ngIf="booking.status === 4"
+                  >Completed</span
+                >
+                <span class="Submited" *ngIf="booking.status === 0"
+                  >Submited</span
+                >
               </td>
-
-
               <td div class="operation-icons">
                 <div
                   class="icon-box eye"
                   title="View"
-                  (click)="viewBookingDetail(booking.bookingID)"
+                  (click)="openModalView(booking.bookingID)"
                 >
                   <i class="fa-solid fa-eye"></i>
                 </div>
-               <div
+                <div
                   class="icon-box edit"
                   title="Edit"
-                 (click)="editBooking(booking.bookingID)"
+                  (click)="openModalEdit(booking.bookingID)"
                 >
+                  <i class="fa-solid fa-edit"></i>
+                </div>
+
+                <div class="icon-box edit" title="Edit">
                   <i class="fa-solid fa-edit"></i>
                 </div>
               </td>
@@ -108,22 +147,21 @@
           </tbody>
         </nz-table>
       </div>
-     <app-view-booking-detail
-      *ngIf="isModalVisible && selectedBooking"
-      [booking]="selectedBooking"
-      (close)="handleModalCancel()"
-    ></app-view-booking-detail>
-     
 
-   <app-edit-booking 
-  *ngIf="isEditModalVisible && selectedEditBooking && idChoose !== undefined"
-  [booking]="selectedEditBooking"
-  [bookingID]="idChoose!"
-  (close)="handleEditModalClose()"
-  (updated)="handleBookingUpdated($event)">
-</app-edit-booking>
+      <app-view-booking-detail
+        *ngIf="modalView"
+        (close)="closeModal()"
+        [booking]="bookingTest"
+      >
+      </app-view-booking-detail>
 
-
+      <app-edit-booking
+        *ngIf="modalEdit"
+        (close)="closeModalEdit()"
+        [bookingID]="testSelected"
+        [booking]="bookingTest"
+      >
+      </app-edit-booking>
       <!-- Pagination -->
       <div class="pagination-controls">
         <button (click)="prevPage()" [disabled]="currentPage === 1">
@@ -141,7 +179,9 @@
         </button>
       </div>
 
-      <p *ngIf="displayedTestBooking.length === 0" class="no-data-text">No test bookings found.</p>
+      <p *ngIf="displayedTestBooking.length === 0" class="no-data-text">
+        No test bookings found.
+      </p>
     </div>
   </div>
 </div>

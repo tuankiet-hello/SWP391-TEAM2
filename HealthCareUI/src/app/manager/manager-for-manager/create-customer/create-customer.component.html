@@ -1,9 +1,15 @@
 <!-- Modal popup -->
 <div class="modal-backdrop">
-  <div class="modal-form" *ngIf="createUserForm">
-    <h2 class="title">CREATE USER</h2>
+  <div class="modal-form" *ngIf="createUserForm || createTestForm">
+    <h2 class="title" *ngIf="role === 'staff'">CREATE USER</h2>
+    <h2 class="title" *ngIf="role === 'manager'">CREATE TEST</h2>
 
-    <form [formGroup]="createUserForm" (ngSubmit)="submitForm()">
+    <!-- Cái Form này dành cho Staff nha cả nhà, Staff thêm customer -->
+    <form
+      *ngIf="role === 'staff'"
+      [formGroup]="createUserForm"
+      (ngSubmit)="submitForm()"
+    >
       <label>Email *</label>
       <input
         type="email"
@@ -87,6 +93,32 @@
           Create
         </button>
       </div>
+    </form>
+
+    <!-- Cái Form này cho Manager thêm Test nha  -->
+    <form
+      class="form-Create"
+      [formGroup]="createTestForm"
+      *ngIf="role === 'manager'"
+    >
+      <input
+        type="text"
+        placeholder="Test Name"
+        required
+        formControlName="TestName"
+      />
+      <input type="tel" placeholder="Price" formControlName="Price" />
+      <input
+        type="tel"
+        placeholder="Description"
+        required
+        formControlName="Description"
+      />
+      <select formControlName="active" placeholder="Service Status">
+        <option selected value="true">Active</option>
+        <option value="false">In-Active</option>
+      </select>
+      <button type="submit" (click)="onAddTest()">Create Test</button>
     </form>
 
     <button class="btn-cancel" (click)="closeModal()">Cancel</button>

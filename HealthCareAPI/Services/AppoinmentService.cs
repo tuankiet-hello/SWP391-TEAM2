@@ -13,49 +13,28 @@ public class AppoinmentService
 
     public async Task<IEnumerable<AppoinmentDTO>> GetAllAsync()
     {
-        var entities = await _unitOfWork.AppoinmentRepository.GetAllAsync();
+        var entities = await _unitOfWork.AppoinmentRepository.GetAllWithAccountAsync();
         return entities.Select(a => new AppoinmentDTO
         {
             AppointmentID = a.AppointmentID,
             AccountID = a.AccountID,
             AppointmentDate = a.AppointmentDate,
             AppointmentTime = a.AppointmentTime,
-            Status = a.Status
+            Status = a.Status,
+            Account = a.Account == null ? null : new AccountViewDTO
+            {
+                FirstName = a.Account.FirstName,
+                LastName = a.Account.LastName,
+                DateOfBirth = a.Account.DateOfBirth,
+                Email = a.Account.Email
+            }
         });
     }
 
-    public async Task<AppoinmentDTO?> GetByIdAsync(int id)
-    {
-        var entity = await _unitOfWork.AppoinmentRepository.GetByIdAsync(id);
-        if (entity == null) return null;
-
-        return new AppoinmentDTO
-        {
-            AppointmentID = entity.AppointmentID,
-            AccountID = entity.AccountID,
-            AppointmentDate = entity.AppointmentDate,
-            AppointmentTime = entity.AppointmentTime,
-            Status = entity.Status
-        };
-    }
-
-    public async Task AddAsync(AppoinmentDTO dto)
-    {
-        var entity = new Appoinment
-        {
-            AccountID = dto.AccountID,
-            AppointmentDate = dto.AppointmentDate,
-            AppointmentTime = dto.AppointmentTime,
-            Status = dto.Status
-        };
-        await _unitOfWork.AppoinmentRepository.AddAsync(entity);
-        await _unitOfWork.CompleteAsync();
-    }
-
-    public async Task UpdateAsync(AppoinmentDTO dto)
+    public async Task<bool> UpdateAppointmentAsync(AppoinmentDTO dto)
     {
         var entity = await _unitOfWork.AppoinmentRepository.GetByIdAsync(dto.AppointmentID);
-        if (entity == null) return;
+        if (entity == null) return false;
 
         entity.AppointmentDate = dto.AppointmentDate;
         entity.AppointmentTime = dto.AppointmentTime;
@@ -63,40 +42,6 @@ public class AppoinmentService
 
         _unitOfWork.AppoinmentRepository.Update(entity);
         await _unitOfWork.CompleteAsync();
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var entity = await _unitOfWork.AppoinmentRepository.GetByIdAsync(id);
-        if (entity == null) return;
-
-        _unitOfWork.AppoinmentRepository.Remove(entity);
-        await _unitOfWork.CompleteAsync();
-    }
-
-    public async Task<IEnumerable<AppoinmentDTO>> GetAppointmentsByDateAsync(DateOnly date)
-    {
-        var entities = await _unitOfWork.AppoinmentRepository.GetAppointmentsByDateAsync(date);
-        return entities.Select(a => new AppoinmentDTO
-        {
-            AppointmentID = a.AppointmentID,
-            AccountID = a.AccountID,
-            AppointmentDate = a.AppointmentDate,
-            AppointmentTime = a.AppointmentTime,
-            Status = a.Status
-        });
-    }
-
-    public async Task<IEnumerable<AppoinmentDTO>> GetAppointmentsByWeekAsync(DateOnly startDate, DateOnly endDate)
-    {
-        var entities = await _unitOfWork.AppoinmentRepository.GetAppointmentsByWeekAsync(startDate, endDate);
-        return entities.Select(a => new AppoinmentDTO
-        {
-            AppointmentID = a.AppointmentID,
-            AccountID = a.AccountID,
-            AppointmentDate = a.AppointmentDate,
-            AppointmentTime = a.AppointmentTime,
-            Status = a.Status
-        });
+        return true;
     }
 }

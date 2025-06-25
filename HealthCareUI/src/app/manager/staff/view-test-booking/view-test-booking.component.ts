@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../../sidebar/sidebar.component'
-import { HeaderComponent } from '../../header/header.component';
+import { SidebarComponent } from '../../sidebar/sidebar.component';
+import { HeaderManagerComponent } from '../../header/header.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -16,8 +16,7 @@ import { FilterOutline } from '@ant-design/icons-angular/icons';
 import { SearchOutline } from '@ant-design/icons-angular/icons';
 import {
   BookingService,
-  EditTestBookingDTO,
-  TestBookingDTO
+  TestBookingDTO,
 } from '../../../../services/test-booking.service';
 import { ViewBookingDetailComponent } from '../view-booking-detail/view-booking-detail.component';
 import { faL } from '@fortawesome/free-solid-svg-icons';
@@ -25,11 +24,12 @@ import { EditBookingComponent } from '../edit-booking/edit-booking.component';
 
 @Component({
   selector: 'app-view-test-booking',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     SidebarComponent,
-    HeaderComponent,
+    HeaderManagerComponent,
     NzTableModule,
     NzInputModule,
     NzModalModule,
@@ -37,46 +37,25 @@ import { EditBookingComponent } from '../edit-booking/edit-booking.component';
     NzDropDownModule,
     NzIconModule,
     ViewBookingDetailComponent,
-    EditBookingComponent
+    EditBookingComponent,
   ],
-  providers: [
-    { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
-  ],
+  providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
   templateUrl: './view-test-booking.component.html',
-  styleUrl: './view-test-booking.component.css'
+  styleUrl: './view-test-booking.component.css',
 })
-
 export class ViewTestBookingComponent implements OnInit {
   emptyText = 'No test booking found';
   testBooking: TestBookingDTO[] = [];
   displayedTestBooking: TestBookingDTO[] = [];
-  selectedBooking?: TestBookingDTO;
-    isModalVisible: boolean = false;
-    @Input() bookingID!: number;
-
-
   searchTerm: string = '';
-  statusMap: { [key: number]: string } = {
-  0: 'Submited',
-  1: 'Pending',
-  2: 'Confirmed',
-  3: 'Canceled',
-  4: 'Completed',
-};
-statusColorMap: { [key: number]: string } = {
-  0: '#1976d2',
-  1: '#fbc02d',
-  2: '#388e3c',
-  3: '#d32f2f',
-  4: '#7b1fa2'
-};
-
-
+  modalView: boolean = false;
+  modalEdit: boolean = false;
+  testSelected!: number;
+  bookingTest!: TestBookingDTO;
   // Pagination
   currentPage = 1;
-  pageSize = 6;
+  pageSize = 5;
   totalPages = 0;
-
   constructor(
     private bookingService: BookingService,
     private modal: NzModalService,
@@ -85,6 +64,41 @@ statusColorMap: { [key: number]: string } = {
 
   ngOnInit(): void {
     this.loadTestBooking();
+  }
+
+  openModalView(booking: number) {
+    this.testSelected = booking;
+    this.bookingService.getBookingById(this.testSelected).subscribe({
+      next: (data) => {
+        this.bookingTest = data; // data chính là TestBookingDTO
+        this.modalView = true;
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy booking:', err);
+      },
+    });
+  }
+
+  openModalEdit(booking: number) {
+    this.testSelected = booking;
+    this.bookingService.getBookingById(this.testSelected).subscribe({
+      next: (data) => {
+        this.bookingTest = data; // data chính là TestBookingDTO
+        this.modalEdit = true;
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy booking:', err);
+      },
+    });
+    console.log(this.bookingTest);
+  }
+
+  closeModalEdit() {
+    this.modalEdit = false;
+  }
+
+  closeModal() {
+    this.modalView = false;
   }
 
   loadTestBooking(): void {
@@ -100,8 +114,10 @@ statusColorMap: { [key: number]: string } = {
     // Search by user name
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
-      filtered = filtered.filter(booking =>
-        (booking.account.firstName + ' ' + booking.account.lastName).toLowerCase().includes(search)
+      filtered = filtered.filter((booking) =>
+        (booking.account.firstName + ' ' + booking.account.lastName)
+          .toLowerCase()
+          .includes(search)
       );
     }
 
@@ -116,21 +132,6 @@ statusColorMap: { [key: number]: string } = {
     this.displayedTestBooking = filtered.slice(startIndex, endIndex);
   }
 
-
-    viewBookingDetail(id: number): void {
-      this.bookingService.getBookingById(id).subscribe((booking) => {
-        console.log('Booking detail:', booking); // kiểm tra booking có dữ liệu không
-        this.selectedBooking = booking;
-        this.isModalVisible = true;
-      })
-     }
-    
-    
-    
-    handleModalCancel(): void {
-      this.isModalVisible = false;
-      this.selectedBooking = undefined;
-    }
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
@@ -159,34 +160,14 @@ statusColorMap: { [key: number]: string } = {
     let filtered = [...this.testBooking];
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
-      filtered = filtered.filter(booking =>
-        (booking.account.firstName + ' ' + booking.account.lastName).toLowerCase().includes(search)
+      filtered = filtered.filter((booking) =>
+        (booking.account.firstName + ' ' + booking.account.lastName)
+          .toLowerCase()
+          .includes(search)
       );
     }
     return filtered;
   }
-  isEditModalVisible = false;
-  selectedEditBooking?: TestBookingDTO;
-  idChoose?: number;
 
-  editBooking(id: number) {
-  this.selectedEditBooking = this.testBooking.find(b => b.bookingID === id);
-  this.idChoose = id ?? 0; // nếu id là undefined thì lấy 0
-  this.isEditModalVisible = true;
-}
-
-
-  handleEditModalClose() {
-    this.isEditModalVisible = false;
-    this.selectedEditBooking = undefined;
-    this.idChoose = undefined;
-  }
-
-  handleBookingUpdated(updated: EditTestBookingDTO) {
-    // Ví dụ: reload lại danh sách hoặc update trực tiếp trên UI
-    this.isEditModalVisible = false;
-    this.selectedEditBooking = undefined;
-    this.idChoose = undefined;
-    this.loadTestBooking(); // hoặc cập nhật lại dữ liệu trên UI
-  }
+  getTestBookingByID() {}
 }

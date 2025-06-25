@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header *ngIf="role === 'customer' || role === null"></app-header>
 <div class="container">
   <!-- <div class="head">
     <div class="logoName">
@@ -12,25 +12,63 @@
       <div class="left-panel-content">
         <div class="advice-header">
           <img src="assets/mũi tên.png" alt="icon" width="24" />
-          <span>TƯ VẤN ONLINE MIỄN PHÍ</span>
+          <span *ngIf="role === 'customer' || role === null"
+            >TƯ VẤN ONLINE MIỄN PHÍ</span
+          >
+          <span *ngIf="role === 'manager' || role === 'admin'"
+            >Add New Test Here !</span
+          >
         </div>
 
-        <form class="form-dang-ky">
+        <form class="form-dang-ky" *ngIf="role === 'customer' || role === null">
           <input type="text" placeholder="Họ và tên" required />
-          <input type="tel" placeholder="Số điện thoại (*)" required />
+          <input type="tel" placeholder="Email" required />
           <select>
             <option disabled selected>Đặt lịch xét nghiệm</option>
             <option>Tư Vấn Xét Nghiệm</option>
             <option>Lấy Mẫu Xét Nghiệm Tại Nhà</option>
             <option>Khác</option>
           </select>
-          <button type="submit">GỬI THÔNG TIN</button>
+          <button type="submit">Send Information</button>
+        </form>
+
+        <form
+          class="form-Create"
+          [formGroup]="createTestForm"
+          *ngIf="role === 'manager' || role === 'admin'"
+        >
+          <input
+            type="text"
+            placeholder="Test Name"
+            required
+            formControlName="TestName"
+          />
+          <input
+            type="tel"
+            placeholder="Price"
+            required
+            formControlName="Price"
+          />
+          <input
+            type="tel"
+            placeholder="Description"
+            required
+            formControlName="Description"
+          />
+          <select formControlName="Status" placeholder="Service Status">
+            <option selected value="0">Active</option>
+            <option value="1">In-Active</option>
+          </select>
+          <button type="submit" (click)="onAddTest()" *ngIf="isEdit === false">
+            Create Test
+          </button>
         </form>
 
         <img
           src="assets/bannersale.jpg"
           alt="Khuyến mãi"
           class="promo-banner"
+          *ngIf="role === 'customer' || role === null"
         />
       </div>
     </div>
@@ -38,12 +76,25 @@
     <!-- Right Panel -->
     <div class="right-panel">
       <app-appointment-card
-        *ngFor="let test of filteredTests()"
-        [imageUrl]="test.imageUrl"
-        [title]="test.title"
-        [price]="test.price"
+        *ngFor="let t of filteredTests"
+        [imageUrl]="'assets/xn-giang-mai.jpg'"
+        [title]="t.testName"
+        [price]="t.price"
+        [description]="t.description"
+        [status]="t.active"
+        [id]="t.testID"
       ></app-appointment-card>
     </div>
+    <!-- <div class="right-panel" *ngIf="role === 'customer' || role === null">
+      <app-appointment-card
+        *ngFor="let t of filteredTests"
+        [imageUrl]="'assets/xn-giang-mai.jpg'"
+        [title]="t.testName"
+        [price]="t.price"
+        [description]="t.description"
+        [status]="t.active"
+      ></app-appointment-card>
+    </div> -->
   </div>
 </div>
 <!-- Chatbox -->

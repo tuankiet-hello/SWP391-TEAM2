@@ -7,17 +7,18 @@ namespace HealthCareAPI.Repositories
     public class AppoinmentRepository : GenericRepository<Appoinment>, IAppoinmentRepository
     {
         public AppoinmentRepository(ApplicationDbContext context) : base(context) { }
-        
-        public async Task<IEnumerable<Appoinment>> GetAppointmentsByDateAsync(DateOnly date)
+
+        public async Task<IEnumerable<Appoinment>> GetAllWithAccountAsync()
         {
-            return await _dbSet.Where(a => a.AppointmentDate == date).ToListAsync();
+            return await _dbSet
+                .Include(a => a.Account)
+                .ToListAsync();
         }
 
-        public async Task<IEnumerable<Appoinment>> GetAppointmentsByWeekAsync(DateOnly startDate, DateOnly endDate)
+        public void Update(Appoinment entity)
         {
-            return await _dbSet.Where(a => a.AppointmentDate >= startDate && a.AppointmentDate <= endDate).ToListAsync();
+            _context.Appoinments.Update(entity);
         }
-        // Thêm các method đặc thù cho Appoinment nếu cần
     }
 }
 //Các file I___ sẽ là lớp định nghĩa cho các class Repository

@@ -13,16 +13,30 @@ export interface TestDTO {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TestService {
-  private apiUrl =  environment.apiUrl +'/api/test'; // Đổi lại endpoint cho đúng với backend của bạn
+  private apiUrl = environment.apiUrl + '/api/test'; // Đổi lại endpoint cho đúng với backend của bạn
 
   constructor(private http: HttpClient) {}
 
   // Lấy tất cả test
   getAllTests(): Observable<TestDTO[]> {
-    return this.http.get<TestDTO[]>(this.apiUrl+ '/list-test');
+    return this.http.get<TestDTO[]>(this.apiUrl + '/list-test');
+  }
+  getTestById(id: number): Observable<TestDTO> {
+    return this.http.get<TestDTO>(`${this.apiUrl}/${id}`);
   }
 
+  editTest(
+    id: number,
+    payload: {
+      testName: string;
+      description: string;
+      price: number;
+      active: boolean;
+    }
+  ): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, payload);
+  }
 }

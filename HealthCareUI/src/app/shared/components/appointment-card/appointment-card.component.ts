@@ -18,11 +18,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AppointmentCardComponent {
   cardForm: FormGroup;
-
+  role: string | null = null;
   @Input() imageUrl!: string;
   @Input() title!: string;
-  @Input() price!: string;
-
+  @Input() price!: number;
+  @Input() description!: string;
+  @Input() status!: boolean;
+  @Input() id!: number;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -32,16 +34,25 @@ export class AppointmentCardComponent {
     this.cardForm = this.fb.group({}); // hoặc bỏ nếu chưa dùng
   }
 
+  ngOnInit(): void {
+    console.log('✅ appointment ngOnInit called');
+    this.role = this.authService.getRoleFromToken();
+  }
+
   onSubmit(): void {
     const isLoggedIn = this.authService.isLoggedIn();
     const role = this.authService.getRoleFromToken();
 
-    if (!isLoggedIn || role?.toLowerCase() !== 'customer') {
+    if (!isLoggedIn || role?.toLowerCase() === null) {
       const currentUrl = this.router.url;
       this.router.navigate(['/login'], {
         queryParams: { returnUrl: currentUrl },
       });
       return;
+    } else if (
+      role?.toLowerCase() === 'manager' ||
+      role?.toLowerCase() === 'admin'
+    ) {
     }
 
     this.openBookingPopup();

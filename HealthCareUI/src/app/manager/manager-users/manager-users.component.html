@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header-manager></app-header-manager>
 <div class="user-manager">
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
@@ -32,77 +32,95 @@
         >
           <thead>
             <tr>
-              <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead namehead" style="width: 190px;">Full Name</span>
+                <span class="taghead nohead" style="width: 40px">No.</span>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead namehead" style="width: 190px"
+                    >Full Name</span
+                  >
                   <nz-filter-trigger
                     [(nzVisible)]="filterVisible.fullName"
                     [nzActive]="!!filter.fullNameSort"
                     [nzDropdownMenu]="fullNameMenu"
-                    style="margin-left: 4px;"
+                    style="margin-left: 4px"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
                   </nz-filter-trigger>
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead mailhaed" style="width: 240px;">Email</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead mailhaed" style="width: 240px"
+                    >Email</span
+                  >
                   <nz-filter-trigger
                     [(nzVisible)]="filterVisible.email"
                     [nzActive]="!!filter.emailSort"
                     [nzDropdownMenu]="emailMenu"
-                    style="margin-left: 4px;"
+                    style="margin-left: 4px"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
                   </nz-filter-trigger>
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead rolehead" style="width: 90px;">Role</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead rolehead" style="width: 90px">Role</span>
                   <nz-filter-trigger
                     [(nzVisible)]="filterVisible.role"
                     [nzActive]="!!filter.role"
                     [nzDropdownMenu]="roleMenu"
-                    style="margin-left: 4px;"
+                    style="margin-left: 4px"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
                   </nz-filter-trigger>
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead verifiedhead" style="width: 130px;">Email Confirm</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead verifiedhead" style="width: 130px"
+                    >Email Confirm</span
+                  >
                   <nz-filter-trigger
                     [(nzVisible)]="filterVisible.emailConfirmed"
                     [nzActive]="!!filter.emailConfirmed"
                     [nzDropdownMenu]="emailConfirmedMenu"
-                    style="margin-left: 4px;"
+                    style="margin-left: 4px"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
                   </nz-filter-trigger>
                 </div>
               </th>
               <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead activehead" style="width: 70px;">Status</span>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead activehead" style="width: 70px"
+                    >Status</span
+                  >
                   <nz-filter-trigger
                     [(nzVisible)]="filterVisible.status"
                     [nzActive]="!!filter.status"
                     [nzDropdownMenu]="statusMenu"
-                    style="margin-left: 4px;"
+                    style="margin-left: 4px"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
                   </nz-filter-trigger>
                 </div>
               </th>
-              <th><span class="taghead operationhead" style="width: 150px;">Operations</span></th>
+<<<<<<< HEAD
+              <th><span class="taghead operationhead" style="width: 150px;">Actions</span></th>
+=======
+              <th>
+                <span class="taghead operationhead" style="width: 150px"
+                  >Operations</span
+                >
+              </th>
+>>>>>>> 56a3d3baa1746fe6308876352dcbf3e329843618
             </tr>
           </thead>
 
-          <tbody>
+          <tbody >
             <tr *ngFor="let user of displayedUsers; let i = index">
               <td>
                 <span class="tag no">{{
@@ -119,12 +137,22 @@
                 <span class="tag user">{{ user.role }}</span>
               </td>
               <td>
-                <span class="tag verified">
-                  {{ user.emailConfirmed ? "Confirmed" : "Unconfirmed" }}
-                </span>
+                <nz-tag
+                  class="tag verified"
+                  [nzColor]="user.emailConfirmed ? 'green' : 'orange'"
+                >
+                  {{ user.emailConfirmed ? 'Confirmed' : 'Unconfirmed' }}
+                </nz-tag>
               </td>
               <td>
-                <span class="tag active">{{ user.accountStatus }}</span>
+                <nz-tag
+                  class="tag active"
+                  [nzColor]="
+                    user.accountStatus === 'Active' ? 'blue' :
+                    user.accountStatus === 'Inactive' ? 'red' : 'default'"
+                >
+                  {{ user.accountStatus }}
+                </nz-tag>
               </td>
               <td div class="operation-icons">
                 <div
@@ -201,24 +229,6 @@
 
       <!-- nếu ko có data -->
       <p *ngIf="users.length === 0" class="no-data-text">No users found.</p>
-
-      <!-- <nz-modal
-        [(nzVisible)]="isModalVisible"
-        (nzOnCancel)="handleModalCancel()"
-        [nzFooter]="null"
-        nzTitle="User Details"
-      >
-        <ng-container *ngIf="selectedUser">
-          <p>
-            <strong>Full Name:</strong> {{ selectedUser.firstName }}
-            {{ selectedUser.lastName }}
-          </p>
-          <p><strong>Email:</strong> {{ selectedUser.email }}</p>
-          <p><strong>Username:</strong> {{ selectedUser.userName }}</p>
-          <p><strong>Date of Birth:</strong> {{ selectedUser.dateOfBirth }}</p>
-          <p><strong>Role:</strong> {{ selectedUser.roles }}</p>
-        </ng-container>
-      </nz-modal> -->
     </div>
 
     <!-- Dropdown filter menu  -->
@@ -264,6 +274,5 @@
         <li nz-menu-item (click)="setStatus('Inactive')">Inactive</li>
       </ul>
     </nz-dropdown-menu>
-
   </div>
 </div>

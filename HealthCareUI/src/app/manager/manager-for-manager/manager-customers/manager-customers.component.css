@@ -192,17 +192,19 @@ th, td {
 }
 
 .tag.verified {
-  background-color: #e8f5e9;
-  color: #388e3c;
+  /* background-color: #e8f5e9;
+  color: #388e3c; */
   display: flex;
   justify-self: center;
+  border: none;
 }
 
 .tag.active {
-  background-color: #e3f2fd;
-  color: #1976d2;
+  /* background-color: #e3f2fd;
+  color: #1976d2; */
   display: flex;
   justify-self: center;
+  border: none;
 }
 
 .nohead, .rolehead, .verifiedhead, .activehead, .operationhead {

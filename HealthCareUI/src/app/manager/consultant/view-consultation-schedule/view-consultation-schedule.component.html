@@ -1,1 +1,233 @@
-<p>view-consultation-schedule works!</p>
+<app-header></app-header>
+<div class="user-manager">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- User List -->
+
+    <div class="user-list">
+      <div class="user-list-header">
+        <div class="content">View Consultation Schedule</div>
+        <div class="search-wrapper">
+          <nz-icon nzType="search" class="search-icon"></nz-icon>
+          <!-- dùng nz-input -->
+          <input
+            nz-input
+            placeholder="Search by name, email"
+            class="search-box"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchChange()"
+          />
+        </div>
+      </div>
+
+      <div class="user-list-scrollable">
+        <!-- dùng nz-table -->
+        <nz-table
+          [nzData]="displayedAppointments"
+          [nzFrontPagination]="false"
+          [nzShowPagination]="false"
+          [nzLoading]="loading"
+          nzBordered
+        >
+          <thead>
+            <tr>
+              <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead namehead" style="width: 200px;">Full Name</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.fullName"
+                    [nzActive]="!!filter.fullNameSort"
+                    [nzDropdownMenu]="fullNameMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead mailhaed" style="width: 190px;">Email</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.email"
+                    [nzActive]="!!filter.emailSort"
+                    [nzDropdownMenu]="emailMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+
+              <!-- <th>
+                <span class="taghead dobhead" style="width: 120px;">Date of Birth</span>
+              </th> -->
+              <th>
+                <span class="taghead apptdatehead" style="width: 160px;">Appointment Date</span>
+                <nz-filter-trigger
+                  [(nzVisible)]="filterVisible.appointmentDate"
+                  [nzActive]="!!filter.appointmentDateSort"
+                  [nzDropdownMenu]="apptDateMenu"
+                  style="margin-left: 4px;"
+                >
+                  <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                </nz-filter-trigger>
+              </th>
+              <th>
+                <span class="taghead appttimehead" style="width: 165px;">Appointment Time</span>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead activehead" style="width: 75px;">Status</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.status"
+                    [nzActive]="!!filter.status"
+                    [nzDropdownMenu]="statusMenu"
+                    style="margin-left: 4px;"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+
+              <th><span class="taghead operationhead" style="width: 70px;">Action</span></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let appt of displayedAppointments; let i = index">
+
+              <td>
+                <span class="tag no">{{(currentPage - 1) * pageSize + i + 1}}</span>
+              </td>
+
+              <td>
+                <span class="tag name">{{ appt.account.firstName }} {{ appt.account.lastName }}</span>
+              </td>
+              <td>
+                <span class="tag mail">{{ appt.account.email }}</span>
+              </td>
+              <!-- <td>
+                <span class="tag dob">{{ appt.account.dateOfBirth | date:'dd/MM/yyyy' }}</span>
+              </td> -->
+              <td>
+                <span class="tag apptdate">{{ appt.appointmentDate | date:'dd/MM/yyyy' }}</span>
+              </td>
+              <td>
+                <span class="tag appttime">{{ appt.appointmentTime }}</span>
+              </td>
+              <td>
+                <nz-tag
+                  class="tag active"
+                  [nzColor]="
+                    appt.status === 0 ? 'blue' :
+                    appt.status === 1 ? 'orange' :
+                    appt.status === 2 ? 'green' :
+                    appt.status === 3 ? 'red' :
+                    appt.status === 4 ? 'purple' : 'default'
+                  "
+                >
+                  {{
+                    appt.status === 0 ? 'Submited' :
+                    appt.status === 1 ? 'Pending' :
+                    appt.status === 2 ? 'Confirmed' :
+                    appt.status === 3 ? 'Canceled' :
+                    appt.status === 4 ? 'Completed'  : 'Không xác định'
+                  }}
+                </nz-tag>
+              </td>
+
+              <td div class="operation-icons">
+                <div
+                  class="icon-box edit"
+                  title="Edit"
+                  (click)="openEditDialog(appt)"
+                >
+                  <i class="fa-solid fa-edit"></i>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+
+      <div *ngIf="selectedAppointment" class="modal-overlay">
+        <div class="modal-content">
+          <app-edit-appointment
+            [data]="selectedAppointment"
+            (save)="handleSave($event)"
+            (cancel)="handleCancel()"
+          ></app-edit-appointment>
+        </div>
+      </div>
+
+      <!-- phân trang -->
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+          Prev
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages); let idx = index"
+          [class.active]="currentPage === idx + 1"
+          (click)="goToPage(idx + 1)"
+        >
+          {{ idx + 1 }}
+        </button>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </button>
+      </div>
+
+      <!-- nếu ko có data -->
+      <p *ngIf="appointments.length === 0" class="no-data-text">No users found.</p>
+
+    </div>
+
+    <!-- Dropdown filter menu  -->
+    <nz-dropdown-menu #fullNameMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setFullNameSort('')">None</li>
+        <li nz-menu-item (click)="setFullNameSort('az')">A → Z</li>
+        <li nz-menu-item (click)="setFullNameSort('za')">Z → A</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #emailMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setEmailSort('')">None</li>
+        <li nz-menu-item (click)="setEmailSort('az')">A → Z</li>
+        <li nz-menu-item (click)="setEmailSort('za')">Z → A</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #statusMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setStatus('')">All</li>
+        <li nz-menu-item (click)="setStatus('0')">Submited</li>
+        <li nz-menu-item (click)="setStatus('1')">Pending</li>
+        <li nz-menu-item (click)="setStatus('2')">Confirmed</li>
+        <li nz-menu-item (click)="setStatus('3')">Canceled</li>
+        <li nz-menu-item (click)="setStatus('4')">Completed</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <!-- Dropdown filter menu cho Appointment Date -->
+    <nz-dropdown-menu #apptDateMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="clearDateFilters()">None</li>
+        <li nz-menu-item (click)="openDateModal('date')">By Date</li>
+        <li nz-menu-item (click)="openDateModal('week')">By Week</li>
+        <!-- <li nz-menu-item (click)="openDateModal('range')">By Range</li> -->
+      </ul>
+    </nz-dropdown-menu>
+
+
+  </div>
+</div>

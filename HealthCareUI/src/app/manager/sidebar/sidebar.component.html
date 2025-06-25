@@ -1,35 +1,35 @@
 <div class="container">
   <!-- Nút mở modal -->
-  <button 
-   class="new-btn"
-   *ngIf="role === 'admin'" 
-   (click)="openUserModal()">
+  <!-- role ADMIN -->
+  <button class="new-btn" *ngIf="role === 'admin'" (click)="openUserModal()">
     + New User
   </button>
 
+  <!-- Role STAFF -->
   <button
     class="new-btn"
-    *ngIf="role === 'manager'"
-    (click)="openCustomerModal()">
-    + New Customer
-  </button>
-
-   <button
-    class="new-btn"
-     *ngIf="role === 'staff'|| role === 'manager'"
-    (click)="openBookingModal()"
+    *ngIf="role === 'staff'"
+    (click)="openCustomerModal()"
   >
+    + New User
+  </button>
+  <button class="new-btn" *ngIf="role === 'staff'" (click)="openBookingModal()">
     + New Booking
   </button>
 
-  <!-- Render modal nếu showModal === true -->
-   <div class="createBooking">
-    <app-create-booking
-      *ngIf="modalType === 'booking'"
-      (close)="closeModal()"
-    ></app-create-booking>
-  </div> 
+  <!-- Role MANAGER -->
+  <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">
+    + New User
+  </button>
+  <button
+    class="new-btn"
+    *ngIf="role === 'manager'"
+    (click)="openCustomerModal()"
+  >
+    + New Test
+  </button>
 
+  <!-- Render modal nếu showModal === true -->
   <div class="createAdmin">
     <app-create-user
       *ngIf="modalType === 'user'"
@@ -41,10 +41,9 @@
     <app-create-customer
       *ngIf="modalType === 'customer'"
       (close)="closeModal()"
+      (testCreated)="handleTestCreated()"
     ></app-create-customer>
   </div>
-  
-  
 
   <ul class="menu">
     <li routerLinkActive="active" *ngIf="role === 'admin'">
@@ -65,7 +64,7 @@
         <span class="menu-text">Feedbacks</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" *ngIf="role === 'manager'">
       <a class="menu-item">
         <nz-icon nzType="clock-circle" nzTheme="outline"></nz-icon>
         <span class="menu-text">Set working time</span>
@@ -77,17 +76,27 @@
         <span class="menu-text">Dashboard</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" *ngIf="role === 'manager'">
       <a class="menu-item" [routerLink]="['/manage-service']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
         <span class="menu-text">Categories Service</span>
       </a>
     </li>
-    <li routerLinkActive="active" *ngIf="role === 'manager' || role === 'staff'">
+<<<<<<< HEAD
+    <li routerLinkActive="active">
+      <a class="menu-item" [routerLink]="['/view-consultation-schedule']">
+        <nz-icon nzType="database" nzTheme="outline"></nz-icon>
+        <span class="menu-text">View consultation schedule</span>
+      </a>
+    </li>
+
+=======
+    <li routerLinkActive="active" *ngIf="role === 'staff'">
       <a class="menu-item" [routerLink]="['/staff']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
         <span class="menu-text">Staff</span>
       </a>
     </li>
+>>>>>>> 56a3d3baa1746fe6308876352dcbf3e329843618
   </ul>
 </div>
