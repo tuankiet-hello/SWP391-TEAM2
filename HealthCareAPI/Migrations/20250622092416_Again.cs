@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HealthCareAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitData : Migration
+    public partial class Again : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,7 @@ namespace HealthCareAPI.Migrations
                 {
                     TestID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TestName = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    TestName = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false)
@@ -102,7 +102,7 @@ namespace HealthCareAPI.Migrations
                     AccountID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AppointmentDate = table.Column<DateOnly>(name: "Appointment Date", type: "date", nullable: false),
                     AppointmentTime = table.Column<TimeOnly>(name: "Appointment Time", type: "time", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,7 +146,7 @@ namespace HealthCareAPI.Migrations
                     AccountID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Start_date = table.Column<DateOnly>(type: "date", nullable: false),
                     End_date = table.Column<DateOnly>(type: "date", nullable: false),
-                    Reminder_enabled = table.Column<int>(type: "int", nullable: false),
+                    Reminder_enabled = table.Column<bool>(type: "bit", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(100)", nullable: true)
                 },
                 constraints: table =>

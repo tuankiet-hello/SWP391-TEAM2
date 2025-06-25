@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../header/header.component';
+import { HeaderManagerComponent } from '../../header/header.component';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -24,14 +24,13 @@ import { ViewCustomerComponent } from '../view-customer/view-customer.component'
 import { EditCustomerComponent } from '../edit-customer/edit-customer.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 
-
 @Component({
   selector: 'app-manager-customers',
   imports: [
       CommonModule,
       FormsModule,
       SidebarComponent,
-      HeaderComponent,
+      HeaderManagerComponent,
       NzTableModule,
       NzInputModule,
       NzModalModule,
@@ -46,13 +45,13 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
       { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
     ],
   templateUrl: './manager-customers.component.html',
-  styleUrl: './manager-customers.component.css'
+  styleUrl: './manager-customers.component.css',
 })
 export class ManagerCustomersComponent implements OnInit {
   emptyText = 'No users found';
 
   users: AccountTableDTO[] = []; // Dữ liệu gốc
-  filteredUsers: AccountTableDTO[] = [];  // Dữ liệu đã filter/sort
+  filteredUsers: AccountTableDTO[] = []; // Dữ liệu đã filter/sort
   displayedUsers: AccountTableDTO[] = []; // Dữ liệu hiển thị trên trang
 
   selectedUser?: AccountDetailDTO;
@@ -145,9 +144,11 @@ export class ManagerCustomersComponent implements OnInit {
   }
 
   handleUserUpdated(updatedUser: AccountDetailDTO) {
-    const idx = this.users.findIndex(u => u.id === this.idChoose);
+    const idx = this.users.findIndex((u) => u.id === this.idChoose);
     if (idx !== -1) {
-      this.users[idx].fullName = `${updatedUser.firstName} ${updatedUser.lastName}`;
+      this.users[
+        idx
+      ].fullName = `${updatedUser.firstName} ${updatedUser.lastName}`;
       this.users[idx].email = updatedUser.email;
       this.users[idx].role = updatedUser.roles;
       this.users[idx].emailConfirmed = updatedUser.emailConfirmed;
@@ -155,7 +156,7 @@ export class ManagerCustomersComponent implements OnInit {
     }
 
     // Cập nhật filteredUsers theo filter hiện tại, nhưng KHÔNG reset currentPage
-    this.filteredUsers = this.users.filter(user => {
+    this.filteredUsers = this.users.filter((user) => {
       // chỉ filter role, hoặc bổ sung các điều kiện filter khác nếu đang dùng
       let match = true;
       if (this.filter.role) {
@@ -204,24 +205,28 @@ export class ManagerCustomersComponent implements OnInit {
           this.unbanUser(user.id);
         }
       },
-      nzCancelText: 'Cancel'
+      nzCancelText: 'Cancel',
     });
   }
 
   banUser(userId: string) {
     this.userService.banUser(userId).subscribe({
       next: () => {
-        const user = this.users.find(u => u.id === userId);
+        const user = this.users.find((u) => u.id === userId);
         if (user) user.accountStatus = 'Inactive';
 
         // Cập nhật filteredUsers theo filter hiện tại, KHÔNG reset currentPage
-        this.filteredUsers = this.users.filter(user => {
+        this.filteredUsers = this.users.filter((user) => {
           let match = true;
           if (this.filter.role) match = match && user.role === this.filter.role;
-          if (this.filter.emailConfirmed) match = match && (
-            this.filter.emailConfirmed === 'true' ? user.emailConfirmed : !user.emailConfirmed
-          );
-          if (this.filter.status) match = match && user.accountStatus === this.filter.status;
+          if (this.filter.emailConfirmed)
+            match =
+              match &&
+              (this.filter.emailConfirmed === 'true'
+                ? user.emailConfirmed
+                : !user.emailConfirmed);
+          if (this.filter.status)
+            match = match && user.accountStatus === this.filter.status;
           return match;
         });
 
@@ -244,21 +249,24 @@ export class ManagerCustomersComponent implements OnInit {
     });
   }
 
-
   unbanUser(userId: string) {
     this.userService.unbanUser(userId).subscribe({
       next: () => {
-        const user = this.users.find(u => u.id === userId);
+        const user = this.users.find((u) => u.id === userId);
         if (user) user.accountStatus = 'Active';
 
         // Cập nhật filteredUsers theo filter hiện tại, KHÔNG reset currentPage
-        this.filteredUsers = this.users.filter(user => {
+        this.filteredUsers = this.users.filter((user) => {
           let match = true;
           if (this.filter.role) match = match && user.role === this.filter.role;
-          if (this.filter.emailConfirmed) match = match && (
-            this.filter.emailConfirmed === 'true' ? user.emailConfirmed : !user.emailConfirmed
-          );
-          if (this.filter.status) match = match && user.accountStatus === this.filter.status;
+          if (this.filter.emailConfirmed)
+            match =
+              match &&
+              (this.filter.emailConfirmed === 'true'
+                ? user.emailConfirmed
+                : !user.emailConfirmed);
+          if (this.filter.status)
+            match = match && user.accountStatus === this.filter.status;
           return match;
         });
 
@@ -277,7 +285,7 @@ export class ManagerCustomersComponent implements OnInit {
       error: (err) => {
         this.message.error('Unban failed. Please try again!');
         console.error('Unban failed:', err);
-      }
+      },
     });
   }
 
@@ -294,39 +302,46 @@ export class ManagerCustomersComponent implements OnInit {
     emailSort: '',
     role: '',
     emailConfirmed: '',
-    status: ''
+    status: '',
   };
 
   applyFilters() {
     let filtered = [...this.users];
 
     // Ẩn user có role admin
-    filtered = filtered.filter(user => user.role !== 'admin' && user.role !== 'manager');
+    filtered = filtered.filter(
+      (user) => user.role !== 'admin' && user.role !== 'manager'
+    );
 
     // Search theo tên hoặc email
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
-      filtered = filtered.filter(user =>
-        user.fullName.toLowerCase().includes(search) ||
-        user.email.toLowerCase().includes(search)
+      filtered = filtered.filter(
+        (user) =>
+          user.fullName.toLowerCase().includes(search) ||
+          user.email.toLowerCase().includes(search)
       );
     }
 
     // Filter Role
     if (this.filter.role) {
-      filtered = filtered.filter(user => user.role === this.filter.role);
+      filtered = filtered.filter((user) => user.role === this.filter.role);
     }
 
     // Filter Email Confirmed
     if (this.filter.emailConfirmed) {
-      filtered = filtered.filter(user =>
-        this.filter.emailConfirmed === 'true' ? user.emailConfirmed : !user.emailConfirmed
+      filtered = filtered.filter((user) =>
+        this.filter.emailConfirmed === 'true'
+          ? user.emailConfirmed
+          : !user.emailConfirmed
       );
     }
 
     // Filter Status
     if (this.filter.status) {
-      filtered = filtered.filter(user => user.accountStatus === this.filter.status);
+      filtered = filtered.filter(
+        (user) => user.accountStatus === this.filter.status
+      );
     }
 
     // Sort Full Name

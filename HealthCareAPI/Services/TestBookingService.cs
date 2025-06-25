@@ -2,6 +2,7 @@
 using HealthCareAPI.Entities;
 using HealthCareAPI.Enum;
 using HealthCareAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthCareAPI.Services
 {
@@ -47,7 +48,17 @@ namespace HealthCareAPI.Services
             _unitOfWork.TestBookingRepository.Update(testBooking);
             await _unitOfWork.CompleteAsync();
         }
+        public async Task<TestBooking> GetByIdWithMoreInfAsync(int id)
+        {
+            var test = await _unitOfWork.TestBookingRepository.GetByIdWithIncludesAsync(id);
+            if (test == null) throw new KeyNotFoundException("Booking not found");
+            return test;
+        }
+        public async Task<IEnumerable<TestBooking>> GetTestHistoryAsync(Guid accountId)
+        {
+            return await _unitOfWork.TestBookingRepository.GetHistoryWithIncludesAsync(accountId);
+        }
 
-      
+
     }
 }

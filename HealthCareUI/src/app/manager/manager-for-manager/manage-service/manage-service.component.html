@@ -1,0 +1,172 @@
+<app-header-manager></app-header-manager>
+<div class="user-manager">
+  <!-- Sidebar -->
+  <app-sidebar (testCreated)="handleTestCreated()"></app-sidebar>
+  <!-- Main-Content -->
+  <div class="main">
+    <div class="user-list">
+      <div class="user-list-header">
+        <div class="content">Test Management</div>
+        <div class="search-wrapper">
+          <nz-icon nzType="search" class="search-icon"></nz-icon>
+          <!-- dùng nz-input -->
+          <input nz-input placeholder="Search by name" class="search-box" />
+        </div>
+        <nz-table
+          [nzData]="displayedTest"
+          [nzFrontPagination]="false"
+          [nzShowPagination]="false"
+        >
+          <thead>
+            <tr>
+              <th>
+                <span class="taghead nohead" style="width: 40px">No.</span>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead namehead" style="width: 190px"
+                    >Test Name</span
+                  >
+                  <!-- <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.fullName"
+                    [nzActive]="!!filter.fullNameSort"
+                    [nzDropdownMenu]="fullNameMenu"
+                    style="margin-left: 4px"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger> -->
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead descriptionhead" style="width: 240px"
+                    >Description</span
+                  >
+                  <!-- <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.email"
+                    [nzActive]="!!filter.emailSort"
+                    [nzDropdownMenu]="emailMenu"
+                    style="margin-left: 4px"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger> -->
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead pricehead" style="width: 90px"
+                    >Price</span
+                  >
+                  <!-- <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.role"
+                    [nzActive]="!!filter.role"
+                    [nzDropdownMenu]="roleMenu"
+                    style="margin-left: 4px"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger> -->
+                </div>
+              </th>
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead statushead" style="width: 70px"
+                    >Status</span
+                  >
+                  <!-- <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.status"
+                    [nzActive]="!!filter.status"
+                    [nzDropdownMenu]="statusMenu"
+                    style="margin-left: 4px"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger> -->
+                </div>
+              </th>
+              <th>
+                <span class="taghead operationhead" style="width: 100px"
+                  >Operations</span
+                >
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let user of displayedTest; let i = index">
+              <td>
+                <span class="tag no">{{
+                  (currentPage - 1) * pageSize + i + 1
+                }}</span>
+              </td>
+              <td>
+                <span class="tag name">{{ user.testName }}</span>
+              </td>
+              <td>
+                <span class="tag mail">{{ user.description }}</span>
+              </td>
+              <td>
+                <span class="tag user">{{ user.price }}</span>
+              </td>
+              <td>
+                <span class="tag active" *ngIf="user.active === true"
+                  >Active</span
+                >
+                <span class="tag inactive" *ngIf="user.active === false"
+                  >Inactive</span
+                >
+              </td>
+              <td div class="operation-icons">
+                <div
+                  class="icon-box edit"
+                  title="Edit"
+                  (click)="editTest(user.testID)"
+                >
+                  <i class="fa-solid fa-edit"></i>
+                </div>
+
+                <!-- <div
+                  class="icon-box lock"
+                  title="lock"
+                >
+                  <i
+                    class="fa-solid"
+                    [ngClass]="[
+                      user.active === true ? 'fa-lock' : 'fa-unlock',
+                      user.active === true ? 'unlock-icon' : 'lock-icon'
+                    ]"
+                  >
+                  </i>
+                </div> -->
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+
+      <app-test-edit
+        *ngIf="isEditModalVisible && selectedEditTest"
+        [user]="selectedEditTest"
+        (close)="handleEditModalClose()"
+        (updated)="loadTests()"
+      ></app-test-edit>
+
+      <!-- phân trang -->
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+          Prev
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages); let idx = index"
+          [class.active]="currentPage === idx + 1"
+          (click)="goToPage(idx + 1)"
+        >
+          {{ idx + 1 }}
+        </button>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

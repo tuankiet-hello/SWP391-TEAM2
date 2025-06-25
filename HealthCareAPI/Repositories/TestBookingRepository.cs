@@ -16,6 +16,24 @@ namespace HealthCareAPI.Repositories
                 .Include(tb => tb.Test)
                 .ToListAsync();
         }
+        public async Task<TestBooking> GetByIdWithIncludesAsync(int id)
+        {
+            return await _context.TestBookings
+                .Include(tb => tb.Account)
+                .Include(tb => tb.Test)
+                .FirstOrDefaultAsync(tb => tb.BookingID == id);
+        }
+
+        public async Task<IEnumerable<TestBooking>> GetHistoryWithIncludesAsync(Guid accountId)
+        {
+            return await _context.TestBookings
+                .Where(tb => tb.AccountID == accountId)
+                .Include(tb => tb.Test)
+                .Include(tb => tb.Account)
+                .OrderByDescending(tb => tb.BookingDate)
+                .ToListAsync();
+        }
+
         // Thêm các method đặc thù cho TestBooking nếu cần
     }
 } 

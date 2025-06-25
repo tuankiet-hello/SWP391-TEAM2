@@ -1,0 +1,57 @@
+<div class="custom-modal">
+  <div class="custom-modal-content">
+    <div class="btnclose">
+      <span class="close-button" (click)="onCancel()">&times;</span>
+    </div>
+    <h3 class="modal-title">Create Booking</h3>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <!-- accountID & name -->
+      <div class="form-group">
+        <label>Account Name</label>
+        <!-- HTML -->
+        <select formControlName="accountID">
+        <option *ngFor="let user of users" [value]="user.id">
+            {{ user.fullName }}
+        </option>
+        </select>
+      </div>
+      <!-- testID -->
+      <div class="form-group">
+        <label>Test Name</label>
+        <select formControlName="testID">
+          <option *ngFor="let test of tests" [value]="test.testID">
+            {{ test.testName }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Result</label>
+        <input formControlName="result" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Booking Date</label>
+        <input formControlName="bookingDate" type="date" />
+      </div>
+      <div class="form-group">
+        <label>Booking Time</label>
+        <input formControlName="bookingTime" type="time" />
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select formControlName="status">
+          <option [value]="0">Submitted</option>
+          <option [value]="1">Pending</option>
+          <option [value]="2">Confirmed</option>
+          <option [value]="3">Canceled</option>
+          <option [value]="4">Completed</option>
+        </select>
+      </div>
+       <!-- THÊM DÒNG NÀY để hiển thị thông báo -->
+  <div *ngIf="successMessage" class="form-success-msg">
+    {{ successMessage }}
+  </div>
+    <button type="submit" [disabled]="form.invalid || isSubmitting">Save</button>
+      <!-- <button type="button" (click)="onCancel()">Cancel</button> -->
+    </form>
+  </div>
+</div>

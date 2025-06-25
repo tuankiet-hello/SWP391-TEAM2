@@ -21,6 +21,17 @@ namespace HealthCareAPI.Controller
             var bookings = await _testBookingService.GetAllTestBookingsAsync();
             return Ok(bookings);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByID(int id)
+        {
+            var test = await _testBookingService.GetByIdWithMoreInfAsync(id);
+            if (test == null)
+            {
+                return NotFound(new { message = "Booking not found" });
+            }
+            return Ok(test);
+        }
         [HttpPost("add-booking")]
         public async Task<IActionResult> CreateBooking([FromBody] TestBookingDTO testBookingDto)
         {
@@ -47,6 +58,13 @@ namespace HealthCareAPI.Controller
             {
                 return NotFound(new { message = ex.Message });
             }
+        }
+
+        [HttpGet("history")]
+        public async Task<IActionResult> GetTestHistory([FromQuery] Guid accountId)
+        {
+            var history = await _testBookingService.GetTestHistoryAsync(accountId);
+            return Ok(history);
         }
     }
 }

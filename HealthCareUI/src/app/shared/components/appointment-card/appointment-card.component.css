@@ -26,6 +26,7 @@
 
 .card .info {
   padding: 1rem;
+  padding-top: 0px;
   text-align: center;
 }
 
@@ -40,10 +41,19 @@
 }
 
 .card .info .price {
+  color: #060606;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+.active {
+  color: rgb(59, 193, 59);
+  font-weight: bold;
+}
+.in-active {
   color: #e53935;
   font-weight: bold;
-  margin-bottom: 1rem;
-  font-size: 1rem;
 }
 
 .card .info .btn {
