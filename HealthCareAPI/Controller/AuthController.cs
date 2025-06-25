@@ -92,6 +92,11 @@ namespace HealthCareAPI.Controller
             if (user == null)
                 return BadRequest("Email không tồn tại");
 
+            var fullName = $"{user?.FirstName ?? ""} {user?.LastName ?? ""}".Trim();
+            if (string.IsNullOrWhiteSpace(fullName))
+            {
+                fullName = user?.UserName ?? "";
+            }
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = System.Net.WebUtility.UrlEncode(token);
 
@@ -100,28 +105,28 @@ namespace HealthCareAPI.Controller
             var resetLink = $"{_configuration["ClientUrl"]}/reset-password?email={user.Email}&token={encodedToken}";
             var emailBody = $@"
                     <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-                      <h2 style='text-align:center;margin-bottom:24px;'>Chào mừng đến với <b>Health Care System!</b></h2>
-                      <p>Xin chào,</p>
-                      <p>Cảm ơn bạn đã đăng ký tài khoản tại <b>Health Care System</b>.</p>
-                      <p>Vui lòng nhấp vào nút bên dưới để thay đổi mật khẩu của bạn:</p>
+                      <h2 style='text-align:center;margin-bottom:24px;'>Welcome to <b>Health Care System!</b></h2>
+                      <p>Dear <b>{fullName}</b>,</p>
+                      <p>Thank you for registering an account with <b>Health Care System</b>.</p>
+                      <p>Please click the button below to reset your password:</p>
                       <div style='text-align:center;margin:32px 0;'>
-                        <a href='{resetLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Xác nhận email</a>
+                        <a href='{resetLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Reset password</a>
                       </div>
-                      <p style='margin-top:32px;'>Sau khi đặt lại mật khẩu bạn có thể đăng nhập và sử dụng đầy đủ các tính năng của Health Care System.</p>
+                      <p style='margin-top:32px;'>After resetting your password you can log in and use all the features of Health Care System.</p>
                       <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
-                      <p style='font-size:13px;color:#aaa;text-align:center;'>Email này được gửi tự động, vui lòng không trả lời.</p>
+                      <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically, please do not reply.</p>
                     </div>
                     ";
             try
             {
-                await _emailService.SendEmailAsync(user.Email, "Xác nhận đặt lại mật khẩu - Health Care System", emailBody);
+                await _emailService.SendEmailAsync(user.Email, "Confirm password reset - Health Care System", emailBody);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = "Email không tồn tại hoặc không gửi được. Vui lòng nhập lại email hợp lệ." });
             }
 
-            return Ok(new { message = "Đã gửi đường dẫn đặt lại mật khẩu qua email.", token });
+            return Ok(new { message = "Password reset link sent via email.", token });
         }
 
         [HttpPost("reset-password")]
@@ -217,29 +222,29 @@ namespace HealthCareAPI.Controller
                 var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-email?email={user.Email}&token={encodedToken}";
                 var emailBody = $@"
                     <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-                      <h2 style='text-align:center;margin-bottom:24px;'>Chào mừng đến với <b>Health Care System!</b></h2>
-                      <p>Xin chào,</p>
-                      <p>Cảm ơn bạn đã đăng ký tài khoản tại <b>Health Care System</b>.</p>
-                      <p>Vui lòng nhấp vào nút bên dưới để xác nhận địa chỉ email của bạn:</p>
+                      <h2 style='text-align:center;margin-bottom:24px;'>Welcome to <b>Health Care System!</b></h2>
+                      <p>Dear <b>{dto.UserName}</b>,</p>
+                      <p>Thank you for registering an account with <b>Health Care System</b>.</p>
+                      <p>Please click the button below to verify your email address:</p>
                       <div style='text-align:center;margin:32px 0;'>
-                        <a href='{confirmationLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Xác nhận email</a>
+                        <a href='{confirmationLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Confirm email</a>
                       </div>
-                      <p style='margin-top:32px;'>Sau khi xác nhận, bạn có thể đăng nhập và sử dụng đầy đủ các tính năng của Health Care System.</p>
+                      <p style='margin-top:32px;'>After verification, you can log in and use all features of the Health Care System.</p>
                       <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
-                      <p style='font-size:13px;color:#aaa;text-align:center;'>Email này được gửi tự động, vui lòng không trả lời.</p>
+                      <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically. Please do not reply.</p>
                     </div>
                     ";
                 try
                 {
-                    await _emailService.SendEmailAsync(user.Email, "Xác nhận đăng ký tài khoản - Health Care System", emailBody);
+                    await _emailService.SendEmailAsync(user.Email, "Confirm account registration - Health Care System", emailBody);
                 }
                 catch (Exception ex)
                 {
                     await _userManager.DeleteAsync(user); // Xóa user nếu gửi mail thất bại
-                    return BadRequest(new { message = "Email không tồn tại hoặc không gửi được. Vui lòng nhập lại email hợp lệ." });
+                    return BadRequest(new { message = "Email does not exist or could not be sent. Please re-enter a valid email." });
                 }
 
-                return Ok(new { message = "Đăng ký thành công! Vui lòng kiểm tra email để xác nhận." });
+                return Ok(new { message = "Registration successful! Please check your email for confirmation." });
             }
 
             // Trả lỗi nếu tạo user thất bại
@@ -251,17 +256,17 @@ namespace HealthCareAPI.Controller
         {
             var user = await _userManager.FindByEmailAsync(email.ToString());
             if (user == null)
-                return BadRequest(new { message = "Người dùng không tồn tại." });
+                return BadRequest(new { message = "User does not exist." });
 
             //  var decodedToken =System.Net.WebUtility.UrlDecode(token);
              //không cần decode nữa vì ConfirmEmailAsync tự decode r 
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
-                return Ok(new { message = "Tài khoản đã được xác thực thành công." });
+                return Ok(new { message = "Account has been successfully verified." });
 
             // Log chi tiết lỗi
-            return BadRequest(new { message = "Token không hợp lệ hoặc đã hết hạn.", errors = result.Errors}); 
+            return BadRequest(new { message = "Token is invalid or expired.", errors = result.Errors}); 
         }
 
         [HttpPost("resend-confirm-email")]
@@ -277,29 +282,29 @@ namespace HealthCareAPI.Controller
             var encodedToken = System.Net.WebUtility.UrlEncode(token);
             var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-email?email={user.Email}&token={encodedToken}";
             var emailBody = $@"
-<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-  <h2 style='text-align:center;margin-bottom:24px;'>Chào mừng đến với <b>Health Care System!</b></h2>
-  <p>Xin chào,</p>
-  <p>Bạn vừa yêu cầu gửi lại email xác nhận tài khoản tại <b>Health Care System</b>.</p>
-  <p>Vui lòng nhấp vào nút bên dưới để xác nhận địa chỉ email của bạn:</p>
-  <div style='text-align:center;margin:32px 0;'>
-    <a href='{confirmationLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Xác nhận email</a>
-  </div>
-  <p style='margin-top:32px;'>Sau khi xác nhận, bạn có thể đăng nhập và sử dụng đầy đủ các tính năng của Health Care System.</p>
-  <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
-  <p style='font-size:13px;color:#aaa;text-align:center;'>Email này được gửi tự động, vui lòng không trả lời.</p>
-</div>
-";
+                    <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+                    <h2 style='text-align:center;margin-bottom:24px;'>Welcome to <b>Health Care System!</b></h2>
+                    <p>Dear <b>{user.UserName},</p>
+                    <p>You have just requested to resend your account confirmation email at <b>Health Care System</b>.</p>
+                    <p>Please click the button below to confirm your email address:</p>
+                    <div style='text-align:center;margin:32px 0;'>
+                        <a href='{confirmationLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Confirm email</a>
+                    </div>
+                    <p style='margin-top:32px;'>After verification, you can log in and use all features of the Health Care System.</p>
+                    <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+                    <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically, please do not reply.</p>
+                    </div>
+                    ";
             try
             {
                 Console.WriteLine(token);
-                await _emailService.SendEmailAsync(user.Email, "Gửi lại xác nhận đăng ký tài khoản - Health Care System", emailBody);
+                await _emailService.SendEmailAsync(user.Email, "Resend account registration confirmation - Health Care System", emailBody);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = "Email không tồn tại hoặc không gửi được. Vui lòng nhập lại email hợp lệ." });
             }
-            return Ok(new { message = "Đã gửi lại email xác nhận. Vui lòng kiểm tra hộp thư." });
+            return Ok(new { message = "Confirmation email resent. Please check your email." });
         }
 
     }

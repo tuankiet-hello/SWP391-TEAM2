@@ -45,6 +45,13 @@
     ></app-create-customer>
   </div>
 
+  <div class="createBooking">
+    <app-create-booking
+    *ngIf="modalType === 'booking'"
+    (close)="closeModal()">
+    </app-create-booking>
+  </div>
+
   <ul class="menu">
     <li routerLinkActive="active" *ngIf="role === 'admin'">
       <a class="menu-item" [routerLink]="['/manager-users']">

@@ -5,6 +5,7 @@ import { AppointmentCardComponent } from '../../../../app/shared/components/appo
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
+import { TestService } from '../../../../services/test.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AppointmentModalComponent } from '../../../appointment-popup/appointment-modal.component';
 import {
@@ -13,7 +14,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { TestDTO, TestService } from '../../../../services/test.service';
+import { TestDTO } from '../../../../services/test.service';
 @Component({
   selector: 'app-sexual-testing',
   standalone: true,

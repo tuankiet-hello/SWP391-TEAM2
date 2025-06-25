@@ -46,6 +46,7 @@ export class TestService {
   }): Observable<any> {
     return this.http.post(this.apiUrl + '/add-test', payload);
   }
+
   editTest(
     id: number,
     payload: {

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { SexualTestingComponent } from './feature/client/sexual-testing/sexual-testing.component';
 import {
   ConfirmEmailComponent,
   ForgotPasswordComponent,
@@ -9,9 +8,12 @@ import {
 } from './feature/Auth';
 
 import {
-  ManagerCustomersComponent,
+
   ManagerUsersComponent,
+  ManagerCustomersComponent,
+  ViewConsultationScheduleComponent,
   ManageServiceComponent,
+
 } from './manager';
 
 import {
@@ -21,8 +23,10 @@ import {
   Blog3Component,
   Blog4Component,
   Blog5Component,
+  SexualTestingComponent,
 } from './feature/client';
 import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view-test-booking.component';
+import { EditProfileComponent } from './feature/client/edit-profile/edit-profile.component';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -31,6 +35,7 @@ export const routes: Routes = [
 
   //Client routes
   { path: 'home', component: HomeComponent },
+  { path: 'sexual-testing', component: SexualTestingComponent },
   {
     path: 'blog/top-7-things-you-should-know-about-stis',
     component: Blog1Component,
@@ -56,13 +61,23 @@ export const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
 
-  //Manager routes
+  //Admin routes
   { path: 'manager-users', component: ManagerUsersComponent },
+
+  //Manager routes
   { path: 'manager-customers', component: ManagerCustomersComponent },
+
+  { path: 'manager-service', component: ManageServiceComponent },
+  //Staff routes
+
+
+  //Consultant routes
+  { path: 'view-consultation-schedule', component: ViewConsultationScheduleComponent },
+
   { path: 'sexual-testing', component: SexualTestingComponent },
   { path: 'staff', component: ViewTestBookingComponent },
-  { path: 'manage-service', component: ManageServiceComponent },
-
+ //Customer
+ {path: 'edit-profile-customer',component: EditProfileComponent},
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní

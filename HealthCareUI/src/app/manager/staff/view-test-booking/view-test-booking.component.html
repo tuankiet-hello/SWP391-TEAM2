@@ -49,23 +49,18 @@
               </th>
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead rolehead" style="width: 110px"
+                  <span class="taghead rolehead" style="width: 150px"
                     >Test Name</span
                   >
                 </div>
               </th>
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead verifiedhead" style="width: 120px"
+                  <span class="taghead verifiedhead" style="width: 100px"
                     >Date</span
                   >
                 </div>
               </th>
-              <!-- <th>
-                <div style="display: flex; align-items: center;">
-                  <span class="taghead activehead" style="width: 70px;">Time</span>
-                </div>
-              </th> -->
               <th>
                 <div style="display: flex; align-items: center">
                   <span class="taghead activehead" style="width: 70px"
@@ -103,43 +98,29 @@
               <td>
                 <span class="tag">{{ booking.bookingDate }}</span>
               </td>
-              <!-- <td>
-                <span class="tag">{{ booking.bookingTime }}</span>
-              </td> -->
               <td>
-                <span class="Pending" *ngIf="booking.status === 1"
-                  >Pending</span
+                <span
+                  class="tag"
+                  [style.border]="'2px solid ' + statusColorMap[booking.status]"
+                  [style.color]="statusColorMap[booking.status]"
                 >
-                <span class="Confirmed" *ngIf="booking.status === 2"
-                  >Confirmed</span
-                >
-                <span class="Canceled" *ngIf="booking.status === 3"
-                  >Canceled</span
-                >
-                <span class="Completed" *ngIf="booking.status === 4"
-                  >Completed</span
-                >
-                <span class="Submited" *ngIf="booking.status === 0"
-                  >Submited</span
-                >
+                  {{ statusMap[booking.status] || "Không xác định" }}
+                </span>
               </td>
+
               <td div class="operation-icons">
                 <div
                   class="icon-box eye"
                   title="View"
-                  (click)="openModalView(booking.bookingID)"
+                  (click)="viewBookingDetail(booking.bookingID)"
                 >
                   <i class="fa-solid fa-eye"></i>
                 </div>
                 <div
                   class="icon-box edit"
                   title="Edit"
-                  (click)="openModalEdit(booking.bookingID)"
+                  (click)="editBooking(booking.bookingID)"
                 >
-                  <i class="fa-solid fa-edit"></i>
-                </div>
-
-                <div class="icon-box edit" title="Edit">
                   <i class="fa-solid fa-edit"></i>
                 </div>
               </td>
@@ -147,22 +128,23 @@
           </tbody>
         </nz-table>
       </div>
-
       <app-view-booking-detail
-        *ngIf="modalView"
-        (close)="closeModal()"
-        [booking]="bookingTest"
-      >
-      </app-view-booking-detail>
+        *ngIf="isModalVisible && selectedBooking"
+        [booking]="selectedBooking"
+        (close)="handleModalCancel()"
+      ></app-view-booking-detail>
 
       <app-edit-booking
-        *ngIf="modalEdit"
-        (close)="closeModalEdit()"
-        [bookingID]="testSelected"
-        [booking]="bookingTest"
-        (updated)="loadTestBooking()"
+        *ngIf="
+          isEditModalVisible && selectedEditBooking && idChoose !== undefined
+        "
+        [booking]="selectedEditBooking"
+        [bookingID]="idChoose!"
+        (close)="handleEditModalClose()"
+        (updated)="handleBookingUpdated($event)"
       >
       </app-edit-booking>
+
       <!-- Pagination -->
       <div class="pagination-controls">
         <button (click)="prevPage()" [disabled]="currentPage === 1">

@@ -1,5 +1,6 @@
 using System;
 using HealthCareAPI.Enum;
+using HealthCareAPI.DTOs;
 
 namespace HealthCareAPI.DTOs
 {
@@ -10,5 +11,6 @@ namespace HealthCareAPI.DTOs
         public DateOnly AppointmentDate { get; set; }
         public TimeOnly AppointmentTime { get; set; }
         public StatusType Status { get; set; }
+        public AccountViewDTO Account { get; set; }
     }
 } 

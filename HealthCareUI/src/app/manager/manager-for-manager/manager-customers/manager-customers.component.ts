@@ -22,24 +22,28 @@ import {
 } from '../../../../services/manager-user.service';
 import { ViewCustomerComponent } from '../view-customer/view-customer.component';
 import { EditCustomerComponent } from '../edit-customer/edit-customer.component';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'app-manager-customers',
   imports: [
-    CommonModule,
-    FormsModule,
-    SidebarComponent,
-    HeaderManagerComponent,
-    NzTableModule,
-    NzInputModule,
-    NzModalModule,
-    ViewCustomerComponent,
-    EditCustomerComponent,
-    NzSelectModule,
-    NzDropDownModule,
-    NzIconModule,
-  ],
-  providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
+      CommonModule,
+      FormsModule,
+      SidebarComponent,
+      HeaderManagerComponent,
+      NzTableModule,
+      NzInputModule,
+      NzModalModule,
+      ViewCustomerComponent,
+      EditCustomerComponent,
+      NzSelectModule,
+      NzDropDownModule,
+      NzIconModule,
+      NzTagModule
+    ],
+    providers: [
+      { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
+    ],
   templateUrl: './manager-customers.component.html',
   styleUrl: './manager-customers.component.css',
 })

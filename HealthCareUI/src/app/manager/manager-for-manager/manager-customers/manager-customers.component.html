@@ -133,12 +133,22 @@
                 <span class="tag user">{{ user.role }}</span>
               </td>
               <td>
-                <span class="tag verified">
-                  {{ user.emailConfirmed ? "Confirmed" : "Unconfirmed" }}
-                </span>
+                <nz-tag
+                  class="tag verified"
+                  [nzColor]="user.emailConfirmed ? 'green' : 'orange'"
+                >
+                  {{ user.emailConfirmed ? 'Confirmed' : 'Unconfirmed' }}
+                </nz-tag>
               </td>
               <td>
-                <span class="tag active">{{ user.accountStatus }}</span>
+                <nz-tag
+                  class="tag active"
+                  [nzColor]="
+                    user.accountStatus === 'Active' ? 'blue' :
+                    user.accountStatus === 'Inactive' ? 'red' : 'default'"
+                >
+                  {{ user.accountStatus }}
+                </nz-tag>
               </td>
               <td class="operation-icons">
                 <div

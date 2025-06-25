@@ -1,0 +1,48 @@
+<h2>Edit Appointment</h2>
+<div class="edit-form">
+  <div class="form-row">
+    <label>Full Name:</label>
+    <span>{{ data.account.firstName }} {{ data.account.lastName }}</span>
+  </div>
+  <div class="form-row">
+    <label>Email:</label>
+    <span>{{ data.account.email }}</span>
+  </div>
+  <div class="form-row">
+    <label>Date of Birth:</label>
+    <span>{{ data.account.dateOfBirth | date }}</span>
+  </div>
+  <div class="form-row">
+    <label>Appointment Date:</label>
+    <input
+      type="date"
+      [(ngModel)]="editData.appointmentDate"
+      class="form-control"
+      [min]="todayStr"
+    />
+  </div>
+  <div class="form-row time-row">
+    <label>Appointment Time:</label>
+    <select [(ngModel)]="editData.hour" class="form-control">
+      <option *ngFor="let h of hours" [value]="h">{{ h }}</option>
+    </select>
+    :
+    <select [(ngModel)]="editData.minute" class="form-control">
+      <option *ngFor="let m of minutes" [value]="m">{{ m }}</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label>Status:</label>
+    <select [(ngModel)]="editData.status" class="form-control">
+      <option [value]="0">Submited</option>
+      <option [value]="1">Pending</option>
+      <option [value]="2">Confirmed</option>
+      <option [value]="3">Canceled</option>
+      <option [value]="4">Completed</option>
+    </select>
+  </div>
+  <div class="form-actions">
+    <button (click)="onSave()" class="btn btn-primary">Save</button>
+    <button (click)="onCancel()" class="btn btn-secondary">Cancel</button>
+  </div>
+</div>
