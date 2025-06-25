@@ -5,11 +5,6 @@ import { AppointmentCardComponent } from '../../../../app/shared/components/appo
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
-import {
-  ManagerService,
-  Tests,
-  TestsDTO,
-} from '../../../../services/manager.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AppointmentModalComponent } from '../../../appointment-popup/appointment-modal.component';
 import {
@@ -45,7 +40,6 @@ export class SexualTestingComponent {
   selectedTest!: TestDTO;
   constructor(
     private authService: AuthService,
-    private managerService: ManagerService,
     private testService: TestService,
     private fb: FormBuilder
   ) {
@@ -57,10 +51,10 @@ export class SexualTestingComponent {
     });
   }
 
-  tests: Tests[] = [];
+  tests: TestDTO[] = [];
 
   loadTests(): void {
-    this.managerService.getAllListTest().subscribe({
+    this.testService.getAllListTest().subscribe({
       next: (data) => {
         this.tests = data;
         console.log('🧪 Loaded tests from API:', this.tests);
@@ -78,7 +72,7 @@ export class SexualTestingComponent {
     // }
 
     const payload = this.createTestForm.value;
-    this.managerService.addTest(payload).subscribe({
+    this.testService.addTest(payload).subscribe({
       next: () => {
         alert('✅ Thêm test thành công!');
         this.createTestForm.reset({ Active: true }); // reset form
