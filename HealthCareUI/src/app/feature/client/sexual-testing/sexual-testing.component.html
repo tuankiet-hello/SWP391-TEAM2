@@ -12,27 +12,28 @@
         <div class="advice-header">
           <img src="assets/mũi tên.png" alt="icon" width="24" />
           <span *ngIf="role === 'customer' || role === null"
-            >TƯ VẤN ONLINE MIỄN PHÍ</span
+            >Free Online Consultation</span
           >
         </div>
 
         <form class="form-dang-ky" *ngIf="role === 'customer' || role === null">
-          <input type="text" placeholder="Họ và tên" required />
+          <input type="text" placeholder="Full Name" required />
           <input type="tel" placeholder="Email" required />
           <select>
-            <option disabled selected>Đặt lịch xét nghiệm</option>
-            <option>Tư Vấn Xét Nghiệm</option>
-            <option>Lấy Mẫu Xét Nghiệm Tại Nhà</option>
-            <option>Khác</option>
+            <option disabled selected>Book a Test Appointment</option>
+            <option>Test Consultation</option>
+            <option>Home Sample Collection</option>
+            <option>Others</option>
           </select>
           <button type="submit">Send Information</button>
         </form>
 
         <img
-          src="assets/bannersale.jpg"
+          src="assets/bannerSale.png"
           alt="Khuyến mãi"
           class="promo-banner"
           *ngIf="role === 'customer' || role === null"
+          width="60"
         />
       </div>
     </div>
@@ -40,17 +41,21 @@
     <!-- Right Panel -->
     <div class="right-panel">
       <ng-container *ngIf="filteredTests.length > 0; else noResults">
-        <app-appointment-card
-          *ngFor="let t of filteredTests"
-          [imageUrl]="'assets/stethoscope.jpg'"
-          [title]="t.testName"
-          [price]="t.price"
-          [description]="t.description"
-          [status]="t.active"
-          [id]="t.testID"
-          (openPopup)="openBookingPopup(t.testID)"
-        ></app-appointment-card>
+        <ng-container *ngFor="let t of filteredTests">
+          <ng-container *ngIf="t.active">
+            <app-appointment-card
+              [imageUrl]="'assets/stethoscope.jpg'"
+              [title]="t.testName"
+              [price]="t.price"
+              [description]="t.description"
+              [status]="t.active"
+              [id]="t.testID"
+              (openPopup)="openBookingPopup(t.testID)"
+            ></app-appointment-card>
+          </ng-container>
+        </ng-container>
       </ng-container>
+
       <app-appointment-modal
         *ngIf="showModal"
         [show]="showModal"
@@ -61,6 +66,7 @@
         [active]="selectedTest.active"
         (close)="closePopup()"
       ></app-appointment-modal>
+
       <ng-template #noResults>
         <div class="no-results">
           <img src="assets/searchNotFound.png" alt="not found" width="300" />

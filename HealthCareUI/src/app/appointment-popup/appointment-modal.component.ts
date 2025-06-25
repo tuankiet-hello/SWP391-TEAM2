@@ -32,6 +32,9 @@ export class AppointmentModalComponent {
       lname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       type: ['', Validators.required],
+      bookingDate: ['', Validators.required],
+      bookingTime: ['', Validators.required],
+      dateOfBirth: ['', Validators.required],
     });
   }
   onClose() {
