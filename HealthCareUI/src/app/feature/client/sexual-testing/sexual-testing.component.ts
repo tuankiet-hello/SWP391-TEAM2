@@ -5,7 +5,7 @@ import { AppointmentCardComponent } from '../../../../app/shared/components/appo
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
-import { ManagerService, Tests } from '../../../../services/manager.service';
+import { TestService } from '../../../../services/test.service';
 import { HttpClientModule } from '@angular/common/http';
 import {
   FormBuilder,
@@ -13,6 +13,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { TestDTO } from '../../../../services/test.service';
 @Component({
   selector: 'app-sexual-testing',
   standalone: true,
@@ -36,7 +37,7 @@ export class SexualTestingComponent {
   isEdit = false;
   constructor(
     private authService: AuthService,
-    private managerService: ManagerService,
+    private testService: TestService,
     private fb: FormBuilder
   ) {
     this.createTestForm = this.fb.group({
@@ -47,10 +48,10 @@ export class SexualTestingComponent {
     });
   }
 
-  tests: Tests[] = [];
+  tests: TestDTO[] = [];
 
   loadTests(): void {
-    this.managerService.getAllListTest().subscribe({
+    this.testService.getAllListTest().subscribe({
       next: (data) => {
         this.tests = data;
         console.log('🧪 Loaded tests from API:', this.tests);
@@ -68,7 +69,7 @@ export class SexualTestingComponent {
     // }
 
     const payload = this.createTestForm.value;
-    this.managerService.addTest(payload).subscribe({
+    this.testService.addTest(payload).subscribe({
       next: () => {
         alert('✅ Thêm test thành công!');
         this.createTestForm.reset({ Active: true }); // reset form

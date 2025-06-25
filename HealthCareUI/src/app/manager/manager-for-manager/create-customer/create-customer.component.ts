@@ -1,9 +1,9 @@
+import { TestService , TestDTO} from './../../../../services/test.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../../services/manager-user.service';
-import { ManagerService, Tests } from '../../../../services/manager.service';
 import { AuthService } from '../../../../services/auth.service';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {
@@ -34,7 +34,7 @@ export class CreateCustomerComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private managerService: ManagerService,
+    private testService: TestService,
     private authService: AuthService
   ) {}
 
@@ -60,7 +60,7 @@ export class CreateCustomerComponent implements OnInit {
   }
   onAddTest(): void {
     const payload = this.createTestForm.value;
-    this.managerService.addTest(payload).subscribe({
+    this.testService.addTest(payload).subscribe({
       next: () => {
         alert('✅ Thêm test thành công!');
         this.createTestForm.reset({ Active: true }); // reset form

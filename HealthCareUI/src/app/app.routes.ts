@@ -67,6 +67,7 @@ export const routes: Routes = [
   //Manager routes
   { path: 'manager-customers', component: ManagerCustomersComponent },
 
+  { path: 'manager-service', component: ManageServiceComponent },
   //Staff routes
 
 
