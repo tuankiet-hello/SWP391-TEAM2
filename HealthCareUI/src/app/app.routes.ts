@@ -20,6 +20,7 @@ import {
   Blog5Component,
 } from './feature/client';
 import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view-test-booking.component';
+import { EditProfileComponent } from './feature/client/edit-profile/edit-profile.component';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -58,7 +59,8 @@ export const routes: Routes = [
   { path: 'manager-customers', component: ManagerCustomersComponent },
   { path: 'sexual-testing', component: SexualTestingComponent },
   { path: 'staff', component: ViewTestBookingComponent },
-
+ //Customer
+ {path: 'edit-profile-customer',component: EditProfileComponent},
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní

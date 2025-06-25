@@ -93,4 +93,14 @@ export class AuthService {
       return null;
     }
   }
+ 
+  // editProfile(payload: {
+  //   id:string
+  //   token: string;
+  //   newPassword: string;
+  //   confirmPassword: string;
+  // }): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/reset-password`, payload);
+  // }
+
 }
