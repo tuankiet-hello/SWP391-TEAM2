@@ -82,7 +82,7 @@
                   </nz-filter-trigger> -->
                 </div>
               </th>
-              <th>
+              <th *ngIf="role === 'manager'">
                 <span class="taghead operationhead" style="width: 100px"
                   >Operations</span
                 >
@@ -114,7 +114,7 @@
                   >Inactive</span
                 >
               </td>
-              <td div class="operation-icons">
+              <td div class="operation-icons" *ngIf="role === 'manager'">
                 <div
                   class="icon-box edit"
                   title="Edit"

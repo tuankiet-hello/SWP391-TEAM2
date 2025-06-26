@@ -8,12 +8,10 @@ import {
 } from './feature/Auth';
 
 import {
-
   ManagerUsersComponent,
   ManagerCustomersComponent,
   ViewConsultationScheduleComponent,
   ManageServiceComponent,
-
 } from './manager';
 
 import {
@@ -26,6 +24,7 @@ import {
   SexualTestingComponent,
 } from './feature/client';
 import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view-test-booking.component';
+import { EditProfileComponent } from './feature/client/edit-profile/edit-profile.component';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -66,16 +65,19 @@ export const routes: Routes = [
   //Manager routes
   { path: 'manager-customers', component: ManagerCustomersComponent },
 
+  { path: 'manage-service', component: ManageServiceComponent },
   //Staff routes
 
-
   //Consultant routes
-  { path: 'view-consultation-schedule', component: ViewConsultationScheduleComponent },
+  {
+    path: 'view-consultation-schedule',
+    component: ViewConsultationScheduleComponent,
+  },
 
   { path: 'sexual-testing', component: SexualTestingComponent },
   { path: 'staff', component: ViewTestBookingComponent },
-  { path: 'manage-service', component: ManageServiceComponent },
-
+  //Customer
+  { path: 'edit-profile-customer', component: EditProfileComponent },
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní

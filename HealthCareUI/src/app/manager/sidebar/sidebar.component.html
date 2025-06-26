@@ -6,9 +6,13 @@
   </button>
 
   <!-- Role STAFF -->
-  <button class="new-btn" *ngIf="role === 'staff'" (click)="openCustomerModal()">
+  <!-- <button
+    class="new-btn"
+    *ngIf="role === 'staff'"
+    (click)="openCustomerModal()"
+  >
     + New User
-  </button>
+  </button> -->
   <button class="new-btn" *ngIf="role === 'staff'" (click)="openBookingModal()">
     + New Booking
   </button>
@@ -35,6 +39,11 @@
       (close)="closeModal()"
       (testCreated)="handleTestCreated()"
     ></app-create-customer>
+  </div>
+
+  <div class="createBooking">
+    <app-create-booking *ngIf="modalType === 'booking'" (close)="closeModal()">
+    </app-create-booking>
   </div>
 
   <ul class="menu">
@@ -76,11 +85,16 @@
     </li>
     <li routerLinkActive="active">
       <a class="menu-item" [routerLink]="['/view-consultation-schedule']">
-        <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-        <span class="menu-text">View consultation schedule</span>
+        <nz-icon nzType="schedule" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Consultation Schedule</span>
       </a>
     </li>
-
+    <li routerLinkActive="active" *ngIf="role === 'staff'">
+      <a class="menu-item" [routerLink]="['/manage-service']">
+        <nz-icon nzType="database" nzTheme="outline"></nz-icon>
+        <span class="menu-text">Test Service</span>
+      </a>
+    </li>
     <li routerLinkActive="active" *ngIf="role === 'staff'">
       <a class="menu-item" [routerLink]="['/staff']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>

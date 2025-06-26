@@ -5,14 +5,16 @@ import { AppointmentCardComponent } from '../../../../app/shared/components/appo
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
-import { ManagerService, Tests } from '../../../../services/manager.service';
+import { TestService } from '../../../../services/test.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AppointmentModalComponent } from '../../../appointment-popup/appointment-modal.component';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { TestDTO } from '../../../../services/test.service';
 @Component({
   selector: 'app-sexual-testing',
   standalone: true,
@@ -23,6 +25,7 @@ import {
     HeaderComponent,
     FooterComponent,
     ReactiveFormsModule,
+    AppointmentModalComponent,
   ],
   templateUrl: './sexual-testing.component.html',
   styleUrls: ['./sexual-testing.component.css'],
@@ -34,9 +37,11 @@ export class SexualTestingComponent {
   userName: string | null = null;
   createTestForm: FormGroup;
   isEdit = false;
+  showModal = false;
+  selectedTest!: TestDTO;
   constructor(
     private authService: AuthService,
-    private managerService: ManagerService,
+    private testService: TestService,
     private fb: FormBuilder
   ) {
     this.createTestForm = this.fb.group({
@@ -47,10 +52,10 @@ export class SexualTestingComponent {
     });
   }
 
-  tests: Tests[] = [];
+  tests: TestDTO[] = [];
 
   loadTests(): void {
-    this.managerService.getAllListTest().subscribe({
+    this.testService.getAllListTest().subscribe({
       next: (data) => {
         this.tests = data;
         console.log('🧪 Loaded tests from API:', this.tests);
@@ -68,7 +73,7 @@ export class SexualTestingComponent {
     // }
 
     const payload = this.createTestForm.value;
-    this.managerService.addTest(payload).subscribe({
+    this.testService.addTest(payload).subscribe({
       next: () => {
         alert('✅ Thêm test thành công!');
         this.createTestForm.reset({ Active: true }); // reset form
@@ -95,5 +100,19 @@ export class SexualTestingComponent {
     return this.tests.filter((t) =>
       t.testName.toLowerCase().includes(this.search.toLowerCase())
     );
+  }
+
+  closePopup(): void {
+    this.showModal = false;
+  }
+
+  openBookingPopup(id: number): void {
+    this.testService.getTestById(id).subscribe({
+      next: (data) => {
+        this.selectedTest = data;
+        this.showModal = true;
+        console.log('đã nạp data', this.selectedTest);
+      },
+    });
   }
 }

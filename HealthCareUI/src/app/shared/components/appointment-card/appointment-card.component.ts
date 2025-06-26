@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -19,12 +19,14 @@ import { ActivatedRoute } from '@angular/router';
 export class AppointmentCardComponent {
   cardForm: FormGroup;
   role: string | null = null;
+  showModal = false;
   @Input() imageUrl!: string;
   @Input() title!: string;
   @Input() price!: number;
   @Input() description!: string;
   @Input() status!: boolean;
   @Input() id!: number;
+  @Output() openPopup = new EventEmitter<void>();
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -49,16 +51,9 @@ export class AppointmentCardComponent {
         queryParams: { returnUrl: currentUrl },
       });
       return;
-    } else if (
-      role?.toLowerCase() === 'manager' ||
-      role?.toLowerCase() === 'admin'
-    ) {
+    } else {
+      this.openPopup.emit();
+      console.log('✅ đã bắn emit');
     }
-
-    this.openBookingPopup();
-  }
-
-  openBookingPopup(): void {
-    console.log('🔔 Hiện form pop-up để đặt lịch');
   }
 }

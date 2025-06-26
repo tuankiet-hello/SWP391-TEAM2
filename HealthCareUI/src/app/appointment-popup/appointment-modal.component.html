@@ -1,0 +1,61 @@
+<div class="modal-overlay" *ngIf="show">
+  <div class="modal-content">
+    <!-- Close button -->
+    <button class="close-btn" (click)="onClose()">x</button>
+    <div class="content">
+      <!-- Left: Thông tin test -->
+      <div class="modal-left">
+        <img [src]="imageUrl" alt="test image" />
+        <h2>{{ title }}</h2>
+        <p class="price">{{ price | currency : "VND" }}</p>
+        <p>{{ description }}</p>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="formContent">
+        <form [formGroup]="form" class="modal-form">
+          <div class="title">Medical Examination Information</div>
+
+          <div class="form-group">
+            <label>First Name</label>
+            <input
+              type="text"
+              formControlName="fname"
+              placeholder="First Name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Last Name</label>
+            <input
+              type="text"
+              formControlName="lname"
+              placeholder="Last Name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Date Of Birth</label>
+            <input formControlName="dateOfBirth" type="date" />
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" formControlName="email" placeholder="Email" />
+          </div>
+
+          <div class="form-group">
+            <label>Booking Date</label>
+            <input formControlName="bookingDate" type="date" />
+          </div>
+
+          <div class="form-group">
+            <label>Booking Time</label>
+            <input formControlName="bookingTime" type="time" />
+          </div>
+          <button type="submit" (click)="onSubmit()">Send Information</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

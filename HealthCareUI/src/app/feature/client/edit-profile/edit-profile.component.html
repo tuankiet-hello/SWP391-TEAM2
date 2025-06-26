@@ -1,0 +1,45 @@
+<app-header></app-header>
+
+<div class="profile-edit-container">
+  
+  <form [formGroup]="form" (ngSubmit)="submit()" class="profile-edit-form">
+    <h2>Your Profile</h2>
+    <div class="profile-form-group">
+      <label for="userName" class="profile-label">User Name</label>
+      <input id="userName" formControlName="userName" readonly class="profile-input profile-input--readonly" />
+    </div>
+
+    <div class="profile-form-group">
+      <label for="email" class="profile-label">Email</label>
+      <input id="email" formControlName="email" readonly class="profile-input profile-input--readonly" />
+    </div>
+
+    <div class="profile-form-group">
+      <label for="firstName" class="profile-label">First Name:</label>
+      <input id="firstName" formControlName="firstName" placeholder="First Name" class="profile-input" />
+      <div class="profile-error" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.hasError('required')">
+        *First Name is required
+      </div>
+    </div>
+
+    <div class="profile-form-group">
+      <label for="lastName" class="profile-label">Last Name:</label>
+      <input id="lastName" formControlName="lastName" placeholder="Last Name" class="profile-input" />
+      <div class="profile-error" *ngIf="form.get('lastName')?.touched && form.get('lastName')?.hasError('required')">
+        *Last Name is required
+      </div>
+    </div>
+
+    <div class="profile-form-group">
+      <label for="dateOfBirth" class="profile-label">Date of Birth:</label>
+      <input id="dateOfBirth" type="date" formControlName="dateOfBirth" class="profile-input" />
+      <div class="profile-error" *ngIf="form.get('dateOfBirth')?.touched && form.get('dateOfBirth')?.hasError('required')">
+        *Date of Birth is required
+      </div>
+    </div>
+
+    <button type="submit" class="profile-save-btn">Save</button>
+  </form>
+</div>
+
+<app-footer></app-footer>

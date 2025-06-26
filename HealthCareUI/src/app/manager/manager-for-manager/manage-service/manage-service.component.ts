@@ -9,7 +9,6 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
-import { ManagerService, Tests } from '../../../../services/manager.service';
 import { AuthService } from '../../../../services/auth.service';
 import {
   FormBuilder,
@@ -57,15 +56,14 @@ export class ManageServiceComponent {
   @Output() ban = new EventEmitter<void>();
   constructor(
     private authService: AuthService,
-    private managerService: ManagerService,
     private fb: FormBuilder,
     private testService: TestService
   ) {}
 
-  tests: Tests[] = [];
-  displayedTest: Tests[] = [];
+  tests: TestDTO[] = [];
+  displayedTest: TestDTO[] = [];
   loadTests(): void {
-    this.managerService.getAllListTest().subscribe({
+    this.testService.getAllListTest().subscribe({
       next: (data) => {
         this.tests = data;
         this.totalUsers = this.tests.length;

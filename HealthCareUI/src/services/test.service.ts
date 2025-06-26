@@ -11,6 +11,13 @@ export interface TestDTO {
   price: number;
   active: boolean;
 }
+// export interface Tests {
+//   testID: number;
+//   testName: string;
+//   price: number;
+//   description: string;
+//   active: boolean;
+// }
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +33,18 @@ export class TestService {
   }
   getTestById(id: number): Observable<TestDTO> {
     return this.http.get<TestDTO>(`${this.apiUrl}/${id}`);
+  }
+  getAllListTest(): Observable<TestDTO[]> {
+    return this.http.get<TestDTO[]>(this.apiUrl + '/list-test');
+  }
+  // getTestById(): Observable<TestsDTO> {}
+  addTest(payload: {
+    TestName: string;
+    Price: number;
+    Description: string;
+    active: boolean;
+  }): Observable<any> {
+    return this.http.post(this.apiUrl + '/add-test', payload);
   }
 
   editTest(
