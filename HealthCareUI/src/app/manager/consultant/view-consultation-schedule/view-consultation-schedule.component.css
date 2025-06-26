@@ -204,7 +204,7 @@ th, td {
   justify-self: center;
 }
 
-.nohead, .activehead, .dobhead, .appttimehead {
+.nohead, .activehead, .dobhead {
   display: flex;
   justify-content: center;
 }

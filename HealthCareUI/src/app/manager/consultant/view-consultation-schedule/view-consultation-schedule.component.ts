@@ -12,6 +12,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import { FilterOutline } from '@ant-design/icons-angular/icons';
@@ -20,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppointmentDTO, AppointmentService } from '../../../../services/appointment.service';
 import { EditAppointmentComponent } from '../edit-appointment/edit-appointment.component';
+
 
 @Component({
   selector: 'app-view-consultation-schedule',
@@ -49,6 +51,7 @@ export class ViewConsultationScheduleComponent implements OnInit {
   filteredAppointments: AppointmentDTO[] = [];
   displayedAppointments: AppointmentDTO[] = [];
   selectedAppointment: AppointmentDTO | null = null;
+  selectedAppointmentTime: string = '';
 
   searchTerm = '';
   currentPage = 1;
@@ -65,14 +68,16 @@ export class ViewConsultationScheduleComponent implements OnInit {
     fullName: false,
     email: false,
     status: false,
-    appointmentDate: false
+    appointmentDate: false,
+    appointmentTime: false
   };
 
   filter = {
     fullNameSort: '',
     emailSort: '',
     status: '',
-    appointmentDateSort: ''
+    appointmentDateSort: '',
+    appointmentTime: ''
   };
 
   constructor(
@@ -134,23 +139,23 @@ export class ViewConsultationScheduleComponent implements OnInit {
     }
 
     // Date filter (chỉ 1 loại filter ngày hoạt động)
-      if (this.selectedDate) {
-        const selected = this.toDateString(this.selectedDate);
-        filtered = filtered.filter(appt => this.toDateString(appt.appointmentDate) === selected);
-      } else if (this.selectedWeek) {
-        const week = this.getISOWeek(this.selectedWeek);
-        const year = this.selectedWeek.getFullYear();
-        filtered = filtered.filter(appt => {
-          const apptDate = new Date(appt.appointmentDate);
-          return this.getISOWeek(apptDate) === week && apptDate.getFullYear() === year;
-        });
-      } else if (this.dateRange && this.dateRange.length === 2) {
-        const [start, end] = this.dateRange.map(d => new Date(this.toDateString(d)));
-        filtered = filtered.filter(appt => {
-          const apptDate = new Date(this.toDateString(appt.appointmentDate));
-          return apptDate >= start && apptDate <= end;
-        });
-      }
+    if (this.selectedDate) {
+      const selected = this.toDateString(this.selectedDate);
+      filtered = filtered.filter(appt => this.toDateString(appt.appointmentDate) === selected);
+    } else if (this.selectedWeek) {
+      const week = this.getISOWeek(this.selectedWeek);
+      const year = this.selectedWeek.getFullYear();
+      filtered = filtered.filter(appt => {
+        const apptDate = new Date(appt.appointmentDate);
+        return this.getISOWeek(apptDate) === week && apptDate.getFullYear() === year;
+      });
+    } else if (this.dateRange && this.dateRange.length === 2) {
+      const [start, end] = this.dateRange.map(d => new Date(this.toDateString(d)));
+      filtered = filtered.filter(appt => {
+        const apptDate = new Date(this.toDateString(appt.appointmentDate));
+        return apptDate >= start && apptDate <= end;
+      });
+    }
 
     // Sort full name
     if (this.filter.fullNameSort === 'az') {
@@ -168,6 +173,14 @@ export class ViewConsultationScheduleComponent implements OnInit {
       filtered = filtered.sort((a, b) => a.account.email.localeCompare(b.account.email));
     } else if (this.filter.emailSort === 'za') {
       filtered = filtered.sort((a, b) => b.account.email.localeCompare(a.account.email));
+    }
+
+    //filter appointment time
+    if (this.filter.appointmentTime) {
+      filtered = filtered.filter(appt => {
+        // appt.appointmentTime có thể là "HH:mm" hoặc "HH:mm:ss"
+        return appt.appointmentTime.startsWith(this.filter.appointmentTime);
+      });
     }
 
     this.filteredAppointments = filtered;
@@ -279,6 +292,13 @@ export class ViewConsultationScheduleComponent implements OnInit {
     this.applyFilters();
   }
 
+  setAppointmentTime(val: string) {
+    this.filter.appointmentTime = val;
+    this.selectedAppointmentTime = val;
+    this.applyFilters();
+    this.filterVisible.appointmentTime = false;
+  }
+
   openDateModal(type: 'date' | 'week' | 'range'): void {
     this.modal.create({
       nzTitle: `Select ${type === 'date' ? 'Date' : type === 'week' ? 'Week' : 'Date Range'}`,
@@ -317,6 +337,39 @@ export class ViewConsultationScheduleComponent implements OnInit {
   editAppointment(appointment: AppointmentDTO) {
     this.selectedAppointment = appointment;
   }
+
+  openTimeModal(): void {
+    this.modal.create({
+      nzTitle: 'Select Appointment Time',
+      nzContent: TimeModalContentComponent,
+      nzFooter: null,
+      nzData: {
+        selectedTime: this.selectedAppointmentTime ? this.strToTime(this.selectedAppointmentTime) : null
+      }
+    }).afterClose.subscribe(result => {
+      if (result) {
+        // Convert Date to "HH:mm"
+        const h = result.getHours().toString().padStart(2, '0');
+        const m = result.getMinutes().toString().padStart(2, '0');
+        this.selectedAppointmentTime = `${h}:${m}`;
+        this.filter.appointmentTime = this.selectedAppointmentTime;
+      } else {
+        this.selectedAppointmentTime = '';
+        this.filter.appointmentTime = '';
+      }
+      this.applyFilters();
+      this.filterVisible.appointmentTime = false;
+    });
+  }
+
+  // Helper: convert "HH:mm" string to Date object
+  strToTime(str: string): Date | null {
+    if (!str) return null;
+    const [h, m] = str.split(':').map(Number);
+    const d = new Date();
+    d.setHours(h, m, 0, 0);
+    return d;
+  }
 }
 
 @Component({
@@ -333,7 +386,6 @@ export class ViewConsultationScheduleComponent implements OnInit {
     </div>
   `,
   imports: [
-    // các module khác...
     FormsModule,
     CommonModule,
     NzDatePickerModule,
@@ -366,5 +418,36 @@ export class DateModalContentComponent {
     if (this.type === 'week') return !!this.selectedWeek;
     if (this.type === 'range') return this.dateRange && this.dateRange.length === 2;
     return false;
+  }
+}
+
+@Component({
+  selector: 'app-time-modal-content',
+  template: `
+    <nz-time-picker
+      [(ngModel)]="selectedTime"
+      [nzFormat]="'HH:mm'"
+      [nzMinuteStep]="5"
+      style="width: 100%;"
+    ></nz-time-picker>
+    <div style="margin-top:16px; text-align:right;">
+      <button nz-button nzType="default" (click)="close()">Cancel</button>
+      <button nz-button nzType="primary" [disabled]="!selectedTime" (click)="ok()">OK</button>
+    </div>
+  `,
+  standalone: true,
+  imports: [FormsModule, CommonModule, NzTimePickerModule]
+})
+export class TimeModalContentComponent {
+  @Input() selectedTime: Date | null = null;
+
+  constructor(private modalRef: NzModalRef<TimeModalContentComponent>) {}
+
+  close() {
+    this.modalRef.close();
+  }
+
+  ok() {
+    this.modalRef.close(this.selectedTime);
   }
 }

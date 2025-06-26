@@ -37,7 +37,7 @@
               <th><span class="taghead nohead" style="width: 40px;">No.</span></th>
               <th>
                 <div style="display: flex; align-items: center;">
-                  <span class="taghead namehead" style="width: 200px;">Full Name</span>
+                  <span class="taghead namehead" style="width: 180px;">Full Name</span>
                   <nz-filter-trigger
                     [(nzVisible)]="filterVisible.fullName"
                     [nzActive]="!!filter.fullNameSort"
@@ -51,7 +51,7 @@
 
               <th>
                 <div style="display: flex; align-items: center;">
-                  <span class="taghead mailhaed" style="width: 190px;">Email</span>
+                  <span class="taghead mailhaed" style="width: 205px;">Email</span>
                   <nz-filter-trigger
                     [(nzVisible)]="filterVisible.email"
                     [nzActive]="!!filter.emailSort"
@@ -63,9 +63,6 @@
                 </div>
               </th>
 
-              <!-- <th>
-                <span class="taghead dobhead" style="width: 120px;">Date of Birth</span>
-              </th> -->
               <th>
                 <span class="taghead apptdatehead" style="width: 160px;">Appointment Date</span>
                 <nz-filter-trigger
@@ -77,8 +74,17 @@
                   <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
                 </nz-filter-trigger>
               </th>
+
               <th>
-                <span class="taghead appttimehead" style="width: 165px;">Appointment Time</span>
+                <span class="taghead appttimehead" style="width: 164px;">Appointment Time</span>
+                <nz-filter-trigger
+                  [(nzVisible)]="filterVisible.appointmentTime"
+                  [nzActive]="!!filter.appointmentTime"
+                  [nzDropdownMenu]="apptTimeMenu"
+                  style="margin-left: 4px;"
+                >
+                  <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                </nz-filter-trigger>
               </th>
               <th>
                 <div style="display: flex; align-items: center;">
@@ -228,6 +234,12 @@
       </ul>
     </nz-dropdown-menu>
 
+    <nz-dropdown-menu #apptTimeMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setAppointmentTime('')">All</li>
+        <li nz-menu-item (click)="openTimeModal()">By Time</li>
+      </ul>
+    </nz-dropdown-menu>
 
   </div>
 </div>
