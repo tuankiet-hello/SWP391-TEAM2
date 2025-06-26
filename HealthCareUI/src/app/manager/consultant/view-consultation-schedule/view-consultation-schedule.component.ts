@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HeaderComponent } from '../../header/header.component';
+import { HeaderManagerComponent } from '../../header/header.component';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 // import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
@@ -28,7 +28,7 @@ import { EditAppointmentComponent } from '../edit-appointment/edit-appointment.c
   imports: [
     CommonModule,
     FormsModule,
-    HeaderComponent,
+    HeaderManagerComponent,
     SidebarComponent,
     NzModalModule,
     NzTableModule,

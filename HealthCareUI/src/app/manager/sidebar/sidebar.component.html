@@ -6,11 +6,7 @@
   </button>
 
   <!-- Role STAFF -->
-  <button
-    class="new-btn"
-    *ngIf="role === 'staff'"
-    (click)="openCustomerModal()"
-  >
+  <button class="new-btn" *ngIf="role === 'staff'" (click)="openCustomerModal()">
     + New User
   </button>
   <button class="new-btn" *ngIf="role === 'staff'" (click)="openBookingModal()">
@@ -21,11 +17,7 @@
   <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">
     + New User
   </button>
-  <button
-    class="new-btn"
-    *ngIf="role === 'manager'"
-    (click)="openCustomerModal()"
-  >
+  <button class="new-btn" *ngIf="role === 'manager'" (click)="openCustomerModal()">
     + New Test
   </button>
 
@@ -82,7 +74,6 @@
         <span class="menu-text">Categories Service</span>
       </a>
     </li>
-<<<<<<< HEAD
     <li routerLinkActive="active">
       <a class="menu-item" [routerLink]="['/view-consultation-schedule']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
@@ -90,13 +81,11 @@
       </a>
     </li>
 
-=======
     <li routerLinkActive="active" *ngIf="role === 'staff'">
       <a class="menu-item" [routerLink]="['/staff']">
         <nz-icon nzType="database" nzTheme="outline"></nz-icon>
         <span class="menu-text">Staff</span>
       </a>
     </li>
->>>>>>> 56a3d3baa1746fe6308876352dcbf3e329843618
   </ul>
 </div>
