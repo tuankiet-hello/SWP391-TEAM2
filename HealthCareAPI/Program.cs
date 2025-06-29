@@ -117,6 +117,24 @@ namespace HealthCareAPI
 
             var app = builder.Build();
 
+            // Tự động migrate database khi app khởi động, chỉ nếu có migration chưa áp dụng
+            // using (var scope = app.Services.CreateScope())
+            // {
+            //     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            //     var pendingMigrations = db.Database.GetPendingMigrations();
+            //     if (pendingMigrations.Any())
+            //     {
+            //         Console.WriteLine($"Có {pendingMigrations.Count()} migration chưa áp dụng, đang thực hiện migrate...");
+            //         db.Database.Migrate();
+            //         Console.WriteLine("Migrate hoàn tất.");
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Database đã ở phiên bản mới nhất, không cần migrate.");
+            //     }
+            // }
+            //code này đang lỗi chưa dùng đc nha, để nào hỏi giảng viên đã
+
             // Seed dữ liệu mẫu (user, role)
             using (var scope = app.Services.CreateScope())
             {

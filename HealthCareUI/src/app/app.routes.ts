@@ -34,6 +34,7 @@ export const routes: Routes = [
   //Client routes
   { path: 'home', component: HomeComponent },
   { path: 'sexual-testing', component: SexualTestingComponent },
+  { path: 'edit-profile-customer', component: EditProfileComponent },
   {
     path: 'blog/top-7-things-you-should-know-about-stis',
     component: Blog1Component,
@@ -64,9 +65,10 @@ export const routes: Routes = [
 
   //Manager routes
   { path: 'manager-customers', component: ManagerCustomersComponent },
-
   { path: 'manage-service', component: ManageServiceComponent },
+
   //Staff routes
+  { path: 'staff', component: ViewTestBookingComponent },
 
   //Consultant routes
   {
@@ -74,10 +76,6 @@ export const routes: Routes = [
     component: ViewConsultationScheduleComponent,
   },
 
-  { path: 'sexual-testing', component: SexualTestingComponent },
-  { path: 'staff', component: ViewTestBookingComponent },
-  //Customer
-  { path: 'edit-profile-customer', component: EditProfileComponent },
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní

@@ -22,7 +22,9 @@
     <ul class="mobile-nav" [class.open]="menuOpen">
       <li><a routerLink="/home" (click)="closeMenu()">Home</a></li>
       <li><a href="#" (click)="onAboutMobileNavClick($event)">About</a></li>
-      <li><a href="#" (click)="onServicesMobileNavClick($event)">Services</a></li>
+      <li>
+        <a href="#" (click)="onServicesMobileNavClick($event)">Services</a>
+      </li>
       <li><a href="#" (click)="onBlogMobileNavClick($event)">Blogs</a></li>
       <li><a href="#" (click)="onContactMobileNavClick($event)">Contact</a></li>
     </ul>
@@ -38,18 +40,32 @@
           style="width: 260px"
         />
         <button class="header-search-btn" type="button">
-          <img src="assets/search.svg" alt="Search" style="width: 22px; height: 22px" />
+          <img
+            src="assets/search.svg"
+            alt="Search"
+            style="width: 22px; height: 22px"
+          />
         </button>
         <nz-autocomplete #auto [nzOverlayStyle]="overlayStyle">
           <nz-auto-option
             *ngFor="let blog of filteredBlogs"
             [nzValue]="blog.title"
-            (click)="goToBlog(blog.link)">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <img [src]="blog.img" width="36" height="36" style="border-radius:6px;object-fit:cover;">
+            (click)="goToBlog(blog.link)"
+          >
+            <div style="display: flex; align-items: center; gap: 10px">
+              <img
+                [src]="blog.img"
+                width="36"
+                height="36"
+                style="border-radius: 6px; object-fit: cover"
+              />
               <div>
-                <div style="font-weight:600;color:#1756a9;">{{ blog.title }}</div>
-                <div style="font-size:0.96em;color:#666;">{{ blog.desc }}</div>
+                <div style="font-weight: 600; color: #1756a9">
+                  {{ blog.title }}
+                </div>
+                <div style="font-size: 0.96em; color: #666">
+                  {{ blog.desc }}
+                </div>
               </div>
             </div>
           </nz-auto-option>
@@ -63,10 +79,25 @@
 
         <!-- Nếu đã đăng nhập -->
         <div class="isLogin" *ngIf="isLoggedIn">
-          <div class="role">
-            {{ userName | titlecase }}
+          <div class="user-info" [class.dropdown-active]="dropdownOpen" (click)="toggleDropdown()">
+          <span class="greeting">Hello, {{ userName | titlecase }}</span>
+          <div class="user-icon-wrapper">
+            <img
+              src="assets/user-icon.png"
+              alt="User Icon"
+              class="user-icon"
+              style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer"
+            />
+            <i nz-icon nzType="down" class="arrow-icon"></i>
           </div>
-          <button (click)="logout()">Logout</button>
+
+        </div>
+        <ul class="dropdown-menu" [class.show]="dropdownOpen">
+          <li><a routerLink="/edit-profile-customer">Edit Profile</a></li>
+          <li><a>Change Password</a></li>
+          <li><a>View test history</a></li>
+          <li><a href="#" (click)="logout()">Logout</a></li>
+        </ul>
         </div>
       </div>
     </div>

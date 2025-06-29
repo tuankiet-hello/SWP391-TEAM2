@@ -4,20 +4,29 @@
     <p>GenHealth Manager System</p>
   </div>
   <div class="right-header">
-    <div class="user-info">
-      <span class="userName">
-        {{ userName }}
-        <!-- class="user-name" {{ userName }} -->
-      </span>
-      <img src="assets/user-icon.png" alt="User Icon" class="user-icon" />
+    <div class="user-info" [class.dropdown-active]="dropdownOpen" (click)="toggleDropdown()">
+      <span class="user-name">Hello, {{ userName }}</span>
+      <div class="user-icon-wrapper">
+        <img src="assets/user-icon.png" alt="User Icon" class="user-icon" />
+        <i nz-icon nzType="down" class="arrow-icon"></i>
+      </div>
     </div>
+    <ul class="dropdown-menu" [class.show]="dropdownOpen">
+      <li>
+        <a routerLink="/edit-profile-customer">Edit Profile</a>
+      </li>
+      <li>
+        <a>Change Password</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" (click)="logout()">Logout</a>
+      </li>
+    </ul>
     <div class="header-logout">
-      <button *ngIf="role === null" [routerLink]="'/login'">Login</button>
+      <!-- <button *ngIf="role === null" [routerLink]="'/login'">Login</button> -->
       <button *ngIf="role !== null && role !== 'customer'" (click)="logout()">
         Logout
       </button>
-      <!--  [routerLink]="['/logout']" -->
     </div>
-    <!-- (click)="logout()" -->
   </div>
 </div>

@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { FormsModule } from '@angular/forms';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     NzInputModule,
     NzAutocompleteModule,
+    NzIconModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
@@ -31,6 +33,7 @@ export class HeaderComponent {
   role: string | null = null;
   isLoggedIn = false;
   userName: string | null = null;
+  dropdownOpen: boolean = false;
 
   @Input() blogs: any[] = [];
   searchValue = '';
@@ -55,6 +58,11 @@ export class HeaderComponent {
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
   closeMenu() {
     this.menuOpen = false;
   }
