@@ -10,7 +10,8 @@
     <div class="user-list">
       <div class="user-list-header">
         <div class="content">Test Booking Service</div>
-        <div class="search-wrapper">
+        <div class="nav_wrapper">
+          <div class="search-wrapper">
           <nz-icon nzType="search" class="search-icon"></nz-icon>
           <input
             nz-input
@@ -19,7 +20,13 @@
             [(ngModel)]="searchTerm"
             (ngModelChange)="onSearchChange()"
           />
+         </div>
+          <button class="new-btn"(click)="openBookingModal()">
+            New Booking
+          </button>
         </div>
+
+
       </div>
 
       <div class="user-list-scrollable">
@@ -211,3 +218,10 @@
     </div>
   </div>
 </nz-dropdown-menu>
+<div class="createBooking">
+    <app-create-booking
+        *ngIf="modalType === 'booking'"
+        (close)="closeModal()"
+        >
+    </app-create-booking>
+  </div>

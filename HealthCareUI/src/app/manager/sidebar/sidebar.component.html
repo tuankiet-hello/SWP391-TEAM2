@@ -13,9 +13,9 @@
   >
     + New User
   </button> -->
-  <button class="new-btn" *ngIf="role === 'staff'" (click)="openBookingModal()">
+  <!-- <button class="new-btn" *ngIf="role === 'staff'" (click)="openBookingModal()">
     + New Booking
-  </button>
+  </button> -->
 
   <!-- Role MANAGER -->
   <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">
@@ -40,11 +40,11 @@
       (testCreated)="handleTestCreated()"
     ></app-create-customer>
   </div>
-
+<!-- 
   <div class="createBooking">
     <app-create-booking *ngIf="modalType === 'booking'" (close)="closeModal()">
     </app-create-booking>
-  </div>
+  </div> -->
 
   <ul class="menu">
     <li routerLinkActive="active" *ngIf="role === 'admin'">
