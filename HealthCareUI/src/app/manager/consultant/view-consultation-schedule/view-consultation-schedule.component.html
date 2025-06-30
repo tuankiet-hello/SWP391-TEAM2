@@ -138,7 +138,7 @@
                   "
                 >
                   {{
-                    appt.status === 0 ? 'Submited' :
+                    appt.status === 0 ? 'Submitted' :
                     appt.status === 1 ? 'Pending' :
                     appt.status === 2 ? 'Confirmed' :
                     appt.status === 3 ? 'Canceled' :
@@ -216,7 +216,7 @@
     <nz-dropdown-menu #statusMenu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item (click)="setStatus('')">All</li>
-        <li nz-menu-item (click)="setStatus('0')">Submited</li>
+        <li nz-menu-item (click)="setStatus('0')">Submitted</li>
         <li nz-menu-item (click)="setStatus('1')">Pending</li>
         <li nz-menu-item (click)="setStatus('2')">Confirmed</li>
         <li nz-menu-item (click)="setStatus('3')">Canceled</li>

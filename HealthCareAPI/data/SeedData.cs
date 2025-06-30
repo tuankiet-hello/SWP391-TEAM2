@@ -126,7 +126,7 @@ namespace HealthCareAPI.data
 
             var userIds = context.Users.Select(u => u.Id).Take(10).ToArray();
             var statusValues = new[] {
-                StatusType.Submited,
+                StatusType.Submitted,
                 StatusType.Pending,
                 StatusType.Confirmed,
                 StatusType.Canceled,
@@ -135,7 +135,7 @@ namespace HealthCareAPI.data
                 StatusType.Confirmed,
                 StatusType.Canceled,
                 StatusType.Completed,
-                StatusType.Submited
+                StatusType.Submitted
             };
 
             var appoinments = Enumerable.Range(1, 10).Select(i =>
@@ -205,8 +205,8 @@ namespace HealthCareAPI.data
             var statusValues = new[]
             {
                 StatusType.Pending, StatusType.Confirmed, StatusType.Completed,
-                StatusType.Canceled, StatusType.Submited, StatusType.Completed,
-                StatusType.Pending, StatusType.Confirmed, StatusType.Canceled, StatusType.Submited
+                StatusType.Canceled, StatusType.Submitted, StatusType.Completed,
+                StatusType.Pending, StatusType.Confirmed, StatusType.Canceled, StatusType.Submitted
             };
 
             var bookings = Enumerable.Range(1, 10).Select(i =>

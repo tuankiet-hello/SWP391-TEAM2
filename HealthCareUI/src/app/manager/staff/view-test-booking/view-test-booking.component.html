@@ -183,9 +183,11 @@
 <nz-dropdown-menu #statusMenu="nzDropdownMenu">
   <ul nz-menu>
     <li nz-menu-item (click)="setStatus('')">All</li>
+    <li nz-menu-item (click)="setStatus('submitted')">Submitted</li>
     <li nz-menu-item (click)="setStatus('pending')">Pending</li>
-    <li nz-menu-item (click)="setStatus('completed')">Completed</li>
+    <li nz-menu-item (click)="setStatus('confirmed')">Confirmed</li>
     <li nz-menu-item (click)="setStatus('canceled')">Canceled</li>
+    <li nz-menu-item (click)="setStatus('completed')">Completed</li>
   </ul>
 </nz-dropdown-menu>
 <nz-dropdown-menu #dateMenu="nzDropdownMenu">
