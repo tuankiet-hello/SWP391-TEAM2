@@ -48,7 +48,7 @@ namespace HealthCareAPI.data
             await CreateUserAsync(userManager, "consultant", "consultant@example.com", "Consultant@123", "Consultant", "User", new DateOnly(1992, 3, 3), "consultant");
             await CreateUserAsync(userManager, "manager", "manager@example.com", "Manager@123", "Manager", "User", new DateOnly(1993, 4, 4), "manager");
             await CreateUserAsync(userManager, "customer", "customer@example.com", "Customer@123", "Customer", "User", new DateOnly(1994, 5, 5), "customer");
-            
+
             await CreateUserAsync(userManager, "alice", "alice@example.com", "Alice@123", "Alice", "Smith", new DateOnly(1995, 6, 6), "customer");
             await CreateUserAsync(userManager, "bob", "bob@example.com", "Bob@123", "Bob", "Johnson", new DateOnly(1996, 7, 7), "customer");
             await CreateUserAsync(userManager, "carol", "carol@example.com", "Carol@123", "Carol", "Williams", new DateOnly(1997, 8, 8), "customer");
@@ -204,9 +204,16 @@ namespace HealthCareAPI.data
             var testIds = context.Tests.Select(t => t.TestID).Take(10).ToArray();
             var statusValues = new[]
             {
-                StatusType.Pending, StatusType.Confirmed, StatusType.Completed,
-                StatusType.Canceled, StatusType.Submitted, StatusType.Completed,
-                StatusType.Pending, StatusType.Confirmed, StatusType.Canceled, StatusType.Submitted
+                StatusType.Pending,
+                StatusType.Confirmed,
+                StatusType.Completed,
+                StatusType.Canceled,
+                StatusType.Submitted,
+                StatusType.Completed,
+                StatusType.Pending,
+                StatusType.Confirmed,
+                StatusType.Canceled,
+                StatusType.Submitted
             };
 
             var bookings = Enumerable.Range(1, 10).Select(i =>
@@ -226,5 +233,91 @@ namespace HealthCareAPI.data
             await context.SaveChangesAsync();
         }
 
+        // 8. Seed Question
+        private static async Task SeedQuestionsAsync(ApplicationDbContext context)
+        {
+            if (context.Questions.Any()) return; // Nếu đã có dữ liệu thì không seed lại
+
+            var userIds = context.Users.Select(u => u.Id).Take(10).ToArray(); // Lấy 10 AccountID từ bảng Users
+            var questions = new[]
+            {
+                new Question {
+                    AccountID = userIds[0],
+                    Title = "When should my daughter get the HPV vaccine?",
+                    Content = "My daughter is 12 years old. What is the recommended age for the HPV vaccine and how many doses are required?",
+                    Status = StatusType.Submitted,
+                    CreatedAt = DateTime.UtcNow.AddDays(-6)
+                },
+                new Question {
+                    AccountID = userIds[1],
+                    Title = "Booking a reproductive health consultation",
+                    Content = "I would like to schedule an online consultation about modern contraception methods. How can I book an appointment?",
+                    Status = StatusType.Pending,
+                    CreatedAt = DateTime.UtcNow.AddDays(-5)
+                },
+                new Question {
+                    AccountID = userIds[2],
+                    Title = "Symptoms of sexually transmitted infections",
+                    Content = "I've been experiencing itching and discomfort in the genital area. Could this be a sign of an STI?",
+                    Status = StatusType.Confirmed,
+                    CreatedAt = DateTime.UtcNow.AddDays(-4),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-2)
+                },
+                new Question {
+                    AccountID = userIds[3],
+                    Title = "Menstrual cycle reminder feature",
+                    Content = "Does the system support reminders for my next expected period date? How do I activate this feature?",
+                    Status = StatusType.Completed,
+                    CreatedAt = DateTime.UtcNow.AddDays(-10),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-7)
+                },
+                new Question {
+                    AccountID = userIds[4],
+                    Title = "Feedback on STI testing service",
+                    Content = "I am very satisfied with the sample collection and result notification process at your clinic.",
+                    Status = StatusType.Completed,
+                    CreatedAt = DateTime.UtcNow.AddDays(-3)
+                },
+                new Question {
+                    AccountID = userIds[5],
+                    Title = "Advice on unplanned pregnancy",
+                    Content = "I missed my period for a week and the pregnancy test result is unclear. What should I do next?",
+                    Status = StatusType.Submitted,
+                    CreatedAt = DateTime.UtcNow.AddDays(-1)
+                },
+                new Question {
+                    AccountID = userIds[6],
+                    Title = "Side effects of birth control pills",
+                    Content = "I've been taking daily birth control pills but recently feel headaches and nausea. Are these side effects?",
+                    Status = StatusType.Pending,
+                    CreatedAt = DateTime.UtcNow.AddDays(-8)
+                },
+                new Question {
+                    AccountID = userIds[7],
+                    Title = "Scheduling an HIV test",
+                    Content = "I want to book an HIV test this weekend. Can you guide me through the process and result notification time?",
+                    Status = StatusType.Confirmed,
+                    CreatedAt = DateTime.UtcNow.AddDays(-2)
+                },
+                new Question {
+                    AccountID = userIds[8],
+                    Title = "How to manage irregular menstruation?",
+                    Content = "My menstrual cycle is irregular, sometimes skipping months. What should I do to improve this condition?",
+                    Status = StatusType.Submitted,
+                    CreatedAt = DateTime.UtcNow.AddDays(-12)
+                },
+                new Question {
+                    AccountID = userIds[9],
+                    Title = "Canceling a consultation appointment",
+                    Content = "I booked a gender health consultation but have an urgent work matter. Please help me cancel the appointment.",
+                    Status = StatusType.Canceled,
+                    CreatedAt = DateTime.UtcNow.AddDays(-7),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-6)
+                }
+
+            };
+            context.Questions.AddRange(questions);
+            await context.SaveChangesAsync();
+        }
     }
 }

@@ -91,11 +91,13 @@ namespace HealthCareAPI
             builder.Services.AddScoped<ITestsRepository, TestsRepository>();
             builder.Services.AddScoped<ITestBookingRepository,TestBookingRepository>();
             builder.Services.AddScoped<IAppoinmentRepository, AppoinmentRepository>();
+            // builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 
             // Đăng ký các Service
             builder.Services.AddScoped<TestService>();
             builder.Services.AddScoped<TestBookingService>();
             builder.Services.AddScoped<AppoinmentService>();
+            // builder.Services.AddScoped<QuestionService>();
             
             builder.Services.AddScoped<HealthCareAPI.Services.EmailService>();
 

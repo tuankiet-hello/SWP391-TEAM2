@@ -24,6 +24,7 @@ namespace HealthCareAPI
         public DbSet<MenstrualCycle> Menstrual_Cycles { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Appoinment> Appoinments { get; set; }
+        public DbSet<Question> Questions { get; set; }
 
         //mỗi khi tạo ra lớp này sẽ phải override lại method
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
