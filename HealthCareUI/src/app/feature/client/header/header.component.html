@@ -80,7 +80,7 @@
         <!-- Nếu đã đăng nhập -->
         <div class="isLogin" *ngIf="isLoggedIn">
           <div class="user-info" [class.dropdown-active]="dropdownOpen" (click)="toggleDropdown()">
-          <span class="greeting">Hello, {{ userName | titlecase }}</span>
+          <span class="greeting">{{ userName | titlecase }}</span>
           <div class="user-icon-wrapper">
             <img
               src="assets/user-icon.png"
