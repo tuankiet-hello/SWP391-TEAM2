@@ -54,18 +54,30 @@
                   >
                 </div>
               </th>
+             <th>
+              <div style="display: flex; align-items: center">
+                <span class="taghead verifiedhead" style="width: 100px">Date</span>
+                <nz-filter-trigger
+                  [(nzVisible)]="filterVisible.date"
+                  [nzActive]="!!filter.date"
+                  [nzDropdownMenu]="dateMenu"
+                  style="margin-left: 4px"
+                >
+                  <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                </nz-filter-trigger>
+              </div>
+            </th>
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead verifiedhead" style="width: 100px"
-                    >Date</span
+                  <span class="taghead activehead" style="width: 70px">Status</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.status"
+                    [nzActive]="!!filter.status"
+                    [nzDropdownMenu]="statusMenu"
+                    style="margin-left: 4px"
                   >
-                </div>
-              </th>
-              <th>
-                <div style="display: flex; align-items: center">
-                  <span class="taghead activehead" style="width: 70px"
-                    >Status</span
-                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
                 </div>
               </th>
               <th>
@@ -168,3 +180,32 @@
     </div>
   </div>
 </div>
+<nz-dropdown-menu #statusMenu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item (click)="setStatus('')">All</li>
+    <li nz-menu-item (click)="setStatus('pending')">Pending</li>
+    <li nz-menu-item (click)="setStatus('completed')">Completed</li>
+    <li nz-menu-item (click)="setStatus('canceled')">Canceled</li>
+  </ul>
+</nz-dropdown-menu>
+<nz-dropdown-menu #dateMenu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div style="padding: 8px 12px;">
+      <nz-date-picker
+        [(ngModel)]="filter.date"
+        (ngModelChange)="setDate($event)"
+        nzFormat="yyyy/MM/dd"
+        [nzInputReadOnly]="true"
+        style="width: 100%;"
+      ></nz-date-picker>
+      <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+        <button nz-button nzType="primary" (click)="filterVisible.date = false" style="margin-right: 8px;">
+          OK
+        </button>
+        <!-- <button nz-button (click)="setDate(null); filterVisible.date = false">
+          Reset
+        </button> -->
+      </div>
+    </div>
+  </div>
+</nz-dropdown-menu>
