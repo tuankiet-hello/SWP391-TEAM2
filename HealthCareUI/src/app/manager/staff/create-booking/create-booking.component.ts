@@ -79,8 +79,8 @@ isSubmitting = false;
       this.updated.emit(payload);
       setTimeout(() => {
         this.close.emit(); 
-        window.location.reload(); // Tự động đóng modal sau 3 giây
-      }, 5000);
+        window.location.reload(); // Tự động đóng modal sau 1 giây
+      }, 1000);
     },
     error: (err) => {
       console.error('EditBooking error:', err.error?.errors || err);

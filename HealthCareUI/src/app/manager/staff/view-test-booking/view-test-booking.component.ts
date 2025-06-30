@@ -22,7 +22,7 @@ import {
 } from '../../../../services/test-booking.service';
 import { ViewBookingDetailComponent } from '../view-booking-detail/view-booking-detail.component';
 import { EditBookingComponent } from '../edit-booking/edit-booking.component';
-
+import { CreateBookingComponent } from '../create-booking/create-booking.component';
 @Component({
   selector: 'app-view-test-booking',
   imports: [
@@ -38,7 +38,8 @@ import { EditBookingComponent } from '../edit-booking/edit-booking.component';
     NzIconModule,
     NzDatePickerModule,
     ViewBookingDetailComponent,
-    EditBookingComponent
+    EditBookingComponent,
+    CreateBookingComponent
   ],
   providers: [
     { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
@@ -84,8 +85,9 @@ export class ViewTestBookingComponent implements OnInit {
 
   // Phân trang
   currentPage = 1;
-  pageSize = 6;
+  pageSize = 5;
   totalPages = 0;
+  modalType:'booking' | null = null;
 
   constructor(
     private bookingService: BookingService,
@@ -266,5 +268,11 @@ export class ViewTestBookingComponent implements OnInit {
     this.selectedEditBooking = undefined;
     this.idChoose = undefined;
     this.loadTestBooking();
+  }
+    openBookingModal() {
+    this.modalType = 'booking';
+  }
+   closeModal() {
+    this.modalType = null;
   }
 }
