@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -14,22 +21,39 @@ import {
   templateUrl: './appointment-modal.component.html',
   styleUrls: ['./appointment-modal.component.css'],
 })
-export class AppointmentModalComponent {
+export class AppointmentModalComponent implements OnChanges {
   @Input() show!: boolean;
   @Input() imageUrl = '';
   @Input() title = '';
   @Input() description = '';
   @Input() price: number = 0;
   @Input() active!: boolean;
+  @Input() firstName = '';
+  @Input() lastName = '';
+  @Input() email = '';
+  @Input() dateOfBirth = '';
 
   @Output() close = new EventEmitter<void>();
 
   form: FormGroup;
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.form) {
+      this.form.patchValue({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        dateOfBirth: this.dateOfBirth,
+      });
+
+      // set các trường là readonly bằng cách disable
+    }
+  }
+
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      fname: ['', Validators.required],
-      lname: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       type: ['', Validators.required],
       bookingDate: ['', Validators.required],
