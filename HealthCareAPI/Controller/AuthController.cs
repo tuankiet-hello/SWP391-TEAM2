@@ -37,8 +37,7 @@ namespace HealthCareAPI.Controller
             _emailService = emailService;
         }
 
-
-       [HttpPost("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO dto)
         {
             Account user = null;
@@ -48,15 +47,25 @@ namespace HealthCareAPI.Controller
                 user = await _userManager.FindByNameAsync(dto.UsernameOrEmail);
 
             if (user == null)
-                return Unauthorized("Invalid username/email");  // Riêng biệt
+                return Unauthorized("Invalid username/email");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
-            if (!result.Succeeded)
-                return Unauthorized("Invalid password");  // Riêng biệt
+            // Kiểm tra password trước
+            var validPassword = await _userManager.CheckPasswordAsync(user, dto.Password);
 
+            // Nếu password đúng nhưng email chưa xác nhận
+            if (validPassword && !user.EmailConfirmed)
+                return Unauthorized("You need to confirm your email before Login.");
+
+            // Nếu password sai
+            if (!validPassword)
+                return Unauthorized("Invalid password");
+
+            // Nếu mọi thứ hợp lệ, login thành công
             var token = await GenerateJwtToken(user);
             return Ok(new { token });
         }
+
+
 
         private async Task<string> GenerateJwtToken(Account user)
         {
@@ -160,7 +169,8 @@ namespace HealthCareAPI.Controller
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return NotFound("User không tồn tại");
-
+            user.Email = dto.Email;
+            user.UserName = dto.UserName;
             user.FirstName = dto.FirstName;
             user.LastName = dto.LastName;
             user.DateOfBirth = dto.DateOfBirth;
@@ -327,6 +337,19 @@ namespace HealthCareAPI.Controller
             });
 
         }
+        [HttpGet("check-username")]
+        public async Task<IActionResult> CheckUserName(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            return Ok(new { exists = user != null });
+        }
+
+        [HttpGet("check-email")]
+public async Task<IActionResult> CheckEmail(string email)
+{
+    var user = await _userManager.FindByEmailAsync(email);
+    return Ok(new { exists = user != null });
+}
 
 
     }
