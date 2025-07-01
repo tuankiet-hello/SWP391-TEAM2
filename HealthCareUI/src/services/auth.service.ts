@@ -80,6 +80,7 @@ export class AuthService {
       return null;
     }
   }
+
   getUserNameToken(): string | null {
     const token = localStorage.getItem('accessToken');
     if (!token) return null;
@@ -94,44 +95,39 @@ export class AuthService {
     }
   }
 
- 
- // Sửa trong UserService:
-getUserProfile(): Observable<{ 
-  userName: string; 
-  email: string; 
-  firstName: string; 
-  lastName: string; 
-  dateOfBirth: string; 
-}> {
-  const token = localStorage.getItem('accessToken') || '';
-  const headers = { Authorization: `Bearer ${token}` };
-  return this.http.get<{ 
-    userName: string; 
-    email: string; 
-    firstName: string; 
-    lastName: string; 
-    dateOfBirth: string; 
-  }>(`${this.apiUrl}/user-profile`, { headers });
-}
+  // Sửa trong UserService:
+  getUserProfile(): Observable<{
+    userName: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+  }> {
+    const token = localStorage.getItem('accessToken') || '';
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.get<{
+      userName: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      dateOfBirth: string;
+    }>(`${this.apiUrl}/user-profile`, { headers });
+  }
 
 
-editProfile(payload: { userName: string,email:string, firstName: string; lastName: string; dateOfBirth: string }): Observable<any> {
-  const token = localStorage.getItem('accessToken') || '';
-  const headers = { Authorization: `Bearer ${token}` };
-  return this.http.put(`${this.apiUrl}/edit-profile`, payload, { headers });
-}
-
-   checkUserNameAvailable(userName: string): Observable<{ exists: boolean }> {
-    // Ví dụ: GET /api/users/check-username?username=abc
+  editProfile(payload: { firstName: string; lastName: string; dateOfBirth: string }): Observable<any> {
+    const token = localStorage.getItem('accessToken') || '';
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.put(`${this.apiUrl}/edit-profile`, payload, { headers });
+  }
+  checkUserNameAvailable(userName: string): Observable<{ exists: boolean }> {
     return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-username`, {
       params: { username: userName }
     });
   }
   checkEmailAvailable(email: string): Observable<{ exists: boolean }> {
-    // Ví dụ: GET /api/users/check-email?email=abc@xyz.com
     return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-email`, {
       params: { email }
     });
   }
-
 }
