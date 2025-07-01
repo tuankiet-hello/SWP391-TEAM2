@@ -23,7 +23,7 @@ import { CreateBookingComponent } from '../staff/create-booking/create-booking.c
     CommonModule,
     CreateUserComponent,
     CreateCustomerComponent,
-    CreateBookingComponent,
+    // CreateBookingComponent,
     NzIconModule,
     RouterModule,
   ],

@@ -81,6 +81,7 @@ export class AuthService {
       return null;
     }
   }
+
   getUserNameToken(): string | null {
     const token = localStorage.getItem('accessToken');
     if (!token) return null;
@@ -92,20 +93,6 @@ export class AuthService {
     } catch (e) {
       console.error('Token decode failed:', e);
       return null;
-    }
-  }
-
-  getIdFromToken(): string {
-    const token = localStorage.getItem('accessToken');
-    if (!token) return '';
-
-    try {
-      const decoded = jwtDecode<JwtPayload>(token);
-
-      return decoded.sub;
-    } catch (e) {
-      console.error('Token decode failed:', e);
-      return '';
     }
   }
 
@@ -126,6 +113,20 @@ export class AuthService {
       lastName: string;
       dateOfBirth: string;
     }>(`${this.apiUrl}/user-profile`, { headers });
+  }
+
+  getIdFromToken(): string {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return '';
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+
+      return decoded.sub;
+    } catch (e) {
+      console.error('Token decode failed:', e);
+      return '';
+    }
   }
 
   editProfile(payload: {

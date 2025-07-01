@@ -58,7 +58,7 @@ export class ViewTestBookingComponent implements OnInit {
 
   searchTerm: string = '';
   statusMap: { [key: number]: string } = {
-    0: 'Submited',
+    0: 'Submitted',
     1: 'Pending',
     2: 'Confirmed',
     3: 'Canceled',
@@ -150,7 +150,7 @@ export class ViewTestBookingComponent implements OnInit {
   // Chuyển đổi tên status thành giá trị số
   private getStatusValue(statusString: string): number | null {
     const statusMap: { [key: string]: number } = {
-      'submited': 0,
+      'submitted': 0,
       'pending': 1,
       'confirmed': 2,
       'canceled': 3,
@@ -179,13 +179,13 @@ export class ViewTestBookingComponent implements OnInit {
       this.isModalVisible = true;
     });
   }
-  
+
   // Đóng modal chi tiết
   handleModalCancel(): void {
     this.isModalVisible = false;
     this.selectedBooking = undefined;
   }
-  
+
   // Điều hướng trang
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
@@ -215,7 +215,7 @@ export class ViewTestBookingComponent implements OnInit {
   // Lấy dữ liệu đã lọc
   getFilteredBookings(): TestBookingDTO[] {
     let filtered = [...this.testBooking];
-    
+
     // Lọc theo tên
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
@@ -223,7 +223,7 @@ export class ViewTestBookingComponent implements OnInit {
         (booking.account.firstName + ' ' + booking.account.lastName).toLowerCase().includes(search)
       );
     }
-    
+
     // Lọc theo trạng thái
     if (this.filter.status) {
       const statusValue = this.getStatusValue(this.filter.status);
@@ -231,7 +231,7 @@ export class ViewTestBookingComponent implements OnInit {
         filtered = filtered.filter(booking => booking.status === statusValue);
       }
     }
-    
+
     // Lọc theo ngày
     if (this.filter.date) {
       const selectedDate = new Date(this.filter.date);
@@ -242,10 +242,10 @@ export class ViewTestBookingComponent implements OnInit {
                bookingDate.getDate() === selectedDate.getDate();
       });
     }
-    
+
     return filtered;
   }
-  
+
   // Chức năng chỉnh sửa booking
   isEditModalVisible = false;
   selectedEditBooking?: TestBookingDTO;
