@@ -138,4 +138,14 @@ export class AuthService {
     const headers = { Authorization: `Bearer ${token}` };
     return this.http.put(`${this.apiUrl}/edit-profile`, payload, { headers });
   }
+  checkUserNameAvailable(userName: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-username`, {
+      params: { username: userName }
+    });
+  }
+  checkEmailAvailable(email: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-email`, {
+      params: { email }
+    });
+  }
 }
