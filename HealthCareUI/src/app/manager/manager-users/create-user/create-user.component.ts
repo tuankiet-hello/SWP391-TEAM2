@@ -3,20 +3,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../../services/manager-user.service';
-
+import { AuthService } from '../../../../services/auth.service';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { EyeOutline, EyeInvisibleOutline } from '@ant-design/icons-angular/icons';
+import {
+  EyeOutline,
+  EyeInvisibleOutline,
+} from '@ant-design/icons-angular/icons';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    NzIconModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, NzIconModule],
   providers: [
-    { provide: NZ_ICONS, useValue: [EyeOutline, EyeInvisibleOutline] }
+    { provide: NZ_ICONS, useValue: [EyeOutline, EyeInvisibleOutline] },
   ],
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css'],
@@ -24,13 +23,20 @@ import { NZ_ICONS } from 'ng-zorro-antd/icon';
 export class CreateUserComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   // showModal = false;
+  role: string | null = null;
   hidePassword = true;
   hideConfirm = true;
   createUserForm!: FormGroup;
   regexusername = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$';
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.role = this.authService.getRoleFromToken();
+    console.log('🧑‍💼 role:', this.role);
     this.createUserForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],

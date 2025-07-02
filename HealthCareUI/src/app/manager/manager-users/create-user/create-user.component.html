@@ -103,11 +103,13 @@
       <label>Role *</label>
       <select formControlName="role">
         <option value="" disabled selected>Select role</option>
-        <option value="admin">Admin</option>
+        <option value="admin" *ngIf="role === 'admin'">Admin</option>
         <option value="Staff">Staff</option>
         <option value="Manager">Manager</option>
         <option value="Consultant">Consultant</option>
+        <option value="Customer">Customer</option>
       </select>
+
       <div class="btn">
         <button
           class="btn-submit"
