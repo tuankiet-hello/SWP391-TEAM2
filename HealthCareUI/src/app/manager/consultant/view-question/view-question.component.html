@@ -1,0 +1,177 @@
+<app-header-manager></app-header-manager>
+<div class="user-manager">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- User List -->
+
+    <div class="user-list">
+      <div class="user-list-header">
+        <div class="content">Manage Question</div>
+        <div class="search-wrapper">
+          <nz-icon nzType="search" class="search-icon"></nz-icon>
+          <!-- dùng nz-input -->
+          <input
+            nz-input
+            placeholder="Search question by title"
+            class="search-box"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchChange()"
+          />
+        </div>
+      </div>
+
+      <div class="user-list-scrollable">
+        <!-- dùng nz-table -->
+        <nz-table
+          [nzData]="displayedQuestions "
+          [nzFrontPagination]="false"
+          [nzShowPagination]="false"
+        >
+          <thead>
+            <tr>
+              <th>
+                <span class="taghead nohead" style="width: 40px">No.</span>
+              </th>
+
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead namehead" style="width: 650px"
+                    >Title</span
+                  >
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.title"
+                    [nzActive]="!!filter.titleSort"
+                    [nzDropdownMenu]="titleMenu"
+                    style="margin-left: 4px"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+
+              <th>
+                <div style="display: flex; align-items: center">
+                  <span class="taghead activehead" style="width: 80px"
+                    >Status</span
+                  >
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.status"
+                    [nzActive]="!!filter.status"
+                    [nzDropdownMenu]="statusMenu"
+                    style="margin-left: 4px"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+
+              <th><span class="taghead operationhead" style="width: 120px;">Actions</span></th>
+            </tr>
+          </thead>
+
+          <tbody >
+            <tr *ngFor="let question of displayedQuestions ; let i = index">
+              <td>
+                <span class="tag no">{{
+                  (currentPage - 1) * pageSize + i + 1
+                }}</span>
+              </td>
+
+              <td>
+                <span class="tag name">{{ question.title }}</span>
+              </td>
+
+              <td>
+                <nz-tag
+                  class="tag active"
+                  [nzColor]="
+                    question.status === 'Submitted' ? 'blue' :
+                    question.status === 'Pending' ? 'orange' :
+                    question.status === 'Confirmed' ? 'green' :
+                    question.status === 'Canceled' ? 'red' :
+                    question.status === 'Completed' ? 'purple' : 'default'"
+                >
+                  {{ question.status }}
+                </nz-tag>
+              </td>
+
+              <td div class="operation-icons">
+                <div
+                  class="icon-box eye"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </div>
+                <div
+                  class="icon-box edit"
+                >
+                  <i class="fa-solid fa-edit"></i>
+                </div>
+
+              </td>
+
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+
+      <!-- <app-user-view
+        *ngIf="isModalVisible && selectedUser"
+        [user]="selectedUser"
+        (close)="handleModalCancel()"
+      ></app-user-view>
+
+      <app-user-edit
+        *ngIf="isEditModalVisible && selectedEditUser"
+        [user]="selectedEditUser"
+        [userId]="idChoose"
+        (close)="handleEditModalClose()"
+        (updated)="handleUserUpdated($event)"
+      ></app-user-edit> -->
+
+      <!-- phân trang -->
+      <div class="pagination-controls">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+          Prev
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages); let idx = index"
+          [class.active]="currentPage === idx + 1"
+          (click)="goToPage(idx + 1)"
+        >
+          {{ idx + 1 }}
+        </button>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </button>
+      </div>
+
+      <!-- nếu ko có data -->
+      <p *ngIf="questions.length === 0" class="no-data-text">No questions found.</p>
+    </div>
+
+    <!-- Dropdown filter menu  -->
+    <nz-dropdown-menu #titleMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setTitleSort('')">None</li>
+        <li nz-menu-item (click)="setTitleSort('az')">A → Z</li>
+        <li nz-menu-item (click)="setTitleSort('za')">Z → A</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-dropdown-menu #statusMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setStatus('')">All</li>
+        <li nz-menu-item (click)="setStatus('Submitted')">Submitted</li>
+        <li nz-menu-item (click)="setStatus('Pending')">Pending</li>
+        <li nz-menu-item (click)="setStatus('Confirmed')">Confirmed</li>
+        <li nz-menu-item (click)="setStatus('Canceled')">Canceled</li>
+        <li nz-menu-item (click)="setStatus('Completed')">Completed</li>
+      </ul>
+    </nz-dropdown-menu>
+  </div>
+</div>

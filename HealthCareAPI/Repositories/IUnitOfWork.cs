@@ -12,5 +12,6 @@ namespace HealthCareAPI.Repositories
         IMenstrualCycleRepository MenstrualCycleRepository { get; }
         ITestBookingRepository TestBookingRepository { get; }
         ITestsRepository TestsRepository { get; }
+        IQuestionRepository QuestionRepository { get; }
     }
 } 

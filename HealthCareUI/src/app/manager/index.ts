@@ -7,6 +7,7 @@ export * from './manager-for-manager/manage-service/manage-service.component';
 
 //consultant
 export * from './consultant/view-consultation-schedule/view-consultation-schedule.component';
+export * from './consultant/view-question/view-question.component';
 
 
 
