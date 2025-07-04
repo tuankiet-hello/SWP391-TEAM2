@@ -8,6 +8,7 @@ export interface JwtPayload {
   unique_name: string;
   nameid: string;
   role: string | string[];
+  sub: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -114,10 +115,37 @@ export class AuthService {
     }>(`${this.apiUrl}/user-profile`, { headers });
   }
 
+  getIdFromToken(): string {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return '';
 
-  editProfile(payload: { firstName: string; lastName: string; dateOfBirth: string }): Observable<any> {
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+
+      return decoded.sub;
+    } catch (e) {
+      console.error('Token decode failed:', e);
+      return '';
+    }
+  }
+
+  editProfile(payload: {
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+  }): Observable<any> {
     const token = localStorage.getItem('accessToken') || '';
     const headers = { Authorization: `Bearer ${token}` };
     return this.http.put(`${this.apiUrl}/edit-profile`, payload, { headers });
+  }
+  checkUserNameAvailable(userName: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-username`, {
+      params: { username: userName }
+    });
+  }
+  checkEmailAvailable(email: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-email`, {
+      params: { email }
+    });
   }
 }

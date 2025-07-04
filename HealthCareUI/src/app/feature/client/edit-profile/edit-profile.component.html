@@ -1,18 +1,42 @@
 <app-header></app-header>
 
 <div class="profile-edit-container">
-  
+
   <form [formGroup]="form" (ngSubmit)="submit()" class="profile-edit-form">
     <h2>Your Profile</h2>
+      <!-- Thông báo thành công -->
+    <div *ngIf="successMessage" class="profile-success" style="text-align: center;margin-bottom: 16px; color: #2e7d32;">
+      {{ successMessage }}
+    </div>
+    <!-- Username -->
     <div class="profile-form-group">
       <label for="userName" class="profile-label">User Name</label>
-      <input id="userName" formControlName="userName" readonly class="profile-input profile-input--readonly" />
+      <input id="userName" formControlName="userName" placeholder="User Name" class="profile-input" />
+      <div class="profile-error" *ngIf="form.get('userName')?.touched && form.get('userName')?.hasError('required')">
+        *User Name is required
+      </div>
+      <div class="profile-error"
+        *ngIf="form.get('userName')?.touched && form.get('userName')?.hasError('userNameTaken')">
+        *User Name đã tồn tại
+      </div>
     </div>
 
+
+    <!-- Email -->
     <div class="profile-form-group">
       <label for="email" class="profile-label">Email</label>
-      <input id="email" formControlName="email" readonly class="profile-input profile-input--readonly" />
+      <input id="email" formControlName="email" placeholder="Email" class="profile-input" />
+      <div class="profile-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">
+        *Email is required
+      </div>
+      <div class="profile-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')">
+        *Email không hợp lệ
+      </div>
+      <div class="profile-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('emailTaken')">
+        *Email đã tồn tại
+      </div>
     </div>
+
 
     <div class="profile-form-group">
       <label for="firstName" class="profile-label">First Name:</label>
@@ -33,12 +57,17 @@
     <div class="profile-form-group">
       <label for="dateOfBirth" class="profile-label">Date of Birth:</label>
       <input id="dateOfBirth" type="date" formControlName="dateOfBirth" class="profile-input" />
-      <div class="profile-error" *ngIf="form.get('dateOfBirth')?.touched && form.get('dateOfBirth')?.hasError('required')">
+      <div class="profile-error"
+        *ngIf="form.get('dateOfBirth')?.touched && form.get('dateOfBirth')?.hasError('required')">
         *Date of Birth is required
       </div>
     </div>
+  
 
-    <button type="submit" class="profile-save-btn">Save</button>
+    <button type="submit" class="profile-save-btn" [disabled]="form.invalid || form.pending || isFormDisabled">
+      Save
+    </button>
+
   </form>
 </div>
 

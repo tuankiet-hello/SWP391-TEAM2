@@ -39,7 +39,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzSelectModule,
     NzDropDownModule,
     NzIconModule,
-    NzTagModule
+    NzTagModule,
   ],
   providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
   templateUrl: './manager-users.component.html',
@@ -126,6 +126,7 @@ export class ManagerUsersComponent implements OnInit {
         this.selectedEditUser = user;
         this.idChoose = id;
         this.isEditModalVisible = true;
+        console.log('subid ', id);
       },
       error: (err) => console.error('Load user for edit failed', err),
     });

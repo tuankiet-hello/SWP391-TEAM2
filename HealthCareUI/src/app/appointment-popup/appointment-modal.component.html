@@ -20,7 +20,7 @@
             <label>First Name</label>
             <input
               type="text"
-              formControlName="fname"
+              formControlName="firstName"
               placeholder="First Name"
             />
           </div>
@@ -29,7 +29,7 @@
             <label>Last Name</label>
             <input
               type="text"
-              formControlName="lname"
+              formControlName="lastName"
               placeholder="Last Name"
             />
           </div>
@@ -41,7 +41,12 @@
 
           <div class="form-group">
             <label>Email</label>
-            <input type="email" formControlName="email" placeholder="Email" />
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="Email"
+              readonly
+            />
           </div>
 
           <div class="form-group">
