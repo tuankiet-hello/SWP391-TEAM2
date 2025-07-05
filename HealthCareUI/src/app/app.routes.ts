@@ -22,6 +22,7 @@ import {
   Blog4Component,
   Blog5Component,
   SexualTestingComponent,
+  ManageProfileComponent,
 } from './feature/client';
 import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view-test-booking.component';
 import { EditProfileComponent } from './feature/client/edit-profile/edit-profile.component';
@@ -35,6 +36,8 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'sexual-testing', component: SexualTestingComponent },
   { path: 'edit-profile-customer', component: EditProfileComponent },
+  { path: 'manage-profile-customer', component: ManageProfileComponent },
+
   {
     path: 'blog/top-7-things-you-should-know-about-stis',
     component: Blog1Component,
