@@ -12,6 +12,7 @@ import {
   ManagerCustomersComponent,
   ViewConsultationScheduleComponent,
   ManageServiceComponent,
+  ViewQuestionComponent,
 } from './manager';
 
 import {
@@ -78,6 +79,7 @@ export const routes: Routes = [
     path: 'view-consultation-schedule',
     component: ViewConsultationScheduleComponent,
   },
+  { path: 'view-question', component: ViewQuestionComponent },
 
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home

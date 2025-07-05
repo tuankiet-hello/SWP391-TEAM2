@@ -1,0 +1,26 @@
+
+<nz-modal
+  [(nzVisible)]="visible"
+  nzTitle="Question Detail"
+  (nzOnCancel)="handleClose()"
+  (nzOnOk)="handleClose()"
+  [nzFooter]="null"
+>
+  <div *ngIf="question">
+    <p><strong>Title:</strong> {{ question.title }}</p>
+    <p><strong>Description:</strong> {{ question.description }}</p>
+    <p>
+      <strong>Status:</strong>
+      <nz-tag [nzColor]="getStatusColor(question.status)">
+        {{ getStatusText(question.status) }}
+      </nz-tag>
+    </p>
+    <p><strong>Answer:</strong> {{ question.answer || 'Chưa có câu trả lời' }}</p>
+    <p><strong>Created At:</strong> {{ question.createdAt | date:'short' }}</p>
+    <p><strong>Updated At:</strong> {{ question.updatedAt ? (question.updatedAt | date:'short') : '-' }}</p>
+    <p>
+      <strong>Người hỏi:</strong>
+      {{ question.account.firstName }} {{ question.account.lastName }} ({{ question.account.email }})
+    </p>
+  </div>
+</nz-modal>

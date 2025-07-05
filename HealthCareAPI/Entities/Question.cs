@@ -18,12 +18,13 @@ namespace HealthCareAPI.Entities
 
         [Required]
         [StringLength(5000, ErrorMessage = "Content cannot be longer than 5000 characters.")]
-        public string Content { get; set; }
+        public string Description { get; set; }
 
         public StatusType Status { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public string? Answer { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
         [ForeignKey(nameof(AccountID))]
