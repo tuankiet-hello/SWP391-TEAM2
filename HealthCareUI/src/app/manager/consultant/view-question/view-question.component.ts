@@ -17,14 +17,11 @@ import { FilterOutline } from '@ant-design/icons-angular/icons';
 import { SearchOutline } from '@ant-design/icons-angular/icons';
 
 import {
-  AccountDetailDTO,
-  AccountTableDTO,
-  UserService,
+  AccountDetailDTO
 } from '../../../../services/manager-user.service';
-// import { UserViewComponent } from './view-user/view-user.component';
-// import { UserEditComponent } from './edit-user/edit-user.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { QuestionService, QuestionTableDTO } from '../../../../services/question.service';
+import { ViewQuestionDetailComponent } from '../view-question-detail/view-question-detail.component';
 
 @Component({
   selector: 'app-view-question',
@@ -36,12 +33,11 @@ import { QuestionService, QuestionTableDTO } from '../../../../services/question
       NzTableModule,
       NzInputModule,
       NzModalModule,
-      // UserViewComponent,
-      // UserEditComponent,
       NzSelectModule,
       NzDropDownModule,
       NzIconModule,
-      NzTagModule],
+      NzTagModule,
+      ViewQuestionDetailComponent],
   templateUrl: './view-question.component.html',
   styleUrl: './view-question.component.css'
 })
@@ -52,8 +48,8 @@ export class ViewQuestionComponent implements OnInit {
   filteredQuestions: QuestionTableDTO[] = [];
   displayedQuestions: QuestionTableDTO[] = [];
 
-  selectedUser?: AccountDetailDTO;
-  isModalVisible: boolean = false;
+  selectedQuestion?: QuestionTableDTO;
+  isQuestionModalVisible: boolean = false;
 
   selectedEditUser?: AccountDetailDTO;
   isEditModalVisible: boolean = false;
@@ -111,6 +107,17 @@ export class ViewQuestionComponent implements OnInit {
 
   onSearchChange() {
     this.applyFilters();
+  }
+
+  openQuestionDetail(question: QuestionTableDTO) {
+console.log(question);
+    this.selectedQuestion = question;
+    this.isQuestionModalVisible = true;
+  }
+
+  closeQuestionModal() {
+    this.isQuestionModalVisible = false;
+    this.selectedQuestion = undefined;
   }
 
   // viewUserDetail(id: string): void {
@@ -290,10 +297,12 @@ export class ViewQuestionComponent implements OnInit {
   filterVisible = {
     title: false,
     status: false,
+    fullName: false,
   };
 
   filter = {
     titleSort: '',
+    fullNameSort: '',
     status: '',
   };
 
@@ -303,17 +312,15 @@ export class ViewQuestionComponent implements OnInit {
     // Search theo tên hoặc email
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
-      filtered = filtered.filter(
-        (question) =>
-          question.title.toLowerCase().includes(search)
+      filtered = filtered.filter(question =>
+        (question.account.firstName + ' ' + question.account.lastName).toLowerCase().includes(search) ||
+        question.title.toLowerCase().includes(search)
       );
     }
 
     // Filter Status
     if (this.filter.status) {
-      filtered = filtered.filter(
-        (question) => question.status === this.filter.status
-      );
+      filtered = filtered.filter(question => String(question.status) === String(this.filter.status));
     }
 
     // Sort Full Name
@@ -321,6 +328,17 @@ export class ViewQuestionComponent implements OnInit {
       filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
     } else if (this.filter.titleSort === 'za') {
       filtered = filtered.sort((a, b) => b.title.localeCompare(a.title));
+    }
+
+    // Sort full name
+    if (this.filter.fullNameSort === 'az') {
+      filtered = filtered.sort((a, b) =>
+        (a.account.firstName + ' ' + a.account.lastName).localeCompare(b.account.firstName + ' ' + b.account.lastName)
+      );
+    } else if (this.filter.fullNameSort === 'za') {
+      filtered = filtered.sort((a, b) =>
+        (b.account.firstName + ' ' + b.account.lastName).localeCompare(a.account.firstName + ' ' + a.account.lastName)
+      );
     }
 
     this.filteredQuestions  = filtered;
@@ -339,6 +357,12 @@ export class ViewQuestionComponent implements OnInit {
   setStatus(val: string) {
     this.filter.status = val;
     this.filterVisible.status = false;
+    this.applyFilters();
+  }
+
+  setFullNameSort(sort: string) {
+    this.filter.fullNameSort = sort;
+    this.filterVisible.fullName = false;
     this.applyFilters();
   }
 }

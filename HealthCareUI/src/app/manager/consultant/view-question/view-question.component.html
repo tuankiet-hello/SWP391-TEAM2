@@ -15,7 +15,7 @@
           <!-- dùng nz-input -->
           <input
             nz-input
-            placeholder="Search question by title"
+            placeholder="Search question by title, questioner"
             class="search-box"
             [(ngModel)]="searchTerm"
             (ngModelChange)="onSearchChange()"
@@ -38,7 +38,7 @@
 
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead namehead" style="width: 650px"
+                  <span class="taghead namehead" style="width: 450px"
                     >Title</span
                   >
                   <nz-filter-trigger
@@ -46,6 +46,20 @@
                     [nzActive]="!!filter.titleSort"
                     [nzDropdownMenu]="titleMenu"
                     style="margin-left: 4px"
+                  >
+                    <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                  </nz-filter-trigger>
+                </div>
+              </th>
+
+              <th>
+                <div style="display: flex; align-items: center;">
+                  <span class="taghead namehead" style="width: 200px;">Inquirer</span>
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.fullName"
+                    [nzActive]="!!filter.fullNameSort"
+                    [nzDropdownMenu]="fullNameMenu"
+                    style="margin-left: 4px;"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
                   </nz-filter-trigger>
@@ -85,22 +99,33 @@
               </td>
 
               <td>
+                <span class="tag name">{{ question.account.firstName }} {{ question.account.lastName }}</span>
+              </td>
+
+              <td>
                 <nz-tag
                   class="tag active"
                   [nzColor]="
-                    question.status === 'Submitted' ? 'blue' :
-                    question.status === 'Pending' ? 'orange' :
-                    question.status === 'Confirmed' ? 'green' :
-                    question.status === 'Canceled' ? 'red' :
-                    question.status === 'Completed' ? 'purple' : 'default'"
+                    question.status === 0 ? 'blue' :
+                    question.status === 1 ? 'orange' :
+                    question.status === 2 ? 'green' :
+                    question.status === 3 ? 'red' :
+                    question.status === 4 ? 'purple' : 'default'
+                  "
                 >
-                  {{ question.status }}
+                  {{
+                    question.status === 0 ? 'Submitted' :
+                    question.status === 1 ? 'Pending' :
+                    question.status === 2 ? 'Confirmed' :
+                    question.status === 3 ? 'Canceled' :
+                    question.status === 4 ? 'Completed'  : 'Không xác định'
+                  }}
                 </nz-tag>
               </td>
 
               <td div class="operation-icons">
                 <div
-                  class="icon-box eye"
+                  class="icon-box eye" (click)="openQuestionDetail(question)"
                 >
                   <i class="fa-solid fa-eye"></i>
                 </div>
@@ -117,19 +142,11 @@
         </nz-table>
       </div>
 
-      <!-- <app-user-view
-        *ngIf="isModalVisible && selectedUser"
-        [user]="selectedUser"
-        (close)="handleModalCancel()"
-      ></app-user-view>
-
-      <app-user-edit
-        *ngIf="isEditModalVisible && selectedEditUser"
-        [user]="selectedEditUser"
-        [userId]="idChoose"
-        (close)="handleEditModalClose()"
-        (updated)="handleUserUpdated($event)"
-      ></app-user-edit> -->
+      <app-view-question-detail
+        [question]="selectedQuestion"
+        [visible]="isQuestionModalVisible"
+        (close)="closeQuestionModal()"
+      ></app-view-question-detail>
 
       <!-- phân trang -->
       <div class="pagination-controls">
@@ -163,14 +180,22 @@
       </ul>
     </nz-dropdown-menu>
 
+    <nz-dropdown-menu #fullNameMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="setFullNameSort('')">None</li>
+        <li nz-menu-item (click)="setFullNameSort('az')">A → Z</li>
+        <li nz-menu-item (click)="setFullNameSort('za')">Z → A</li>
+      </ul>
+    </nz-dropdown-menu>
+
     <nz-dropdown-menu #statusMenu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item (click)="setStatus('')">All</li>
-        <li nz-menu-item (click)="setStatus('Submitted')">Submitted</li>
-        <li nz-menu-item (click)="setStatus('Pending')">Pending</li>
-        <li nz-menu-item (click)="setStatus('Confirmed')">Confirmed</li>
-        <li nz-menu-item (click)="setStatus('Canceled')">Canceled</li>
-        <li nz-menu-item (click)="setStatus('Completed')">Completed</li>
+        <li nz-menu-item (click)="setStatus('0')">Submitted</li>
+        <li nz-menu-item (click)="setStatus('1')">Pending</li>
+        <li nz-menu-item (click)="setStatus('2')">Confirmed</li>
+        <li nz-menu-item (click)="setStatus('3')">Canceled</li>
+        <li nz-menu-item (click)="setStatus('4')">Completed</li>
       </ul>
     </nz-dropdown-menu>
   </div>

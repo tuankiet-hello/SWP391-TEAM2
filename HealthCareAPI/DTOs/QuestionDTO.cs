@@ -10,7 +10,7 @@ namespace HealthCareAPI.DTOs
         public Guid AccountID { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public string Status { get; set; } = null!; // hoặc StatusType nếu muốn giữ enum
+        public StatusType Status { get; set; }// hoặc StatusType nếu muốn giữ enum
         public DateTime CreatedAt { get; set; }
         public string? Answer { get; set; }
         public DateTime? UpdatedAt { get; set; }

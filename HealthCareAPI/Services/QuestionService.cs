@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HealthCareAPI.DTOs;
 using HealthCareAPI.Entities;
 using HealthCareAPI.Repositories;
+using HealthCareAPI.Enum;
 
 namespace HealthCareAPI.Services
 {
@@ -25,7 +26,7 @@ namespace HealthCareAPI.Services
                 AccountID = q.AccountID,
                 Title = q.Title,
                 Description = q.Description,
-                Status = q.Status.ToString(),
+                Status = q.Status,
                 CreatedAt = q.CreatedAt,
                 UpdatedAt = q.UpdatedAt,
                 Answer = q.Answer,
@@ -38,6 +39,11 @@ namespace HealthCareAPI.Services
                 }
             });
         }
+
+        // public async Task<QuestionDTO?> GetQuestionDetailAsync(int questionId)
+        // {
+        //     return await _unitOfWork.QuestionRepository.GetQuestionDetailAsync(questionId);
+        // }
     }
 }
 

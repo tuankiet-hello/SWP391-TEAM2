@@ -9,7 +9,7 @@ export interface QuestionTableDTO {
   accountID: string;
   title: string;
   description: string;
-  status: string;
+  status: number;
   createdAt: string;
   updatedAt?: string;
   answer?: string;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HealthCareAPI.DTOs;
 using HealthCareAPI.Entities;
+using HealthCareAPI.Enum;
 
 namespace HealthCareAPI.Repositories
 {
@@ -16,7 +17,7 @@ namespace HealthCareAPI.Repositories
         }
 
         public async Task<IEnumerable<QuestionDTO>> GetAllQuestionsAsync()
-    {
+        {
             var questions = await _dbSet.Include(q => q.Account).ToListAsync();
             return questions.Select(q => new QuestionDTO
             {
@@ -24,7 +25,7 @@ namespace HealthCareAPI.Repositories
                 AccountID = q.AccountID,
                 Title = q.Title,
                 Description = q.Description,
-                Status = q.Status.ToString(),
+                Status = q.Status,
                 CreatedAt = q.CreatedAt,
                 UpdatedAt = q.UpdatedAt,
                 Answer = q.Answer,
@@ -37,6 +38,34 @@ namespace HealthCareAPI.Repositories
                 }
             });
         }
+
+        // public async Task<QuestionDTO?> GetQuestionDetailAsync(int questionId)
+        // {
+        //     var question = await _dbSet
+        //         .Include(q => q.Account)
+        //         .FirstOrDefaultAsync(q => q.QuestionID == questionId);
+
+        //     if (question == null) return null;
+
+        //     return new QuestionDTO
+        //     {
+        //         QuestionID = question.QuestionID,
+        //         AccountID = question.AccountID,
+        //         Title = question.Title,
+        //         Description = question.Description,
+        //         Status = question.Status, // enum
+        //         CreatedAt = question.CreatedAt,
+        //         UpdatedAt = question.UpdatedAt,
+        //         Answer = question.Answer,
+        //         Account = new AccountViewDTO
+        //         {
+        //             FirstName = question.Account.FirstName,
+        //             LastName = question.Account.LastName,
+        //             DateOfBirth = question.Account.DateOfBirth,
+        //             Email = question.Account.Email
+        //         }
+        //     };
+        // }
 
     }
 }
