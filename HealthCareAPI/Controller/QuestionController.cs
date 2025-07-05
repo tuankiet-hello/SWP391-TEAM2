@@ -23,5 +23,15 @@ namespace HealthCareAPI.Controller
             var questions = await _questionService.GetAllQuestionsAsync();
             return Ok(questions);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateQuestion(int id, [FromBody] QuestionDTO dto)
+        {
+            var result = await _questionService.UpdateQuestionAsync(id, dto);
+            if (!result)
+                return NotFound(new { message = "Question not found" });
+
+            return Ok(new { message = "Question updated successfully" });
+        }
     }
 }

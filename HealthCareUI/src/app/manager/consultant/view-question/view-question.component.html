@@ -130,7 +130,7 @@
                   <i class="fa-solid fa-eye"></i>
                 </div>
                 <div
-                  class="icon-box edit"
+                  class="icon-box edit" (click)="openEditQuestionModal(question)"
                 >
                   <i class="fa-solid fa-edit"></i>
                 </div>
@@ -147,6 +147,13 @@
         [visible]="isQuestionModalVisible"
         (close)="closeQuestionModal()"
       ></app-view-question-detail>
+
+      <app-answer-question
+        [visible]="isEditModalVisible"
+        [question]="selectedEditQuestion"
+        (close)="isEditModalVisible = false"
+        (save)="saveEditQuestion($event)"
+      ></app-answer-question>
 
       <!-- phân trang -->
       <div class="pagination-controls">
