@@ -52,5 +52,7 @@ namespace HealthCareAPI.Repositories
         private ITestBookingRepository _testBookingRepository;
         public ITestsRepository TestsRepository => _testsRepository ??= new TestsRepository(_context);
         private ITestsRepository _testsRepository;
+        public IQuestionRepository QuestionRepository => _questionRepository ??= new QuestionRepository(_context);
+        private IQuestionRepository _questionRepository;
     }
 } 

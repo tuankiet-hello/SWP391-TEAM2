@@ -1,0 +1,62 @@
+<app-header></app-header>
+<div class="container">
+  <div class="sidebar">
+    <h3 class="username">Hi, {{ user.userName }}</h3>
+    <ul>
+      <li
+        *ngFor="let item of features"
+        [class.active]="item === selectedFeature"
+        (click)="selectFeature(item)"
+      >
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="contentProfile">
+    <h2>{{ selectedFeature }}</h2>
+
+    <div class="tab-content">
+      <div class="profile-card" *ngIf="selectedFeature === 'Your Profile'">
+        <p><strong>User Name:</strong> {{ user.userName }}</p>
+        <p><strong>Full Name:</strong> {{ user.firstName + user.lastName }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone Number:</strong> {{ user.roles }}</p>
+        <p><strong>Gender:</strong> LGBT</p>
+        <p><strong>Date of Birth:</strong> {{ user.dateOfBirth }}</p>
+      </div>
+
+      <div class="edit-profile" *ngIf="selectedFeature === 'Edit Profile'">
+        <p>Edit form goes here...</p>
+      </div>
+
+      <div
+        class="booking-history"
+        *ngIf="selectedFeature === 'Booking History'"
+      >
+        <p *ngFor="let booking of bookings">
+          ID: {{ booking.id }} - Test Name: {{ booking.service }} - Date:
+          {{ booking.date }} - Status: {{ booking.status }}
+        </p>
+      </div>
+
+      <div
+        class="question-history"
+        *ngIf="selectedFeature === 'Question History'"
+      >
+        <p *ngFor="let question of questions">
+          ID: {{ question.id }} - Question: {{ question.title }} - Date:
+          {{ question.date }} - Status: {{ question.status }}
+        </p>
+      </div>
+
+      <div
+        class="change-password"
+        *ngIf="selectedFeature === 'Change Password'"
+      >
+        <p>Change password form...</p>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

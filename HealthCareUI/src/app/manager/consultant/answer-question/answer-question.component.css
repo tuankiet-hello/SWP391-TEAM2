@@ -1,0 +1,78 @@
+.custom-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+
+.custom-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  max-width: 90%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 25px;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.question-form label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.question-form input,
+.question-form textarea,
+.question-form select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.save-btn, .cancel-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: #1890ff;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #f5f5f5;
+  color: #333;
+}

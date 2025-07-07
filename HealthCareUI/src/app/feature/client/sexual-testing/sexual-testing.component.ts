@@ -5,6 +5,10 @@ import { AppointmentCardComponent } from '../../../../app/shared/components/appo
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
+import {
+  UserService,
+  AccountDetailDTO,
+} from '../../../../services/manager-user.service';
 import { TestService } from '../../../../services/test.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AppointmentModalComponent } from '../../../appointment-popup/appointment-modal.component';
@@ -39,9 +43,12 @@ export class SexualTestingComponent {
   isEdit = false;
   showModal = false;
   selectedTest!: TestDTO;
+  user!: AccountDetailDTO;
+  userid!: string;
   constructor(
     private authService: AuthService,
     private testService: TestService,
+    private userService: UserService,
     private fb: FormBuilder
   ) {
     this.createTestForm = this.fb.group({
@@ -90,8 +97,10 @@ export class SexualTestingComponent {
     console.log('✅ Sexual Testing ngOnInit called');
     this.isLoggedIn = this.authService.isLoggedIn();
     this.role = this.authService.getRoleFromToken();
+    this.userid = this.authService.getIdFromToken();
     console.log('🔐 isLoggedIn:', this.isLoggedIn);
     console.log('🧑‍💼 role:', this.role);
+    console.log('sub', this.userid);
 
     this.loadTests();
   }
@@ -110,8 +119,12 @@ export class SexualTestingComponent {
     this.testService.getTestById(id).subscribe({
       next: (data) => {
         this.selectedTest = data;
-        this.showModal = true;
-        console.log('đã nạp data', this.selectedTest);
+        this.userService.getUserById(this.userid).subscribe((user) => {
+          this.user = user;
+          this.showModal = true;
+          console.log('đã nạp data', this.selectedTest);
+          console.log('đã nạp data user', this.user);
+        });
       },
     });
   }

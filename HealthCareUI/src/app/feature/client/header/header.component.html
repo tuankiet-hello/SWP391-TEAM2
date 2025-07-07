@@ -79,25 +79,32 @@
 
         <!-- Nếu đã đăng nhập -->
         <div class="isLogin" *ngIf="isLoggedIn">
-          <div class="user-info" [class.dropdown-active]="dropdownOpen" (click)="toggleDropdown()">
-          <span class="greeting">{{ userName | titlecase }}</span>
-          <div class="user-icon-wrapper">
-            <img
-              src="assets/user-icon.png"
-              alt="User Icon"
-              class="user-icon"
-              style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer"
-            />
-            <i nz-icon nzType="down" class="arrow-icon"></i>
+          <div
+            class="user-info"
+            [class.dropdown-active]="dropdownOpen"
+            (click)="toggleDropdown()"
+          >
+            <span class="greeting">{{ userName | titlecase }}</span>
+            <div class="user-icon-wrapper">
+              <img
+                src="assets/user-icon.png"
+                alt="User Icon"
+                class="user-icon"
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 50%;
+                  cursor: pointer;
+                "
+              />
+              <i nz-icon nzType="down" class="arrow-icon"></i>
+            </div>
           </div>
-
-        </div>
-        <ul class="dropdown-menu" [class.show]="dropdownOpen">
-          <li><a routerLink="/edit-profile-customer">Edit Profile</a></li>
-          <li><a>Change Password</a></li>
-          <li><a>View test history</a></li>
-          <li><a href="#" (click)="logout()">Logout</a></li>
-        </ul>
+          <ul class="dropdown-menu" [class.show]="dropdownOpen">
+            <li><a routerLink="/manage-profile-customer">Your profile</a></li>
+            <li><a routerLink="/edit-profile-customer">Edit Profile</a></li>
+            <li><a href="#" (click)="logout()">Logout</a></li>
+          </ul>
         </div>
       </div>
     </div>

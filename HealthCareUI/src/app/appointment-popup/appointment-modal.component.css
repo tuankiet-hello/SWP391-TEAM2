@@ -4,28 +4,60 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.647);
+  background: rgba(38, 38, 38, 0.647);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+
+  /* ✅ Fade-in animation */
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
 .modal-content {
   display: block;
-  background: rgba(255, 255, 255, 0.89);
   width: 700px;
   max-width: 90%;
-  border-radius: 10px;
+  border-radius: 20px; /* 🔁 bo tròn hơn */
   padding: 30px;
   position: relative;
   gap: 20px;
+
+  /* 🌟 Frosted glass effect */
+  background: rgba(237, 237, 237, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(80, 239, 231, 0.25);
+
+  /* Animation */
+  transform: scale(0.9);
+  opacity: 0;
+  animation: popupIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.647);
+  }
+}
+
+@keyframes popupIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .content {
   display: flex;
   justify-content: space-around;
 }
+
 .modal-left {
   width: 50%;
 }
@@ -33,6 +65,7 @@
 .modal-left img {
   width: 100%;
   border-radius: 8px;
+  margin-bottom: 5px;
 }
 
 .modal-form {
@@ -72,11 +105,28 @@
   cursor: pointer;
   color: red;
 }
+
 .title {
   font-weight: 600;
   font-size: 18px;
   padding-left: 5px;
 }
+
+label {
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 17px;
+}
+
 .price {
-  color: rgb(9, 137, 19);
+  color: rgb(14, 112, 22);
+  background-color: #aca6a659;
+  display: inline-block;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-weight: 400;
 }

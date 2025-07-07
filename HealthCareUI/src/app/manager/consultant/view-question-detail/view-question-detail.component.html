@@ -1,0 +1,24 @@
+<!-- Overlay -->
+<div class="custom-modal-backdrop" *ngIf="visible && question" (click)="handleClose()"></div>
+
+<!-- Nội dung modal -->
+<div class="custom-modal" *ngIf="visible && question">
+  <button class="close-btn" (click)="handleClose()">×</button>
+  <div class="question-detail-modal-content">
+    <h2>Question Detail</h2>
+
+    <p><strong>Title:</strong> {{ question.title }}</p>
+    <p><strong>Description:</strong> {{ question.description }}</p>
+    <p>
+      <strong>Status:</strong>
+      <span class="tag">{{ getStatusText(question.status) }}</span>
+    </p>
+    <p><strong>Answer:</strong> {{ question.answer || 'No answer yet' }}</p>
+    <p><strong>Created At:</strong> {{ question.createdAt | date:'short' }}</p>
+    <p><strong>Updated At:</strong> {{ question.updatedAt ? (question.updatedAt | date:'short') : '-' }}</p>
+    <p>
+      <strong>Inquirer:</strong>
+      {{ question.account.firstName }} {{ question.account.lastName }} ({{ question.account.email }})
+    </p>
+  </div>
+</div>

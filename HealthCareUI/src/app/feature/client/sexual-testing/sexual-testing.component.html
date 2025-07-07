@@ -1,4 +1,4 @@
-<app-header *ngIf="role === 'customer' || role === null"></app-header>
+<app-header></app-header>
 <div class="container">
   <div class="content">
     <!-- Left Panel -->
@@ -11,12 +11,10 @@
       <div class="left-panel-content">
         <div class="advice-header">
           <img src="assets/mũi tên.png" alt="icon" width="24" />
-          <span *ngIf="role === 'customer' || role === null"
-            >Free Online Consultation</span
-          >
+          <span>Free Online Consultation</span>
         </div>
 
-        <form class="form-dang-ky" *ngIf="role === 'customer' || role === null">
+        <form class="form-dang-ky">
           <input type="text" placeholder="Full Name" required />
           <input type="tel" placeholder="Email" required />
           <select>
@@ -32,7 +30,6 @@
           src="assets/bannerSale.png"
           alt="Khuyến mãi"
           class="promo-banner"
-          *ngIf="role === 'customer' || role === null"
           width="60"
         />
       </div>
@@ -64,6 +61,10 @@
         [price]="selectedTest.price"
         [description]="selectedTest.description"
         [active]="selectedTest.active"
+        [firstName]="user.firstName"
+        [lastName]="user.lastName"
+        [email]="user.email"
+        [dateOfBirth]="user.dateOfBirth"
         (close)="closePopup()"
       ></app-appointment-modal>
 

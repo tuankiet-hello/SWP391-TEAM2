@@ -40,7 +40,7 @@
       (testCreated)="handleTestCreated()"
     ></app-create-customer>
   </div>
-<!-- 
+<!--
   <div class="createBooking">
     <app-create-booking *ngIf="modalType === 'booking'" (close)="closeModal()">
     </app-create-booking>
@@ -87,6 +87,12 @@
       <a class="menu-item" [routerLink]="['/view-consultation-schedule']">
         <nz-icon nzType="schedule" nzTheme="outline"></nz-icon>
         <span class="menu-text">Consultation Schedule</span>
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a class="menu-item" [routerLink]="['/view-question']">
+        <nz-icon nzType="question-circle" nzTheme="outline"></nz-icon>
+        <span class="menu-text">View Question</span>
       </a>
     </li>
     <li routerLinkActive="active" *ngIf="role === 'staff'">

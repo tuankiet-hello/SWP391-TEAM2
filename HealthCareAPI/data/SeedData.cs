@@ -25,6 +25,7 @@ namespace HealthCareAPI.data
             await SeedFeedbacksAsync(context);
             await SeedMenstrualCyclesAsync(context);
             await SeedTestBookingsAsync(context);
+            await SeedQuestionsAsync(context);
         }
 
         // 1. Seed Roles
@@ -244,21 +245,21 @@ namespace HealthCareAPI.data
                 new Question {
                     AccountID = userIds[0],
                     Title = "When should my daughter get the HPV vaccine?",
-                    Content = "My daughter is 12 years old. What is the recommended age for the HPV vaccine and how many doses are required?",
+                    Description = "My daughter is 12 years old. What is the recommended age for the HPV vaccine and how many doses are required?",
                     Status = StatusType.Submitted,
                     CreatedAt = DateTime.UtcNow.AddDays(-6)
                 },
                 new Question {
                     AccountID = userIds[1],
                     Title = "Booking a reproductive health consultation",
-                    Content = "I would like to schedule an online consultation about modern contraception methods. How can I book an appointment?",
+                    Description = "I would like to schedule an online consultation about modern contraception methods. How can I book an appointment?",
                     Status = StatusType.Pending,
                     CreatedAt = DateTime.UtcNow.AddDays(-5)
                 },
                 new Question {
                     AccountID = userIds[2],
                     Title = "Symptoms of sexually transmitted infections",
-                    Content = "I've been experiencing itching and discomfort in the genital area. Could this be a sign of an STI?",
+                    Description = "I've been experiencing itching and discomfort in the genital area. Could this be a sign of an STI?",
                     Status = StatusType.Confirmed,
                     CreatedAt = DateTime.UtcNow.AddDays(-4),
                     UpdatedAt = DateTime.UtcNow.AddDays(-2)
@@ -266,7 +267,7 @@ namespace HealthCareAPI.data
                 new Question {
                     AccountID = userIds[3],
                     Title = "Menstrual cycle reminder feature",
-                    Content = "Does the system support reminders for my next expected period date? How do I activate this feature?",
+                    Description = "Does the system support reminders for my next expected period date? How do I activate this feature?",
                     Status = StatusType.Completed,
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
                     UpdatedAt = DateTime.UtcNow.AddDays(-7)
@@ -274,42 +275,42 @@ namespace HealthCareAPI.data
                 new Question {
                     AccountID = userIds[4],
                     Title = "Feedback on STI testing service",
-                    Content = "I am very satisfied with the sample collection and result notification process at your clinic.",
+                    Description = "I am very satisfied with the sample collection and result notification process at your clinic.",
                     Status = StatusType.Completed,
                     CreatedAt = DateTime.UtcNow.AddDays(-3)
                 },
                 new Question {
                     AccountID = userIds[5],
                     Title = "Advice on unplanned pregnancy",
-                    Content = "I missed my period for a week and the pregnancy test result is unclear. What should I do next?",
+                    Description = "I missed my period for a week and the pregnancy test result is unclear. What should I do next?",
                     Status = StatusType.Submitted,
                     CreatedAt = DateTime.UtcNow.AddDays(-1)
                 },
                 new Question {
                     AccountID = userIds[6],
                     Title = "Side effects of birth control pills",
-                    Content = "I've been taking daily birth control pills but recently feel headaches and nausea. Are these side effects?",
+                    Description = "I've been taking daily birth control pills but recently feel headaches and nausea. Are these side effects?",
                     Status = StatusType.Pending,
                     CreatedAt = DateTime.UtcNow.AddDays(-8)
                 },
                 new Question {
                     AccountID = userIds[7],
                     Title = "Scheduling an HIV test",
-                    Content = "I want to book an HIV test this weekend. Can you guide me through the process and result notification time?",
+                    Description = "I want to book an HIV test this weekend. Can you guide me through the process and result notification time?",
                     Status = StatusType.Confirmed,
                     CreatedAt = DateTime.UtcNow.AddDays(-2)
                 },
                 new Question {
                     AccountID = userIds[8],
                     Title = "How to manage irregular menstruation?",
-                    Content = "My menstrual cycle is irregular, sometimes skipping months. What should I do to improve this condition?",
+                    Description = "My menstrual cycle is irregular, sometimes skipping months. What should I do to improve this condition?",
                     Status = StatusType.Submitted,
                     CreatedAt = DateTime.UtcNow.AddDays(-12)
                 },
                 new Question {
                     AccountID = userIds[9],
                     Title = "Canceling a consultation appointment",
-                    Content = "I booked a gender health consultation but have an urgent work matter. Please help me cancel the appointment.",
+                    Description = "I booked a gender health consultation but have an urgent work matter. Please help me cancel the appointment.",
                     Status = StatusType.Canceled,
                     CreatedAt = DateTime.UtcNow.AddDays(-7),
                     UpdatedAt = DateTime.UtcNow.AddDays(-6)
