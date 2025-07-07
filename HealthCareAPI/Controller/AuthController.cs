@@ -11,6 +11,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using HealthCareAPI.Services;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace HealthCareAPI.Controller
 {
@@ -159,6 +161,7 @@ namespace HealthCareAPI.Controller
             return Ok(new { message = "Đăng xuất thành công!" });
         }
 
+        
         [HttpPut("edit-profile")]
         public async Task<IActionResult> EditProfile([FromBody] EditProfileDTO dto)
         {
@@ -169,17 +172,72 @@ namespace HealthCareAPI.Controller
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return NotFound("User không tồn tại");
-            user.Email = dto.Email;
+
+            bool emailChanged = !string.Equals(user.Email, dto.Email, StringComparison.OrdinalIgnoreCase);
+
             user.UserName = dto.UserName;
             user.FirstName = dto.FirstName;
             user.LastName = dto.LastName;
             user.DateOfBirth = dto.DateOfBirth;
 
+            string encodedToken = null; // Khai báo ngoài if
+
+            if (emailChanged)
+            {
+                // 1. Tạo token xác nhận đổi email
+                var token = await _userManager.GenerateChangeEmailTokenAsync(user, dto.Email);
+                encodedToken = System.Net.WebUtility.UrlEncode(token);
+                Console.WriteLine($"📨 Encoded token sent: {encodedToken}");
+
+                // 2. Tạo link xác nhận (truyền userId, email mới, token)
+                var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-change-email?userId={user.Id}&email={dto.Email}&token={encodedToken}";
+
+
+                var emailBody = $@"
+            <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+              <h2 style='text-align:center;margin-bottom:24px;'>Welcome to <b>Health Care System!</b></h2>
+              <p>Dear <b>{dto.UserName}</b>,</p>
+              <p>You have requested to change your email for <b>Health Care System</b>.</p>
+              <p>Please click the button below to verify your new email address:</p>
+              <div style='text-align:center;margin:32px 0;'>
+                <a href='{confirmationLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Confirm email</a>
+              </div>
+              <p style='margin-top:32px;'>After verification, you can log in and use all features of the Health Care System.</p>
+              <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+              <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically. Please do not reply.</p>
+            </div>
+        ";
+                try
+                {
+                    await _emailService.SendEmailAsync(dto.Email, "Confirm your new email - Health Care System", emailBody);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { message = "Email does not exist or could not be sent. Please re-enter a valid email." });
+                }
+
+                // KHÔNG đổi email ở đây! Chỉ đổi khi xác nhận thành công ở API confirm-change-email
+            }
+
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
+            {
+                if (emailChanged)
+                    return Ok(new
+                    {
+                        message = "Đã gửi email xác nhận về email mới. Vui lòng xác nhận để kích hoạt tài khoản.",
+                        requireEmailConfirmation = true,
+                        email = dto.Email,
+                        token = encodedToken, // Đã nằm trong scope
+                        userId = user.Id
+                    });
                 return Ok(new { message = "Cập nhật thông tin thành công!" });
+            }
+
             return BadRequest(result.Errors);
         }
+
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterAccountDTO dto)
         {
@@ -269,15 +327,72 @@ namespace HealthCareAPI.Controller
                 return BadRequest(new { message = "User does not exist." });
 
             //  var decodedToken =System.Net.WebUtility.UrlDecode(token);
-             //không cần decode nữa vì ConfirmEmailAsync tự decode r 
+            //không cần decode nữa vì ConfirmEmailAsync tự decode r 
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
                 return Ok(new { message = "Account has been successfully verified." });
 
             // Log chi tiết lỗi
-            return BadRequest(new { message = "Token is invalid or expired.", errors = result.Errors}); 
+            return BadRequest(new { message = "Token is invalid or expired.", errors = result.Errors });
         }
+
+
+        [HttpGet("confirm-change-email")]
+        public async Task<IActionResult> ConfirmChangeEmail(string userId, string email, string token)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+                    return BadRequest(new { message = "Thiếu thông tin xác nhận." });
+
+                Console.WriteLine("===== [DEBUG] Xác thực email =====");
+                Console.WriteLine($"userId: {userId}");
+                Console.WriteLine($"email: {email}");
+                Console.WriteLine($"token (raw from FE): {token}");
+
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                    return BadRequest(new { message = "User không tồn tại." });
+
+                // 🧠 Identity sẽ decode nội bộ
+                var result = await _userManager.ChangeEmailAsync(user, email, token);
+                if (!result.Succeeded)
+                {
+                    Console.WriteLine("❌ ChangeEmailAsync failed:");
+                    foreach (var err in result.Errors)
+                        Console.WriteLine($"Error: {err.Code} - {err.Description}");
+
+                    return BadRequest(new
+                    {
+                        message = "Xác nhận email thất bại.",
+                        errors = result.Errors.Select(e => e.Description)
+                    });
+                }
+
+                user.EmailConfirmed = true;
+                await _userManager.UpdateAsync(user);
+
+                return Ok(new { message = "Xác nhận email mới thành công!" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("🔥 LỖI SERVER:");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+
+                return StatusCode(500, new
+                {
+                    message = "Lỗi server khi xác nhận email.",
+                    error = ex.Message,
+                    stackTrace = ex.StackTrace
+                });
+            }
+        }
+
+
+
+
 
         [HttpPost("resend-confirm-email")]
         public async Task<IActionResult> ResendConfirmEmail([FromBody] ForgotPasswordDTO dto)
@@ -345,12 +460,10 @@ namespace HealthCareAPI.Controller
         }
 
         [HttpGet("check-email")]
-public async Task<IActionResult> CheckEmail(string email)
-{
-    var user = await _userManager.FindByEmailAsync(email);
-    return Ok(new { exists = user != null });
-}
-
-
+        public async Task<IActionResult> CheckEmail(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return Ok(new { exists = user != null });
+        }
     }
 } 

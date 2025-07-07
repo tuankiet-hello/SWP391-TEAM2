@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../app/app.config';
@@ -21,6 +21,17 @@ export class AuthService {
       params: payload,
     });
   }
+confirmChangeEmail(userId: string, email: string, token: string) {
+  const params = new HttpParams()
+    .set('userId', userId)
+    .set('email', email)
+    .set('token', token);
+
+  return this.http.get(`${this.apiUrl}/confirm-change-email`, { params });
+}
+
+
+
 
   resendConfirmationEmail(email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/resend-confirm-email`, { email });

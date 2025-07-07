@@ -25,6 +25,7 @@ import {
 } from './feature/client';
 import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view-test-booking.component';
 import { EditProfileComponent } from './feature/client/edit-profile/edit-profile.component';
+import { ConfirmChangeEmailComponent } from './feature/client/confirm-change-email/confirm-change-email.component';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -59,7 +60,7 @@ export const routes: Routes = [
   { path: 'confirm-email', component: ConfirmEmailComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-
+  {path : 'confirm-change-email', component:ConfirmChangeEmailComponent},
   //Admin routes
   { path: 'manager-users', component: ManagerUsersComponent },
 
