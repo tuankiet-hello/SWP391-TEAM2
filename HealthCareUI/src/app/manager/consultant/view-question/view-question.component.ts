@@ -56,6 +56,7 @@ export class ViewQuestionComponent implements OnInit {
 
   selectedEditQuestion?: QuestionTableDTO;
   isEditModalVisible = false;
+  originalEditQuestion?: QuestionTableDTO;
 
   idChoose: string = '';
   searchTerm: string = '';
@@ -124,20 +125,55 @@ export class ViewQuestionComponent implements OnInit {
   }
 
   openEditQuestionModal(question: QuestionTableDTO) {
-    this.selectedEditQuestion = question;
+    this.selectedEditQuestion = { ...question }; // copy để tránh sửa trực tiếp
+    this.originalEditQuestion = { ...question }; // lưu bản gốc để so sánh
     this.isEditModalVisible = true;
   }
 
+  isQuestionChanged(original: QuestionTableDTO, edited: QuestionTableDTO): boolean {
+    // So sánh các trường bạn muốn kiểm tra thay đổi
+    return (
+      original.title !== edited.title ||
+      original.description !== edited.description ||
+      original.status !== edited.status ||
+      original.answer !== edited.answer
+      // ... thêm các trường khác nếu cần
+    );
+  }
+
+
   saveEditQuestion(edited: QuestionTableDTO) {
-    // Gọi service cập nhật API ở đây
+    // Nếu không có thay đổi thì báo và không gọi API
+    if (!this.isQuestionChanged(this.originalEditQuestion!, edited)) {
+      this.message.info('No updates to the question');
+      this.isEditModalVisible = false;
+      this.selectedEditQuestion = undefined;
+      return;
+    }
+
     this.questionService.updateQuestion(edited.questionID, edited).subscribe(() => {
       this.isEditModalVisible = false;
       this.selectedEditQuestion = undefined;
-      // Hiển thị thông báo thành công tại chỗ
-      this.message.success('Cập nhật câu hỏi thành công!');
-      this.loadQuestions(); // reload lại danh sách nếu cần
+      this.message.success('Question has been updated successfully!');
+
+      // Cập nhật trong questions
+      const idx = this.questions.findIndex(q => q.questionID === edited.questionID);
+      if (idx !== -1) {
+        this.questions[idx] = { ...edited };
+      }
+
+      // Cập nhật trong filteredQuestions nếu có
+      const idxFiltered = this.filteredQuestions.findIndex(q => q.questionID === edited.questionID);
+      if (idxFiltered !== -1) {
+        this.filteredQuestions[idxFiltered] = { ...edited };
+      }
+
+      this.updateDisplayedQuestions();
     });
   }
+
+
+
 
   filterVisible = {
     title: false,

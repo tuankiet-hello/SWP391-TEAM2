@@ -38,7 +38,7 @@ export class QuestionService {
   // }
 
   updateQuestion(id: number, question: QuestionTableDTO): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, question);
+    return this.http.put(`${this.apiUrl}/${id}`, question );
   }
 
   // Có thể bổ sung các hàm khác như getById, update, delete nếu cần

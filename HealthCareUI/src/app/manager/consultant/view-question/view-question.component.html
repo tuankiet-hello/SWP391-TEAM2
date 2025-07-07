@@ -110,7 +110,7 @@
                     question.status === 1 ? 'orange' :
                     question.status === 2 ? 'green' :
                     question.status === 3 ? 'red' :
-                    question.status === 4 ? 'purple' : 'default'
+                    question.status === 4 ? 'green' : 'default'
                   "
                 >
                   {{
@@ -199,8 +199,8 @@
       <ul nz-menu>
         <li nz-menu-item (click)="setStatus('')">All</li>
         <li nz-menu-item (click)="setStatus('0')">Submitted</li>
-        <li nz-menu-item (click)="setStatus('1')">Pending</li>
-        <li nz-menu-item (click)="setStatus('2')">Confirmed</li>
+        <!-- <li nz-menu-item (click)="setStatus('1')">Pending</li> -->
+        <!-- <li nz-menu-item (click)="setStatus('2')">Confirmed</li> -->
         <li nz-menu-item (click)="setStatus('3')">Canceled</li>
         <li nz-menu-item (click)="setStatus('4')">Completed</li>
       </ul>
