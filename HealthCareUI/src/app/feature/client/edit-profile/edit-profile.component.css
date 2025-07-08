@@ -11,7 +11,7 @@
 .profile-edit-form {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   padding: 32px 28px 24px 28px;
   width: 100%;
   max-width: 400px;
@@ -68,7 +68,7 @@
   border: none;
   border-radius: 7px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.08);
   transition: background 0.2s;
   margin-top: 10px;
 }
@@ -91,37 +91,37 @@
   border: 1.5px solid #dbe1ea;
   border-radius: 7px;
   box-sizing: border-box;
-  
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .profile-save-btn {
-  background-color: #007bff;       /* Màu xanh nổi bật */
-  color: white;                    /* Chữ màu trắng */
+  background-color: #007bff; /* Màu xanh nổi bật */
+  color: white; /* Chữ màu trắng */
   border: none;
   border-radius: 6px;
   padding: 12px 24px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  width: 100%;                    /* Nút rộng full form */
+  width: 100%; /* Nút rộng full form */
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
 }
 
 .profile-save-btn:hover {
-  background-color: #0056b3;      /* Màu xanh đậm khi hover */
+  background-color: #0056b3; /* Màu xanh đậm khi hover */
   box-shadow: 0 6px 14px rgba(0, 86, 179, 0.4);
 }
 
 .profile-save-btn:active {
-  background-color: #004080;      /* Màu xanh đậm hơn khi nhấn */
+  background-color: #004080; /* Màu xanh đậm hơn khi nhấn */
   box-shadow: 0 2px 6px rgba(0, 64, 128, 0.5);
 }
 
 .profile-save-btn:disabled {
-  background-color: #a0c4ff;      /* Màu nhạt khi disabled */
+  background-color: #a0c4ff; /* Màu nhạt khi disabled */
   cursor: not-allowed;
   box-shadow: none;
   color: #e0e0e0;
@@ -134,7 +134,7 @@
   padding: 40px 0;
   margin-top: 10vh;
   /* Thu nhỏ chiều rộng tối đa của container */
-  max-width: 360px;  /* giảm từ 400px xuống 360px */
+  max-width: 360px; /* giảm từ 400px xuống 360px */
   margin-left: auto;
   margin-right: auto;
 }
@@ -142,7 +142,7 @@
 .profile-edit-form {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   padding: 24px 20px 20px 20px; /* giảm padding để nhỏ gọn hơn */
   width: 100%;
   max-width: 360px; /* giảm từ 400px xuống 360px */
@@ -177,7 +177,6 @@
   color: #101d77;
 }
 
-
 /* Responsive */
 @media (max-width: 600px) {
   .profile-edit-container {
@@ -189,9 +188,8 @@
     max-width: 100%;
     padding: 16px 12px;
   }
-  .profile-label, .profile-input {
+  .profile-label,
+  .profile-input {
     font-size: 0.9rem;
   }
-  
 }
-

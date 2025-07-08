@@ -7,6 +7,7 @@ import {
   UserService,
   AccountDetailDTO,
 } from '../../../../services/manager-user.service';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 
 interface Booking {
   id: string;
@@ -24,7 +25,12 @@ interface Question {
 @Component({
   selector: 'app-sidebar-profile',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [
+    CommonModule,
+    HeaderComponent,
+    FooterComponent,
+    EditProfileComponent,
+  ],
   templateUrl: './manage-profile.component.html',
   styleUrls: ['./manage-profile.component.css'],
 })
