@@ -66,9 +66,6 @@ namespace HealthCareAPI.Controller
             var token = await GenerateJwtToken(user);
             return Ok(new { token });
         }
-
-
-
         private async Task<string> GenerateJwtToken(Account user)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
@@ -95,7 +92,6 @@ namespace HealthCareAPI.Controller
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO dto)
         {
@@ -139,7 +135,6 @@ namespace HealthCareAPI.Controller
 
             return Ok(new { message = "Password reset link sent via email.", token });
         }
-
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO dto)
         {
@@ -153,15 +148,12 @@ namespace HealthCareAPI.Controller
                 return Ok(new { message = "Đặt lại mật khẩu thành công!" });
             return BadRequest(result.Errors);
         }
-
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             // await _signInManager.SignOutAsync(); do dùng jwt nên tạm thười ko cần
             return Ok(new { message = "Đăng xuất thành công!" });
         }
-
-        
         [HttpPut("edit-profile")]
         public async Task<IActionResult> EditProfile([FromBody] EditProfileDTO dto)
         {
@@ -234,8 +226,6 @@ namespace HealthCareAPI.Controller
 
             return BadRequest(result.Errors);
         }
-
-
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterAccountDTO dto)
         {
@@ -316,7 +306,6 @@ namespace HealthCareAPI.Controller
             // Trả lỗi nếu tạo user thất bại
             return BadRequest(result.Errors);
         }
-
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
@@ -334,7 +323,6 @@ namespace HealthCareAPI.Controller
             // Log chi tiết lỗi
             return BadRequest(new { message = "Token is invalid or expired.", errors = result.Errors });
         }
-
 
         [HttpGet("confirm-change-email")]
         public async Task<IActionResult> ConfirmChangeEmail(string userId, string email, string token)
@@ -387,10 +375,6 @@ namespace HealthCareAPI.Controller
                 });
             }
         }
-
-
-
-
 
         [HttpPost("resend-confirm-email")]
         public async Task<IActionResult> ResendConfirmEmail([FromBody] ForgotPasswordDTO dto)
@@ -463,5 +447,51 @@ namespace HealthCareAPI.Controller
             var user = await _userManager.FindByEmailAsync(email);
             return Ok(new { exists = user != null });
         }
+
+        [HttpPost("check-password")]
+        public async Task<IActionResult> CheckPassword([FromBody] CheckPasswordDTO dto)
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("User không tồn tại");
+
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, dto.CurrentPassword);
+
+            if (!isPasswordValid)
+                // Trả về HTTP 200 với valid = false thay vì BadRequest
+                return Ok(new { valid = false, message = "Mật khẩu hiện tại không đúng!" });
+
+            return Ok(new { valid = true, message = "Mật khẩu hợp lệ." });
+        }
+
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO dto)
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("User không tồn tại");
+
+            // Kiểm tra mật khẩu mới và xác nhận mật khẩu
+            if (dto.NewPassword != dto.ConfirmNewPassword)
+                return BadRequest(new { message = "Mật khẩu mới và xác nhận mật khẩu không khớp." });
+
+            var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
+            if (result.Succeeded)
+                return Ok(new { message = "Password changed successfully!" });
+
+            var errorMsg = result.Errors.FirstOrDefault()?.Description ?? "Change password failed.";
+            return BadRequest(new { message = errorMsg });
+        }
+
+
     }
 } 

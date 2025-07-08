@@ -159,4 +159,27 @@ confirmChangeEmail(userId: string, email: string, token: string) {
       params: { email }
     });
   }
+  checkCurrentPassword(currentPassword: string): Observable<any> {
+  const token = localStorage.getItem('accessToken') || '';
+  const headers = { Authorization: `Bearer ${token}` };
+  return this.http.post(
+    `${this.apiUrl}/check-password`,
+    { currentPassword },
+    { headers }
+  );
+}
+changePassword(payload: { 
+  CurrentPassword: string, 
+  NewPassword: string, 
+  ConfirmNewPassword: string 
+}): Observable<any> {
+  const token = localStorage.getItem('accessToken') || '';
+  const headers = { Authorization: `Bearer ${token}` };
+  return this.http.post(
+    `${this.apiUrl}/change-password`,
+    payload,
+    { headers }
+  );
+}
+
 }
