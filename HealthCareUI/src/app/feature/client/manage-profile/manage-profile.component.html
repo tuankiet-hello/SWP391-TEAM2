@@ -1,13 +1,10 @@
 <app-header></app-header>
 <div class="container">
   <div class="sidebar">
-    <h3 class="username">Hi, {{ user.userName }}</h3>
+    <h3 class="username" *ngIf="user">{{ user.userName }}</h3>
+
     <ul>
-      <li
-        *ngFor="let item of features"
-        [class.active]="item === selectedFeature"
-        (click)="selectFeature(item)"
-      >
+      <li *ngFor="let item of features" [class.active]="item === selectedFeature" (click)="selectFeature(item)">
         {{ item }}
       </li>
     </ul>
@@ -17,7 +14,7 @@
     <h2>{{ selectedFeature }}</h2>
 
     <div class="tab-content">
-      <div class="profile-card" *ngIf="selectedFeature === 'Your Profile'">
+      <div class="profile-card" *ngIf="selectedFeature === 'Your Profile' && user">
         <p><strong>User Name:</strong> {{ user.userName }}</p>
         <p><strong>Full Name:</strong> {{ user.firstName + user.lastName }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
@@ -30,32 +27,71 @@
         <p>Edit form goes here...</p>
       </div>
 
-      <div
-        class="booking-history"
-        *ngIf="selectedFeature === 'Booking History'"
-      >
+      <div class="booking-history" *ngIf="selectedFeature === 'Booking History'">
         <p *ngFor="let booking of bookings">
           ID: {{ booking.id }} - Test Name: {{ booking.service }} - Date:
           {{ booking.date }} - Status: {{ booking.status }}
         </p>
       </div>
 
-      <div
-        class="question-history"
-        *ngIf="selectedFeature === 'Question History'"
-      >
+      <div class="question-history" *ngIf="selectedFeature === 'Question History'">
         <p *ngFor="let question of questions">
           ID: {{ question.id }} - Question: {{ question.title }} - Date:
           {{ question.date }} - Status: {{ question.status }}
         </p>
       </div>
+      <!-- Change Password -->
+      <div class="change-password" *ngIf="selectedFeature === 'Change Password'">
+        <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmitChangePwd()">
+          <div class="form-row">
+            <label for="currentPassword">Current Password:</label>
+            <input id="currentPassword" type="password" formControlName="currentPassword" required
+              (blur)="onCheckCurrentPassword()" />
+            <span *ngIf="checkPasswordMessage" [ngClass]="{'error': !isPasswordValid, 'success': isPasswordValid}"
+              class="input-message">
+              {{ checkPasswordMessage }}
+            </span>
+          </div>
 
-      <div
-        class="change-password"
-        *ngIf="selectedFeature === 'Change Password'"
-      >
-        <p>Change password form...</p>
+          <div class="form-row">
+            <label for="newPassword">New Password:</label>
+            <input id="newPassword" type="password" formControlName="newPassword" required />
+          </div>
+
+          <div class="form-row">
+            <label for="confirmPassword">Confirm New Password:</label>
+            <input id="confirmPassword" type="password" formControlName="confirmPassword" required />
+          </div>
+
+          <!-- Hiển thị lỗi custom validator -->
+          <div
+            *ngIf="changePasswordForm.hasError('passwordMismatch') && changePasswordForm.get('confirmPassword')?.touched"
+            class="error">
+            *Confirmation password does not match!
+          </div>
+          <div *ngIf="changePasswordForm.get('newPassword')?.touched && changePasswordForm.get('newPassword')?.invalid"
+            class="error">
+            <span *ngIf="changePasswordForm.get('newPassword')?.hasError('required')">
+              *Please enter new password!
+            </span>
+            <span *ngIf="changePasswordForm.get('newPassword')?.hasError('pattern')">
+              *Must be at least 6 characters and contain lowercase, uppercase, numbers, special!
+            </span>
+          </div>
+          <div
+            *ngIf="changePasswordForm.hasError('duplicatePassword') && changePasswordForm.get('newPassword')?.touched"
+            class="error">
+            *New password cannot be the same as current password!
+          </div>
+          <div *ngIf="message" class="message">
+            {{ message }}
+          </div>
+          <button type="submit" [disabled]="changePasswordForm.invalid || !isPasswordValid">
+            Change Password
+          </button>
+        </form>
       </div>
+      <!--  -->
     </div>
   </div>
 </div>
