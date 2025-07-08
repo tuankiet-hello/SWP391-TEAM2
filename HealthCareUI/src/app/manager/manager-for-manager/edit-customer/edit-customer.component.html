@@ -67,9 +67,20 @@
       <label>Date of Birth:</label>
       <input formControlName="dateOfBirth" type="date" />
 
+      <div class="gender">
+        <label>Gender:</label>
+        <div class="gender-radio-group">
+          <label>
+            <input type="radio" formControlName="gender" [value]="true" /> Male
+          </label>
+          <label>
+            <input type="radio" formControlName="gender" [value]="false" /> Female
+          </label>
+        </div>
+      </div>
+
       <label class="roles">Roles:</label>
       <select formControlName="roles" [disabled]="true">
-        <option value="">Select role</option>
         <!-- <option value="admin">Admin</option> -->
         <option value="staff">Staff</option>
         <!-- <option value="manager">Manager</option> -->

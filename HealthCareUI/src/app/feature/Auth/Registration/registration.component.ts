@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../../services/auth.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-registration',
@@ -28,11 +29,15 @@ export class RegistrationComponent {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private message: NzMessageService
   ) {
     this.registrationForm = this.fb.group(
       {
-        email: ['', [Validators.required, Validators.email]],
+        email: ['', [
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{2,}){1,2}$/)
+        ]],
         username: [
           '',
           [Validators.required, Validators.pattern(this.regexusername)],
@@ -96,12 +101,12 @@ export class RegistrationComponent {
           if (error.error && typeof error.error === 'object') {
             if (error.error.errors) {
               const errorMessages = Object.values(error.error.errors).flat();
-              alert(errorMessages.join('\n'));
+              this.message.error(errorMessages.join('\n'));
             } else if (error.error.message) {
-              alert(error.error.message);
+              this.message.error(error.error.message);
             }
           } else {
-            alert('Đăng ký thất bại. Vui lòng thử lại.');
+            this.message.error('Registration failed. Please try again.');
           }
           this.isSubmitting = false;
         },

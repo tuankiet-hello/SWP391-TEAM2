@@ -20,6 +20,7 @@ export interface AccountDetailDTO {
   roles: string;
   emailConfirmed: boolean;
   accountStatus: string;
+  gender: boolean; // Optional field for
 }
 
 @Injectable({ providedIn: 'root' })
