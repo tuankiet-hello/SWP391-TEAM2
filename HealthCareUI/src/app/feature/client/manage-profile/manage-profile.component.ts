@@ -40,9 +40,10 @@ export class ManageProfileComponent implements OnInit {
   userid!: string;
   user!: AccountDetailDTO;
 
+  showEditProfile = false;
+
   features = [
     'Your Profile',
-    'Edit Profile',
     'Change Password',
     'Booking History',
     'Question History',
@@ -72,6 +73,10 @@ export class ManageProfileComponent implements OnInit {
 
   selectFeature(feature: string) {
     this.selectedFeature = feature;
+  }
+
+  toggleEditProfile() {
+    this.showEditProfile = !this.showEditProfile;
   }
 
   loadFakeBookings() {

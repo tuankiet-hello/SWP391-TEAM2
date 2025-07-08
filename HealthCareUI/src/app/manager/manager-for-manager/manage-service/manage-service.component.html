@@ -1,5 +1,12 @@
 <app-header-manager></app-header-manager>
 <div class="user-manager">
+  <div class="createManager">
+    <app-create-customer
+      *ngIf="modalType === 'customer'"
+      (close)="closeModal()"
+      (testCreated)="handleTestCreated()"
+    ></app-create-customer>
+  </div> 
   <!-- Sidebar -->
   <app-sidebar (testCreated)="handleTestCreated()"></app-sidebar>
   <!-- Main-Content -->
@@ -10,7 +17,16 @@
         <div class="search-wrapper">
           <nz-icon nzType="search" class="search-icon"></nz-icon>
           <!-- dùng nz-input -->
-          <input nz-input placeholder="Search by name" class="search-box" />
+          <div class="searchAdd">
+            <input nz-input placeholder="Search by name" class="search-box" />
+            <button
+              class="new-btn"
+              *ngIf="role === 'manager'"
+              (click)="openCustomerModal()"
+            >
+              + New Test
+            </button>
+          </div>
         </div>
         <nz-table
           [nzData]="displayedTest"

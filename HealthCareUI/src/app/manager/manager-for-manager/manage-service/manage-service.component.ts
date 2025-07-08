@@ -18,6 +18,7 @@ import {
 } from '@angular/forms';
 import { TestDTO, TestService } from '../../../../services/test.service';
 import { TestEditComponent } from './edit-test-service/edit-test.component';
+import { CreateCustomerComponent } from '../../manager-for-manager/create-customer/create-customer.component';
 @Component({
   selector: 'app-manage-service',
   standalone: true,
@@ -34,6 +35,7 @@ import { TestEditComponent } from './edit-test-service/edit-test.component';
     NzIconModule,
     ReactiveFormsModule,
     TestEditComponent,
+    CreateCustomerComponent,
   ],
   providers: [],
   templateUrl: './manage-service.component.html',
@@ -48,7 +50,7 @@ export class ManageServiceComponent {
   selectedEditTest?: TestDTO;
   isEditModalVisible: boolean = false;
   idChoose: number = 0;
-
+  modalType: 'user' | 'customer' | 'booking' | null = null;
   currentPage = 1;
   pageSize = 5; // số user trên mỗi trang
   totalUsers = 0;
@@ -127,5 +129,12 @@ export class ManageServiceComponent {
     console.log('🧑‍💼 role:', this.role);
 
     this.loadTests();
+  }
+
+  openCustomerModal() {
+    this.modalType = 'customer';
+  }
+  closeModal() {
+    this.modalType = null;
   }
 }

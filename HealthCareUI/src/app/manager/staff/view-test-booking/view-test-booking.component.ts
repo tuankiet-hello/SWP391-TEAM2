@@ -18,7 +18,7 @@ import { SearchOutline } from '@ant-design/icons-angular/icons';
 import {
   BookingService,
   EditTestBookingDTO,
-  TestBookingDTO
+  TestBookingDTO,
 } from '../../../../services/test-booking.service';
 import { ViewBookingDetailComponent } from '../view-booking-detail/view-booking-detail.component';
 import { EditBookingComponent } from '../edit-booking/edit-booking.component';
@@ -39,15 +39,12 @@ import { CreateBookingComponent } from '../create-booking/create-booking.compone
     NzDatePickerModule,
     ViewBookingDetailComponent,
     EditBookingComponent,
-    CreateBookingComponent
+    CreateBookingComponent,
   ],
-  providers: [
-    { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
-  ],
+  providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
   templateUrl: './view-test-booking.component.html',
-  styleUrl: './view-test-booking.component.css'
+  styleUrl: './view-test-booking.component.css',
 })
-
 export class ViewTestBookingComponent implements OnInit {
   emptyText = 'No test booking found';
   testBooking: TestBookingDTO[] = [];
@@ -69,25 +66,23 @@ export class ViewTestBookingComponent implements OnInit {
     1: '#fbc02d',
     2: '#388e3c',
     3: '#d32f2f',
-    4: '#7b1fa2'
+    4: '#7b1fa2',
   };
 
-  // Biến quản lý filter
   filterVisible = {
     status: false,
-    date: false
+    date: false,
   };
 
   filter = {
     status: '',
-    date: null as Date | null
+    date: null as Date | null,
   };
 
-  // Phân trang
   currentPage = 1;
   pageSize = 5;
   totalPages = 0;
-  modalType:'booking' | null = null;
+  modalType: 'booking' | null = null;
 
   constructor(
     private bookingService: BookingService,
@@ -102,77 +97,81 @@ export class ViewTestBookingComponent implements OnInit {
   loadTestBooking(): void {
     this.bookingService.getAllBookings().subscribe((data) => {
       this.testBooking = data;
-      this.applyFilters();
+      this.applyFilters(); // không preserve
     });
   }
 
-  applyFilters() {
+  applyFilters(preservePage: boolean = false) {
     let filtered = [...this.testBooking];
 
-    // Tìm kiếm theo tên
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
-      filtered = filtered.filter(booking =>
-        (booking.account.firstName + ' ' + booking.account.lastName).toLowerCase().includes(search)
+      filtered = filtered.filter((booking) =>
+        (booking.account.firstName + ' ' + booking.account.lastName)
+          .toLowerCase()
+          .includes(search)
       );
     }
 
-    // Lọc theo trạng thái
     if (this.filter.status) {
       const statusValue = this.getStatusValue(this.filter.status);
       if (statusValue !== null) {
-        filtered = filtered.filter(booking => booking.status === statusValue);
+        filtered = filtered.filter((booking) => booking.status === statusValue);
       }
     }
 
-    // Lọc theo ngày cụ thể
     if (this.filter.date) {
       const selectedDate = new Date(this.filter.date);
-      filtered = filtered.filter(booking => {
+      filtered = filtered.filter((booking) => {
         const bookingDate = new Date(booking.bookingDate);
-        return bookingDate.getFullYear() === selectedDate.getFullYear() &&
-               bookingDate.getMonth() === selectedDate.getMonth() &&
-               bookingDate.getDate() === selectedDate.getDate();
+        return (
+          bookingDate.getFullYear() === selectedDate.getFullYear() &&
+          bookingDate.getMonth() === selectedDate.getMonth() &&
+          bookingDate.getDate() === selectedDate.getDate()
+        );
       });
     }
 
     this.totalPages = Math.ceil(filtered.length / this.pageSize);
-    this.currentPage = 1;
+
+    if (!preservePage) {
+      this.currentPage = 1;
+    } else {
+      if (this.currentPage > this.totalPages) {
+        this.currentPage = this.totalPages || 1;
+      }
+    }
+
     this.updateDisplayedTestBooking(filtered);
   }
 
-  // Cập nhật ngày lọc
   setDate(date: Date | null) {
     this.filter.date = date;
     this.applyFilters();
   }
 
-  // Chuyển đổi tên status thành giá trị số
   private getStatusValue(statusString: string): number | null {
     const statusMap: { [key: string]: number } = {
-      'submitted': 0,
-      'pending': 1,
-      'confirmed': 2,
-      'canceled': 3,
-      'completed': 4
+      submitted: 0,
+      pending: 1,
+      confirmed: 2,
+      canceled: 3,
+      completed: 4,
     };
     return statusMap[statusString.toLowerCase()] ?? null;
   }
 
-  // Cập nhật bộ lọc trạng thái
   setStatus(status: string) {
     this.filter.status = status;
     this.applyFilters();
   }
 
-  // Cập nhật danh sách hiển thị
   updateDisplayedTestBooking(filtered: TestBookingDTO[] = this.testBooking) {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.displayedTestBooking = filtered.slice(startIndex, endIndex);
   }
 
-  // Xem chi tiết booking
   viewBookingDetail(id: number): void {
     this.bookingService.getBookingById(id).subscribe((booking) => {
       this.selectedBooking = booking;
@@ -180,13 +179,11 @@ export class ViewTestBookingComponent implements OnInit {
     });
   }
 
-  // Đóng modal chi tiết
   handleModalCancel(): void {
     this.isModalVisible = false;
     this.selectedBooking = undefined;
   }
 
-  // Điều hướng trang
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
@@ -207,52 +204,50 @@ export class ViewTestBookingComponent implements OnInit {
     }
   }
 
-  // Xử lý thay đổi tìm kiếm
   onSearchChange() {
     this.applyFilters();
   }
 
-  // Lấy dữ liệu đã lọc
   getFilteredBookings(): TestBookingDTO[] {
     let filtered = [...this.testBooking];
 
-    // Lọc theo tên
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
-      filtered = filtered.filter(booking =>
-        (booking.account.firstName + ' ' + booking.account.lastName).toLowerCase().includes(search)
+      filtered = filtered.filter((booking) =>
+        (booking.account.firstName + ' ' + booking.account.lastName)
+          .toLowerCase()
+          .includes(search)
       );
     }
 
-    // Lọc theo trạng thái
     if (this.filter.status) {
       const statusValue = this.getStatusValue(this.filter.status);
       if (statusValue !== null) {
-        filtered = filtered.filter(booking => booking.status === statusValue);
+        filtered = filtered.filter((booking) => booking.status === statusValue);
       }
     }
 
-    // Lọc theo ngày
     if (this.filter.date) {
       const selectedDate = new Date(this.filter.date);
-      filtered = filtered.filter(booking => {
+      filtered = filtered.filter((booking) => {
         const bookingDate = new Date(booking.bookingDate);
-        return bookingDate.getFullYear() === selectedDate.getFullYear() &&
-               bookingDate.getMonth() === selectedDate.getMonth() &&
-               bookingDate.getDate() === selectedDate.getDate();
+        return (
+          bookingDate.getFullYear() === selectedDate.getFullYear() &&
+          bookingDate.getMonth() === selectedDate.getMonth() &&
+          bookingDate.getDate() === selectedDate.getDate()
+        );
       });
     }
 
     return filtered;
   }
 
-  // Chức năng chỉnh sửa booking
   isEditModalVisible = false;
   selectedEditBooking?: TestBookingDTO;
   idChoose?: number;
 
   editBooking(id: number) {
-    this.selectedEditBooking = this.testBooking.find(b => b.bookingID === id);
+    this.selectedEditBooking = this.testBooking.find((b) => b.bookingID === id);
     this.idChoose = id ?? 0;
     this.isEditModalVisible = true;
   }
@@ -267,12 +262,19 @@ export class ViewTestBookingComponent implements OnInit {
     this.isEditModalVisible = false;
     this.selectedEditBooking = undefined;
     this.idChoose = undefined;
-    this.loadTestBooking();
+
+    this.bookingService.getAllBookings().subscribe((data) => {
+      this.testBooking = data;
+      this.applyFilters(true); // giữ nguyên currentPage sau update
+      this.message.success('Booking updated successfully!');
+    });
   }
-    openBookingModal() {
+
+  openBookingModal() {
     this.modalType = 'booking';
   }
-   closeModal() {
+
+  closeModal() {
     this.modalType = null;
   }
 }

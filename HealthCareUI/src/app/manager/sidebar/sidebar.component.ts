@@ -21,8 +21,8 @@ import { CreateBookingComponent } from '../staff/create-booking/create-booking.c
   standalone: true,
   imports: [
     CommonModule,
-    CreateUserComponent,
-    CreateCustomerComponent,
+    // CreateUserComponent,
+    // CreateCustomerComponent,
     // CreateBookingComponent,
     NzIconModule,
     RouterModule,
@@ -63,11 +63,10 @@ export class SidebarComponent {
   openCustomerModal() {
     this.modalType = 'customer';
   }
-    openBookingModal() {
+  openBookingModal() {
     this.modalType = 'booking';
   }
   closeModal() {
     this.modalType = null;
   }
-
 }
