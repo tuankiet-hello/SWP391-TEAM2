@@ -102,26 +102,26 @@ export class ViewConsultationScheduleComponent implements OnInit {
   // }
 
   handleSave(updatedAppointment: AppointmentDTO) {
-  this.appointmentService.updateAppointment(updatedAppointment).subscribe({
-    next: () => {
-      this.message.success('Update appointment success!');
-      this.loadAppointments();
-      this.selectedAppointment = null;
-    },
-    error: () => {
-      this.message.error('Update appointment fail!');
-    }
-  });
-}
-
-  loadAppointments(): void {
-    this.appointmentService.getAllAppointments().subscribe((data) => {
-      this.appointments = data;
-      this.applyFilters();
+    this.appointmentService.updateAppointment(updatedAppointment).subscribe({
+      next: () => {
+        this.message.success('Update appointment successful!');
+        this.loadAppointments(false);
+        this.selectedAppointment = null;
+      },
+      error: () => {
+        this.message.error('Update appointment fail!');
+      }
     });
   }
 
-  applyFilters(): void {
+  loadAppointments(resetPage: boolean = true): void {
+    this.appointmentService.getAllAppointments().subscribe((data) => {
+      this.appointments = data;
+      this.applyFilters(resetPage);
+    });
+  }
+
+  applyFilters(resetPage: boolean = true): void {
     let filtered = [...this.appointments];
 
     // Search
@@ -186,7 +186,16 @@ export class ViewConsultationScheduleComponent implements OnInit {
     this.filteredAppointments = filtered;
     this.totalAppointments = this.filteredAppointments.length;
     this.totalPages = Math.ceil(this.totalAppointments / this.pageSize);
+
+    if (resetPage) {
     this.currentPage = 1;
+  } else {
+    // Nếu currentPage > totalPages (do dữ liệu thay đổi), lùi về trang cuối cùng
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages || 1;
+    }
+  }
+
     this.updateDisplayedAppointments();
   }
 

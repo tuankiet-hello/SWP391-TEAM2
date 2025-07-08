@@ -23,6 +23,7 @@ import {
 import { UserViewComponent } from './user-view/user-view.component';
 import { UserEditComponent } from './edit-user/edit-user.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { CreateUserComponent } from './create-user/create-user.component';
 @Component({
   selector: 'app-manager-users',
   standalone: true,
@@ -40,6 +41,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzDropDownModule,
     NzIconModule,
     NzTagModule,
+    CreateUserComponent
   ],
   providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
   templateUrl: './manager-users.component.html',
@@ -62,9 +64,10 @@ export class ManagerUsersComponent implements OnInit {
 
   // Phân trang
   currentPage = 1;
-  pageSize = 6; // số user trên mỗi trang
+  pageSize = 5; // số user trên mỗi trang
   totalUsers = 0;
   totalPages = 0;
+  modalType:'user' | 'customer' | 'booking' | null = null;
 
   constructor(
     private userService: UserService,
@@ -75,14 +78,16 @@ export class ManagerUsersComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
   }
-
+closeModal() {
+    this.modalType = null;
+  }
   loadUsers(): void {
     this.userService.getAllUsers().subscribe((data) => {
       this.users = data;
       this.applyFilters(); // Gọi filter luôn để cập nhật filteredUsers và phân trang
     });
   }
-
+  
   updateDisplayedUsers(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
@@ -119,7 +124,9 @@ export class ManagerUsersComponent implements OnInit {
       this.isModalVisible = true;
     });
   }
-
+  openUserModal() {
+    this.modalType = 'user';
+  }
   editUser(id: string): void {
     this.userService.getUserById(id).subscribe({
       next: (user) => {

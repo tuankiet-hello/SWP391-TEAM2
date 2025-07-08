@@ -40,10 +40,24 @@ namespace HealthCareAPI.Services
             });
         }
 
-        // public async Task<QuestionDTO?> GetQuestionDetailAsync(int questionId)
-        // {
-        //     return await _unitOfWork.QuestionRepository.GetQuestionDetailAsync(questionId);
-        // }
+        public async Task<bool> UpdateQuestionAsync(int id, QuestionDTO dto)
+        {
+            var question = await _unitOfWork.QuestionRepository.GetByIdAsync(id);
+            if (question == null) return false;
+
+            // Cập nhật các trường (tùy ý, có thể kiểm tra null hoặc cập nhật tất cả)
+            question.Title = dto.Title;
+            question.Description = dto.Description;
+            question.Status = dto.Status;
+            question.Answer = dto.Answer;
+            question.UpdatedAt = DateTime.UtcNow;
+
+            // Nếu muốn update các trường khác, bổ sung tại đây
+
+            _unitOfWork.QuestionRepository.Update(question);
+            await _unitOfWork.CompleteAsync();
+            return true;
+        }
     }
 }
 

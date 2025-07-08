@@ -1,20 +1,18 @@
 <div class="container">
-    <!-- Màn hình đăng ký thành công -->
-    <div *ngIf="status === 'registration'" class="email-confirmation">
-        <div class="title">Xác nhận Email</div>
+    <!-- Màn hình đổi email thành công, chờ xác nhận -->
+    <div *ngIf="status === 'change'" class="email-confirmation">
+        <div class="title">Xác nhận Email mới</div>
         <div class="confirmation-content">
             <img src="https://vngsuite.com/wp-content/uploads/2021/10/Gmail-logo.png" alt="Email sent" class="email-icon">
             <p>Chúng tôi đã gửi một email xác nhận đến:</p>
             <p class="email-address">{{ email }}</p>
-            <p>Vui lòng kiểm tra hộp thư của bạn và nhấp vào liên kết xác nhận.</p>
-            
+            <p>Vui lòng kiểm tra hộp thư và nhấp vào liên kết xác nhận.</p>
             <div class="resend-section">
-                <p>Không nhận được email?</p>
+                <!-- <p>Không nhận được email?</p>
                 <button (click)="resendConfirmationEmail()" class="resend-button">
                     Gửi lại email xác nhận
-                </button>
+                </button> -->
             </div>
-
             <div class="back-login">
                 <a [routerLink]="['/login']">← Quay lại trang đăng nhập</a>
             </div>
@@ -48,9 +46,9 @@
             <p>{{ message }}</p>
             <div class="resend-section" *ngIf="email">
                 <p>Bạn có muốn nhận email xác nhận mới?</p>
-                <button (click)="resendConfirmationEmail()" class="resend-button">
+                <!-- <button (click)="resendConfirmationEmail()" class="resend-button">
                     Gửi lại email xác nhận
-                </button>
+                </button> -->
             </div>
             <div class="back-login">
                 <a [routerLink]="['/login']">← Quay lại trang đăng nhập</a>

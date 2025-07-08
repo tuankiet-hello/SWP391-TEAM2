@@ -1,0 +1,34 @@
+<!-- Overlay -->
+<div class="custom-modal-backdrop" *ngIf="visible && editedQuestion" (click)="handleClose()"></div>
+
+<!-- Modal content -->
+<div class="custom-modal" *ngIf="visible && editedQuestion">
+  <button class="close-btn" (click)="handleClose()">×</button>
+  <h2>Answer Question</h2>
+
+  <form class="question-form" #answerForm="ngForm" (submit)="handleSave(answerForm); $event.preventDefault()">
+    <label>Title:</label>
+    <input [(ngModel)]="editedQuestion.title" name="title" readonly  />
+
+    <label>Description:</label>
+    <textarea [(ngModel)]="editedQuestion.description" name="description" readonly ></textarea>
+
+    <label>Status:</label>
+    <select [(ngModel)]="editedQuestion.status" name="status">
+      <option *ngFor="let option of statusOptions" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+
+    <label>Answer:</label>
+    <textarea
+      [(ngModel)]="editedQuestion.answer"
+      name="answer"
+      [ngModelOptions]="{ updateOn: 'submit' }"></textarea>
+
+    <div class="modal-actions">
+      <button type="submit" class="save-btn">Save</button>
+      <button type="button" class="cancel-btn" (click)="handleClose()">Cancel</button>
+    </div>
+  </form>
+</div>

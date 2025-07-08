@@ -22,9 +22,11 @@ import {
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { QuestionService, QuestionTableDTO } from '../../../../services/question.service';
 import { ViewQuestionDetailComponent } from '../view-question-detail/view-question-detail.component';
+import { AnswerQuestionComponent } from '../answer-question/answer-question.component';
 
 @Component({
   selector: 'app-view-question',
+  standalone: true,
   imports: [
       CommonModule,
       FormsModule,
@@ -37,7 +39,8 @@ import { ViewQuestionDetailComponent } from '../view-question-detail/view-questi
       NzDropDownModule,
       NzIconModule,
       NzTagModule,
-      ViewQuestionDetailComponent],
+      ViewQuestionDetailComponent,
+      AnswerQuestionComponent],
   templateUrl: './view-question.component.html',
   styleUrl: './view-question.component.css'
 })
@@ -51,8 +54,10 @@ export class ViewQuestionComponent implements OnInit {
   selectedQuestion?: QuestionTableDTO;
   isQuestionModalVisible: boolean = false;
 
-  selectedEditUser?: AccountDetailDTO;
-  isEditModalVisible: boolean = false;
+  selectedEditQuestion?: QuestionTableDTO;
+  isEditModalVisible = false;
+  originalEditQuestion?: QuestionTableDTO;
+
   idChoose: string = '';
   searchTerm: string = '';
 
@@ -110,7 +115,6 @@ export class ViewQuestionComponent implements OnInit {
   }
 
   openQuestionDetail(question: QuestionTableDTO) {
-console.log(question);
     this.selectedQuestion = question;
     this.isQuestionModalVisible = true;
   }
@@ -120,179 +124,56 @@ console.log(question);
     this.selectedQuestion = undefined;
   }
 
-  // viewUserDetail(id: string): void {
-  //   this.userService.getUserById(id).subscribe((user) => {
-  //     this.selectedUser = user;
-  //     this.isModalVisible = true;
-  //   });
-  // }
+  openEditQuestionModal(question: QuestionTableDTO) {
+    this.selectedEditQuestion = { ...question }; // copy để tránh sửa trực tiếp
+    this.originalEditQuestion = { ...question }; // lưu bản gốc để so sánh
+    this.isEditModalVisible = true;
+  }
 
-  // editUser(id: string): void {
-  //   this.userService.getUserById(id).subscribe({
-  //     next: (user) => {
-  //       this.selectedEditUser = user;
-  //       this.idChoose = id;
-  //       this.isEditModalVisible = true;
-  //     },
-  //     error: (err) => console.error('Load user for edit failed', err),
-  //   });
-  // }
+  isQuestionChanged(original: QuestionTableDTO, edited: QuestionTableDTO): boolean {
+    // So sánh các trường bạn muốn kiểm tra thay đổi
+    return (
+      original.title !== edited.title ||
+      original.description !== edited.description ||
+      original.status !== edited.status ||
+      original.answer !== edited.answer
+      // ... thêm các trường khác nếu cần
+    );
+  }
 
-  // handleModalCancel(): void {
-  //   this.isModalVisible = false;
-  //   this.selectedUser = undefined;
-  // }
 
-  // handleEditModalClose(): void {
-  //   this.isEditModalVisible = false;
-  //   this.selectedEditUser = undefined;
-  // }
+  saveEditQuestion(edited: QuestionTableDTO) {
+    // Nếu không có thay đổi thì báo và không gọi API
+    if (!this.isQuestionChanged(this.originalEditQuestion!, edited)) {
+      this.message.info('No updates to the question');
+      this.isEditModalVisible = false;
+      this.selectedEditQuestion = undefined;
+      return;
+    }
 
-  // handleUserUpdated(updatedUser: AccountDetailDTO) {
-  //   const idx = this.users.findIndex((u) => u.id === this.idChoose);
-  //   if (idx !== -1) {
-  //     this.users[
-  //       idx
-  //     ].fullName = `${updatedUser.firstName} ${updatedUser.lastName}`;
-  //     this.users[idx].email = updatedUser.email;
-  //     this.users[idx].role = updatedUser.roles;
-  //     this.users[idx].emailConfirmed = updatedUser.emailConfirmed;
-  //     this.users[idx].accountStatus = updatedUser.accountStatus;
-  //   }
+    this.questionService.updateQuestion(edited.questionID, edited).subscribe(() => {
+      this.isEditModalVisible = false;
+      this.selectedEditQuestion = undefined;
+      this.message.success('Question has been updated successfully!');
 
-  //   // Cập nhật filteredUsers theo filter hiện tại, nhưng KHÔNG reset currentPage
-  //   this.filteredUsers = this.users.filter((user) => {
-  //     // chỉ filter role, hoặc bổ sung các điều kiện filter khác nếu đang dùng
-  //     let match = true;
-  //     if (this.filter.role) {
-  //       match = match && user.role === this.filter.role;
-  //     }
-  //     if (this.filter.status) {
-  //       match = match && user.accountStatus === this.filter.status;
-  //     }
-  //     // bổ sung các filter khác nếu có
-  //     return match;
-  //   });
+      // Cập nhật trong questions
+      const idx = this.questions.findIndex(q => q.questionID === edited.questionID);
+      if (idx !== -1) {
+        this.questions[idx] = { ...edited };
+      }
 
-  //   // Cập nhật lại số lượng user và tổng số trang nếu cần
-  //   this.totalUsers = this.filteredUsers.length;
-  //   this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
+      // Cập nhật trong filteredQuestions nếu có
+      const idxFiltered = this.filteredQuestions.findIndex(q => q.questionID === edited.questionID);
+      if (idxFiltered !== -1) {
+        this.filteredQuestions[idxFiltered] = { ...edited };
+      }
 
-  //   // Nếu trang hiện tại không còn user nào mà không phải trang 1, thì lùi về trang trước
-  //   const startIndex = (this.currentPage - 1) * this.pageSize;
-  //   if (this.currentPage > 1 && startIndex >= this.totalUsers) {
-  //     this.currentPage--;
-  //   }
+      this.updateDisplayedQuestions();
+    });
+  }
 
-  //   // Cập nhật lại displayedUsers cho trang hiện tại
-  //   this.updateDisplayedUsers();
-  //   this.message.success('User updated successfully!');
-  //   this.handleEditModalClose();
-  // }
 
-  // toggleBanUser(user: AccountTableDTO) {
-  //   const isBan = user.accountStatus !== 'Inactive';
-  //   const action = isBan ? 'Ban' : 'Unban';
-  //   const confirmText = isBan
-  //     ? 'Are you sure you want to ban this user?'
-  //     : 'Are you sure you want to unban this user?';
 
-  //   this.modal.confirm({
-  //     nzTitle: `${action} user`,
-  //     nzContent: confirmText,
-  //     nzOkText: action,
-  //     nzOkType: 'primary',
-  //     nzOkDanger: isBan,
-  //     nzOnOk: () => {
-  //       if (isBan) {
-  //         this.banUser(user.id);
-  //       } else {
-  //         this.unbanUser(user.id);
-  //       }
-  //     },
-  //     nzCancelText: 'Cancel',
-  //   });
-  // }
-
-  // banUser(userId: string) {
-  //   this.userService.banUser(userId).subscribe({
-  //     next: () => {
-  //       const user = this.users.find((u) => u.id === userId);
-  //       if (user) user.accountStatus = 'Inactive';
-
-  //       // Cập nhật filteredUsers theo filter hiện tại, KHÔNG reset currentPage
-  //       this.filteredUsers = this.users.filter((user) => {
-  //         let match = true;
-  //         if (this.filter.role) match = match && user.role === this.filter.role;
-  //         if (this.filter.emailConfirmed)
-  //           match =
-  //             match &&
-  //             (this.filter.emailConfirmed === 'true'
-  //               ? user.emailConfirmed
-  //               : !user.emailConfirmed);
-  //         if (this.filter.status)
-  //           match = match && user.accountStatus === this.filter.status;
-  //         return match;
-  //       });
-
-  //       this.totalUsers = this.filteredUsers.length;
-  //       this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
-
-  //       // Nếu trang hiện tại không còn user nào mà không phải trang 1, thì lùi về trang trước
-  //       const startIndex = (this.currentPage - 1) * this.pageSize;
-  //       if (this.currentPage > 1 && startIndex >= this.totalUsers) {
-  //         this.currentPage--;
-  //       }
-
-  //       this.updateDisplayedUsers();
-  //       this.message.success('User banned successfully!');
-  //     },
-  //     error: (err) => {
-  //       this.message.error('Ban failed. Please try again!');
-  //       console.error('Ban failed:', err);
-  //     },
-  //   });
-  // }
-
-  // unbanUser(userId: string) {
-  //   this.userService.unbanUser(userId).subscribe({
-  //     next: () => {
-  //       const user = this.users.find((u) => u.id === userId);
-  //       if (user) user.accountStatus = 'Active';
-
-  //       // Cập nhật filteredUsers theo filter hiện tại, KHÔNG reset currentPage
-  //       this.filteredUsers = this.users.filter((user) => {
-  //         let match = true;
-  //         if (this.filter.role) match = match && user.role === this.filter.role;
-  //         if (this.filter.emailConfirmed)
-  //           match =
-  //             match &&
-  //             (this.filter.emailConfirmed === 'true'
-  //               ? user.emailConfirmed
-  //               : !user.emailConfirmed);
-  //         if (this.filter.status)
-  //           match = match && user.accountStatus === this.filter.status;
-  //         return match;
-  //       });
-
-  //       this.totalUsers = this.filteredUsers.length;
-  //       this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
-
-  //       // Nếu trang hiện tại không còn user nào mà không phải trang 1, thì lùi về trang trước
-  //       const startIndex = (this.currentPage - 1) * this.pageSize;
-  //       if (this.currentPage > 1 && startIndex >= this.totalUsers) {
-  //         this.currentPage--;
-  //       }
-
-  //       this.updateDisplayedUsers();
-  //       this.message.success('User unbanned successfully!');
-  //     },
-  //     error: (err) => {
-  //       this.message.error('Unban failed. Please try again!');
-  //       console.error('Unban failed:', err);
-  //     },
-  //   });
-  // }
 
   filterVisible = {
     title: false,

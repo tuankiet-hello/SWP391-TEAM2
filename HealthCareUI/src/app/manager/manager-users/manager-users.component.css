@@ -331,7 +331,39 @@ nz-filter-trigger[nzactive="true"] .anticon {
   border-radius: 50%;
   transition: background 0.5s, color 0.5s;
 }
+.nav_wrapper{
+  display: flex;
+}
+.nav_wrapper button{
+  margin-left: 20px;
+}
+.new-btn {
+  background-color: #1866ba;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 150px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
 
+/* Khi rê chuột vào */
+.new-btn:hover {
+  background-color: #1f74d1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Khi nhấn giữ */
+.new-btn:active {
+  background-color: #155a9a;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 /* Menu dài sẽ có scroll */
 /* .nz-dropdown-menu, .ant-dropdown-menu {
   max-height: 200px;
