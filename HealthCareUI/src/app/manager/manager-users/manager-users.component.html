@@ -10,7 +10,8 @@
     <div class="user-list">
       <div class="user-list-header">
         <div class="content">User Management</div>
-        <div class="search-wrapper">
+         <div class="nav_wrapper">
+            <div class="search-wrapper">
           <nz-icon nzType="search" class="search-icon"></nz-icon>
           <!-- dùng nz-input -->
           <input
@@ -21,8 +22,11 @@
             (ngModelChange)="onSearchChange()"
           />
         </div>
+          <button class="new-btn"  (click)="openUserModal()">
+            + New User
+          </button>
+         </div>
       </div>
-
       <div class="user-list-scrollable">
         <!-- dùng nz-table -->
         <nz-table
@@ -268,3 +272,9 @@
     </nz-dropdown-menu>
   </div>
 </div>
+  <div class="createAdmin">
+    <app-create-user
+      *ngIf="modalType === 'user'"
+      (close)="closeModal()"
+    ></app-create-user>
+  </div>

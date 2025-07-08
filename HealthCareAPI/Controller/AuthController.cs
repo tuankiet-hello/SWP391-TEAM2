@@ -216,10 +216,8 @@ namespace HealthCareAPI.Controller
                 {
                     return BadRequest(new { message = "Email does not exist or could not be sent. Please re-enter a valid email." });
                 }
-
                 // KHÔNG đổi email ở đây! Chỉ đổi khi xác nhận thành công ở API confirm-change-email
             }
-
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {

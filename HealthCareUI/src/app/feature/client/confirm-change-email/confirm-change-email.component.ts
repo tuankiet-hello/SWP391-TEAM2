@@ -66,9 +66,9 @@ confirmChangeEmail() {
       console.log('Response from confirmChangeEmail:', response); // Debug response
       this.status = 'success';
       this.message = response?.message || 'Xác nhận email thành công!';
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 5000);
+      // setTimeout(() => {
+      //   this.router.navigate(['/login']);
+      // }, 5000);
     },
     error: (error) => {
       console.error('Error from confirmChangeEmail:', error); // Debug lỗi

@@ -1,9 +1,9 @@
 <div class="container">
   <!-- Nút mở modal -->
   <!-- role ADMIN -->
-  <button class="new-btn" *ngIf="role === 'admin'" (click)="openUserModal()">
+  <!-- <button class="new-btn" *ngIf="role === 'admin'" (click)="openUserModal()">
     + New User
-  </button>
+  </button> -->
 
   <!-- Role STAFF -->
   <!-- <button
@@ -18,28 +18,28 @@
   </button> -->
 
   <!-- Role MANAGER -->
-  <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">
+  <!-- <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">
     + New User
-  </button>
+  </button> -->
   <button class="new-btn" *ngIf="role === 'manager'" (click)="openCustomerModal()">
     + New Test
   </button>
 
   <!-- Render modal nếu showModal === true -->
-  <div class="createAdmin">
+  <!-- <div class="createAdmin">
     <app-create-user
       *ngIf="modalType === 'user'"
       (close)="closeModal()"
     ></app-create-user>
-  </div>
-
+  </div> -->
+<!-- 
   <div class="createManager">
     <app-create-customer
       *ngIf="modalType === 'customer'"
       (close)="closeModal()"
       (testCreated)="handleTestCreated()"
     ></app-create-customer>
-  </div>
+  </div> -->
 <!--
   <div class="createBooking">
     <app-create-booking *ngIf="modalType === 'booking'" (close)="closeModal()">
