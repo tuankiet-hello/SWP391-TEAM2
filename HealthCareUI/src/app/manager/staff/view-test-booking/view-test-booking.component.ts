@@ -261,19 +261,37 @@ export class ViewTestBookingComponent implements OnInit {
   handleBookingUpdated(updated: EditTestBookingDTO) {
     this.isEditModalVisible = false;
     this.selectedEditBooking = undefined;
-    this.idChoose = undefined;
+    // this.idChoose = undefined;
+    const bookingId = this.idChoose;
 
-    this.bookingService.getAllBookings().subscribe((data) => {
-      this.testBooking = data;
-      this.applyFilters(true); // giữ nguyên currentPage sau update
-      this.message.success('Booking updated successfully!');
-    });
+    // Tìm và cập nhật booking trong testBooking
+    const idx = this.testBooking.findIndex(
+      (b) => b.bookingID === this.idChoose
+    );
+    if (idx !== -1) {
+      this.testBooking[idx] = {
+        ...this.testBooking[idx],
+        ...updated,
+      };
+    }
+
+    const idxDisplayed = this.displayedTestBooking.findIndex(
+      (b) => b.bookingID === bookingId
+    );
+    if (idxDisplayed !== -1) {
+      this.displayedTestBooking[idxDisplayed] = {
+        ...this.displayedTestBooking[idxDisplayed],
+        ...updated,
+      };
+    }
+
+    // Cập nhật lại danh sách hiển thị
+    this.updateDisplayedTestBooking(this.getFilteredBookings());
   }
 
   openBookingModal() {
     this.modalType = 'booking';
   }
-
   closeModal() {
     this.modalType = null;
   }

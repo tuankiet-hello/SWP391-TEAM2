@@ -69,7 +69,8 @@ namespace HealthCareAPI.Controller
                 DateOfBirth = user.DateOfBirth,
                 Roles = roles.FirstOrDefault(),
                 EmailConfirmed = user.EmailConfirmed,
-                AccountStatus = user.LockoutEnd == null ? "Active" : "Inactive" // Tuỳ thuộc vào logic của bạn
+                AccountStatus = user.LockoutEnd == null ? "Active" : "Inactive", // Tuỳ thuộc vào logic của bạn
+                Gender = user.Gender // Giả sử false là nữ, true là nam
             };
             return Ok(dto);
         }
@@ -86,6 +87,7 @@ namespace HealthCareAPI.Controller
             user.UserName = dto.UserName;
             user.DateOfBirth = dto.DateOfBirth;
             user.EmailConfirmed = dto.EmailConfirmed;
+            user.Gender = dto.Gender;
 
             // Cập nhật trạng thái tài khoản
             if (dto.AccountStatus == "Inactive")

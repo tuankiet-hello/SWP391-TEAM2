@@ -55,6 +55,7 @@
   color: #2d3e50;
   font-size: 0.98rem;
   margin-bottom: 16px;
+  min-height: 123.12px;
 }
 .service-card button {
   background: #007bff;

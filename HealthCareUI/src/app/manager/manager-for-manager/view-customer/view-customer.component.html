@@ -33,6 +33,10 @@
           <span class="detail-value">{{ user.dateOfBirth }}</span>
         </div>
         <div class="detail-row">
+          <span class="detail-label">Gender:</span>
+          <span class="detail-value">{{ user.gender === true ? "Male" : "Female"  }}</span>
+        </div>
+        <div class="detail-row">
           <span class="detail-label">Role:</span>
           <span class="detail-value">{{ displayRoles }}</span>
         </div>

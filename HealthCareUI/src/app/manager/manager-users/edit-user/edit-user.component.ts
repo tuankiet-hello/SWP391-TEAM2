@@ -18,6 +18,8 @@ import {
   AccountDetailDTO,
   UserService,
 } from '../../../../services/manager-user.service';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   standalone: true,
@@ -32,11 +34,13 @@ export class UserEditComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() updated = new EventEmitter<AccountDetailDTO>();
   regexusername = '^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$';
+  regexemail = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]{2,}){1,2}$';
 
   fb = inject(FormBuilder);
 
   form!: FormGroup;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService,
+  private message: NzMessageService) {}
 
   ngOnInit() {
     this.buildForm();
@@ -48,14 +52,12 @@ export class UserEditComponent implements OnInit {
 
   buildForm() {
     this.form = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      userName: [
-        '',
-        [Validators.required, Validators.pattern(this.regexusername)],
-      ],
-      dateOfBirth: ['', Validators.required],
+      firstName: [null, [cannotClearIfHasValue(this.user?.firstName)]],
+      lastName: [null, [cannotClearIfHasValue(this.user?.firstName)]],
+      email: ['', [Validators.required, Validators.pattern(this.regexemail)]],
+      userName: ['', [Validators.required, Validators.pattern(this.regexusername)]],
+      dateOfBirth: [null, [cannotClearIfHasValue(this.user?.firstName)]],
+      gender: [null, [cannotClearIfHasValue(this.user?.firstName)]],
       emailConfirmed: [false],
       accountStatus: ['Active'],
       roles: [''],
@@ -77,12 +79,20 @@ export class UserEditComponent implements OnInit {
   submit() {
     if (this.form.invalid) return;
     const formData = { ...this.form.value };
+
+    // Nếu không có thay đổi, show message và return
+    if (!this.isDataChanged(this.user, formData)) {
+      this.message.info('No changes detected!');
+      return;
+    }
+
     const payload = {
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
       userName: formData.userName,
       dateOfBirth: formData.dateOfBirth,
+      gender: formData.gender,
       emailConfirmed: formData.emailConfirmed,
       accountStatus: formData.accountStatus,
       roles: formData.roles,
@@ -97,8 +107,35 @@ export class UserEditComponent implements OnInit {
       },
       error: (err) => {
         // alert('Update failed ');
-        console.error('EditUser error:', err.error.errors);
+        console.error('Edit User error:', err.error.errors);
       },
     });
   }
+
+  isDataChanged(original: any, edited: any): boolean {
+    // So sánh từng trường cần thiết
+    return (
+      original.firstName !== edited.firstName ||
+      original.lastName !== edited.lastName ||
+      original.email !== edited.email ||
+      original.userName !== edited.userName ||
+      original.dateOfBirth !== edited.dateOfBirth ||
+      original.gender !== edited.gender ||
+      original.emailConfirmed !== edited.emailConfirmed ||
+      original.accountStatus !== edited.accountStatus ||
+      original.roles !== edited.roles
+    );
+  }
+
+
 }
+
+  export function cannotClearIfHasValue(initialValue: any): ValidatorFn {
+    return (control: AbstractControl) => {
+      // Nếu ban đầu có dữ liệu, nhưng hiện tại lại bị xóa (rỗng/null)
+      if ((initialValue !== null && initialValue !== '') && (control.value === null || control.value === '')) {
+        return { cannotClear: true };
+      }
+      return null;
+    };
+  }
