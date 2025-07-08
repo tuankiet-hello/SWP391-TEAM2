@@ -8,5 +8,5 @@ public class AccountDetailDTO
     public string Roles { get; set; }
     public bool EmailConfirmed { get; set; }
     public string AccountStatus { get; set; } // Hoặc dùng enum nếu có
-    public bool Gender { get; set; }
+    public bool? Gender { get; set; }
 }
