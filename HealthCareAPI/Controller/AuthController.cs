@@ -179,6 +179,7 @@ namespace HealthCareAPI.Controller
             user.FirstName = dto.FirstName;
             user.LastName = dto.LastName;
             user.DateOfBirth = dto.DateOfBirth;
+            user.Gender = dto.Gender;
 
             string encodedToken = null; // Khai báo ngoài if
 
@@ -448,7 +449,8 @@ namespace HealthCareAPI.Controller
                 user.Email,      // phải có trường này
                 user.FirstName,
                 user.LastName,
-                user.DateOfBirth
+                user.DateOfBirth,
+                user.Gender
             });
 
         }

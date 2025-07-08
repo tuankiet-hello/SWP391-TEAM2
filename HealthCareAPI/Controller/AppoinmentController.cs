@@ -55,12 +55,12 @@ namespace HealthCareAPI.Controller
                 {
                     case 2: // Confirmed
                         subject = "Your Appointment is Confirmed - Gender Health Care";
-                        emailBody = $@"<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#F9F9F9;border-radius:12px;color:#222;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-                            <h2 style='text-align:center;margin-bottom:24px;'>Thanks for reaching out to <b>Gender Health Care</b></h2>
+                        emailBody = $@"<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
                             <p>Dear <b>{fullName}</b>,</p>
+                            <p>Thanks for reaching out to <b>Gender Health Care</b></p>
                             <p>We are pleased to inform you that your appointment has been confirmed.</p>
                             <p>Below are the details of your appointment:</p>
-                            <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#222;'>
+                            <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
                                 <li><b>Date:</b> {dto.AppointmentDate:dd/MM/yyyy}</li>
                                 <li><b>Time:</b> {dto.AppointmentTime}</li>
                                 <li><b>Status:</b> Confirmed</li>
@@ -68,19 +68,19 @@ namespace HealthCareAPI.Controller
                             <p>Best regards,</p>
                             <p><b>Gender Health Care Team</b></p>
                             <p style='margin-top:32px;'>If you have any concerns, please contact our team.</p>
-                            <hr style='margin:32px 0;border:none;border-top:1px solid #eee;'/>
+                            <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
                             <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically, please do not reply.</p>
                         </div>";
                         break;
 
                     case 3: // Cancelled
                         subject = "Your Appointment Has Been Cancelled - Gender Health Care";
-                        emailBody = $@"<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#F9F9F9;border-radius:12px;color:#222;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-                            <h2 style='text-align:center;margin-bottom:24px;'>Thanks for reaching out to <b>Gender Health Care</b></h2>
+                        emailBody = $@"<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>+90,hh
                             <p>Dear <b>{fullName}</b>,</p>
+                            <p>Thanks for reaching out to <b>Gender Health Care</b></p>
                             <p>We regret to inform you that your appointment has been cancelled.</p>
                             <p>Below are the details of your appointment:</p>
-                            <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#222;'>
+                            <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
                                 <li><b>Date:</b> {dto.AppointmentDate:dd/MM/yyyy}</li>
                                 <li><b>Time:</b> {dto.AppointmentTime}</li>
                                 <li><b>Status:</b> Cancelled</li>
@@ -88,19 +88,19 @@ namespace HealthCareAPI.Controller
                             <p>Best regards,</p>
                             <p><b>Gender Health Care Team</b></p>
                             <p style='margin-top:32px;'>If you have any concerns, please contact our team.</p>
-                            <hr style='margin:32px 0;border:none;border-top:1px solid #eee;'/>
+                            <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
                             <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically, please do not reply.</p>
                         </div>";
                         break;
 
                     case 4: // Completed
                         subject = "Your Appointment is Completed - Gender Health Care";
-                        emailBody = $@"<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#F9F9F9;border-radius:12px;color:#222;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-                            <h2 style='text-align:center;margin-bottom:24px;'>Thanks for reaching out to <b>Gender Health Care</b></h2>
+                        emailBody = $@"<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
                             <p>Dear <b>{fullName}</b>,</p>
+                            <p>Thanks for reaching out to <b>Gender Health Care</b></p>
                             <p>We're pleased to inform you that your appointment has been completed.</p>
                             <p>Below are the details of your appointment:</p>
-                            <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#222;'>
+                            <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
                                 <li><b>Date:</b> {dto.AppointmentDate:dd/MM/yyyy}</li>
                                 <li><b>Time:</b> {dto.AppointmentTime}</li>
                                 <li><b>Status:</b> Completed</li>
@@ -108,7 +108,7 @@ namespace HealthCareAPI.Controller
                             <p>Best regards,</p>
                             <p><b>Gender Health Care Team</b></p>
                             <p style='margin-top:32px;'>If you have any concerns, please contact our team.</p>
-                            <hr style='margin:32px 0;border:none;border-top:1px solid #eee;'/>
+                            <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
                             <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically, please do not reply.</p>
                         </div>";
                         break;
