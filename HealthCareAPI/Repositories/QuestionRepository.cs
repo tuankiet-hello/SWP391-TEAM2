@@ -39,6 +39,11 @@ namespace HealthCareAPI.Repositories
             });
         }
 
+        public void Update(Question entity)
+        {
+            _context.Questions.Update(entity);
+        }
+
         // public async Task<QuestionDTO?> GetQuestionDetailAsync(int questionId)
         // {
         //     var question = await _dbSet

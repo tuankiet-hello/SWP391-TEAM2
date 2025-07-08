@@ -76,3 +76,21 @@
   background-color: #f5f5f5;
   color: #333;
 }
+
+input[readonly],
+textarea[readonly] {
+  background-color: #fff !important;   /* Giữ màu nền như bình thường */
+  color: #333;                        /* Màu chữ như input thường */
+  border: 1px solid #d9d9d9;          /* Viền như input thường */
+  cursor: default;                    /* Không hiện dấu nháy text */
+  pointer-events: none;               /* Không cho bấm/focus */
+}
+
+/* Nếu muốn vẫn cho copy text thì bỏ pointer-events: none và dùng như sau: */
+input[readonly]:focus,
+textarea[readonly]:focus {
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #d9d9d9;
+  background-color: #fff;
+}

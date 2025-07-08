@@ -22,35 +22,14 @@ export class ViewQuestionDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('MODAL DATA:', this.question);
+    // console.log('MODAL DATA:', this.question);
     if (changes['question']) {
-    this.cd.detectChanges(); // ép Angular cập nhật view
-  }
+      this.cd.detectChanges(); // ép Angular cập nhật view
+    }
   }
 
   handleClose() {
     this.close.emit();
   }
-
-  getStatusText(status: number | undefined): string {
-    switch (status) {
-      case 0: return 'Submitted';
-      case 1: return 'Pending';
-      case 2: return 'Confirmed';
-      case 3: return 'Canceled';
-      case 4: return 'Completed';
-      default: return 'Unknown';
-    }
-  }
-
-  getStatusColor(status: number | undefined): string {
-    switch (status) {
-      case 0: return 'blue';
-      case 1: return 'orange';
-      case 2: return 'green';
-      case 3: return 'red';
-      case 4: return 'purple';
-      default: return 'default';
-    }
-  }
 }
+

@@ -253,7 +253,7 @@ namespace HealthCareAPI.data
                     AccountID = userIds[1],
                     Title = "Booking a reproductive health consultation",
                     Description = "I would like to schedule an online consultation about modern contraception methods. How can I book an appointment?",
-                    Status = StatusType.Pending,
+                    Status = StatusType.Submitted,
                     CreatedAt = DateTime.UtcNow.AddDays(-5)
                 },
                 new Question {
@@ -290,14 +290,14 @@ namespace HealthCareAPI.data
                     AccountID = userIds[6],
                     Title = "Side effects of birth control pills",
                     Description = "I've been taking daily birth control pills but recently feel headaches and nausea. Are these side effects?",
-                    Status = StatusType.Pending,
+                    Status = StatusType.Completed,
                     CreatedAt = DateTime.UtcNow.AddDays(-8)
                 },
                 new Question {
                     AccountID = userIds[7],
                     Title = "Scheduling an HIV test",
                     Description = "I want to book an HIV test this weekend. Can you guide me through the process and result notification time?",
-                    Status = StatusType.Confirmed,
+                    Status = StatusType.Canceled,
                     CreatedAt = DateTime.UtcNow.AddDays(-2)
                 },
                 new Question {

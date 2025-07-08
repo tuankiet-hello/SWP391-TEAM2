@@ -11,11 +11,28 @@
     <p><strong>Description:</strong> {{ question.description }}</p>
     <p>
       <strong>Status:</strong>
-      <span class="tag">{{ getStatusText(question.status) }}</span>
+      <nz-tag
+        class="status"
+        [nzColor]="
+          question.status === 0 ? 'blue' :
+          question.status === 1 ? 'orange' :
+          question.status === 2 ? 'green' :
+          question.status === 3 ? 'red' :
+          question.status === 4 ? 'green' : 'default'
+        "
+      >
+        {{
+          question.status === 0 ? 'Submitted' :
+          question.status === 1 ? 'Pending' :
+          question.status === 2 ? 'Confirmed' :
+          question.status === 3 ? 'Canceled' :
+          question.status === 4 ? 'Completed'  : 'Không xác định'
+        }}
+      </nz-tag>
     </p>
     <p><strong>Answer:</strong> {{ question.answer || 'No answer yet' }}</p>
     <p><strong>Created At:</strong> {{ question.createdAt | date:'short' }}</p>
-    <p><strong>Updated At:</strong> {{ question.updatedAt ? (question.updatedAt | date:'short') : '-' }}</p>
+    <p><strong>Updated At:</strong> {{ question.updatedAt ? (question.updatedAt | date:'short') : '' }}</p>
     <p>
       <strong>Inquirer:</strong>
       {{ question.account.firstName }} {{ question.account.lastName }} ({{ question.account.email }})

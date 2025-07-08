@@ -6,12 +6,12 @@
   <button class="close-btn" (click)="handleClose()">×</button>
   <h2>Answer Question</h2>
 
-  <form class="question-form" (submit)="handleSave(); $event.preventDefault()">
+  <form class="question-form" #answerForm="ngForm" (submit)="handleSave(answerForm); $event.preventDefault()">
     <label>Title:</label>
-    <input type="text" [(ngModel)]="editedQuestion.title" name="title" required />
+    <input [(ngModel)]="editedQuestion.title" name="title" readonly  />
 
     <label>Description:</label>
-    <textarea [(ngModel)]="editedQuestion.description" name="description"></textarea>
+    <textarea [(ngModel)]="editedQuestion.description" name="description" readonly ></textarea>
 
     <label>Status:</label>
     <select [(ngModel)]="editedQuestion.status" name="status">
@@ -21,7 +21,10 @@
     </select>
 
     <label>Answer:</label>
-    <textarea [(ngModel)]="editedQuestion.answer" name="answer"></textarea>
+    <textarea
+      [(ngModel)]="editedQuestion.answer"
+      name="answer"
+      [ngModelOptions]="{ updateOn: 'submit' }"></textarea>
 
     <div class="modal-actions">
       <button type="submit" class="save-btn">Save</button>
