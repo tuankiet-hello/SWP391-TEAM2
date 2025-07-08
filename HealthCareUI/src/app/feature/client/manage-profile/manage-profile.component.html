@@ -17,9 +17,23 @@
     </div>
 
     <div class="contentProfile">
-      <div class="profile-header" *ngIf="selectedFeature === 'Your Profile'">
+      <div
+        class="profile-header"
+        *ngIf="
+          selectedFeature === 'Your Profile' ||
+          'Change Password' ||
+          'Booking History' ||
+          'Question History'
+        "
+      >
         <h2>{{ selectedFeature }}</h2>
-        <button class="edit-btn" (click)="toggleEditProfile()">Edit</button>
+        <button
+          class="edit-btn"
+          (click)="toggleEditProfile()"
+          *ngIf="selectedFeature === 'Your Profile'"
+        >
+          Edit
+        </button>
       </div>
 
       <div class="tab-content">
@@ -31,7 +45,10 @@
           </p>
           <p><strong>Email:</strong> {{ user.email }}</p>
           <p><strong>Phone Number:</strong> {{ user.roles }}</p>
-          <p><strong>Gender:</strong> LGBT</p>
+          <p>
+            <strong>Gender:</strong
+            >{{ user.gender == true ? "Male" : "Female" }}
+          </p>
           <p><strong>Date of Birth:</strong> {{ user.dateOfBirth }}</p>
         </div>
 
@@ -55,12 +72,110 @@
           </p>
         </div>
 
+        <!-- Change Password -->
         <div
           class="change-password"
           *ngIf="selectedFeature === 'Change Password'"
         >
-          <p>Change password form...</p>
+          <form
+            [formGroup]="changePasswordForm"
+            (ngSubmit)="onSubmitChangePwd()"
+          >
+            <div class="form-row">
+              <label for="currentPassword">Current Password:</label>
+              <input
+                id="currentPassword"
+                type="password"
+                formControlName="currentPassword"
+                required
+                (blur)="onCheckCurrentPassword()"
+              />
+              <span
+                *ngIf="checkPasswordMessage"
+                [ngClass]="{
+                  error: !isPasswordValid,
+                  success: isPasswordValid
+                }"
+                class="input-message"
+              >
+                {{ checkPasswordMessage }}
+              </span>
+            </div>
+
+            <div class="form-row">
+              <label for="newPassword">New Password:</label>
+              <input
+                id="newPassword"
+                type="password"
+                formControlName="newPassword"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <label for="confirmPassword">Confirm New Password:</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                formControlName="confirmPassword"
+                required
+              />
+            </div>
+
+            <!-- Hiển thị lỗi custom validator -->
+            <div
+              *ngIf="
+                changePasswordForm.hasError('passwordMismatch') &&
+                changePasswordForm.get('confirmPassword')?.touched
+              "
+              class="error"
+            >
+              *Confirmation password does not match!
+            </div>
+            <div
+              *ngIf="
+                changePasswordForm.get('newPassword')?.touched &&
+                changePasswordForm.get('newPassword')?.invalid
+              "
+              class="error"
+            >
+              <span
+                *ngIf="
+                  changePasswordForm.get('newPassword')?.hasError('required')
+                "
+              >
+                *Please enter new password!
+              </span>
+              <span
+                *ngIf="
+                  changePasswordForm.get('newPassword')?.hasError('pattern')
+                "
+              >
+                *Must be at least 6 characters and contain lowercase, uppercase,
+                numbers, special!
+              </span>
+            </div>
+            <div
+              *ngIf="
+                changePasswordForm.hasError('duplicatePassword') &&
+                changePasswordForm.get('newPassword')?.touched
+              "
+              class="error"
+            >
+              *New password cannot be the same as current password!
+            </div>
+            <div *ngIf="message" class="message">
+              {{ message }}
+            </div>
+            <button
+              type="submit"
+              [disabled]="changePasswordForm.invalid || !isPasswordValid"
+            >
+              Change Password
+            </button>
+          </form>
         </div>
+        <!--  -->
       </div>
     </div>
   </div>

@@ -52,6 +52,7 @@ namespace HealthCareAPI.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    Gender = table.Column<bool>(type: "bit", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -154,6 +155,31 @@ namespace HealthCareAPI.Migrations
                     table.PrimaryKey("PK_Menstrual_cycle", x => x.CycleID);
                     table.ForeignKey(
                         name: "FK_Menstrual_cycle_Users_AccountID",
+                        column: x => x.AccountID,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    QuestionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.QuestionID);
+                    table.ForeignKey(
+                        name: "FK_Questions_Users_AccountID",
                         column: x => x.AccountID,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -303,6 +329,11 @@ namespace HealthCareAPI.Migrations
                 column: "AccountID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Questions_AccountID",
+                table: "Questions",
+                column: "AccountID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
                 table: "RoleClaims",
                 column: "RoleId");
@@ -363,6 +394,9 @@ namespace HealthCareAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Menstrual_cycle");
+
+            migrationBuilder.DropTable(
+                name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
