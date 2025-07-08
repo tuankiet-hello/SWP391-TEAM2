@@ -53,8 +53,8 @@ namespace HealthCareAPI.Controller
                     subject = "Your Inquiry Has Been Anserwered - Gender Health Care";
                     emailBody = $@"
                         <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-                            <h2 style='text-align:center;margin-bottom:24px;'>Thanks for reaching out to <b>Gender Health Care</b></h2>
                             <p>Dear <b>{fullName}</b>,</p>
+                            <p>Thanks for reaching out to <b>Gender Health Care</b></p>
                             <p>We're pleased to inform you that your inquiry has been reviewed and answer.</p>
                             <p>Below are the details of your question:</p>
                             <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
@@ -78,8 +78,8 @@ namespace HealthCareAPI.Controller
                     subject = "Your Inquiry Has Been Cancelled - Gender Health Care";
                     emailBody = $@"
                         <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-                            <h2 style='text-align:center;margin-bottom:24px;'>Thanks for reaching out to <b>Gender Health Care</b></h2>
                             <p>Dear <b>{fullName}</b>,</p>
+                            <p>Thanks for reaching out to <b>Gender Health Care</b></p>
                             <p>We regret to inform you that your request has been reviewed and cannot be fulfilled at this time.</p>
                             <p>Below are the details of your question:</p>
                             <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>

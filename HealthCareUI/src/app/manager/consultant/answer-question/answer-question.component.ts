@@ -41,6 +41,12 @@ export class AnswerQuestionComponent {
   handleSave(form: NgForm): void {
     if (!this.editedQuestion) return;
 
+    // Nếu không có thay đổi, show message và return
+    if (!this.isDataChanged()) {
+      this.message.info('No changes detected!');
+      return;
+    }
+
     // Nếu status khác 0 (tức là không phải Submitted) → phải nhập answer
     if (this.editedQuestion.status !== 0 && (!this.editedQuestion.answer || this.editedQuestion.answer.trim() === '')) {
       this.message.error('Please enter an answer before submitting.');
@@ -54,5 +60,13 @@ export class AnswerQuestionComponent {
 
   handleClose() {
     this.close.emit();
+  }
+
+  isDataChanged(): boolean {
+    if (!this.question || !this.editedQuestion) return false;
+    return (
+      this.question.status !== this.editedQuestion.status ||
+      (this.question.answer || '') !== (this.editedQuestion.answer || '')
+    );
   }
 }

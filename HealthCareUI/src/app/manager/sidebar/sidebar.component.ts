@@ -21,8 +21,8 @@ import { CreateBookingComponent } from '../staff/create-booking/create-booking.c
   standalone: true,
   imports: [
     CommonModule,
-    CreateUserComponent,
-    CreateCustomerComponent,
+    // CreateUserComponent,
+    // CreateCustomerComponent,
     // CreateBookingComponent,
     NzIconModule,
     RouterModule,

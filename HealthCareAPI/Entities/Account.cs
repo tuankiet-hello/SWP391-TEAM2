@@ -12,5 +12,6 @@ namespace HealthCareAPI.Entities
         public string? LastName { get; set; }
         public DateOnly DateOfBirth { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool? Gender { get; set; } // 0 female, 1 male
     }
 }

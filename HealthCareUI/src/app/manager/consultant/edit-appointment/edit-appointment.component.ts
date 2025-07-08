@@ -54,12 +54,20 @@ export class EditAppointmentComponent implements OnInit {
   // }
 
   onSave() {
+    // Kiểm tra nếu không có thay đổi thì báo và không emit
+    if (!this.isDataChanged()) {
+      this.message.info('No changes detected!');
+      return;
+    }
+
     // Ghép ngày và giờ thành đối tượng Date
     const selectedDateStr = this.editData.appointmentDate;
     const hour = this.editData.hour || '00';
     const minute = this.editData.minute || '00';
     const selectedDateTime = new Date(`${selectedDateStr}T${hour}:${minute}:00`);
     const now = new Date();
+
+
 
     if (selectedDateTime <= now) {
       this.message.error('The appointment must be in the future.!');
@@ -78,4 +86,36 @@ export class EditAppointmentComponent implements OnInit {
   onCancel() {
     this.cancel.emit(); // Báo cho cha biết đã hủy
   }
+
+  isDataChanged(): boolean {
+    // Chuẩn hóa ngày về yyyy-MM-dd
+    const normalizeDate = (date: any) => {
+      if (!date) return '';
+      if (typeof date === 'string') return date.slice(0, 10);
+      // Nếu là Date object
+      return date.toISOString().slice(0, 10);
+    };
+
+    // Chuẩn hóa giờ phút về HH:mm
+    const normalizeTime = (time: any) => {
+      if (!time) return '00:00';
+      // Nếu có dạng HH:mm:ss thì lấy HH:mm
+      return time.length > 5 ? time.slice(0, 5) : time;
+    };
+
+    const oldDate = normalizeDate(this.data.appointmentDate);
+    const oldTime = normalizeTime(this.data.appointmentTime);
+    const oldStatus = +this.data.status;
+
+    const newDate = normalizeDate(this.editData.appointmentDate);
+    const newTime = `${this.editData.hour}:${this.editData.minute}`;
+    const newStatus = +this.editData.status;
+
+    return (
+      oldDate !== newDate ||
+      oldTime !== newTime ||
+      oldStatus !== newStatus
+    );
+  }
+
 }
