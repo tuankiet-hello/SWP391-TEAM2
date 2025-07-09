@@ -1,0 +1,39 @@
+<p>created-menstrual-cycle works!</p>
+<form (ngSubmit)="onSubmit()" #cycleForm="ngForm" class="cycle-form">
+  <div>
+    <label for="start_date">Ngày bắt đầu:</label>
+    <input
+      type="date"
+      id="start_date"
+      name="start_date"
+      [(ngModel)]="cycle.start_date"
+      required
+    />
+  </div>
+
+  <div>
+    <label for="end_date">Ngày kết thúc:</label>
+    <input
+      type="date"
+      id="end_date"
+      name="end_date"
+      [(ngModel)]="cycle.end_date"
+      required
+    />
+  </div>
+
+  <div>
+    <label for="note">Ghi chú:</label>
+    <input
+      type="text"
+      id="note"
+      name="note"
+      [(ngModel)]="cycle.note"
+    />
+  </div>
+
+  <div class="buttons">
+    <button type="submit" [disabled]="!cycleForm.form.valid">Lưu</button>
+    <button type="button" (click)="onCancel()">Hủy</button>
+  </div>
+</form>

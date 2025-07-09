@@ -28,6 +28,7 @@ import {
 import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view-test-booking.component';
 import { EditProfileComponent } from './feature/client/edit-profile/edit-profile.component';
 import { ConfirmChangeEmailComponent } from './feature/client/confirm-change-email/confirm-change-email.component';
+import { MenstrualCycleComponent } from './feature/client/menstrual-cycle/menstrual-cycle.component';
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -57,6 +58,7 @@ export const routes: Routes = [
     path: 'blog/sexually-transmitted-infections-stis',
     component: Blog5Component,
   },
+  {path:"menstrual-cycle",component:MenstrualCycleComponent},
 
   //Authentication routes
   { path: 'login', component: LoginComponent },

@@ -69,7 +69,6 @@ export class ViewTestBookingComponent implements OnInit {
     4: '#7b1fa2',
   };
 
-  // Biến quản lý filter
   filterVisible = {
     status: false,
     date: false,
@@ -80,7 +79,6 @@ export class ViewTestBookingComponent implements OnInit {
     date: null as Date | null,
   };
 
-  // Phân trang
   currentPage = 1;
   pageSize = 5;
   totalPages = 0;
@@ -99,14 +97,13 @@ export class ViewTestBookingComponent implements OnInit {
   loadTestBooking(): void {
     this.bookingService.getAllBookings().subscribe((data) => {
       this.testBooking = data;
-      this.applyFilters();
+      this.applyFilters(); // không preserve
     });
   }
 
-  applyFilters() {
+  applyFilters(preservePage: boolean = false) {
     let filtered = [...this.testBooking];
 
-    // Tìm kiếm theo tên
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
       filtered = filtered.filter((booking) =>
@@ -116,7 +113,6 @@ export class ViewTestBookingComponent implements OnInit {
       );
     }
 
-    // Lọc theo trạng thái
     if (this.filter.status) {
       const statusValue = this.getStatusValue(this.filter.status);
       if (statusValue !== null) {
@@ -124,7 +120,6 @@ export class ViewTestBookingComponent implements OnInit {
       }
     }
 
-    // Lọc theo ngày cụ thể
     if (this.filter.date) {
       const selectedDate = new Date(this.filter.date);
       filtered = filtered.filter((booking) => {
@@ -138,17 +133,23 @@ export class ViewTestBookingComponent implements OnInit {
     }
 
     this.totalPages = Math.ceil(filtered.length / this.pageSize);
-    this.currentPage = 1;
+
+    if (!preservePage) {
+      this.currentPage = 1;
+    } else {
+      if (this.currentPage > this.totalPages) {
+        this.currentPage = this.totalPages || 1;
+      }
+    }
+
     this.updateDisplayedTestBooking(filtered);
   }
 
-  // Cập nhật ngày lọc
   setDate(date: Date | null) {
     this.filter.date = date;
     this.applyFilters();
   }
 
-  // Chuyển đổi tên status thành giá trị số
   private getStatusValue(statusString: string): number | null {
     const statusMap: { [key: string]: number } = {
       submitted: 0,
@@ -160,20 +161,17 @@ export class ViewTestBookingComponent implements OnInit {
     return statusMap[statusString.toLowerCase()] ?? null;
   }
 
-  // Cập nhật bộ lọc trạng thái
   setStatus(status: string) {
     this.filter.status = status;
     this.applyFilters();
   }
 
-  // Cập nhật danh sách hiển thị
   updateDisplayedTestBooking(filtered: TestBookingDTO[] = this.testBooking) {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.displayedTestBooking = filtered.slice(startIndex, endIndex);
   }
 
-  // Xem chi tiết booking
   viewBookingDetail(id: number): void {
     this.bookingService.getBookingById(id).subscribe((booking) => {
       this.selectedBooking = booking;
@@ -181,13 +179,11 @@ export class ViewTestBookingComponent implements OnInit {
     });
   }
 
-  // Đóng modal chi tiết
   handleModalCancel(): void {
     this.isModalVisible = false;
     this.selectedBooking = undefined;
   }
 
-  // Điều hướng trang
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
@@ -208,16 +204,13 @@ export class ViewTestBookingComponent implements OnInit {
     }
   }
 
-  // Xử lý thay đổi tìm kiếm
   onSearchChange() {
     this.applyFilters();
   }
 
-  // Lấy dữ liệu đã lọc
   getFilteredBookings(): TestBookingDTO[] {
     let filtered = [...this.testBooking];
 
-    // Lọc theo tên
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const search = this.searchTerm.trim().toLowerCase();
       filtered = filtered.filter((booking) =>
@@ -227,7 +220,6 @@ export class ViewTestBookingComponent implements OnInit {
       );
     }
 
-    // Lọc theo trạng thái
     if (this.filter.status) {
       const statusValue = this.getStatusValue(this.filter.status);
       if (statusValue !== null) {
@@ -235,7 +227,6 @@ export class ViewTestBookingComponent implements OnInit {
       }
     }
 
-    // Lọc theo ngày
     if (this.filter.date) {
       const selectedDate = new Date(this.filter.date);
       filtered = filtered.filter((booking) => {
@@ -251,7 +242,6 @@ export class ViewTestBookingComponent implements OnInit {
     return filtered;
   }
 
-  // Chức năng chỉnh sửa booking
   isEditModalVisible = false;
   selectedEditBooking?: TestBookingDTO;
   idChoose?: number;
@@ -275,19 +265,23 @@ export class ViewTestBookingComponent implements OnInit {
     const bookingId = this.idChoose;
 
     // Tìm và cập nhật booking trong testBooking
-    const idx = this.testBooking.findIndex(b => b.bookingID === this.idChoose);
+    const idx = this.testBooking.findIndex(
+      (b) => b.bookingID === this.idChoose
+    );
     if (idx !== -1) {
       this.testBooking[idx] = {
         ...this.testBooking[idx],
-        ...updated
+        ...updated,
       };
     }
 
-    const idxDisplayed = this.displayedTestBooking.findIndex(b => b.bookingID === bookingId);
+    const idxDisplayed = this.displayedTestBooking.findIndex(
+      (b) => b.bookingID === bookingId
+    );
     if (idxDisplayed !== -1) {
       this.displayedTestBooking[idxDisplayed] = {
         ...this.displayedTestBooking[idxDisplayed],
-        ...updated
+        ...updated,
       };
     }
 

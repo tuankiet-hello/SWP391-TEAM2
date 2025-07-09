@@ -365,3 +365,22 @@ nz-filter-trigger[nzactive="true"] .anticon {
   scrollbar-width: thin;
   scrollbar-color: #e0e0e0 #fff;
 } */
+.new-btn {
+  background-color: #1866ba;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 35%;
+  /* margin-bottom: 20px; */
+  margin-left: 20px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+.searchAdd {
+  display: flex;
+  width: 100%;
+  margin-bottom: 20px;
+}

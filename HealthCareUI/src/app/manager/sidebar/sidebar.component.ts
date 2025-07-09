@@ -63,11 +63,10 @@ export class SidebarComponent {
   openCustomerModal() {
     this.modalType = 'customer';
   }
-    openBookingModal() {
+  openBookingModal() {
     this.modalType = 'booking';
   }
   closeModal() {
     this.modalType = null;
   }
-
 }

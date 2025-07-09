@@ -1,0 +1,42 @@
+  <h2>Quản lý chu kỳ kinh nguyệt</h2>
+
+<div class="main-layout">
+    
+  <!-- Sidebar với các nút chức năng -->
+  <div class="sidebar">
+    <button (click)="openAddForm()">Thêm chu kỳ mới</button>
+    <button (click)="predictCycle()">Dự đoán chu kỳ kinh nguyệt</button>
+  </div>
+
+  <!-- Content: Bảng danh sách chu kỳ -->
+  <div class="content">
+    <table>
+      <thead>
+        <tr>
+          <th>Ngày bắt đầu</th>
+          <th>Ngày kết thúc</th>
+          <th>Ghi chú</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cycle of cycles">
+          <td>{{ cycle.start_date }}</td>
+          <td>{{ cycle.end_date }}</td>
+          <td>{{ cycle.note }}</td>
+          <td>
+            <button (click)="openEditForm(cycle)">Sửa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- Popup form tạo/sửa chu kỳ -->
+<div class="popup" *ngIf="showForm">
+  <app-created-menstrual-cycle
+  (save)="handleSaveCycle($event)"
+   (cancel)="handleCancelForm()"
+></app-created-menstrual-cycle>
+
+</div>

@@ -92,13 +92,14 @@ namespace HealthCareAPI
             builder.Services.AddScoped<ITestBookingRepository,TestBookingRepository>();
             builder.Services.AddScoped<IAppoinmentRepository, AppoinmentRepository>();
             builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
-
+            builder.Services.AddScoped<IMenstrualCycleRepository, MenstrualCycleRepository>();
             // Đăng ký các Service
             builder.Services.AddScoped<TestService>();
             builder.Services.AddScoped<TestBookingService>();
             builder.Services.AddScoped<AppoinmentService>();
             builder.Services.AddScoped<QuestionService>();
-            
+            builder.Services.AddScoped<MenstrualCycleService>();
+
             builder.Services.AddScoped<HealthCareAPI.Services.EmailService>();
 
             builder.Services.Configure<Microsoft.AspNetCore.Identity.DataProtectionTokenProviderOptions>(opt =>

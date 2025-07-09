@@ -22,17 +22,14 @@ export class AuthService {
       params: payload,
     });
   }
-confirmChangeEmail(userId: string, email: string, token: string) {
-  const params = new HttpParams()
-    .set('userId', userId)
-    .set('email', email)
-    .set('token', token);
+  confirmChangeEmail(userId: string, email: string, token: string) {
+    const params = new HttpParams()
+      .set('userId', userId)
+      .set('email', email)
+      .set('token', token);
 
-  return this.http.get(`${this.apiUrl}/confirm-change-email`, { params });
-}
-
-
-
+    return this.http.get(`${this.apiUrl}/confirm-change-email`, { params });
+  }
 
   resendConfirmationEmail(email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/resend-confirm-email`, { email });
@@ -113,6 +110,7 @@ confirmChangeEmail(userId: string, email: string, token: string) {
     email: string;
     firstName: string;
     lastName: string;
+    gender: boolean;
     dateOfBirth: string;
   }> {
     const token = localStorage.getItem('accessToken') || '';
@@ -122,6 +120,7 @@ confirmChangeEmail(userId: string, email: string, token: string) {
       email: string;
       firstName: string;
       lastName: string;
+      gender: boolean;
       dateOfBirth: string;
     }>(`${this.apiUrl}/user-profile`, { headers });
   }
@@ -144,6 +143,7 @@ confirmChangeEmail(userId: string, email: string, token: string) {
     firstName: string;
     lastName: string;
     dateOfBirth: string;
+    gender: boolean;
   }): Observable<any> {
     const token = localStorage.getItem('accessToken') || '';
     const headers = { Authorization: `Bearer ${token}` };
@@ -151,35 +151,32 @@ confirmChangeEmail(userId: string, email: string, token: string) {
   }
   checkUserNameAvailable(userName: string): Observable<{ exists: boolean }> {
     return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-username`, {
-      params: { username: userName }
+      params: { username: userName },
     });
   }
   checkEmailAvailable(email: string): Observable<{ exists: boolean }> {
     return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-email`, {
-      params: { email }
+      params: { email },
     });
   }
   checkCurrentPassword(currentPassword: string): Observable<any> {
-  const token = localStorage.getItem('accessToken') || '';
-  const headers = { Authorization: `Bearer ${token}` };
-  return this.http.post(
-    `${this.apiUrl}/check-password`,
-    { currentPassword },
-    { headers }
-  );
-}
-changePassword(payload: { 
-  CurrentPassword: string, 
-  NewPassword: string, 
-  ConfirmNewPassword: string 
-}): Observable<any> {
-  const token = localStorage.getItem('accessToken') || '';
-  const headers = { Authorization: `Bearer ${token}` };
-  return this.http.post(
-    `${this.apiUrl}/change-password`,
-    payload,
-    { headers }
-  );
-}
-
+    const token = localStorage.getItem('accessToken') || '';
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.post(
+      `${this.apiUrl}/check-password`,
+      { currentPassword },
+      { headers }
+    );
+  }
+  changePassword(payload: {
+    CurrentPassword: string;
+    NewPassword: string;
+    ConfirmNewPassword: string;
+  }): Observable<any> {
+    const token = localStorage.getItem('accessToken') || '';
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.post(`${this.apiUrl}/change-password`, payload, {
+      headers,
+    });
+  }
 }

@@ -4,10 +4,20 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
 import {
+  BookingService,
+  TestBookingDTO,
+} from '../../../../services/test-booking.service';
+import {
   UserService,
   AccountDetailDTO,
 } from '../../../../services/manager-user.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 interface Booking {
   id: string;
@@ -25,7 +35,13 @@ interface Question {
 @Component({
   selector: 'app-sidebar-profile',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    HeaderComponent,
+    FooterComponent,
+    EditProfileComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './manage-profile.component.html',
   styleUrls: ['./manage-profile.component.css'],
 })
@@ -36,17 +52,19 @@ export class ManageProfileComponent implements OnInit {
   user!: AccountDetailDTO;
   changePasswordForm: FormGroup;
   message: string = '';
-  regexpassword = '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
+  regexpassword =
+    '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
+
+  showEditProfile = false;
 
   features = [
     'Your Profile',
-    'Edit Profile',
     'Change Password',
     'Booking History',
     'Question History',
   ];
 
-  bookings: Booking[] = [];
+  bookings: TestBookingDTO[] = [];
   questions: Question[] = [];
   isPasswordValid: boolean | undefined;
   checkPasswordMessage: string | undefined;
@@ -54,44 +72,53 @@ export class ManageProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private bookingService: BookingService
   ) {
-    this.changePasswordForm = this.fb.group({
-       currentPassword: ['', Validators.required],
-      newPassword: ['', [
-    Validators.required,
-    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/
-)
-  ]],
-      confirmPassword: ['', Validators.required]
-}, { validators: [this.passwordsValidator] });
+    this.changePasswordForm = this.fb.group(
+      {
+        currentPassword: ['', Validators.required],
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/
+            ),
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: [this.passwordsValidator] }
+    );
   }
   passwordMatchValidator(form: FormGroup) {
     return form.get('newPassword')!.value === form.get('confirmPassword')!.value
-      ? null : { 'mismatch': true };
+      ? null
+      : { mismatch: true };
   }
-passwordsValidator(form: FormGroup) {
-  const current = form.get('currentPassword')?.value;
-  const newPwd = form.get('newPassword')?.value;
-  const confirm = form.get('confirmPassword')?.value;
+  passwordsValidator(form: FormGroup) {
+    const current = form.get('currentPassword')?.value;
+    const newPwd = form.get('newPassword')?.value;
+    const confirm = form.get('confirmPassword')?.value;
 
-  const errors: any = {};
+    const errors: any = {};
 
-  // Mật khẩu mới phải ít nhất 6 ký tự (có thể bỏ nếu đã dùng Validators.minLength)
-  if (newPwd && newPwd.length < 6) {
-    errors.newPasswordLength = true;
-  }
-  // Mật khẩu mới không được trùng mật khẩu cũ
-  if (current && newPwd && current === newPwd) {
-    errors.duplicatePassword = true;
-  }
-  // Mật khẩu xác nhận phải khớp
-  if (newPwd && confirm && newPwd !== confirm) {
-    errors.passwordMismatch = true;
-  }
+    // Mật khẩu mới phải ít nhất 6 ký tự (có thể bỏ nếu đã dùng Validators.minLength)
+    if (newPwd && newPwd.length < 6) {
+      errors.newPasswordLength = true;
+    }
+    // Mật khẩu mới không được trùng mật khẩu cũ
+    if (current && newPwd && current === newPwd) {
+      errors.duplicatePassword = true;
+    }
+    // Mật khẩu xác nhận phải khớp
+    if (newPwd && confirm && newPwd !== confirm) {
+      errors.passwordMismatch = true;
+    }
 
-  return Object.keys(errors).length ? errors : null;
-}
+    return Object.keys(errors).length ? errors : null;
+  }
 
   // Hàm kiểm tra mật khẩu hiện tại
   onCheckCurrentPassword() {
@@ -101,34 +128,33 @@ passwordsValidator(form: FormGroup) {
       this.checkPasswordMessage = '';
       return;
     }
-    this.authService.checkCurrentPassword(currentPassword)
-      .subscribe({
-        next: (res) => {
-          if (res.valid) {
-            this.isPasswordValid = true;
-            this.checkPasswordMessage = '✔️';
-          } else {
-            this.isPasswordValid = false;
-            this.checkPasswordMessage = '❌';
-          }
-        },
-        error: () => {
+    this.authService.checkCurrentPassword(currentPassword).subscribe({
+      next: (res) => {
+        if (res.valid) {
+          this.isPasswordValid = true;
+          this.checkPasswordMessage = '✔️';
+        } else {
           this.isPasswordValid = false;
-          this.checkPasswordMessage = 'Có lỗi xảy ra khi kiểm tra mật khẩu!';
+          this.checkPasswordMessage = '❌';
         }
-      });
+      },
+      error: () => {
+        this.isPasswordValid = false;
+        this.checkPasswordMessage = 'Có lỗi xảy ra khi kiểm tra mật khẩu!';
+      },
+    });
   }
 
-onSubmitChangePwd() {
-  if (this.changePasswordForm.valid && this.isPasswordValid) {
-    const { currentPassword, newPassword, confirmPassword } = this.changePasswordForm.value;
-    const payload = {
-      CurrentPassword: currentPassword,
-      NewPassword: newPassword,
-      ConfirmNewPassword: confirmPassword
-    };
-    this.authService.changePassword(payload)
-      .subscribe({
+  onSubmitChangePwd() {
+    if (this.changePasswordForm.valid && this.isPasswordValid) {
+      const { currentPassword, newPassword, confirmPassword } =
+        this.changePasswordForm.value;
+      const payload = {
+        CurrentPassword: currentPassword,
+        NewPassword: newPassword,
+        ConfirmNewPassword: confirmPassword,
+      };
+      this.authService.changePassword(payload).subscribe({
         next: (res) => {
           this.message = res.message || 'Password changed successfully!';
           this.isPasswordValid = false;
@@ -138,15 +164,12 @@ onSubmitChangePwd() {
         },
         error: (err) => {
           this.message = err.error?.message || 'Failed to change password!';
-        }
+        },
       });
-  } else {
-    this.message = 'Please check your input!';
+    } else {
+      this.message = 'Please check your input!';
+    }
   }
-}
-
-
-
 
   ngOnInit(): void {
     console.log('✅ Manage Profile ngOnInit called');
@@ -166,52 +189,22 @@ onSubmitChangePwd() {
     this.selectedFeature = feature;
   }
 
+  toggleEditProfile() {
+    this.showEditProfile = !this.showEditProfile;
+  }
+  update() {
+    this.showEditProfile = !this.showEditProfile;
+    this.userService.getUserById(this.userid).subscribe((user) => {
+      this.user = user;
+      console.log('đã nạp data user sau update', this.user);
+    });
+  }
+
   loadFakeBookings() {
-    this.bookings = [
-      { id: 'BK001', date: '2025-07-01', service: 'Spa', status: 'Confirmed' },
-      {
-        id: 'BK002',
-        date: '2025-07-02',
-        service: 'Massage',
-        status: 'Pending',
-      },
-      {
-        id: 'BK003',
-        date: '2025-07-03',
-        service: 'Yoga Class',
-        status: 'Cancelled',
-      },
-      {
-        id: 'BK004',
-        date: '2025-07-04',
-        service: 'Fitness',
-        status: 'Confirmed',
-      },
-      {
-        id: 'BK005',
-        date: '2025-07-05',
-        service: 'Nutrition',
-        status: 'Pending',
-      },
-      {
-        id: 'BK006',
-        date: '2025-07-06',
-        service: 'Swimming',
-        status: 'Confirmed',
-      },
-      {
-        id: 'BK007',
-        date: '2025-07-07',
-        service: 'Haircut',
-        status: 'Cancelled',
-      },
-      {
-        id: 'BK008',
-        date: '2025-07-08',
-        service: 'Facial',
-        status: 'Confirmed',
-      },
-    ];
+    this.bookingService.getBookingHisById(this.userid).subscribe((booking) => {
+      this.bookings = booking;
+      console.log('Nạp  booking ok', this.bookings);
+    });
   }
 
   loadFakeQuestions(): void {

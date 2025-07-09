@@ -63,13 +63,13 @@ export class LoginComponent {
 
           switch (role?.toLowerCase()) {
             case 'admin':
-              this.router.navigate(['/manager-users']);
+              this.router.navigate(['/home']);
               break;
             case 'manager':
-              this.router.navigate(['/manager-users']);
+              this.router.navigate(['/home']);
               break;
             case 'staff':
-              this.router.navigate(['/manager-users']);
+              this.router.navigate(['/home']);
               break;
             case 'customer':
               this.router.navigate(['/home']);

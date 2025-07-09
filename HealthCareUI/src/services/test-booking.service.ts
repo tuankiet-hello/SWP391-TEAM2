@@ -1,8 +1,8 @@
-
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../app/app.config';
+import { HttpParams } from '@angular/common/http';
 // export interface  TestBookingDTO {
 //     AccountID: string;
 //     TestID : number;
@@ -37,7 +37,7 @@ export interface TestBookingDTO {
   bookingTime: string;
   status: number;
   account: Account; // Thêm dòng này
-  test: Test;       // Thêm dòng này
+  test: Test; // Thêm dòng này
   // ... các trường khác nếu có
 }
 export interface EditTestBookingDTO {
@@ -60,33 +60,25 @@ export interface CreateTestBookingDTO {
   // ... các trường khác nếu có
 }
 
-
 @Injectable({ providedIn: 'root' })
-export class BookingService{
-    private apiUrl = environment.apiUrl + '/api/booking';
-      constructor(private http: HttpClient) {}
-      getAllBookings(): Observable<TestBookingDTO[]> {
-        return this.http.get<TestBookingDTO[]>(this.apiUrl + '/list-booking');
-      }
-      getBookingById(id: number): Observable<TestBookingDTO> {
-         return this.http.get<TestBookingDTO>(`${this.apiUrl}/${id}`);
-       }
-       
+export class BookingService {
+  private apiUrl = environment.apiUrl + '/api/booking';
+  constructor(private http: HttpClient) {}
+  getAllBookings(): Observable<TestBookingDTO[]> {
+    return this.http.get<TestBookingDTO[]>(this.apiUrl + '/list-booking');
+  }
+  getBookingById(id: number): Observable<TestBookingDTO> {
+    return this.http.get<TestBookingDTO>(`${this.apiUrl}/${id}`);
+  }
+  getBookingHisById(id: string): Observable<TestBookingDTO[]> {
+    const params = new HttpParams().set('accountId', id);
+    return this.http.get<TestBookingDTO[]>(`${this.apiUrl}/history`, {
+      params,
+    });
+  }
   editBooking(
     id: number,
     payload: {
-       testID: number;
-        result: string;
-        bookingDate: string;
-        bookingTime: string;
-        status: number;
-    }
-  ): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, payload);
-  }
-  addBooking(
-    payload:{
-      accountID: string;
       testID: number;
       result: string;
       bookingDate: string;
@@ -94,5 +86,16 @@ export class BookingService{
       status: number;
     }
   ): Observable<any> {
-    return this.http.post(this.apiUrl + '/add-booking', payload);}
+    return this.http.put(`${this.apiUrl}/${id}`, payload);
+  }
+  addBooking(payload: {
+    accountID: string;
+    testID: number;
+    result: string;
+    bookingDate: string;
+    bookingTime: string;
+    status: number;
+  }): Observable<any> {
+    return this.http.post(this.apiUrl + '/add-booking', payload);
+  }
 }

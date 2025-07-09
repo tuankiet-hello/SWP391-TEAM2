@@ -1,197 +1,107 @@
 .profile-edit-container {
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 60vh;
-  padding: 40px 0;
-  /* background: #f3f5fa; */
-  margin-top: 10vh;
+  background: transparent;
+  padding: 0;
+  margin: 0;
 }
 
 .profile-edit-form {
-  background: #fff;
+  width: 300px;
+  padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 32px 28px 24px 28px;
-  width: 100%;
-  max-width: 400px;
+  background-color: white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
 }
 
-.profile-form-group {
-  margin-bottom: 20px;
-}
-
-.profile-label {
-  display: block;
+.profile-edit-form label {
+  /* margin-top: 0.75rem; */
   font-weight: 600;
-  margin-bottom: 8px;
+  font-size: 0.9rem;
   color: #2d3a4a;
-  font-size: 1rem;
 }
 
-.profile-input {
-  width: 100%;
-  padding: 10px 14px;
-  font-size: 1rem;
-  border: 1.5px solid #dbe1ea;
-  border-radius: 7px;
-  box-sizing: border-box;
-  background: #fff;
-  transition: border-color 0.2s;
-}
-
-.profile-input:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-.profile-input--readonly {
-  background: #f2f3f7;
-  color: #888;
-  cursor: not-allowed;
-}
-
-.profile-error {
-  color: #e74c3c;
-  font-size: 0.92rem;
-  margin-top: 4px;
-  font-weight: 500;
-}
-
-.profile-save-btn {
-  width: 100%;
-  padding: 12px 0;
-  background: #007bff;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,123,255,0.08);
-  transition: background 0.2s;
-  margin-top: 10px;
-}
-
-.profile-save-btn:hover {
-  background: #0056b3;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .profile-edit-form {
-    padding: 18px 8px;
-    max-width: 98vw;
-  }
-}
-.profile-input {
-  width: 100%;
-  padding: 10px 14px;
-  font-size: 1rem;
-  border: 1.5px solid #dbe1ea;
-  border-radius: 7px;
-  box-sizing: border-box;
-  
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.profile-save-btn {
-  background-color: #007bff;       /* Màu xanh nổi bật */
-  color: white;                    /* Chữ màu trắng */
-  border: none;
+.profile-edit-form input {
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;                    /* Nút rộng full form */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-}
-
-.profile-save-btn:hover {
-  background-color: #0056b3;      /* Màu xanh đậm khi hover */
-  box-shadow: 0 6px 14px rgba(0, 86, 179, 0.4);
-}
-
-.profile-save-btn:active {
-  background-color: #004080;      /* Màu xanh đậm hơn khi nhấn */
-  box-shadow: 0 2px 6px rgba(0, 64, 128, 0.5);
-}
-
-.profile-save-btn:disabled {
-  background-color: #a0c4ff;      /* Màu nhạt khi disabled */
-  cursor: not-allowed;
-  box-shadow: none;
-  color: #e0e0e0;
-}
-.profile-edit-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 60vh;
-  padding: 40px 0;
-  margin-top: 10vh;
-  /* Thu nhỏ chiều rộng tối đa của container */
-  max-width: 360px;  /* giảm từ 400px xuống 360px */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.profile-edit-form {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 24px 20px 20px 20px; /* giảm padding để nhỏ gọn hơn */
   width: 100%;
-  max-width: 360px; /* giảm từ 400px xuống 360px */
   box-sizing: border-box;
+  font-size: 0.9rem;
 }
 
-.profile-form-group {
-  margin-bottom: 16px; /* giảm khoảng cách giữa các nhóm input */
-}
-
-.profile-label {
-  font-size: 0.9rem; /* giảm font chữ label */
-  margin-bottom: 6px;
-}
-
-.profile-input {
-  font-size: 0.9rem; /* giảm font chữ input */
-  padding: 8px 12px; /* giảm padding input */
-  border-radius: 6px; /* bo tròn nhỏ hơn */
-}
-
-.profile-save-btn {
-  padding: 10px 0;
-  font-size: 1rem;
-  border-radius: 6px;
-  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.25);
-}
-.profile-edit-form h2 {
+.profile-success {
   text-align: center;
-  margin-bottom: 24px; /* tạo khoảng cách dưới */
-  font-weight: 700;
-  color: #101d77;
+  margin-bottom: 1rem;
+  color: #2e7d32;
+  font-weight: 600;
 }
 
-
-/* Responsive */
-@media (max-width: 600px) {
-  .profile-edit-container {
-    max-width: 95vw; /* tự động co nhỏ trên mobile */
-    margin-top: 5vh;
-    padding: 20px 10px;
-  }
-  .profile-edit-form {
-    max-width: 100%;
-    padding: 16px 12px;
-  }
-  .profile-label, .profile-input {
-    font-size: 0.9rem;
-  }
-  
+.error {
+  color: #dc3545;
+  font-size: 10px;
+  min-height: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left: 4px;
+  line-height: 16px;
 }
 
+.error span {
+  visibility: hidden;
+  height: 16px;
+}
+
+.error span.visible {
+  visibility: visible;
+}
+
+.btn {
+  margin-top: 1rem;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-submit:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+.gender-radio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.gender-radio-group label {
+  display: flex;
+  margin-bottom: 0;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.gender-radio-group input {
+  margin-right: 5px;
+}
+
+.gender {
+  display: flex;
+  /* margin-top: 14px; */
+}
+
+.gender label {
+  margin-right: 30px;
+}
