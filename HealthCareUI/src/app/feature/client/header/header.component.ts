@@ -52,6 +52,7 @@ export class HeaderComponent {
     console.log('✅ Header-Manager ngOnInit called');
     this.isLoggedIn = this.authService.isLoggedIn();
     this.userName = this.authService.getUserNameToken();
+    this.role = this.authService.getRoleFromToken();
     console.log('🔐 isLoggedIn:', this.isLoggedIn);
     console.log('🧑‍💼 role:', this.role);
   }

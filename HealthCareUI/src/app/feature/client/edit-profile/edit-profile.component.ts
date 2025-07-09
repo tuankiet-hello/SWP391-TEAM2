@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,6 +6,7 @@ import {
   AbstractControl,
   AsyncValidatorFn,
   ReactiveFormsModule,
+  ValidatorFn,
 } from '@angular/forms';
 import { AuthService } from './../../../../services/auth.service';
 import {
@@ -31,6 +32,7 @@ export class EditProfileComponent implements OnInit {
   originalUserName: string = '';
   successMessage: string = '';
   isFormDisabled: boolean = false;
+  @Output() close = new EventEmitter<void>();
   @Input() user!: AccountDetailDTO;
   constructor(
     private fb: FormBuilder,
@@ -48,6 +50,7 @@ export class EditProfileComponent implements OnInit {
       ],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      gender: [null, [cannotClearIfHasValue(this.user?.firstName)]],
       dateOfBirth: ['', Validators.required],
     });
     // this.form.patchValue(this.user);
@@ -59,6 +62,7 @@ export class EditProfileComponent implements OnInit {
           email: data.email,
           firstName: data.firstName,
           lastName: data.lastName,
+          gender: data.gender,
           dateOfBirth: data.dateOfBirth
             ? data.dateOfBirth.substring(0, 10)
             : '',
@@ -111,6 +115,7 @@ export class EditProfileComponent implements OnInit {
       email: this.form.get('email')?.value,
       firstName: this.form.get('firstName')?.value,
       lastName: this.form.get('lastName')?.value,
+      gender: this.form.get('gender')?.value,
       dateOfBirth: this.form.get('dateOfBirth')?.value,
     };
 
@@ -126,14 +131,28 @@ export class EditProfileComponent implements OnInit {
             },
           });
         } else {
-          this.successMessage = 'Cập nhật thông tin thành công!';
+          this.successMessage = 'Update Successfully!';
           this.form.disable();
+          this.close.emit();
           this.isFormDisabled = true;
         }
       },
       error: (err) => {
-        alert('Cập nhật thất bại, vui lòng thử lại!');
+        alert('Update Failed, try again!');
       },
     });
   }
+}
+export function cannotClearIfHasValue(initialValue: any): ValidatorFn {
+  return (control: AbstractControl) => {
+    // Nếu ban đầu có dữ liệu, nhưng hiện tại lại bị xóa (rỗng/null)
+    if (
+      initialValue !== null &&
+      initialValue !== '' &&
+      (control.value === null || control.value === '')
+    ) {
+      return { cannotClear: true };
+    }
+    return null;
+  };
 }

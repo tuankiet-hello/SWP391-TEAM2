@@ -23,27 +23,26 @@ import {
 import { ViewCustomerComponent } from '../view-customer/view-customer.component';
 import { EditCustomerComponent } from '../edit-customer/edit-customer.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
-
+import { CreateUserComponent } from '../../manager-users/create-user/create-user.component';
 @Component({
   selector: 'app-manager-customers',
   imports: [
-      CommonModule,
-      FormsModule,
-      SidebarComponent,
-      HeaderManagerComponent,
-      NzTableModule,
-      NzInputModule,
-      NzModalModule,
-      ViewCustomerComponent,
-      EditCustomerComponent,
-      NzSelectModule,
-      NzDropDownModule,
-      NzIconModule,
-      NzTagModule
-    ],
-    providers: [
-      { provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }
-    ],
+    CommonModule,
+    FormsModule,
+    SidebarComponent,
+    HeaderManagerComponent,
+    NzTableModule,
+    NzInputModule,
+    NzModalModule,
+    ViewCustomerComponent,
+    EditCustomerComponent,
+    NzSelectModule,
+    NzDropDownModule,
+    NzIconModule,
+    NzTagModule,
+    CreateUserComponent,
+  ],
+  providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
   templateUrl: './manager-customers.component.html',
   styleUrl: './manager-customers.component.css',
 })
@@ -56,7 +55,7 @@ export class ManagerCustomersComponent implements OnInit {
 
   selectedUser?: AccountDetailDTO;
   isModalVisible: boolean = false;
-
+  modalType: 'user' | 'customer' | 'booking' | null = null;
   selectedEditUser?: AccountDetailDTO;
   isEditModalVisible: boolean = false;
   idChoose: string = '';
@@ -120,6 +119,10 @@ export class ManagerCustomersComponent implements OnInit {
       this.selectedUser = user;
       this.isModalVisible = true;
     });
+  }
+
+  closeModal() {
+    this.modalType = null;
   }
 
   editUser(id: string): void {
@@ -393,5 +396,9 @@ export class ManagerCustomersComponent implements OnInit {
     this.filter.status = val;
     this.filterVisible.status = false;
     this.applyFilters();
+  }
+
+  openUserModal() {
+    this.modalType = 'user';
   }
 }

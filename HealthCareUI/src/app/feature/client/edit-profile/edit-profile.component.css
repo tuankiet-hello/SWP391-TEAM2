@@ -80,3 +80,28 @@
   background-color: #999;
   cursor: not-allowed;
 }
+.gender-radio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.gender-radio-group label {
+  display: flex;
+  margin-bottom: 0;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.gender-radio-group input {
+  margin-right: 5px;
+}
+
+.gender {
+  display: flex;
+  /* margin-top: 14px; */
+}
+
+.gender label {
+  margin-right: 30px;
+}

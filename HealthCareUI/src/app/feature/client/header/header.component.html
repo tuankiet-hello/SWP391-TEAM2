@@ -102,7 +102,19 @@
           </div>
           <ul class="dropdown-menu" [class.show]="dropdownOpen">
             <li><a routerLink="/manage-profile-customer">Your profile</a></li>
-            <li><a routerLink="/edit-profile-customer">Edit Profile</a></li>
+            <li>
+              <a routerLink="/manager-customers" *ngIf="role == 'manager'"
+                >Manage System</a
+              >
+            </li>
+            <li>
+              <a routerLink="/manager-users" *ngIf="role == 'admin'"
+                >Manage System</a
+              >
+            </li>
+            <li>
+              <a routerLink="/staff" *ngIf="role == 'staff'">Manage Booking</a>
+            </li>
             <li><a href="#" (click)="logout()">Logout</a></li>
           </ul>
         </div>

@@ -4,6 +4,10 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
 import {
+  BookingService,
+  TestBookingDTO,
+} from '../../../../services/test-booking.service';
+import {
   UserService,
   AccountDetailDTO,
 } from '../../../../services/manager-user.service';
@@ -60,7 +64,7 @@ export class ManageProfileComponent implements OnInit {
     'Question History',
   ];
 
-  bookings: Booking[] = [];
+  bookings: TestBookingDTO[] = [];
   questions: Question[] = [];
   isPasswordValid: boolean | undefined;
   checkPasswordMessage: string | undefined;
@@ -68,7 +72,8 @@ export class ManageProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private bookingService: BookingService
   ) {
     this.changePasswordForm = this.fb.group(
       {
@@ -187,53 +192,19 @@ export class ManageProfileComponent implements OnInit {
   toggleEditProfile() {
     this.showEditProfile = !this.showEditProfile;
   }
+  update() {
+    this.showEditProfile = !this.showEditProfile;
+    this.userService.getUserById(this.userid).subscribe((user) => {
+      this.user = user;
+      console.log('đã nạp data user sau update', this.user);
+    });
+  }
 
   loadFakeBookings() {
-    this.bookings = [
-      { id: 'BK001', date: '2025-07-01', service: 'Spa', status: 'Confirmed' },
-      {
-        id: 'BK002',
-        date: '2025-07-02',
-        service: 'Massage',
-        status: 'Pending',
-      },
-      {
-        id: 'BK003',
-        date: '2025-07-03',
-        service: 'Yoga Class',
-        status: 'Cancelled',
-      },
-      {
-        id: 'BK004',
-        date: '2025-07-04',
-        service: 'Fitness',
-        status: 'Confirmed',
-      },
-      {
-        id: 'BK005',
-        date: '2025-07-05',
-        service: 'Nutrition',
-        status: 'Pending',
-      },
-      {
-        id: 'BK006',
-        date: '2025-07-06',
-        service: 'Swimming',
-        status: 'Confirmed',
-      },
-      {
-        id: 'BK007',
-        date: '2025-07-07',
-        service: 'Haircut',
-        status: 'Cancelled',
-      },
-      {
-        id: 'BK008',
-        date: '2025-07-08',
-        service: 'Facial',
-        status: 'Confirmed',
-      },
-    ];
+    this.bookingService.getBookingHisById(this.userid).subscribe((booking) => {
+      this.bookings = booking;
+      console.log('Nạp  booking ok', this.bookings);
+    });
   }
 
   loadFakeQuestions(): void {

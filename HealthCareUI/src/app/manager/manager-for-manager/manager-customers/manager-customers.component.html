@@ -10,16 +10,19 @@
     <div class="user-list">
       <div class="user-list-header">
         <div class="content">User Management</div>
-        <div class="search-wrapper">
-          <nz-icon nzType="search" class="search-icon"></nz-icon>
-          <!-- dùng nz-input -->
-          <input
-            nz-input
-            placeholder="Search by name, email"
-            class="search-box"
-            [(ngModel)]="searchTerm"
-            (ngModelChange)="onSearchChange()"
-          />
+        <div class="nav_wrapper">
+          <div class="search-wrapper">
+            <nz-icon nzType="search" class="search-icon"></nz-icon>
+            <!-- dùng nz-input -->
+            <input
+              nz-input
+              placeholder="Search by name, email"
+              class="search-box"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearchChange()"
+            />
+          </div>
+          <button class="new-btn" (click)="openUserModal()">+ New User</button>
         </div>
       </div>
 
@@ -108,7 +111,11 @@
                   </nz-filter-trigger>
                 </div>
               </th>
-              <th><span class="taghead operationhead" style="width: 150px;">Actions</span></th>
+              <th>
+                <span class="taghead operationhead" style="width: 150px"
+                  >Actions</span
+                >
+              </th>
             </tr>
           </thead>
 
@@ -133,15 +140,19 @@
                   class="tag verified"
                   [nzColor]="user.emailConfirmed ? 'green' : 'orange'"
                 >
-                  {{ user.emailConfirmed ? 'Confirmed' : 'Unconfirmed' }}
+                  {{ user.emailConfirmed ? "Confirmed" : "Unconfirmed" }}
                 </nz-tag>
               </td>
               <td>
                 <nz-tag
                   class="tag active"
                   [nzColor]="
-                    user.accountStatus === 'Active' ? 'blue' :
-                    user.accountStatus === 'Inactive' ? 'red' : 'default'"
+                    user.accountStatus === 'Active'
+                      ? 'blue'
+                      : user.accountStatus === 'Inactive'
+                      ? 'red'
+                      : 'default'
+                  "
                 >
                   {{ user.accountStatus }}
                 </nz-tag>
@@ -162,7 +173,7 @@
                   <i class="fa-solid fa-edit"></i>
                 </div>
 
-                <div
+                <!-- <div
                   class="icon-box lock"
                   [title]="user.accountStatus === 'Inactive' ? 'Unban' : 'Ban'"
                   (click)="toggleBanUser(user)"
@@ -179,7 +190,7 @@
                     ]"
                   >
                   </i>
-                </div>
+                </div> -->
               </td>
             </tr>
           </tbody>
@@ -267,4 +278,10 @@
       </ul>
     </nz-dropdown-menu>
   </div>
+</div>
+<div class="createAdmin">
+  <app-create-user
+    *ngIf="modalType === 'user'"
+    (close)="closeModal()"
+  ></app-create-user>
 </div>

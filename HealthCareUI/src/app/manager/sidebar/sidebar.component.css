@@ -1,8 +1,8 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}/* set về 0 cho dễ tính toán */
+} /* set về 0 cho dễ tính toán */
 
 html {
   font-size: 62.5%;
@@ -10,7 +10,7 @@ html {
 }
 body {
   font-size: 1.6rem;
-}/* set lại font chữ */
+} /* set lại font chữ */
 
 .container {
   width: 200px;
@@ -57,7 +57,7 @@ body {
 
 .menu-text {
   display: block;
-  white-space: normal;    /* Cho phép xuống dòng */
+  white-space: normal; /* Cho phép xuống dòng */
   line-height: 1.3;
   word-break: break-word; /* Nếu text dài sẽ tự động xuống dòng */
   font-size: 1.15rem;
@@ -110,4 +110,32 @@ nz-icon {
   margin-right: 8px;
   font-size: 18px;
   vertical-align: middle;
+}
+.new-btn {
+  background-color: #1866ba;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  width: 100%;
+  height: 40px;
+  /* margin-bottom: 20px; */
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Khi rê chuột vào */
+.new-btn:hover {
+  background-color: #1f74d1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Khi nhấn giữ */
+.new-btn:active {
+  background-color: #155a9a;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
