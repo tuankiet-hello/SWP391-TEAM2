@@ -56,10 +56,16 @@
           class="booking-history"
           *ngIf="selectedFeature === 'Booking History'"
         >
-          <p *ngFor="let booking of bookings">
-            ID: {{ booking.id }} - Test Name: {{ booking.service }} - Date:
-            {{ booking.date }} - Status: {{ booking.status }}
-          </p>
+          <div class="cardInf" *ngFor="let booking of bookings">
+            <p>
+              <!-- ID: {{ booking.bookingID }} -->
+              Test: {{ booking.test.testName }}- Date:
+              {{ booking.bookingDate }}-
+              <!-- Time: {{ booking.bookingTime }}- -->
+              Status: {{ booking.status }} - Result: {{ booking.result }}
+            </p>
+            <button>View Details</button>
+          </div>
         </div>
 
         <div
@@ -191,6 +197,7 @@
       <app-edit-profile
         *ngIf="showEditProfile"
         [user]="user"
+        (close)="update()"
       ></app-edit-profile>
     </div>
   </div>
