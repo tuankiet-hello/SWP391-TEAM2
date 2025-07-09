@@ -21,7 +21,7 @@ namespace HealthCareAPI.Controller
             var menstrualCycle = await _menstrualCycleService.GetAllMenstrualCycleAsync();
             return Ok(menstrualCycle);
         }
-        [HttpGet("menstrual-cycle-by-account-id")]
+        [HttpGet("menstrual-cycle-by-account-id/{id}")]
         public async Task<IActionResult> GetByAccountID(string id)
         {
             if (!Guid.TryParse(id, out Guid accountId))
