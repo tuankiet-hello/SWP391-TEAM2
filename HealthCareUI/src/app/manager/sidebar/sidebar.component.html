@@ -21,9 +21,13 @@
   <!-- <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">
     + New User
   </button> -->
-  <button class="new-btn" *ngIf="role === 'manager'" (click)="openCustomerModal()">
+  <!-- <button
+    class="new-btn"
+    *ngIf="role === 'manager'"
+    (click)="openCustomerModal()"
+  >
     + New Test
-  </button>
+  </button> -->
 
   <!-- Render modal nếu showModal === true -->
   <!-- <div class="createAdmin">
@@ -32,7 +36,7 @@
       (close)="closeModal()"
     ></app-create-user>
   </div> -->
-<!-- 
+  <!--
   <div class="createManager">
     <app-create-customer
       *ngIf="modalType === 'customer'"
@@ -40,20 +44,20 @@
       (testCreated)="handleTestCreated()"
     ></app-create-customer>
   </div> -->
-<!--
+  <!--
   <div class="createBooking">
     <app-create-booking *ngIf="modalType === 'booking'" (close)="closeModal()">
     </app-create-booking>
   </div> -->
 
   <ul class="menu">
-    <li routerLinkActive="active" *ngIf="role === 'admin'">
+    <li routerLinkActive="active">
       <a class="menu-item" [routerLink]="['/manager-users']">
         <nz-icon nzType="team" nzTheme="outline"></nz-icon>
         <span class="menu-text">Manager Users</span>
       </a>
     </li>
-    <li routerLinkActive="active" *ngIf="role === 'manager'">
+    <li routerLinkActive="active">
       <a class="menu-item" [routerLink]="['/manager-customers']">
         <nz-icon nzType="team" nzTheme="outline"></nz-icon>
         <span class="menu-text">Manager Users</span>

@@ -78,16 +78,18 @@ export class ManagerUsersComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
   }
-closeModal() {
+
+  closeModal() {
     this.modalType = null;
   }
+  
   loadUsers(): void {
     this.userService.getAllUsers().subscribe((data) => {
       this.users = data;
       this.applyFilters(); // Gọi filter luôn để cập nhật filteredUsers và phân trang
     });
   }
-  
+
   updateDisplayedUsers(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;

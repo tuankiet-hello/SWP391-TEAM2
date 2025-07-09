@@ -1,6 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, AsyncValidatorFn, ReactiveFormsModule } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  AsyncValidatorFn,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { AuthService } from './../../../../services/auth.service';
+import {
+  UserService,
+  AccountDetailDTO,
+} from '../../../../services/manager-user.service';
 import { Router } from '@angular/router';
 import { map, of, switchMap, timer } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -10,14 +21,9 @@ import { FooterComponent } from '../footer/footer.component';
 @Component({
   selector: 'app-edit-profile',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    HeaderComponent,
-    FooterComponent
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.css']
+  styleUrls: ['./edit-profile.component.css'],
 })
 export class EditProfileComponent implements OnInit {
   form!: FormGroup;
@@ -25,21 +31,26 @@ export class EditProfileComponent implements OnInit {
   originalUserName: string = '';
   successMessage: string = '';
   isFormDisabled: boolean = false;
-
+  @Input() user!: AccountDetailDTO;
   constructor(
     private fb: FormBuilder,
     private userService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
       userName: ['', [Validators.required], [this.userNameAsyncValidator()]],
-      email: ['', [Validators.required, Validators.email], [this.emailAsyncValidator()]],
+      email: [
+        '',
+        [Validators.required, Validators.email],
+        [this.emailAsyncValidator()],
+      ],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      dateOfBirth: ['', Validators.required]
+      dateOfBirth: ['', Validators.required],
     });
+    // this.form.patchValue(this.user);
 
     this.userService.getUserProfile().subscribe({
       next: (data) => {
@@ -48,37 +59,43 @@ export class EditProfileComponent implements OnInit {
           email: data.email,
           firstName: data.firstName,
           lastName: data.lastName,
-          dateOfBirth: data.dateOfBirth ? data.dateOfBirth.substring(0, 10) : ''
+          dateOfBirth: data.dateOfBirth
+            ? data.dateOfBirth.substring(0, 10)
+            : '',
         });
         this.originalUserName = data.userName;
         this.originalEmail = data.email;
-        this.form.get('userName')?.setAsyncValidators(this.userNameAsyncValidator());
+        this.form
+          .get('userName')
+          ?.setAsyncValidators(this.userNameAsyncValidator());
         this.form.get('userName')?.updateValueAndValidity({ onlySelf: true });
         this.form.get('email')?.setAsyncValidators(this.emailAsyncValidator());
         this.form.get('email')?.updateValueAndValidity({ onlySelf: true });
       },
       error: (err) => {
         console.error('Lỗi khi lấy thông tin user:', err);
-      }
+      },
     });
   }
 
   userNameAsyncValidator(): AsyncValidatorFn {
     return (control: AbstractControl) => {
-      if (!control.value || control.value === this.originalUserName) return of(null);
+      if (!control.value || control.value === this.originalUserName)
+        return of(null);
       return timer(500).pipe(
         switchMap(() => this.userService.checkUserNameAvailable(control.value)),
-        map(res => res.exists ? { userNameTaken: true } : null)
+        map((res) => (res.exists ? { userNameTaken: true } : null))
       );
     };
   }
 
   emailAsyncValidator(): AsyncValidatorFn {
     return (control: AbstractControl) => {
-      if (!control.value || control.value === this.originalEmail) return of(null);
+      if (!control.value || control.value === this.originalEmail)
+        return of(null);
       return timer(500).pipe(
         switchMap(() => this.userService.checkEmailAvailable(control.value)),
-        map(res => res.exists ? { emailTaken: true } : null)
+        map((res) => (res.exists ? { emailTaken: true } : null))
       );
     };
   }
@@ -94,7 +111,7 @@ export class EditProfileComponent implements OnInit {
       email: this.form.get('email')?.value,
       firstName: this.form.get('firstName')?.value,
       lastName: this.form.get('lastName')?.value,
-      dateOfBirth: this.form.get('dateOfBirth')?.value
+      dateOfBirth: this.form.get('dateOfBirth')?.value,
     };
 
     this.userService.editProfile(payload).subscribe({
@@ -105,8 +122,8 @@ export class EditProfileComponent implements OnInit {
               userId: res.userId, // phải có dòng này
               email: res.email || payload.email,
               token: res.token,
-              status: 'change'
-            }
+              status: 'change',
+            },
           });
         } else {
           this.successMessage = 'Cập nhật thông tin thành công!';
@@ -116,7 +133,7 @@ export class EditProfileComponent implements OnInit {
       },
       error: (err) => {
         alert('Cập nhật thất bại, vui lòng thử lại!');
-      }
+      },
     });
   }
 }

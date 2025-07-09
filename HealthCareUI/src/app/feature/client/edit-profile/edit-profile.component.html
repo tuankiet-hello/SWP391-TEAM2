@@ -1,74 +1,116 @@
-<app-header></app-header>
-
 <div class="profile-edit-container">
-
   <form [formGroup]="form" (ngSubmit)="submit()" class="profile-edit-form">
-    <h2>Your Profile</h2>
-      <!-- Thông báo thành công -->
-    <div *ngIf="successMessage" class="profile-success" style="text-align: center;margin-bottom: 16px; color: #2e7d32;">
+    <div class="profile-success" *ngIf="successMessage">
       {{ successMessage }}
     </div>
-    <!-- Username -->
-    <div class="profile-form-group">
-      <label for="userName" class="profile-label">User Name</label>
-      <input id="userName" formControlName="userName" placeholder="User Name" class="profile-input" />
-      <div class="profile-error" *ngIf="form.get('userName')?.touched && form.get('userName')?.hasError('required')">
-        *User Name is required
-      </div>
-      <div class="profile-error"
-        *ngIf="form.get('userName')?.touched && form.get('userName')?.hasError('userNameTaken')">
-        *User Name đã tồn tại
-      </div>
+
+    <!-- USERNAME -->
+    <label>User Name *</label>
+    <input
+      type="text"
+      formControlName="userName"
+      placeholder="Enter username"
+    />
+    <div class="error">
+      <span
+        [class.visible]="
+          form.get('userName')?.touched && form.get('userName')?.errors
+        "
+        [innerText]="
+          form.get('userName')?.hasError('required')
+            ? '*User Name is required'
+            : form.get('userName')?.hasError('userNameTaken')
+            ? '*User Name đã tồn tại'
+            : ''
+        "
+      ></span>
     </div>
 
-
-    <!-- Email -->
-    <div class="profile-form-group">
-      <label for="email" class="profile-label">Email</label>
-      <input id="email" formControlName="email" placeholder="Email" class="profile-input" />
-      <div class="profile-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">
-        *Email is required
-      </div>
-      <div class="profile-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')">
-        *Email không hợp lệ
-      </div>
-      <div class="profile-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('emailTaken')">
-        *Email đã tồn tại
-      </div>
+    <!-- EMAIL -->
+    <label>Email *</label>
+    <input type="email" formControlName="email" placeholder="Enter email" />
+    <div class="error">
+      <span
+        [class.visible]="
+          form.get('email')?.touched && form.get('email')?.errors
+        "
+        [innerText]="
+          form.get('email')?.hasError('required')
+            ? '*Email is required'
+            : form.get('email')?.hasError('email')
+            ? '*Invalid email format'
+            : form.get('email')?.hasError('emailTaken')
+            ? '*Email is existed'
+            : ''
+        "
+      ></span>
     </div>
 
-
-    <div class="profile-form-group">
-      <label for="firstName" class="profile-label">First Name:</label>
-      <input id="firstName" formControlName="firstName" placeholder="First Name" class="profile-input" />
-      <div class="profile-error" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.hasError('required')">
-        *First Name is required
-      </div>
+    <!-- FIRST NAME -->
+    <label>First Name *</label>
+    <input
+      type="text"
+      formControlName="firstName"
+      placeholder="Enter first name"
+    />
+    <div class="error">
+      <span
+        [class.visible]="
+          form.get('firstName')?.touched && form.get('firstName')?.errors
+        "
+        [innerText]="
+          form.get('firstName')?.hasError('required')
+            ? '*First Name is required'
+            : ''
+        "
+      ></span>
     </div>
 
-    <div class="profile-form-group">
-      <label for="lastName" class="profile-label">Last Name:</label>
-      <input id="lastName" formControlName="lastName" placeholder="Last Name" class="profile-input" />
-      <div class="profile-error" *ngIf="form.get('lastName')?.touched && form.get('lastName')?.hasError('required')">
-        *Last Name is required
-      </div>
+    <!-- LAST NAME -->
+    <label>Last Name *</label>
+    <input
+      type="text"
+      formControlName="lastName"
+      placeholder="Enter last name"
+    />
+    <div class="error">
+      <span
+        [class.visible]="
+          form.get('lastName')?.touched && form.get('lastName')?.errors
+        "
+        [innerText]="
+          form.get('lastName')?.hasError('required')
+            ? '*Last Name is required'
+            : ''
+        "
+      ></span>
     </div>
 
-    <div class="profile-form-group">
-      <label for="dateOfBirth" class="profile-label">Date of Birth:</label>
-      <input id="dateOfBirth" type="date" formControlName="dateOfBirth" class="profile-input" />
-      <div class="profile-error"
-        *ngIf="form.get('dateOfBirth')?.touched && form.get('dateOfBirth')?.hasError('required')">
-        *Date of Birth is required
-      </div>
+    <!-- DATE OF BIRTH -->
+    <label>Date of Birth *</label>
+    <input type="date" formControlName="dateOfBirth" />
+    <div class="error">
+      <span
+        [class.visible]="
+          form.get('dateOfBirth')?.touched && form.get('dateOfBirth')?.errors
+        "
+        [innerText]="
+          form.get('dateOfBirth')?.hasError('required')
+            ? '*Date of Birth is required'
+            : ''
+        "
+      ></span>
     </div>
-  
 
-    <button type="submit" class="profile-save-btn" [disabled]="form.invalid || form.pending || isFormDisabled">
-      Save
-    </button>
-
+    <!-- SUBMIT -->
+    <div class="btn">
+      <button
+        class="btn-submit"
+        type="submit"
+        [disabled]="form.invalid || form.pending || isFormDisabled"
+      >
+        Save
+      </button>
+    </div>
   </form>
 </div>
-
-<app-footer></app-footer>

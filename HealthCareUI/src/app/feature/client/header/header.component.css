@@ -369,18 +369,17 @@
 
 .arrow-icon {
   position: absolute;
-  right: 2px;      /* Điều chỉnh sát góc phải */
-  bottom: 2px;     /* Điều chỉnh sát góc dưới */
+  right: 2px; /* Điều chỉnh sát góc phải */
+  bottom: 2px; /* Điều chỉnh sát góc dưới */
   font-size: 10px; /* Tùy chỉnh kích thước mũi tên */
-  color: #fff;     /* Màu trắng nổi bật trên nền xanh */
+  color: #fff; /* Màu trắng nổi bật trên nền xanh */
   pointer-events: none; /* Không cản trở click vào avatar */
   background: rgba(127, 125, 125, 0.8); /* Nếu muốn, thêm nền nhẹ cho nổi bật */
   border-radius: 50%;
   padding: 1px;
 }
 
-
-.user-info:hover .user-icon{
+.user-info:hover .user-icon {
   transform: scale(1.1); /* Hiệu ứng phóng to nhẹ khi hover */
   box-shadow: 0 0 0 2px rgba(59, 182, 245, 0.5); /* Vòng sáng quanh icon */
 }

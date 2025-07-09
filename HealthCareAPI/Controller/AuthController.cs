@@ -188,16 +188,16 @@ namespace HealthCareAPI.Controller
 
                 var emailBody = $@"
             <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-              <h2 style='text-align:center;margin-bottom:24px;'>Welcome to <b>Health Care System!</b></h2>
-              <p>Dear <b>{dto.UserName}</b>,</p>
-              <p>You have requested to change your email for <b>Health Care System</b>.</p>
-              <p>Please click the button below to verify your new email address:</p>
-              <div style='text-align:center;margin:32px 0;'>
+            <h2 style='text-align:center;margin-bottom:24px;'>Welcome to <b>Health Care System!</b></h2>
+            <p>Dear <b>{dto.UserName}</b>,</p>
+            <p>You have requested to change your email for <b>Health Care System</b>.</p>
+            <p>Please click the button below to verify your new email address:</p>
+            <div style='text-align:center;margin:32px 0;'>
                 <a href='{confirmationLink}' style='background:#4FC3F7;color:#222;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;'>Confirm email</a>
-              </div>
-              <p style='margin-top:32px;'>After verification, you can log in and use all features of the Health Care System.</p>
-              <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
-              <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically. Please do not reply.</p>
+            </div>
+            <p style='margin-top:32px;'>After verification, you can log in and use all features of the Health Care System.</p>
+            <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+            <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically. Please do not reply.</p>
             </div>
         ";
                 try

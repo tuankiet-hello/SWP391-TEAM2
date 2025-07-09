@@ -7,7 +7,13 @@ import {
   UserService,
   AccountDetailDTO,
 } from '../../../../services/manager-user.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 interface Booking {
   id: string;
@@ -25,7 +31,13 @@ interface Question {
 @Component({
   selector: 'app-sidebar-profile',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    HeaderComponent,
+    FooterComponent,
+    EditProfileComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './manage-profile.component.html',
   styleUrls: ['./manage-profile.component.css'],
 })
@@ -36,11 +48,13 @@ export class ManageProfileComponent implements OnInit {
   user!: AccountDetailDTO;
   changePasswordForm: FormGroup;
   message: string = '';
-  regexpassword = '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
+  regexpassword =
+    '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
+
+  showEditProfile = false;
 
   features = [
     'Your Profile',
-    'Edit Profile',
     'Change Password',
     'Booking History',
     'Question History',
@@ -56,42 +70,50 @@ export class ManageProfileComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService
   ) {
-    this.changePasswordForm = this.fb.group({
-       currentPassword: ['', Validators.required],
-      newPassword: ['', [
-    Validators.required,
-    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/
-)
-  ]],
-      confirmPassword: ['', Validators.required]
-}, { validators: [this.passwordsValidator] });
+    this.changePasswordForm = this.fb.group(
+      {
+        currentPassword: ['', Validators.required],
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/
+            ),
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: [this.passwordsValidator] }
+    );
   }
   passwordMatchValidator(form: FormGroup) {
     return form.get('newPassword')!.value === form.get('confirmPassword')!.value
-      ? null : { 'mismatch': true };
+      ? null
+      : { mismatch: true };
   }
-passwordsValidator(form: FormGroup) {
-  const current = form.get('currentPassword')?.value;
-  const newPwd = form.get('newPassword')?.value;
-  const confirm = form.get('confirmPassword')?.value;
+  passwordsValidator(form: FormGroup) {
+    const current = form.get('currentPassword')?.value;
+    const newPwd = form.get('newPassword')?.value;
+    const confirm = form.get('confirmPassword')?.value;
 
-  const errors: any = {};
+    const errors: any = {};
 
-  // Mật khẩu mới phải ít nhất 6 ký tự (có thể bỏ nếu đã dùng Validators.minLength)
-  if (newPwd && newPwd.length < 6) {
-    errors.newPasswordLength = true;
-  }
-  // Mật khẩu mới không được trùng mật khẩu cũ
-  if (current && newPwd && current === newPwd) {
-    errors.duplicatePassword = true;
-  }
-  // Mật khẩu xác nhận phải khớp
-  if (newPwd && confirm && newPwd !== confirm) {
-    errors.passwordMismatch = true;
-  }
+    // Mật khẩu mới phải ít nhất 6 ký tự (có thể bỏ nếu đã dùng Validators.minLength)
+    if (newPwd && newPwd.length < 6) {
+      errors.newPasswordLength = true;
+    }
+    // Mật khẩu mới không được trùng mật khẩu cũ
+    if (current && newPwd && current === newPwd) {
+      errors.duplicatePassword = true;
+    }
+    // Mật khẩu xác nhận phải khớp
+    if (newPwd && confirm && newPwd !== confirm) {
+      errors.passwordMismatch = true;
+    }
 
-  return Object.keys(errors).length ? errors : null;
-}
+    return Object.keys(errors).length ? errors : null;
+  }
 
   // Hàm kiểm tra mật khẩu hiện tại
   onCheckCurrentPassword() {
@@ -101,34 +123,33 @@ passwordsValidator(form: FormGroup) {
       this.checkPasswordMessage = '';
       return;
     }
-    this.authService.checkCurrentPassword(currentPassword)
-      .subscribe({
-        next: (res) => {
-          if (res.valid) {
-            this.isPasswordValid = true;
-            this.checkPasswordMessage = '✔️';
-          } else {
-            this.isPasswordValid = false;
-            this.checkPasswordMessage = '❌';
-          }
-        },
-        error: () => {
+    this.authService.checkCurrentPassword(currentPassword).subscribe({
+      next: (res) => {
+        if (res.valid) {
+          this.isPasswordValid = true;
+          this.checkPasswordMessage = '✔️';
+        } else {
           this.isPasswordValid = false;
-          this.checkPasswordMessage = 'Có lỗi xảy ra khi kiểm tra mật khẩu!';
+          this.checkPasswordMessage = '❌';
         }
-      });
+      },
+      error: () => {
+        this.isPasswordValid = false;
+        this.checkPasswordMessage = 'Có lỗi xảy ra khi kiểm tra mật khẩu!';
+      },
+    });
   }
 
-onSubmitChangePwd() {
-  if (this.changePasswordForm.valid && this.isPasswordValid) {
-    const { currentPassword, newPassword, confirmPassword } = this.changePasswordForm.value;
-    const payload = {
-      CurrentPassword: currentPassword,
-      NewPassword: newPassword,
-      ConfirmNewPassword: confirmPassword
-    };
-    this.authService.changePassword(payload)
-      .subscribe({
+  onSubmitChangePwd() {
+    if (this.changePasswordForm.valid && this.isPasswordValid) {
+      const { currentPassword, newPassword, confirmPassword } =
+        this.changePasswordForm.value;
+      const payload = {
+        CurrentPassword: currentPassword,
+        NewPassword: newPassword,
+        ConfirmNewPassword: confirmPassword,
+      };
+      this.authService.changePassword(payload).subscribe({
         next: (res) => {
           this.message = res.message || 'Password changed successfully!';
           this.isPasswordValid = false;
@@ -138,15 +159,12 @@ onSubmitChangePwd() {
         },
         error: (err) => {
           this.message = err.error?.message || 'Failed to change password!';
-        }
+        },
       });
-  } else {
-    this.message = 'Please check your input!';
+    } else {
+      this.message = 'Please check your input!';
+    }
   }
-}
-
-
-
 
   ngOnInit(): void {
     console.log('✅ Manage Profile ngOnInit called');
@@ -164,6 +182,10 @@ onSubmitChangePwd() {
 
   selectFeature(feature: string) {
     this.selectedFeature = feature;
+  }
+
+  toggleEditProfile() {
+    this.showEditProfile = !this.showEditProfile;
   }
 
   loadFakeBookings() {
