@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { Router, RouterLink } from '@angular/router';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { CommonModule } from '@angular/common';
+import { AskAQuestionComponent } from '../ask-a-question/ask-a-question.component';
+import { MakeAppointmentComponent } from '../make-appointment/make-appointment.component';
 @Component({
   selector: 'app-home',
   imports: [
@@ -14,11 +16,25 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     NzCarouselModule,
     RouterLink,
+    AskAQuestionComponent,
+    MakeAppointmentComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
+  showModal = false;
+
+  showMakeAppointment = false;
+
+  openAppointmentModal() {
+    this.showMakeAppointment = true;
+  }
+
+  closeAppointmentModal() {
+    this.showMakeAppointment = false;
+  }
+
   scrollToFooter() {
     const footer = document.getElementById('footer');
     if (footer) {
