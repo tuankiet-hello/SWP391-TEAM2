@@ -38,4 +38,11 @@ export class MenstrualService {
       cycle
     );
   }
+  predictCycle(accountID: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/predict/${accountID}`);
+  }
+
+  remindCycle(accountID: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/create-reminder/${accountID}`, {});
+  }
 }

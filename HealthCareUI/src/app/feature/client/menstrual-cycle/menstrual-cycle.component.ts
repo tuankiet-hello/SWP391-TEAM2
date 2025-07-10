@@ -112,36 +112,15 @@ export class MenstrualCycleComponent implements OnInit {
       return;
     }
 
-    // Chuyển ngày string sang Date
-    const sortedCycles = [...this.cycles].sort(
-      (a, b) =>
-        new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
-    );
-
-    // Tính độ dài chu kỳ
-    const cycleLengths: number[] = [];
-    for (let i = 1; i < sortedCycles.length; i++) {
-      const prev = new Date(sortedCycles[i - 1].start_date);
-      const curr = new Date(sortedCycles[i].start_date);
-      cycleLengths.push((curr.getTime() - prev.getTime()) / (1000 * 3600 * 24));
-    }
-    const avgLength =
-      cycleLengths.reduce((a, b) => a + b, 0) / cycleLengths.length;
-
-    const lastCycle = sortedCycles[sortedCycles.length - 1];
-    const predictedStart = new Date(lastCycle.start_date);
-    predictedStart.setDate(predictedStart.getDate() + avgLength);
-
-    const predictedOvulation = new Date(predictedStart);
-    predictedOvulation.setDate(predictedOvulation.getDate() - 14);
-
-    this.prediction = {
-      PredictedStartDate: predictedStart,
-      PredictedOvulationDate: predictedOvulation,
-      FertileWindow: [
-        new Date(predictedOvulation.getTime() - 5 * 24 * 60 * 60 * 1000),
-        new Date(predictedOvulation.getTime() + 1 * 24 * 60 * 60 * 1000),
-      ],
-    };
+    this.mestrualCycleService.predictCycle(this.accountId).subscribe({
+      next: (res) => {
+        // alert(res.message);
+        console.log(res);
+      },
+      error: (err) => {
+        console.error('Lỗi khi dự đoán chu kỳ:', err);
+        alert('Tạo dự đoán chu kỳ thất bại, vui lòng thử lại.');
+      },
+    });
   }
 }

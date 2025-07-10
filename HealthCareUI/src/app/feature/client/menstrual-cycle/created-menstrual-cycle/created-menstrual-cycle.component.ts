@@ -50,7 +50,7 @@ export class CreatedMenstrualCycleComponent {
       start_date: ['', Validators.required],
       end_date: ['', Validators.required], // disabled, không validator
       note: [''],
-      reminder_enabled: [true],
+      reminder_enabled: [false],
     });
 
     if (this.selectmode === 'edit' && this.cycle) {
