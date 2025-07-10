@@ -1,51 +1,52 @@
-<h2>Menstrual cycle management</h2>
+<app-header></app-header>
+<div class="container">
+  <h1 style="text-align: left;">Menstrual cycle management</h1>
+  <hr>
+  <div class="main-layout">
+    <!-- Sidebar với các nút chức năng -->
+    <div class="sidebar">
+      <button (click)="openAddForm()">New Cycle</button>
+      <button (click)="openPredict()">Predict menstrual cycle</button>
+      <!-- <button (click)="remindCycle()">Remind</button> -->
+    </div>
 
-<div class="main-layout">
-  <!-- Sidebar với các nút chức năng -->
-  <div class="sidebar">
-    <button (click)="openAddForm()">New Cycle</button>
-    <button (click)="openPredict()">Predict menstrual cycle</button>
-    <!-- <button (click)="remindCycle()">Remind</button> -->
+    <!-- Content: Bảng danh sách chu kỳ -->
+    <div class="content">
+      <h2>Your Mentrual Cycles</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Note</th>
+              <th>Operations</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cycle of cycles">
+              <td>{{ cycle.start_date }}</td>
+              <td>{{ cycle.end_date }}</td>
+              <td>{{ cycle.note }}</td>
+              <td>
+                <button (click)="openEditForm(cycle)">Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <!-- Content: Bảng danh sách chu kỳ -->
-  <div class="content">
-    <table>
-      <thead>
-        <tr>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Note</th>
-          <th>Operations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let cycle of cycles">
-          <td>{{ cycle.start_date }}</td>
-          <td>{{ cycle.end_date }}</td>
-          <td>{{ cycle.note }}</td>
-          <td>
-            <button (click)="openEditForm(cycle)">Edit</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
 </div>
 <!-- Popup form tạo/sửa chu kỳ -->
 <div class="popup" *ngIf="showForm">
-  <app-created-menstrual-cycle
-    (cancel)="handleCancelForm()"
-    [selectmode]="selectMode"
-    [cycle]="cycle"
-    (success)="loadCycles()"
-  ></app-created-menstrual-cycle>
+  <app-created-menstrual-cycle (cancel)="handleCancelForm()" [selectmode]="selectMode" [cycle]="cycle"
+    (success)="loadCycles()"></app-created-menstrual-cycle>
 </div>
 <div class="popup" *ngIf="showFormPredict">
-  <app-predict-view
-    (close)="handleCancelForm()"
-    (success)="loadCycles()"
-    [accountId]="accountId"
-    [predict]="predict"
-  ></app-predict-view>
+  <app-predict-view (close)="handleCancelForm()" (success)="loadCycles()" [accountId]="accountId"
+    [predict]="predict"></app-predict-view>
 </div>
+
+<app-footer></app-footer>
