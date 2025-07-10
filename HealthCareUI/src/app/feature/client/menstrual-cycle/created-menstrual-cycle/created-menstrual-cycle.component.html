@@ -1,39 +1,44 @@
-<p>created-menstrual-cycle works!</p>
-<form (ngSubmit)="onSubmit()" #cycleForm="ngForm" class="cycle-form">
+<form [formGroup]="createMenstrualForm" class="cycle-form">
   <div>
-    <label for="start_date">Ngày bắt đầu:</label>
-    <input
-      type="date"
-      id="start_date"
-      name="start_date"
-      [(ngModel)]="cycle.start_date"
-      required
-    />
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" formControlName="start_date" required />
   </div>
 
   <div>
-    <label for="end_date">Ngày kết thúc:</label>
-    <input
-      type="date"
-      id="end_date"
-      name="end_date"
-      [(ngModel)]="cycle.end_date"
-      required
-    />
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" formControlName="end_date" required />
   </div>
 
   <div>
-    <label for="note">Ghi chú:</label>
+    <label for="note">Note:</label>
+    <input type="text" id="note" formControlName="note" />
+  </div>
+
+  <!-- <div class="reminder">
+    <label for="note">Reminder: </label>
     <input
-      type="text"
+      type="radio"
       id="note"
-      name="note"
-      [(ngModel)]="cycle.note"
-    />
-  </div>
+      formControlName="reminder_enabled"
+      [value]="true"
+      class="yes"
+    />Yes
+    <input
+      type="radio"
+      id="note"
+      formControlName="reminder_enabled"
+      [value]="false"
+      class="no"
+    />No
+  </div> -->
 
   <div class="buttons">
-    <button type="submit" [disabled]="!cycleForm.form.valid">Lưu</button>
-    <button type="button" (click)="onCancel()">Hủy</button>
+    <button type="submit" (click)="onEdit()" *ngIf="selectmode == 'edit'">
+      Save
+    </button>
+    <button type="submit" (click)="onSubmit()" *ngIf="selectmode == 'new'">
+      Create
+    </button>
+    <button type="button" (click)="onCancel()">Cancel</button>
   </div>
 </form>

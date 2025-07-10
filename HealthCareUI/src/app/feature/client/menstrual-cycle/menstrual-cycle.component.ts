@@ -1,8 +1,12 @@
 import { CreatedMenstrualCycleComponent } from './created-menstrual-cycle/created-menstrual-cycle.component';
+import { PredictViewComponent } from './predict-cycle/predict-cycle.component';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MenstrualCycleDTO, MenstrualService } from '../../../../services/menstrual-cycle.service';
+import {
+  MenstrualCycleDTO,
+  MenstrualService,
+} from '../../../../services/menstrual-cycle.service';
 import { AuthService } from '../../../../services/auth.service';
 interface MenstrualCycle {
   start_date: string; // ISO date string
@@ -12,50 +16,58 @@ interface MenstrualCycle {
 
 @Component({
   selector: 'app-menstrual-cycle',
-  imports: [CommonModule,
-    FormsModule, CreatedMenstrualCycleComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CreatedMenstrualCycleComponent,
+    PredictViewComponent,
+  ],
   templateUrl: './menstrual-cycle.component.html',
-  styleUrls: ['./menstrual-cycle.component.css']
+  styleUrls: ['./menstrual-cycle.component.css'],
 })
-
 export class MenstrualCycleComponent implements OnInit {
   cycles: MenstrualCycleDTO[] = [];
   showForm = false;
+  showFormPredict = false;
   editingCycle: MenstrualCycle | null = null;
   form: MenstrualCycle = { start_date: '', end_date: '', note: '' };
   prediction: any = null;
-
+  selectMode: string = 'new';
+  cycle!: MenstrualCycleDTO;
+  accountId!: string;
+  predict!: any;
   constructor(
     private authService: AuthService,
     private mestrualCycleService: MenstrualService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    const accountId = this.authService.getIdFromToken();
-    if (accountId) {
-      this.mestrualCycleService.getCycleByAccId(accountId).subscribe(data => {
-        this.cycles = data;
-      });
+    this.accountId = this.authService.getIdFromToken();
+    if (this.accountId) {
+      this.mestrualCycleService
+        .getCycleByAccId(this.accountId)
+        .subscribe((data) => {
+          this.cycles = data;
+        });
     } else {
       console.error('Không tìm thấy accountId');
     }
   }
   openAddForm() {
-    this.editingCycle = null;
-    this.form = { start_date: '', end_date: '', note: '' };
+    this.selectMode = 'new';
     this.showForm = true;
   }
 
-  openEditForm(cycle: MenstrualCycle) {
-    this.editingCycle = cycle;
-    this.form = { ...cycle };
+  openEditForm(cycle: MenstrualCycleDTO) {
+    this.cycle = cycle;
+    this.selectMode = 'edit';
     this.showForm = true;
   }
-
 
   // Các hàm khác như openAddForm, openEditForm, handleSaveCycle...
 
   handleCancelForm() {
+    this.showFormPredict = false;
     this.showForm = false;
     this.editingCycle = null;
   }
@@ -63,34 +75,48 @@ export class MenstrualCycleComponent implements OnInit {
     this.showForm = false;
     this.editingCycle = null;
   }
-  handleSaveCycle(cycle: MenstrualCycleDTO) {
-  const accountId = this.authService.getIdFromToken();
-
-  if (!accountId) {
-    alert('Không tìm thấy tài khoản, vui lòng đăng nhập lại.');
-    return;
+  openPredict() {
+    this.predictCycle();
   }
+  // handleSaveCycle() {
+  //   const accountId = this.authService.getIdFromToken();
 
-  // Gán accountID vào cycle
-  cycle.accountID = accountId;
+  //   if (!accountId) {
+  //     alert('Không tìm thấy tài khoản, vui lòng đăng nhập lại.');
+  //     return;
+  //   }
+  //   const cycle = {
+  //     accountID: accountId,
+  //     start_date: this.form.start_date,
+  //     end_date: this.form.end_date,
+  //     note: this.form.note,
+  //     reminder_enabled: true,
+  //   };
+  //   // Gán accountID vào cycle
 
-  if (this.editingCycle) {
-    // TODO: xử lý cập nhật chu kỳ
-  } else {
-    this.mestrualCycleService.createCycle(cycle).subscribe({
-      next: (res) => {
-        alert(res.message);
-        this.cycles.push(cycle);
-        this.showForm = false;
-      },
-      error: (err) => {
-        console.error('Lỗi khi tạo chu kỳ:', err);
-        alert('Tạo chu kỳ thất bại, vui lòng thử lại.');
-      }
-    });
+  //   if (this.editingCycle) {
+  //     // TODO: xử lý cập nhật chu kỳ
+  //   } else {
+  //     this.mestrualCycleService.createCycle(cycle).subscribe({
+  //       next: (res) => {
+  //         // alert(res.message);
+  //         this.cycles.push(cycle);
+  //         this.showForm = false;
+  //       },
+  //       error: (err) => {
+  //         console.error('Lỗi khi tạo chu kỳ:', err);
+  //         alert('Tạo chu kỳ thất bại, vui lòng thử lại.');
+  //       },
+  //     });
+  //   }
+  // }
+  loadCycles() {
+    this.mestrualCycleService
+      .getCycleByAccId(this.accountId)
+      .subscribe((data) => {
+        this.cycles = data;
+      });
   }
-}
-
 
   predictCycle() {
     if (this.cycles.length < 2) {
@@ -98,32 +124,36 @@ export class MenstrualCycleComponent implements OnInit {
       return;
     }
 
-    // Chuyển ngày string sang Date
-    const sortedCycles = [...this.cycles].sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime());
+    this.mestrualCycleService.predictCycle(this.accountId).subscribe({
+      next: (res) => {
+        // alert(res.message);
+        this.predict = res;
+        console.log(this.predict);
+        this.showFormPredict = true;
+      },
+      error: (err) => {
+        console.error('Lỗi khi dự đoán chu kỳ:', err);
+        alert('Tạo dự đoán chu kỳ thất bại, vui lòng thử lại.');
+      },
+    });
+  }
 
-    // Tính độ dài chu kỳ
-    const cycleLengths: number[] = [];
-    for (let i = 1; i < sortedCycles.length; i++) {
-      const prev = new Date(sortedCycles[i - 1].start_date);
-      const curr = new Date(sortedCycles[i].start_date);
-      cycleLengths.push((curr.getTime() - prev.getTime()) / (1000 * 3600 * 24));
+  remindCycle() {
+    if (this.cycles.length < 2) {
+      alert('Cần ít nhất 2 chu kỳ để dự đoán.');
+      return;
     }
-    const avgLength = cycleLengths.reduce((a, b) => a + b, 0) / cycleLengths.length;
 
-    const lastCycle = sortedCycles[sortedCycles.length - 1];
-    const predictedStart = new Date(lastCycle.start_date);
-    predictedStart.setDate(predictedStart.getDate() + avgLength);
-
-    const predictedOvulation = new Date(predictedStart);
-    predictedOvulation.setDate(predictedOvulation.getDate() - 14);
-
-    this.prediction = {
-      PredictedStartDate: predictedStart,
-      PredictedOvulationDate: predictedOvulation,
-      FertileWindow: [
-        new Date(predictedOvulation.getTime() - 5 * 24 * 60 * 60 * 1000),
-        new Date(predictedOvulation.getTime() + 1 * 24 * 60 * 60 * 1000)
-      ]
-    };
+    this.mestrualCycleService.remindCycle(this.accountId).subscribe({
+      next: (res) => {
+        // alert(res.message);
+        console.log('thành công nhắc');
+        console.log(res);
+      },
+      error: (err) => {
+        console.error('Lỗi khi nhắc đoán chu kỳ:', err);
+        alert('nhắc dự đoán chu kỳ thất bại, vui lòng thử lại.');
+      },
+    });
   }
 }

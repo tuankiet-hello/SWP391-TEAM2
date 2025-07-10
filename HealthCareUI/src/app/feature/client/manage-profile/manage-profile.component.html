@@ -57,14 +57,16 @@
           *ngIf="selectedFeature === 'Booking History'"
         >
           <div class="cardInf" *ngFor="let booking of bookings">
-            <p>
-              <!-- ID: {{ booking.bookingID }} -->
-              Test: {{ booking.test.testName }}- Date:
-              {{ booking.bookingDate }}-
-              <!-- Time: {{ booking.bookingTime }}- -->
-              Status: {{ booking.status }} - Result: {{ booking.result }}
+            <p> 
+              
+              {{ booking.test.testName }}  -  
+              Date: {{ booking.bookingDate }}     
+              - {{ statusMap[booking.status] || 'Unknown Status' }}
             </p>
-            <button>View Details</button>
+            
+            <button
+             (click)="viewBookingDetail(booking.bookingID)"
+            >View Details</button>
           </div>
         </div>
 
@@ -204,3 +206,8 @@
 </div>
 
 <app-footer></app-footer>
+ <app-view-booking-detail
+        *ngIf="isModalVisible && selectedBooking"
+        [booking]="selectedBooking"
+        (close)="handleModalCancel()"
+      ></app-view-booking-detail>
