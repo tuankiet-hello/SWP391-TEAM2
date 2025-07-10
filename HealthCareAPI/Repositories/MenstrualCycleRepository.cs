@@ -92,7 +92,7 @@ namespace HealthCareAPI.Repositories
 
             var lastCycle = cycles.Last();
             var predictedStart = lastCycle.Start_date.AddDays(avgLength);
-            var predictedOvulation = predictedStart.AddDays(-14);
+            var predictedOvulation = predictedStart.AddDays(14);
 
             return new
             {
@@ -100,7 +100,7 @@ namespace HealthCareAPI.Repositories
                 PredictedOvulationDate = predictedOvulation,
                 FertileWindow = new[]
                 {
-                predictedOvulation.AddDays(-5),
+                predictedOvulation,
                 predictedOvulation.AddDays(1)
                 }
             };
