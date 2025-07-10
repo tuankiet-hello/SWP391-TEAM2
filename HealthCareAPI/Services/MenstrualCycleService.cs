@@ -80,8 +80,8 @@ namespace HealthCareAPI.Services
             var remindersToSend = reminders.Where(r =>
                 !r.IsSent &&
                 (
-                    (r.PredictedStartDate.ToDateTime(TimeOnly.MinValue) - today).TotalDays == 3 ||
-                    (r.PredictedOvulationDate.ToDateTime(TimeOnly.MinValue) - today).TotalDays == 3
+                    (r.PredictedStartDate.ToDateTime(TimeOnly.MinValue) - today).TotalDays == 2 ||
+                    (r.PredictedOvulationDate.ToDateTime(TimeOnly.MinValue) - today).TotalDays == 2
                 )
             ).ToList();
 
