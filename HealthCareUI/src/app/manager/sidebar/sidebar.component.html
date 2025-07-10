@@ -17,12 +17,12 @@
       </li>
 
       <!-- Admin, Manager -->
-      <li routerLinkActive="active">
+      <!-- <li routerLinkActive="active">
         <a class="menu-item">
           <nz-icon nzType="message" nzTheme="outline"></nz-icon>
           <span class="menu-text">Feedback Management</span>
         </a>
-      </li>
+      </li> -->
 
       <!-- Manager -->
       <li routerLinkActive="active" *ngIf="role === 'manager'">
@@ -35,7 +35,7 @@
       <li routerLinkActive="active" *ngIf="role === 'manager'">
         <a class="menu-item" [routerLink]="['/manage-service']">
           <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-          <span class="menu-text">Test Type Management</span>
+          <span class="menu-text">Test Management</span>
         </a>
       </li>
 
@@ -58,7 +58,7 @@
       <li routerLinkActive="active" *ngIf="role === 'staff'">
         <a class="menu-item" [routerLink]="['/view-test-booking']">
           <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-          <span class="menu-text">Diagnostic Test Scheduling Management</span>
+          <span class="menu-text">Booking Management</span>
         </a>
       </li>
       <!-- Staff -->
@@ -70,13 +70,12 @@
       </li>
 
       <!-- All -->
-      <li routerLinkActive="active" class="backhome" >
+      <li routerLinkActive="active" class="backhome">
         <a class="menu-item" [routerLink]="['/home']">
           <nz-icon nzType="arrow-left" nzTheme="outline"></nz-icon>
           <span class="menu-text">Home</span>
         </a>
       </li>
-
     </ul>
   </div>
 </div>

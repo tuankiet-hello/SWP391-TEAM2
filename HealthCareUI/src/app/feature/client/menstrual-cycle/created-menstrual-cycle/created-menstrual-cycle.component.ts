@@ -76,6 +76,8 @@ export class CreatedMenstrualCycleComponent {
     this.menstrualService.createCycle(cycle).subscribe({
       next: (res) => {
         console.log('✅ Thành công tạo chu kỳ');
+        if (cycle.reminder_enabled) {
+        }
         this.success.emit();
         this.cancel.emit();
       },
