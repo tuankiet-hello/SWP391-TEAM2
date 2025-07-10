@@ -4,6 +4,7 @@ using HealthCareAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthCareAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250710054027_AddRemindTable")]
+    partial class AddRemindTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,8 +264,6 @@ namespace HealthCareAPI.Migrations
                         .HasColumnType("date");
 
                     b.HasKey("RemindID");
-
-                    b.HasIndex("AccountID");
 
                     b.ToTable("Reminds");
                 });
@@ -527,17 +528,6 @@ namespace HealthCareAPI.Migrations
                 });
 
             modelBuilder.Entity("HealthCareAPI.Entities.Question", b =>
-                {
-                    b.HasOne("HealthCareAPI.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("HealthCareAPI.Entities.Remind", b =>
                 {
                     b.HasOne("HealthCareAPI.Entities.Account", "Account")
                         .WithMany()

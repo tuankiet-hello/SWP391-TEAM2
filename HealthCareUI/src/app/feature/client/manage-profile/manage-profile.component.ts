@@ -18,6 +18,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ViewBookingDetailComponent } from '../../../manager/staff/view-booking-detail/view-booking-detail.component';
 
 interface Booking {
   id: string;
@@ -41,6 +42,7 @@ interface Question {
     FooterComponent,
     EditProfileComponent,
     ReactiveFormsModule,
+    ViewBookingDetailComponent
   ],
   templateUrl: './manage-profile.component.html',
   styleUrls: ['./manage-profile.component.css'],
@@ -56,7 +58,13 @@ export class ManageProfileComponent implements OnInit {
     '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
 
   showEditProfile = false;
-
+  statusMap: { [key: number]: string } = {
+  0: 'Submitted',
+  1: 'Pending',
+  2: 'Confirmed',
+  3: 'Canceled',
+  4: 'Completed'
+};
   features = [
     'Your Profile',
     'Change Password',
@@ -188,7 +196,18 @@ export class ManageProfileComponent implements OnInit {
   selectFeature(feature: string) {
     this.selectedFeature = feature;
   }
-
+  isModalVisible: boolean = false;
+  selectedBooking?: TestBookingDTO;
+ viewBookingDetail(id: number): void {
+    this.bookingService.getBookingById(id).subscribe((booking) => {
+      this.selectedBooking = booking;
+      this.isModalVisible = true;
+    });
+  }
+  handleModalCancel(): void {
+    this.isModalVisible = false;
+    this.selectedBooking = undefined;
+  }
   toggleEditProfile() {
     this.showEditProfile = !this.showEditProfile;
   }
