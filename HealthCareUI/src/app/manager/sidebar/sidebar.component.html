@@ -16,6 +16,14 @@
         </a>
       </li>
 
+      <!-- Admin, Manager -->
+      <li routerLinkActive="active">
+        <a class="menu-item">
+          <nz-icon nzType="message" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Feedback Management</span>
+        </a>
+      </li>
+
       <!-- Manager -->
       <li routerLinkActive="active" *ngIf="role === 'manager'">
         <a class="menu-item" [routerLink]="['/manager-customers']">
@@ -27,50 +35,41 @@
       <li routerLinkActive="active" *ngIf="role === 'manager'">
         <a class="menu-item" [routerLink]="['/manage-service']">
           <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-          <span class="menu-text">Service Management</span>
+          <span class="menu-text">Test Type Management</span>
         </a>
       </li>
 
-      <!-- Consultation and Staff -->
-      <li
-        routerLinkActive="active"
-        *ngIf="role === 'staff' || role == 'consultant'"
-      >
+      <!-- Consultant-->
+      <li routerLinkActive="active" *ngIf="role == 'consultant'">
         <a class="menu-item" [routerLink]="['/view-consultation-schedule']">
           <nz-icon nzType="schedule" nzTheme="outline"></nz-icon>
           <span class="menu-text">Consultation Schedule Management</span>
         </a>
       </li>
+      <!-- Consultant  -->
+      <li routerLinkActive="active" *ngIf="role == 'consultant'">
+        <a class="menu-item" [routerLink]="['/view-question']">
+          <nz-icon nzType="question-circle" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Question Management</span>
+        </a>
+      </li>
 
       <!-- Staff -->
       <li routerLinkActive="active" *ngIf="role === 'staff'">
-        <a class="menu-item" [routerLink]="['/staff']">
+        <a class="menu-item" [routerLink]="['/view-test-booking']">
           <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-          <span class="menu-text">Staff</span>
+          <span class="menu-text">Diagnostic Test Scheduling Management</span>
         </a>
       </li>
       <!-- Staff -->
       <li routerLinkActive="active" *ngIf="role === 'staff'">
         <a class="menu-item" [routerLink]="['/manage-service']">
           <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-          <span class="menu-text">Test Service Management</span>
-        </a>
-      </li>
-      <!-- Chưa Phân Role  -->
-      <li routerLinkActive="active">
-        <a class="menu-item" [routerLink]="['/view-question']">
-          <nz-icon nzType="question-circle" nzTheme="outline"></nz-icon>
-          <span class="menu-text">Question Management</span>
-        </a>
-      </li>
-      <!-- chưa phân role -->
-      <li routerLinkActive="active">
-        <a class="menu-item">
-          <nz-icon nzType="message" nzTheme="outline"></nz-icon>
-          <span class="menu-text">Feedback Management</span>
+          <span class="menu-text">Test Type Management</span>
         </a>
       </li>
 
+      <!-- All -->
       <li routerLinkActive="active" class="backhome" >
         <a class="menu-item" [routerLink]="['/home']">
           <nz-icon nzType="arrow-left" nzTheme="outline"></nz-icon>

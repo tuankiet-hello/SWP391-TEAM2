@@ -75,7 +75,7 @@ export const routes: Routes = [
   { path: 'manage-service', component: ManageServiceComponent },
 
   //Staff routes
-  { path: 'staff', component: ViewTestBookingComponent },
+  { path: 'view-test-booking', component: ViewTestBookingComponent },
 
   //Consultant routes
   {
