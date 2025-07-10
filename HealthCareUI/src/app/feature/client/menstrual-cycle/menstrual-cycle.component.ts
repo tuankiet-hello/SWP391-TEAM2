@@ -8,6 +8,8 @@ import {
   MenstrualService,
 } from '../../../../services/menstrual-cycle.service';
 import { AuthService } from '../../../../services/auth.service';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 interface MenstrualCycle {
   start_date: string; // ISO date string
   end_date: string;
@@ -21,6 +23,8 @@ interface MenstrualCycle {
     FormsModule,
     CreatedMenstrualCycleComponent,
     PredictViewComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   templateUrl: './menstrual-cycle.component.html',
   styleUrls: ['./menstrual-cycle.component.css'],
