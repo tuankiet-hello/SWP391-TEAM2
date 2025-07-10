@@ -38,6 +38,11 @@ namespace HealthCareAPI.Repositories
                 .Where(r => !r.IsSent)
                 .ToListAsync();
         }
+        public async Task UpdateReminderAsync(Remind reminder)
+        {
+            _context.Reminds.Update(reminder);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<Remind> CreateOvulationReminderAsync(Guid accountId)
         {
