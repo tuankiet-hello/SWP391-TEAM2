@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TestBookingDTO } from '../../../../services/test-booking.service';
-
+import { AuthService } from '../../../../services/auth.service';
 @Component({
   selector: 'app-view-booking-detail',
   imports: [CommonModule],
@@ -9,9 +9,17 @@ import { TestBookingDTO } from '../../../../services/test-booking.service';
   templateUrl: './view-booking-detail.component.html',
   styleUrl: './view-booking-detail.component.css'
 })
-export class ViewBookingDetailComponent {
+export class ViewBookingDetailComponent implements OnInit {
 @Input() booking!: TestBookingDTO;
+ 
 @Output() close = new EventEmitter<void>();
+  role!: string | null;
+constructor(private authService: AuthService){}
+
+
+  ngOnInit(): void {
+    this.role = this.authService.getRoleFromToken();
+  }
   statusMap: { [key: number]: string } = {
   0: 'Submitted',
   1: 'Pending',
@@ -28,6 +36,5 @@ statusColorMap: { [key: number]: string } = {
 };
 
 onClose() { this.close.emit(); }
-
 
 }

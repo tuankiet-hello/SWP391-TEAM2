@@ -31,6 +31,40 @@ namespace HealthCareAPI.Repositories
                 .OrderByDescending(x => x.Start_date)
                 .ToListAsync();
         }
+        public async Task<List<Remind>> GetPendingRemindersWithAccountAsync()
+        {
+            return await _context.Reminds
+                .Include(r => r.Account)
+                .Where(r => !r.IsSent)
+                .ToListAsync();
+        }
+
+        public async Task<Remind> CreateOvulationReminderAsync(Guid accountId)
+        {
+            // Gọi hàm dự đoán chu kỳ
+            var prediction = await PredictCycleAsync(accountId);
+
+            // Lấy dữ liệu từ prediction (dùng dynamic hoặc cast nếu cần)
+            var predictedStartDate = (DateOnly)prediction.GetType().GetProperty("PredictedStartDate").GetValue(prediction);
+            var predictedOvulationDate = (DateOnly)prediction.GetType().GetProperty("PredictedOvulationDate").GetValue(prediction);
+            var fertileWindowArray = (DateOnly[])prediction.GetType().GetProperty("FertileWindow").GetValue(prediction);
+
+            var reminder = new Remind
+            {
+                AccountID = accountId,
+                PredictedStartDate = predictedStartDate,
+                PredictedOvulationDate = predictedOvulationDate,
+                FertileWindowStart = fertileWindowArray[0],
+                FertileWindowEnd = fertileWindowArray[1],
+                IsSent = false,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Reminds.Add(reminder);
+            await _context.SaveChangesAsync();
+
+            return reminder;
+        }
 
         public async Task<object> PredictCycleAsync(Guid accountId)
         {

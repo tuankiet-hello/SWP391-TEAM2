@@ -10,10 +10,15 @@ namespace HealthCareAPI.Controller
     [ApiController]
     public class MenstrualCycleController : ControllerBase
     {
+        private readonly EmailService _emailService;
+        private readonly IConfiguration _configuration;
+
         private readonly MenstrualCycleService _menstrualCycleService;
-        public MenstrualCycleController(MenstrualCycleService menstrualCycleService)
+        public MenstrualCycleController(MenstrualCycleService menstrualCycleService
+              EmailService emailService)
         {
             _menstrualCycleService = menstrualCycleService;
+            _emailService = emailService;
         }
         [HttpGet("list-menstrual-cycle")]
         public async Task<ActionResult<IEnumerable<MenstrualCycle>>> GetAllMenstrualCycle()
@@ -83,6 +88,34 @@ namespace HealthCareAPI.Controller
                 return BadRequest(new { message = ex.Message });
             }
         }
+        [HttpPost("create-reminder/{accountId}")]
+        public async Task<IActionResult> CreateReminder(Guid accountId)
+        {
+            try
+            {
+                var reminder = await _menstrualCycleService.CreateOvulationReminderAsync(accountId);
+                return Ok(reminder);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[HttpPost("send-reminders")]
+        //public async Task<IActionResult> SendReminders()
+        //{
+        //    try
+        //    {
+        //        int sentCount = await _menstrualCycleService.SendRemindersAsync();
+        //        return Ok(new { message = $"Sent {sentCount} reminder emails." });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new { message = "Error sending reminders.", detail = ex.Message });
+        //    }
+        //}
+
 
     }
 }

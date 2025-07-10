@@ -6,7 +6,7 @@
 
     <div *ngIf="booking">
       <!-- Avatar user -->
-      <div class="user-avatar">
+      <div class="user-avatar" *ngIf="role == 'staff'">
         <span>
           {{ booking.account.firstName ? booking.account.firstName[0] : '' }}
         </span>

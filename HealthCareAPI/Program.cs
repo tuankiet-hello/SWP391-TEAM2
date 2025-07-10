@@ -119,6 +119,11 @@ namespace HealthCareAPI
             });
 
             var app = builder.Build();
+            using (var scope = app.Services.CreateScope())
+            {
+                var menstrualCycleService = scope.ServiceProvider.GetRequiredService<MenstrualCycleService>();
+                await menstrualCycleService.SendRemindersAsync();
+            }
 
             // Tự động migrate database khi app khởi động, chỉ nếu có migration chưa áp dụng
             // using (var scope = app.Services.CreateScope())

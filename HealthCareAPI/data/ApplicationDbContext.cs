@@ -25,6 +25,7 @@ namespace HealthCareAPI
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Appoinment> Appoinments { get; set; }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<Remind> Reminds { get; set; }
 
         //mỗi khi tạo ra lớp này sẽ phải override lại method
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
