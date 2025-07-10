@@ -1,0 +1,51 @@
+<!-- Modal backdrop -->
+<div class="modal-backdrop" (click)="closeModal()"></div>
+
+<!-- Modal content -->
+<div class="modal-container">
+  <div class="modal-header">
+    <h2 class="modal-title">Make an Appointment</h2>
+    <button class="close-btn" (click)="closeModal()">×</button>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" #appointmentForm="ngForm" class="modal-form">
+    <!-- Date Picker -->
+    <div class="form-group">
+      <label for="date">Select Date:</label>
+      <nz-date-picker
+        [(ngModel)]="appointment.appointmentDate"
+        [nzDisabledDate]="disableDate"
+        name="appointmentDate"
+        required
+        #date="ngModel"
+        style="width: 100%"
+      ></nz-date-picker>
+      <div class="error" *ngIf="date.invalid && date.touched">
+        Date is required.
+      </div>
+    </div>
+
+    <!-- Time Picker -->
+    <div class="form-group">
+      <label>Select Time:</label>
+      <nz-time-picker
+        [(ngModel)]="appointment.appointmentTime"
+        [nzDisabledHours]="getDisabledHours"
+        [nzDisabledMinutes]="getDisabledMinutes"
+        [nzFormat]="'HH:mm'"
+        name="appointmentTime"
+        required
+        format="HH:mm"
+        [nzHideDisabledOptions]="true"
+        style="width: 100%"
+      ></nz-time-picker>
+      <div class="error" *ngIf="!appointment.appointmentTime && submitted">
+        Time is required.
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" [disabled]="appointmentForm.invalid">
+      Book Appointment
+    </button>
+  </form>
+</div>

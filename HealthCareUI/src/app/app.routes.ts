@@ -58,7 +58,7 @@ export const routes: Routes = [
     path: 'blog/sexually-transmitted-infections-stis',
     component: Blog5Component,
   },
-  {path:"menstrual-cycle",component:MenstrualCycleComponent},
+  { path: 'menstrual-cycle', component: MenstrualCycleComponent },
 
   //Authentication routes
   { path: 'login', component: LoginComponent },
@@ -66,7 +66,7 @@ export const routes: Routes = [
   { path: 'confirm-email', component: ConfirmEmailComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  {path : 'confirm-change-email', component:ConfirmChangeEmailComponent},
+  { path: 'confirm-change-email', component: ConfirmChangeEmailComponent },
   //Admin routes
   { path: 'manager-users', component: ManagerUsersComponent },
 
@@ -75,7 +75,7 @@ export const routes: Routes = [
   { path: 'manage-service', component: ManageServiceComponent },
 
   //Staff routes
-  { path: 'staff', component: ViewTestBookingComponent },
+  { path: 'view-test-booking', component: ViewTestBookingComponent },
 
   //Consultant routes
   {

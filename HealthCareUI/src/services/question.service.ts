@@ -20,6 +20,14 @@ export interface QuestionTableDTO {
     email: string;
   };
 }
+export interface NewQuestionDTO {
+  questionID: number;
+  accountID: string;
+  title: string;
+  description: string;
+  status: number;
+  createdAt: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +48,15 @@ export class QuestionService {
   updateQuestion(id: number, question: QuestionTableDTO): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, question );
   }
+
+  createQuestion(question: {
+  accountID: string;
+  title: string;
+  description: string;
+}): Observable<NewQuestionDTO> {
+  return this.http.post<NewQuestionDTO>(this.apiUrl, question);
+}
+
 
   // Có thể bổ sung các hàm khác như getById, update, delete nếu cần
 }

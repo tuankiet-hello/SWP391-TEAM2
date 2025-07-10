@@ -32,4 +32,19 @@ export class AppointmentService {
   updateAppointment(dto: AppointmentDTO) {
     return this.http.put(`${this.apiUrl}/${dto.appointmentID}`, dto);
   }
+
+  createAppointment(data: {
+    accountID: string;
+    appointmentDate: string;
+    appointmentTime: string;
+  }): Observable<any> {
+    return this.http.post(this.apiUrl, data);
+  }
+
+  getAppointmentsByAccountAndDate(accountID: string, date: string): Observable<AppointmentDTO[]> {
+    return this.http.get<AppointmentDTO[]>(
+      `${this.apiUrl}/by-account-and-date?accountID=${accountID}&date=${date}`
+    );
+  }
+
 }

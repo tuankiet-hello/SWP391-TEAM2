@@ -9,6 +9,7 @@ import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -29,3 +30,5 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:5000',
 };
+
+

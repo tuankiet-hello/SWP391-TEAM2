@@ -1,11 +1,10 @@
-  <h2>Quản lý chu kỳ kinh nguyệt</h2>
+<h2>Menstrual cycle management</h2>
 
 <div class="main-layout">
-    
   <!-- Sidebar với các nút chức năng -->
   <div class="sidebar">
-    <button (click)="openAddForm()">Thêm chu kỳ mới</button>
-    <button (click)="predictCycle()">Dự đoán chu kỳ kinh nguyệt</button>
+    <button (click)="openAddForm()">New Cycle</button>
+    <button (click)="predictCycle()">Predict menstrual cycle</button>
   </div>
 
   <!-- Content: Bảng danh sách chu kỳ -->
@@ -13,10 +12,10 @@
     <table>
       <thead>
         <tr>
-          <th>Ngày bắt đầu</th>
-          <th>Ngày kết thúc</th>
-          <th>Ghi chú</th>
-          <th>Hành động</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Note</th>
+          <th>Operations</th>
         </tr>
       </thead>
       <tbody>
@@ -25,7 +24,7 @@
           <td>{{ cycle.end_date }}</td>
           <td>{{ cycle.note }}</td>
           <td>
-            <button (click)="openEditForm(cycle)">Sửa</button>
+            <button (click)="openEditForm(cycle)">Edit</button>
           </td>
         </tr>
       </tbody>
@@ -35,8 +34,9 @@
 <!-- Popup form tạo/sửa chu kỳ -->
 <div class="popup" *ngIf="showForm">
   <app-created-menstrual-cycle
-  (save)="handleSaveCycle($event)"
-   (cancel)="handleCancelForm()"
-></app-created-menstrual-cycle>
-
+    (cancel)="handleCancelForm()"
+    [selectmode]="selectMode"
+    [cycle]="cycle"
+    (success)="loadCycles()"
+  ></app-created-menstrual-cycle>
 </div>

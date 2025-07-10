@@ -58,6 +58,26 @@ namespace HealthCareAPI.Services
             await _unitOfWork.CompleteAsync();
             return true;
         }
+
+        public async Task<NewQuestionDTO> CreateQuestionAsync(NewQuestionDTO dto)
+        {
+            var entity = new Question
+            {
+                AccountID = dto.AccountID,
+                Title = dto.Title,
+                Description = dto.Description,
+                Status = StatusType.Submitted,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _unitOfWork.QuestionRepository.AddAsync(entity);
+            await _unitOfWork.CompleteAsync();
+
+            dto.QuestionID = entity.QuestionID;
+            dto.Status = entity.Status;
+            dto.CreatedAt = entity.CreatedAt;
+            return dto;
+        }
     }
 }
 

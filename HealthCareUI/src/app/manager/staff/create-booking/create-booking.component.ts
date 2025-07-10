@@ -76,7 +76,7 @@ export class CreateBookingComponent implements OnInit {
       result: [''],
       bookingDate: ['', Validators.required],
       bookingTime: ['', Validators.required],
-      status: [0, Validators.required],
+      status: [2, Validators.required],
     });
   }
 
