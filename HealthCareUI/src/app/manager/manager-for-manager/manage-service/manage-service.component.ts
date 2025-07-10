@@ -19,6 +19,8 @@ import {
 import { TestDTO, TestService } from '../../../../services/test.service';
 import { TestEditComponent } from './edit-test-service/edit-test.component';
 import { CreateCustomerComponent } from '../../manager-for-manager/create-customer/create-customer.component';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-manage-service',
   standalone: true,
@@ -36,6 +38,7 @@ import { CreateCustomerComponent } from '../../manager-for-manager/create-custom
     ReactiveFormsModule,
     TestEditComponent,
     CreateCustomerComponent,
+    NzTagModule,
   ],
   providers: [],
   templateUrl: './manage-service.component.html',
@@ -59,11 +62,25 @@ export class ManageServiceComponent {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private testService: TestService
+    private testService: TestService,
+    private message: NzMessageService
   ) {}
 
   tests: TestDTO[] = [];
   displayedTest: TestDTO[] = [];
+
+  filterVisible = {
+    testName: false,
+    description: false,
+    status: false,
+  };
+
+  filter = {
+    testName: null as 'asc' | 'desc' | null,
+    description: null as 'asc' | 'desc' | null,
+    status: null as 'active' | 'inactive' | null,
+  };
+
   loadTests(): void {
     this.testService.getAllListTest().subscribe({
       next: (data) => {
@@ -80,9 +97,18 @@ export class ManageServiceComponent {
     });
   }
   handleTestCreated(): void {
-    // Gọi API load lại danh sách
     this.loadTests();
+    if (this.search.trim() !== '') {
+      this.onSearchChange();
+    }
+    this.message.success('Created new test successfully');
   }
+
+  handleEditSuccess(): void {
+    this.loadTests();
+    this.message.success('Test updated successfully!');
+  }
+
   editTest(id: number): void {
     this.testService.getTestById(id).subscribe({
       next: (user) => {
@@ -112,9 +138,58 @@ export class ManageServiceComponent {
     }
   }
   updateDisplayedUsers(): void {
+    let filtered = [...this.tests];
+
+    // Filter theo search
+    if (this.search.trim()) {
+      const searchLower = this.search.trim().toLowerCase();
+      filtered = filtered.filter(
+        (test) =>
+          test.testName?.toLowerCase().includes(searchLower) ||
+          '' ||
+          test.description?.toLowerCase().includes(searchLower) ||
+          ''
+      );
+    }
+
+    // Filter theo status
+    if (this.filter.status !== null) {
+      filtered = filtered.filter((test) =>
+        this.filter.status === 'active'
+          ? test.active === true
+          : test.active === false
+      );
+    }
+
+    // Sort theo testName
+    if (this.filter.testName) {
+      filtered.sort((a, b) => {
+        const aVal = a.testName?.toLowerCase() || '';
+        const bVal = b.testName?.toLowerCase() || '';
+        return this.filter.testName === 'asc'
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      });
+    }
+
+    // Sort theo description
+    if (this.filter.description) {
+      filtered.sort((a, b) => {
+        const aVal = a.description?.toLowerCase() || '';
+        const bVal = b.description?.toLowerCase() || '';
+        return this.filter.description === 'asc'
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      });
+    }
+
+    // Tính paging
+    this.totalUsers = filtered.length;
+    this.totalPages = Math.ceil(this.totalUsers / this.pageSize);
+
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.displayedTest = this.tests.slice(startIndex, endIndex);
+    this.displayedTest = filtered.slice(startIndex, endIndex);
   }
 
   handleEditModalClose(): void {
@@ -136,5 +211,31 @@ export class ManageServiceComponent {
   }
   closeModal() {
     this.modalType = null;
+  }
+
+  onSearchChange(): void {
+    this.currentPage = 1;
+    this.updateDisplayedUsers();
+  }
+
+  sortTestName(order: 'asc' | 'desc' | null) {
+    this.filter.testName = order;
+    this.filterVisible.testName = false;
+    this.currentPage = 1;
+    this.updateDisplayedUsers();
+  }
+
+  sortDescription(order: 'asc' | 'desc' | null) {
+    this.filter.description = order;
+    this.filterVisible.description = false;
+    this.currentPage = 1;
+    this.updateDisplayedUsers();
+  }
+
+  filterStatus(status: 'active' | 'inactive' | null) {
+    this.filter.status = status;
+    this.filterVisible.status = false;
+    this.currentPage = 1;
+    this.updateDisplayedUsers();
   }
 }
