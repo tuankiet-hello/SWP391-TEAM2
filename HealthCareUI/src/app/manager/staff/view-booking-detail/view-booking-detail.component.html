@@ -16,11 +16,11 @@
         <div class="detail-row">
           <span class="detail-label">BookingID:</span>
           <span class="detail-value">
-            {{ booking.bookingID }} 
+            {{ booking.bookingID }}
           </span>
         </div>
         <div class="detail-row">
-          <span class="detail-label">Full Name:</span>
+          <span class="detail-label">Customer Name:</span>
           <span class="detail-value">
             {{ booking.account.firstName }} {{ booking.account.lastName }}
           </span>
@@ -33,11 +33,11 @@
           <span class="detail-label">Test Name:</span>
           <span class="detail-value">{{ booking.test.testName }}</span>
         </div>
-        
+
         <div class="detail-row">
           <span class="detail-label">Test Price:</span>
           <span class="detail-value">
-            {{ booking.test.price !== undefined && booking.test.price !== null ? (booking.test.price | number) + ' VNĐ' : 'N/A' }}
+            {{ booking.test.price !== undefined && booking.test.price !== null ? (booking.test.price | number) + '' : 'N/A' }}
           </span>
         </div>
         <div class="detail-row">
@@ -64,10 +64,10 @@
             >
               {{ statusMap[booking.status] || 'Không xác định' }}
             </span>
-            
+
           </span>
         </div>
-        
+
       </div>
     </div>
   </div>

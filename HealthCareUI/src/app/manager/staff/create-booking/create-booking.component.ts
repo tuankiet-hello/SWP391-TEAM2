@@ -27,10 +27,12 @@ import {
 import { TestService } from '../../../../services/test.service';
 import { CommonModule } from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 @Component({
   selector: 'app-create-booking',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, NzDatePickerModule, NzTimePickerModule],
   templateUrl: './create-booking.component.html',
   styleUrl: './create-booking.component.css',
 })
@@ -54,6 +56,12 @@ export class CreateBookingComponent implements OnInit {
     private userService: UserService // <- thêm dòng này
   ) {}
 
+  disabledDate = (current: Date): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return current && current < today;
+  };
+
   ngOnInit() {
     this.buildForm();
     //Lấy danh sách test từ service
@@ -70,44 +78,56 @@ export class CreateBookingComponent implements OnInit {
   }
 
   buildForm() {
-    this.form = this.fb.group({
-      accountID: ['', Validators.required], // <-- phải có dòng này
-      testID: ['', Validators.required],
-      result: [''],
-      bookingDate: ['', Validators.required],
-      bookingTime: ['', Validators.required],
-      status: [2, Validators.required],
-    });
-  }
+  this.form = this.fb.group({
+    accountID: [null, Validators.required],
+    testID: [null, Validators.required],
+    result: [''],
+    bookingDate: [null, Validators.required],  // <- Để null thay vì ''
+    bookingTime: [null, Validators.required],  // <- Để null thay vì ''
+    status: [2, Validators.required],
+  });
+}
 
   onCancel() {
     this.close.emit();
   }
 
   submit() {
-    if (this.form.invalid) return;
-    const formData = this.form.value;
-    const payload: CreateTestBookingDTO = {
-      accountID: formData.accountID, // <-- lấy từ form
-      testID: formData.testID,
-      result: formData.result,
-      bookingDate: formData.bookingDate,
-      bookingTime: formData.bookingTime,
-      status: Number(formData.status),
-    };
-    this.bookingService.addBooking(payload).subscribe({
-      next: () => {
-        this.message.success('Booking created successfully!');
-        this.updated.emit(payload);
-        setTimeout(() => {
-          this.close.emit();
-          window.location.reload(); // Tự động đóng modal sau 1 giây
-        }, 1000);
-      },
-      error: (err) => {
-        this.message.error('Failed to create booking. Please try again!');
-        console.error('Create Booking error:', err.error?.errors || err);
-      },
-    });
-  }
+  if (this.form.invalid) return;
+  const formData = this.form.value;
+
+  const date = new Date(formData.bookingDate);
+  const time = new Date(formData.bookingTime);
+
+  // format date: yyyy-MM-dd
+  const formattedDate = date.toISOString().split('T')[0];
+
+  // format time: HH:mm
+  const formattedTime = time.toTimeString().slice(0, 5);
+
+  const payload: CreateTestBookingDTO = {
+    accountID: formData.accountID,
+    testID: formData.testID,
+    result: formData.result,
+    bookingDate: formattedDate,
+    bookingTime: formattedTime,
+    status: Number(formData.status),
+  };
+
+  this.bookingService.addBooking(payload).subscribe({
+    next: () => {
+      this.message.success('Booking created successfully!');
+      this.updated.emit(payload);
+      setTimeout(() => {
+        this.close.emit();
+        window.location.reload();
+      }, 1000);
+    },
+    error: (err) => {
+      this.message.error('Failed to create booking. Please try again!');
+      console.error('Create Booking error:', err.error?.errors || err);
+    },
+  });
+}
+
 }

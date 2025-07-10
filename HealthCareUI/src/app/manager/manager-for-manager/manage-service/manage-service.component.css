@@ -175,15 +175,20 @@ td {
 .taghead {
   display: inline-block;
   padding: 3px 10px;
-  border-radius: 12px;
+  /* border-radius: 12px; */
   font-size: 0.9rem;
   font-weight: 600;
+}
+
+.pricehead{
+  display: flex;
+  justify-content: center;
 }
 
 .tag {
   display: inline-block;
   padding: 3px 10px;
-  border-radius: 12px;
+  /* border-radius: 12px; */
   font-size: 0.8rem;
   font-weight: 600;
 }
@@ -192,6 +197,8 @@ td {
   background-color: #e0f7fa;
   color: #0097a7;
   border-radius: 4px;
+  display: flex;
+  justify-self: center;
 }
 
 .tag.verified {
@@ -202,16 +209,18 @@ td {
 }
 
 .tag.active {
-  background-color: #c9e3f6;
+  background-color: rgb(226, 249, 226);
   color: #0acd27;
   display: flex;
   justify-self: center;
+  border: none;
 }
 .tag.inactive {
-  background-color: #c9e3f6;
+  background-color: #f6c9c9;
   color: #fd2323;
   display: flex;
   justify-self: center;
+  border: none;
 }
 
 .nohead,
@@ -383,4 +392,8 @@ nz-filter-trigger[nzactive="true"] .anticon {
   display: flex;
   width: 100%;
   margin-bottom: 20px;
+}
+
+td{
+  min-height: 71.36px;
 }

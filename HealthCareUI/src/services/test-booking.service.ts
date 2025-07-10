@@ -76,18 +76,36 @@ export class BookingService {
       params,
     });
   }
+
+  // editBooking(
+  //   id: number,
+  //   payload: {
+  //     testID: number;
+  //     result: string;
+  //     bookingDate: string;
+  //     bookingTime: string;
+  //     status: number;
+  //   }
+  // ): Observable<any> {
+  //   return this.http.put(`${this.apiUrl}/${id}`, payload);
+  // }
+
   editBooking(
-    id: number,
-    payload: {
-      testID: number;
-      result: string;
-      bookingDate: string;
-      bookingTime: string;
-      status: number;
-    }
-  ): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, payload);
+  id: number,
+  accountID: string, // 👈 thêm tham số accountID ở đây
+  payload: {
+    testID: number;
+    result: string;
+    bookingDate: string;
+    bookingTime: string;
+    status: number;
   }
+): Observable<any> {
+  const params = new HttpParams().set('accountID', accountID); // 👈 thêm accountID vào query
+  return this.http.put(`${this.apiUrl}/${id}`, payload, { params });
+}
+
+
   addBooking(payload: {
     accountID: string;
     testID: number;
