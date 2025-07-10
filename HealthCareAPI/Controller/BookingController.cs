@@ -146,7 +146,7 @@ namespace HealthCareAPI.Controller
                                             <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
                                                 <li><b>Date:</b> {testBookingDto.BookingDate:dd/MM/yyyy}</li>
                                                 <li><b>Time:</b> {testBookingDto.BookingTime:HH\:mm}</li>
-                                                <li><b>Test:</b> {testName}</li>
+                                                <li><b>Test Name:</b> {testName}</li>
                                             </ul>
                                             <p>Best regards,</p>
                                             <p><b>Gender Health Care Team</b></p>
@@ -166,7 +166,7 @@ namespace HealthCareAPI.Controller
                                             <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
                                                 <li><b>Date:</b> {testBookingDto.BookingDate:dd/MM/yyyy}</li>
                                                 <li><b>Time:</b> {testBookingDto.BookingTime:HH\:mm}</li>
-                                                <li><b>Test:</b> {testName}</li>
+                                                <li><b>Test Name:</b> {testName}</li>
                                             </ul>
                                             <p>Best regards,</p>
                                             <p><b>Gender Health Care Team</b></p>
@@ -186,7 +186,7 @@ namespace HealthCareAPI.Controller
                                             <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
                                                 <li><b>Date:</b> {testBookingDto.BookingDate:dd/MM/yyyy}</li>
                                                 <li><b>Time:</b> {testBookingDto.BookingTime:HH\:mm}</li>
-                                                <li><b>Test:</b> {testName}</li>
+                                                <li><b>Test Name:</b> {testName}</li>
                                                 <li><b>Result:</b> {testBookingDto.Result}</li>
                                             </ul>
                                             <p>Best regards,</p>
@@ -236,14 +236,49 @@ namespace HealthCareAPI.Controller
 
             try
             {
-                // Gán mặc định nếu chưa truyền (phòng ngừa client gửi thiếu)
+                // Gán mặc định nếu chưa truyền
                 testBookingDto.Status = StatusType.Submitted;
                 testBookingDto.Result = null;
 
                 // Thêm vào database
                 await _testBookingService.AddTestBookingAsync(testBookingDto);
 
-                return Ok(new { message = "Booking created successfully." });
+                // Gửi email xác nhận đã nhận được đặt lịch
+                var account = await _unitOfWork.Repository<Account>().GetByIdAsync(testBookingDto.AccountID);
+                var test = await _unitOfWork.Repository<Test>().GetByIdAsync(testBookingDto.TestID);
+
+                if (account != null && test != null)
+                {
+                    var fullName = $"{account.FirstName} {account.LastName}".Trim();
+                    var email = account.Email;
+                    var testName = test.TestName;
+
+                    var subject = "We have received your test booking - Gender Health Care";
+                    var emailBody = $@"
+                        <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+                            <p>Dear <b>{fullName}</b>,</p>
+                            <p>Thanks for booking a test with <b>Gender Health Care</b>.</p>
+                            <p>We have received your booking request and our team will review it shortly.</p>
+                            <p>Below are the details of your test booking:</p>
+                            <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
+                                <li><b>Date:</b> {testBookingDto.BookingDate:dd/MM/yyyy}</li>
+                                <li><b>Time:</b> {testBookingDto.BookingTime:HH\:mm}</li>
+                                <li><b>Test Name:</b> {testName}</li>
+                            </ul>
+                            <p>Best regards,</p>
+                            <p><b>Gender Health Care Team</b></p>
+                            <p style='margin-top:32px;'>If you have any concerns, please contact our team.</p>
+                            <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+                            <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically. Please do not reply.</p>
+                        </div>";
+
+                    if (!string.IsNullOrEmpty(email))
+                    {
+                        await _emailService.SendEmailAsync(email, subject, emailBody);
+                    }
+                }
+
+                return Ok(new { message = "Booking created and email sent successfully." });
             }
             catch (Exception ex)
             {
@@ -254,6 +289,7 @@ namespace HealthCareAPI.Controller
                 });
             }
         }
+
 
     }
 }
