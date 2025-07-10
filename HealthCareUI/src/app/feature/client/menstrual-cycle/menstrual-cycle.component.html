@@ -4,7 +4,8 @@
   <!-- Sidebar với các nút chức năng -->
   <div class="sidebar">
     <button (click)="openAddForm()">New Cycle</button>
-    <button (click)="predictCycle()">Predict menstrual cycle</button>
+    <button (click)="openPredict()">Predict menstrual cycle</button>
+    <!-- <button (click)="remindCycle()">Remind</button> -->
   </div>
 
   <!-- Content: Bảng danh sách chu kỳ -->
@@ -39,4 +40,12 @@
     [cycle]="cycle"
     (success)="loadCycles()"
   ></app-created-menstrual-cycle>
+</div>
+<div class="popup" *ngIf="showFormPredict">
+  <app-predict-view
+    (close)="handleCancelForm()"
+    (success)="loadCycles()"
+    [accountId]="accountId"
+    [predict]="predict"
+  ></app-predict-view>
 </div>

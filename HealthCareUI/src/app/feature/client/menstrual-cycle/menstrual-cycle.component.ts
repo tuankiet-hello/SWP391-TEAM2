@@ -1,4 +1,5 @@
 import { CreatedMenstrualCycleComponent } from './created-menstrual-cycle/created-menstrual-cycle.component';
+import { PredictViewComponent } from './predict-cycle/predict-cycle.component';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -15,19 +16,26 @@ interface MenstrualCycle {
 
 @Component({
   selector: 'app-menstrual-cycle',
-  imports: [CommonModule, FormsModule, CreatedMenstrualCycleComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CreatedMenstrualCycleComponent,
+    PredictViewComponent,
+  ],
   templateUrl: './menstrual-cycle.component.html',
   styleUrls: ['./menstrual-cycle.component.css'],
 })
 export class MenstrualCycleComponent implements OnInit {
   cycles: MenstrualCycleDTO[] = [];
   showForm = false;
+  showFormPredict = false;
   editingCycle: MenstrualCycle | null = null;
   form: MenstrualCycle = { start_date: '', end_date: '', note: '' };
   prediction: any = null;
   selectMode: string = 'new';
   cycle!: MenstrualCycleDTO;
   accountId!: string;
+  predict!: any;
   constructor(
     private authService: AuthService,
     private mestrualCycleService: MenstrualService
@@ -59,12 +67,16 @@ export class MenstrualCycleComponent implements OnInit {
   // Các hàm khác như openAddForm, openEditForm, handleSaveCycle...
 
   handleCancelForm() {
+    this.showFormPredict = false;
     this.showForm = false;
     this.editingCycle = null;
   }
   cancelForm() {
     this.showForm = false;
     this.editingCycle = null;
+  }
+  openPredict() {
+    this.predictCycle();
   }
   // handleSaveCycle() {
   //   const accountId = this.authService.getIdFromToken();
@@ -115,11 +127,32 @@ export class MenstrualCycleComponent implements OnInit {
     this.mestrualCycleService.predictCycle(this.accountId).subscribe({
       next: (res) => {
         // alert(res.message);
-        console.log(res);
+        this.predict = res;
+        console.log(this.predict);
+        this.showFormPredict = true;
       },
       error: (err) => {
         console.error('Lỗi khi dự đoán chu kỳ:', err);
         alert('Tạo dự đoán chu kỳ thất bại, vui lòng thử lại.');
+      },
+    });
+  }
+
+  remindCycle() {
+    if (this.cycles.length < 2) {
+      alert('Cần ít nhất 2 chu kỳ để dự đoán.');
+      return;
+    }
+
+    this.mestrualCycleService.remindCycle(this.accountId).subscribe({
+      next: (res) => {
+        // alert(res.message);
+        console.log('thành công nhắc');
+        console.log(res);
+      },
+      error: (err) => {
+        console.error('Lỗi khi nhắc đoán chu kỳ:', err);
+        alert('nhắc dự đoán chu kỳ thất bại, vui lòng thử lại.');
       },
     });
   }
