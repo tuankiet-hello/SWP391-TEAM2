@@ -14,7 +14,7 @@ namespace HealthCareAPI.Controller
         private readonly IConfiguration _configuration;
 
         private readonly MenstrualCycleService _menstrualCycleService;
-        public MenstrualCycleController(MenstrualCycleService menstrualCycleService
+        public MenstrualCycleController(MenstrualCycleService menstrualCycleService,
               EmailService emailService)
         {
             _menstrualCycleService = menstrualCycleService;
