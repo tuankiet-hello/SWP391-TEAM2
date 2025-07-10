@@ -46,9 +46,9 @@ namespace HealthCareAPI.data
         {
             await CreateUserAsync(userManager, "admin", "admin@example.com", "Admin@123", "Admin", "User", new DateOnly(1990, 1, 1), "admin", true);
             await CreateUserAsync(userManager, "staff", "staff@example.com", "Staff@123", "Staff", "User", new DateOnly(1991, 2, 2), "staff", false);
-            await CreateUserAsync(userManager, "consultant", "consultant@example.com", "Consultant@123", "Consultant", "User", new DateOnly(1992, 3, 3), "consultant", true);
-            await CreateUserAsync(userManager, "manager", "manager@example.com", "Manager@123", "Manager", "User", new DateOnly(1993, 4, 4), "manager", true);
-            await CreateUserAsync(userManager, "customer", "customer@example.com", "Customer@123", "Customer", "User", new DateOnly(1994, 5, 5), "customer", false);
+            await CreateUserAsync(userManager, "consultant", "tuankiet.08102004@gmail.com", "Consultant@123", "Consultant", "User", new DateOnly(1992, 3, 3), "consultant", true);
+            await CreateUserAsync(userManager, "manager", "chikietsg@gmail.com", "Manager@123", "Manager", "User", new DateOnly(1993, 4, 4), "manager", true);
+            await CreateUserAsync(userManager, "customer", "huyheo05092004@gmail.com", "Customer@123", "Customer", "User", new DateOnly(1994, 5, 5), "customer", false);
 
             await CreateUserAsync(userManager, "alice", "alice@example.com", "Alice@123", "Alice", "Smith", new DateOnly(1995, 6, 6), "customer", true);
             await CreateUserAsync(userManager, "bob", "bob@example.com", "Bob@123", "Bob", "Johnson", new DateOnly(1996, 7, 7), "customer", true);

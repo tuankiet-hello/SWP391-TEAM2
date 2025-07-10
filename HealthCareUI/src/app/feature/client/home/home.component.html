@@ -52,7 +52,7 @@
             Easily schedule a video or chat consultation with doctors
             and health experts from anywhere.
           </p>
-          <button>View Details</button>
+          <button nz-button nzType="primary" (click)="openAppointmentModal()">View Details</button>
         </div>
         <div class="service-card">
           <div class="icon icon-bg"><i class="fa-solid fa-book-medical"></i></div>
@@ -61,7 +61,7 @@
             Submit your health-related questions and receive professional
             answers from certified specialists.
           </p>
-          <button>View Details</button>
+          <button nz-button (click)="showModal = true">View Details</button>
         </div>
         <div class="service-card">
           <div class="icon icon-bg"><i class="fa-solid fa-heart-pulse"></i></div>
@@ -74,6 +74,16 @@
         </div>
       </div>
     </section>
+
+    <app-ask-a-question
+      *ngIf="showModal"
+      (close)="showModal = false">
+    </app-ask-a-question>
+
+    <app-make-appointment
+      *ngIf="showMakeAppointment"
+      (close)="closeAppointmentModal()">
+    </app-make-appointment>
 
     <!-- Blog chia sẻ -->
 

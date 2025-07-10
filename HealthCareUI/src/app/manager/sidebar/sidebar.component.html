@@ -1,137 +1,82 @@
 <div class="container">
-  <!-- Nút mở modal -->
-  <!-- role ADMIN -->
-  <!-- <button class="new-btn" *ngIf="role === 'admin'" (click)="openUserModal()">
-    + New User
-  </button> -->
+  <div class="menu-wrapper">
+    <ul class="menu">
+      <!-- Admin -->
+      <li routerLinkActive="active" *ngIf="role === 'admin'">
+        <a class="menu-item" [routerLink]="['/manager-users']">
+          <nz-icon nzType="team" nzTheme="outline"></nz-icon>
+          <span class="menu-text">User Management</span>
+        </a>
+      </li>
+      <!-- Admin -->
+      <li routerLinkActive="active" *ngIf="role === 'admin'">
+        <a class="menu-item">
+          <nz-icon nzType="bar-chart" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Dashboard</span>
+        </a>
+      </li>
 
-  <!-- Role STAFF -->
-  <!-- <button
-    class="new-btn"
-    *ngIf="role === 'staff'"
-    (click)="openCustomerModal()"
-  >
-    + New User
-  </button> -->
-  <!-- <button class="new-btn" *ngIf="role === 'staff'" (click)="openBookingModal()">
-    + New Booking
-  </button> -->
+      <!-- Admin, Manager -->
+      <li routerLinkActive="active">
+        <a class="menu-item">
+          <nz-icon nzType="message" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Feedback Management</span>
+        </a>
+      </li>
 
-  <!-- Role MANAGER -->
-  <!-- <button class="new-btn" *ngIf="role === 'manager'" (click)="openUserModal()">
-    + New User
-  </button> -->
-  <!-- <button
-    class="new-btn"
-    *ngIf="role === 'manager'"
-    (click)="openCustomerModal()"
-  >
-    + New Test
-  </button> -->
+      <!-- Manager -->
+      <li routerLinkActive="active" *ngIf="role === 'manager'">
+        <a class="menu-item" [routerLink]="['/manager-customers']">
+          <nz-icon nzType="team" nzTheme="outline"></nz-icon>
+          <span class="menu-text">User Management</span>
+        </a>
+      </li>
+      <!-- Manager -->
+      <li routerLinkActive="active" *ngIf="role === 'manager'">
+        <a class="menu-item" [routerLink]="['/manage-service']">
+          <nz-icon nzType="database" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Test Type Management</span>
+        </a>
+      </li>
 
-  <!-- Render modal nếu showModal === true -->
-  <!-- <div class="createAdmin">
-    <app-create-user
-      *ngIf="modalType === 'user'"
-      (close)="closeModal()"
-    ></app-create-user>
-  </div> -->
-  <!--
-  <div class="createManager">
-    <app-create-customer
-      *ngIf="modalType === 'customer'"
-      (close)="closeModal()"
-      (testCreated)="handleTestCreated()"
-    ></app-create-customer>
-  </div> -->
-  <!--
-  <div class="createBooking">
-    <app-create-booking *ngIf="modalType === 'booking'" (close)="closeModal()">
-    </app-create-booking>
-  </div> -->
+      <!-- Consultant-->
+      <li routerLinkActive="active" *ngIf="role == 'consultant'">
+        <a class="menu-item" [routerLink]="['/view-consultation-schedule']">
+          <nz-icon nzType="schedule" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Consultation Schedule Management</span>
+        </a>
+      </li>
+      <!-- Consultant  -->
+      <li routerLinkActive="active" *ngIf="role == 'consultant'">
+        <a class="menu-item" [routerLink]="['/view-question']">
+          <nz-icon nzType="question-circle" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Question Management</span>
+        </a>
+      </li>
 
-  <ul class="menu">
-    <!-- Admin -->
-    <li routerLinkActive="active" *ngIf="role === 'admin'">
-      <a class="menu-item" [routerLink]="['/manager-users']">
-        <nz-icon nzType="team" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Manager Users</span>
-      </a>
-    </li>
-    <!-- Admin -->
-    <li routerLinkActive="active" *ngIf="role === 'admin'">
-      <a class="menu-item">
-        <nz-icon nzType="bar-chart" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Dashboard</span>
-      </a>
-    </li>
+      <!-- Staff -->
+      <li routerLinkActive="active" *ngIf="role === 'staff'">
+        <a class="menu-item" [routerLink]="['/view-test-booking']">
+          <nz-icon nzType="database" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Diagnostic Test Scheduling Management</span>
+        </a>
+      </li>
+      <!-- Staff -->
+      <li routerLinkActive="active" *ngIf="role === 'staff'">
+        <a class="menu-item" [routerLink]="['/manage-service']">
+          <nz-icon nzType="database" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Test Type Management</span>
+        </a>
+      </li>
 
-    <!-- Manager -->
-    <li routerLinkActive="active" *ngIf="role === 'manager'">
-      <a class="menu-item" [routerLink]="['/manager-customers']">
-        <nz-icon nzType="team" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Users</span>
-      </a>
-    </li>
-    <!-- Manager -->
-    <li routerLinkActive="active" *ngIf="role === 'manager'">
-      <a class="menu-item" [routerLink]="['/manage-service']">
-        <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Service</span>
-      </a>
-    </li>
+      <!-- All -->
+      <li routerLinkActive="active" class="backhome" >
+        <a class="menu-item" [routerLink]="['/home']">
+          <nz-icon nzType="arrow-left" nzTheme="outline"></nz-icon>
+          <span class="menu-text">Home</span>
+        </a>
+      </li>
 
-    <!-- Consultation and Staff -->
-    <li
-      routerLinkActive="active"
-      *ngIf="role === 'staff' || role == 'consultant'"
-    >
-      <a class="menu-item" [routerLink]="['/view-consultation-schedule']">
-        <nz-icon nzType="schedule" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Consultation Schedule</span>
-      </a>
-    </li>
-
-    <!-- Staff -->
-    <li routerLinkActive="active" *ngIf="role === 'staff'">
-      <a class="menu-item" [routerLink]="['/staff']">
-        <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Staff</span>
-      </a>
-    </li>
-    <!-- Staff -->
-    <li routerLinkActive="active" *ngIf="role === 'staff'">
-      <a class="menu-item" [routerLink]="['/manage-service']">
-        <nz-icon nzType="database" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Test Service</span>
-      </a>
-    </li>
-    <!-- Chưa Phân Role  -->
-    <li routerLinkActive="active">
-      <a class="menu-item" [routerLink]="['/view-question']">
-        <nz-icon nzType="question-circle" nzTheme="outline"></nz-icon>
-        <span class="menu-text">View Question</span>
-      </a>
-    </li>
-    <!-- chưa phân role -->
-    <li routerLinkActive="active">
-      <a class="menu-item">
-        <nz-icon nzType="message" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Feedbacks</span>
-      </a>
-    </li>
-
-    <!-- <li routerLinkActive="active" *ngIf="role === 'manager'">
-      <a class="menu-item">
-        <nz-icon nzType="clock-circle" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Set working time</span>
-      </a>
-    </li> -->
-    <li routerLinkActive="active" class="backhome">
-      <a class="menu-item" [routerLink]="['/home']">
-        <nz-icon nzType="arrow-left" nzTheme="outline"></nz-icon>
-        <span class="menu-text">Back Home</span>
-      </a>
-    </li>
-  </ul>
+    </ul>
+  </div>
 </div>
