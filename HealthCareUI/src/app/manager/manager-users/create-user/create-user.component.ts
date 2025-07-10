@@ -10,6 +10,7 @@ import {
   EyeInvisibleOutline,
 } from '@ant-design/icons-angular/icons';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-create-user',
   standalone: true,
@@ -31,7 +32,8 @@ export class CreateUserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private message: NzMessageService
   ) {}
 
   ngOnInit(): void {
@@ -88,18 +90,20 @@ export class CreateUserComponent implements OnInit {
       this.userService.createUser(payload).subscribe({
         next: (response: any) => {
           console.log('Thành Công');
+          this.message.success('User created successfully!');
+
         },
         error: (error) => {
           console.error('CreateUser error:', error);
           if (error.error && typeof error.error === 'object') {
             if (error.error.errors) {
               const errorMessages = Object.values(error.error.errors).flat();
-              alert(errorMessages.join('\n'));
+              this.message.error(errorMessages.join('\n'));
             } else if (error.error.message) {
-              alert(error.error.message);
+              this.message.error(error.error.message);
             }
           } else {
-            alert('Thêm thất bại. Vui lòng thử lại.');
+            this.message.error('Failed to add user. Please try again.');
           }
           // this.isSubmitting = false;
         },

@@ -67,10 +67,12 @@ export class EditAppointmentComponent implements OnInit {
     const selectedDateTime = new Date(`${selectedDateStr}T${hour}:${minute}:00`);
     const now = new Date();
 
+    // Nếu trạng thái là Submitted (0), Pending (1), hoặc Confirmed (2) thì mới kiểm tra quá khứ
+    const restrictedStatuses = [0, 1, 2];
+    const status = +this.editData.status;
 
-
-    if (selectedDateTime <= now) {
-      this.message.error('The appointment must be in the future.!');
+    if (restrictedStatuses.includes(status) && selectedDateTime <= now) {
+      this.message.error('The appointment must be in the future!');
       return;
     }
 
@@ -78,10 +80,12 @@ export class EditAppointmentComponent implements OnInit {
       ...this.data,
       appointmentDate: selectedDateStr,
       appointmentTime: `${hour}:${minute}`,
-      status: +this.editData.status
+      status: status
     };
+
     this.save.emit(updatedAppointment);
   }
+
 
   onCancel() {
     this.cancel.emit(); // Báo cho cha biết đã hủy

@@ -11,6 +11,7 @@ import {
   EyeInvisibleOutline,
 } from '@ant-design/icons-angular/icons';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-create-customer',
   standalone: true,
@@ -35,7 +36,8 @@ export class CreateCustomerComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private testService: TestService,
-    private authService: AuthService
+    private authService: AuthService,
+    private message: NzMessageService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +64,7 @@ export class CreateCustomerComponent implements OnInit {
     const payload = this.createTestForm.value;
     this.testService.addTest(payload).subscribe({
       next: () => {
-        alert('✅ Thêm test thành công!');
+        // alert('✅ Thêm test thành công!');
         this.createTestForm.reset({ Active: true }); // reset form
         this.testCreated.emit();
         this.closeModal();
@@ -70,7 +72,7 @@ export class CreateCustomerComponent implements OnInit {
       },
       error: (err) => {
         console.error('❌ Lỗi khi thêm test:', err);
-        alert('❌ Không thể thêm test. Kiểm tra lại!');
+        this.message.error('Failed to add test. Please check again!');
       },
     });
   }
@@ -92,18 +94,19 @@ export class CreateCustomerComponent implements OnInit {
       this.userService.createUser(payload).subscribe({
         next: (response: any) => {
           console.log('Thành Công');
+          this.message.success('User created successfully!');
         },
         error: (error) => {
           console.error('CreateUser error:', error);
           if (error.error && typeof error.error === 'object') {
             if (error.error.errors) {
               const errorMessages = Object.values(error.error.errors).flat();
-              alert(errorMessages.join('\n'));
+              this.message.error(errorMessages.join('\n'));
             } else if (error.error.message) {
-              alert(error.error.message);
+              this.message.error(error.error.message);
             }
           } else {
-            alert('Thêm thất bại. Vui lòng thử lại.');
+            this.message.error('Failed to add user. Please try again.');
           }
           // this.isSubmitting = false;
         },

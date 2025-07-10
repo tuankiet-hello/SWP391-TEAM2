@@ -80,7 +80,7 @@ namespace HealthCareAPI.Controller
 
                     case 3: // Cancelled
                         subject = "Your Appointment Has Been Cancelled - Gender Health Care";
-                        emailBody = $@"<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>+90,hh
+                        emailBody = $@"<div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
                             <p>Dear <b>{fullName}</b>,</p>
                             <p>Thanks for reaching out to <b>Gender Health Care</b></p>
                             <p>We regret to inform you that your appointment has been cancelled.</p>
@@ -144,6 +144,7 @@ namespace HealthCareAPI.Controller
                     <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
                         <p>Dear <b>{fullName}</b>,</p>
                         <p>Your appointment has been successfully booked.</p>
+                        <p>Below are the details of your appointment:</p>
                         <ul>
                             <li><b>Date:</b> {dto.AppointmentDate:dd/MM/yyyy}</li>
                             <li><b>Time:</b> {dto.AppointmentTime:HH\:mm}</li>

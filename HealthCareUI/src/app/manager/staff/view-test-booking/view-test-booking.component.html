@@ -15,7 +15,7 @@
           <nz-icon nzType="search" class="search-icon"></nz-icon>
           <input
             nz-input
-            placeholder="Search by name"
+            placeholder="Search by customer name"
             class="search-box"
             [(ngModel)]="searchTerm"
             (ngModelChange)="onSearchChange()"
@@ -43,7 +43,7 @@
               <th>
                 <div style="display: flex; align-items: center">
                   <span class="taghead namehead" style="width: 170px"
-                    >Full Name</span
+                    >Customer Name</span
                   >
                 </div>
               </th>
@@ -162,6 +162,7 @@
         [bookingID]="idChoose!"
         (close)="handleEditModalClose()"
         (updated)="handleBookingUpdated($event)"
+        [accountID]="selectedEditBooking.accountID"
       >
       </app-edit-booking>
 

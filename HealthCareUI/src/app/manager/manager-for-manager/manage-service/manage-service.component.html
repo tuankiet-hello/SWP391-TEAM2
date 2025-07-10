@@ -18,7 +18,13 @@
           <nz-icon nzType="search" class="search-icon"></nz-icon>
           <!-- dùng nz-input -->
           <div class="searchAdd">
-            <input nz-input placeholder="Search by name" class="search-box" />
+            <input
+              nz-input
+              placeholder="Search by test name or description"
+              class="search-box"
+              [(ngModel)]="search"
+              (ngModelChange)="onSearchChange()"
+            />
             <button
               class="new-btn"
               *ngIf="role === 'manager'"
@@ -38,39 +44,60 @@
               <th>
                 <span class="taghead nohead" style="width: 40px">No.</span>
               </th>
+
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead namehead" style="width: 190px"
+                  <span class="taghead namehead" style="max-width: 320px; min-width: 320px;"
                     >Test Name</span
                   >
-                  <!-- <nz-filter-trigger
-                    [(nzVisible)]="filterVisible.fullName"
-                    [nzActive]="!!filter.fullNameSort"
-                    [nzDropdownMenu]="fullNameMenu"
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.testName"
+                    [nzActive]="!!filter.testName"
+                    [nzDropdownMenu]="testNameMenu"
                     style="margin-left: 4px"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
-                  </nz-filter-trigger> -->
+                  </nz-filter-trigger>
+                  <nz-dropdown-menu #testNameMenu="nzDropdownMenu">
+                    <ul nz-menu>
+                      <li nz-menu-item (click)="sortTestName(null)">All</li>
+                      <li nz-menu-item (click)="sortTestName('asc')">A → Z</li>
+                      <li nz-menu-item (click)="sortTestName('desc')">Z → A</li>
+                    </ul>
+                  </nz-dropdown-menu>
                 </div>
               </th>
+
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead descriptionhead" style="width: 240px"
+                  <span class="taghead descriptionhead" style="width: 420px"
                     >Description</span
                   >
-                  <!-- <nz-filter-trigger
-                    [(nzVisible)]="filterVisible.email"
-                    [nzActive]="!!filter.emailSort"
-                    [nzDropdownMenu]="emailMenu"
+                  <nz-filter-trigger
+                    [(nzVisible)]="filterVisible.description"
+                    [nzActive]="!!filter.description"
+                    [nzDropdownMenu]="descriptionMenu"
                     style="margin-left: 4px"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
-                  </nz-filter-trigger> -->
+                  </nz-filter-trigger>
+                  <nz-dropdown-menu #descriptionMenu="nzDropdownMenu">
+                    <ul nz-menu>
+                      <li nz-menu-item (click)="sortDescription(null)">All</li>
+                      <li nz-menu-item (click)="sortDescription('asc')">
+                        A → Z
+                      </li>
+                      <li nz-menu-item (click)="sortDescription('desc')">
+                        Z → A
+                      </li>
+                    </ul>
+                  </nz-dropdown-menu>
                 </div>
               </th>
+
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead pricehead" style="width: 90px"
+                  <span class="taghead pricehead" style="width: 50px"
                     >Price</span
                   >
                   <!-- <nz-filter-trigger
@@ -83,30 +110,45 @@
                   </nz-filter-trigger> -->
                 </div>
               </th>
+
               <th>
                 <div style="display: flex; align-items: center">
                   <span class="taghead statushead" style="width: 70px"
                     >Status</span
                   >
-                  <!-- <nz-filter-trigger
+                  <nz-filter-trigger
                     [(nzVisible)]="filterVisible.status"
                     [nzActive]="!!filter.status"
                     [nzDropdownMenu]="statusMenu"
                     style="margin-left: 4px"
                   >
                     <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
-                  </nz-filter-trigger> -->
+                  </nz-filter-trigger>
+                  <nz-dropdown-menu #statusMenu="nzDropdownMenu">
+                    <ul nz-menu>
+                      <li nz-menu-item (click)="filterStatus(null)">
+                        All
+                      </li>
+                      <li nz-menu-item (click)="filterStatus('active')">
+                        Active
+                      </li>
+                      <li nz-menu-item (click)="filterStatus('inactive')">
+                        Inactive
+                      </li>
+                    </ul>
+                  </nz-dropdown-menu>
                 </div>
               </th>
+
               <th *ngIf="role === 'manager'">
-                <span class="taghead operationhead" style="width: 100px"
-                  >Operations</span
+                <span class="taghead operationhead" style="width: 40px"
+                  >Edit</span
                 >
               </th>
             </tr>
           </thead>
 
-          <tbody>
+          <tbody >
             <tr *ngFor="let user of displayedTest; let i = index">
               <td>
                 <span class="tag no">{{
@@ -122,15 +164,13 @@
               <td>
                 <span class="tag user">{{ user.price }}</span>
               </td>
+
               <td>
-                <span class="tag active" *ngIf="user.active === true"
-                  >Active</span
-                >
-                <span class="tag inactive" *ngIf="user.active === false"
-                  >Inactive</span
-                >
-              </td>
-              <td div class="operation-icons" *ngIf="role === 'manager'">
+  <nz-tag class ="tag active" *ngIf="user.active === true" nzColor="green">Active</nz-tag>
+  <nz-tag class = "tag inactive" *ngIf="user.active === false" nzColor="red">Inactive</nz-tag>
+</td>
+
+              <td class="operation-icons" *ngIf="role === 'manager'">
                 <div
                   class="icon-box edit"
                   title="Edit"
@@ -162,7 +202,7 @@
         *ngIf="isEditModalVisible && selectedEditTest"
         [user]="selectedEditTest"
         (close)="handleEditModalClose()"
-        (updated)="loadTests()"
+        (updated)="handleEditSuccess()"
       ></app-test-edit>
 
       <!-- phân trang -->
