@@ -83,7 +83,8 @@ export const routes: Routes = [
     component: ViewConsultationScheduleComponent,
   },
   { path: 'view-question', component: ViewQuestionComponent },
-
+  //customer
+  { path: 'menstrual-cycle', component: MenstrualCycleComponent },
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní

@@ -138,22 +138,22 @@ export class MenstrualCycleComponent implements OnInit {
     });
   }
 
-  remindCycle() {
-    if (this.cycles.length < 2) {
-      alert('Cần ít nhất 2 chu kỳ để dự đoán.');
-      return;
-    }
+  // remindCycle() {
+  //   if (this.cycles.length < 2) {
+  //     alert('Cần ít nhất 2 chu kỳ để dự đoán.');
+  //     return;
+  //   }
 
-    this.mestrualCycleService.remindCycle(this.accountId).subscribe({
-      next: (res) => {
-        // alert(res.message);
-        console.log('thành công nhắc');
-        console.log(res);
-      },
-      error: (err) => {
-        console.error('Lỗi khi nhắc đoán chu kỳ:', err);
-        alert('nhắc dự đoán chu kỳ thất bại, vui lòng thử lại.');
-      },
-    });
-  }
+  //   this.mestrualCycleService.remindCycle(this.accountId).subscribe({
+  //     next: (res) => {
+  //       // alert(res.message);
+  //       console.log('thành công nhắc');
+  //       console.log(res);
+  //     },
+  //     error: (err) => {
+  //       console.error('Lỗi khi nhắc đoán chu kỳ:', err);
+  //       alert('nhắc dự đoán chu kỳ thất bại, vui lòng thử lại.');
+  //     },
+  //   });
+  // }
 }

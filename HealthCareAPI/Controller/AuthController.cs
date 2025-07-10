@@ -390,7 +390,7 @@ namespace HealthCareAPI.Controller
             var encodedToken = System.Net.WebUtility.UrlEncode(token);
             var confirmationLink = $"{_configuration["ClientUrl"]}/confirm-email?email={user.Email}&token={encodedToken}";
             var emailBody = $@"
-                    <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+                    <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#042145;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
                     <h2 style='text-align:center;margin-bottom:24px;'>Welcome to <b>Health Care System!</b></h2>
                     <p>Dear <b>{user.UserName},</p>
                     <p>You have just requested to resend your account confirmation email at <b>Health Care System</b>.</p>
