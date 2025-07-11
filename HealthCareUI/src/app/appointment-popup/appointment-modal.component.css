@@ -140,7 +140,7 @@ h2 {
 .error-message {
   min-height: 10px; /* luôn chiếm khoảng */
   font-size: 10px;
-  color: red;
+  color: rgb(108, 5, 5);
   margin-top: 4px;
   transition: opacity 0.2s ease;
 }
@@ -152,7 +152,6 @@ h2 {
 .error-message.visible {
   visibility: visible;
 }
-
 
 button[disabled] {
   opacity: 0.6;
