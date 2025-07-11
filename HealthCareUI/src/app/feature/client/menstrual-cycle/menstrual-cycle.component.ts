@@ -10,6 +10,9 @@ import {
 import { AuthService } from '../../../../services/auth.service';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { ChartOptions } from 'chart.js';
+
 interface MenstrualCycle {
   start_date: string; // ISO date string
   end_date: string;
@@ -24,8 +27,10 @@ interface MenstrualCycle {
     CreatedMenstrualCycleComponent,
     PredictViewComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    BaseChartDirective
   ],
+   providers: [provideCharts(withDefaultRegisterables())],
   templateUrl: './menstrual-cycle.component.html',
   styleUrls: ['./menstrual-cycle.component.css'],
 })
@@ -160,4 +165,31 @@ export class MenstrualCycleComponent implements OnInit {
       },
     });
   }
+  
+    pieChartData = {
+      labels: ['Ngày có kinh', 'Ngày kết thúc', 'Ngày dễ có thai'],
+      datasets: [{
+        data: [10, 5, 15],
+        backgroundColor: ['#4f46e5', '#6366f1', '#a78bfa'],
+        hoverBackgroundColor: ['#4338ca', '#4f46e5', '#8b5cf6']
+      }]
+    };
+  
+  pieChartOptions: ChartOptions<'pie'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom',  // giá trị này hợp lệ
+        labels: {
+          font: {
+            size: 13
+          }
+        }
+      },
+      tooltip: {
+        enabled: true
+      }
+    }
+  };
+  
 }

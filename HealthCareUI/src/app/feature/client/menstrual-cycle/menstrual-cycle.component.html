@@ -1,14 +1,23 @@
 <app-header></app-header>
 <div class="container">
   <h1 style="text-align: left;">Menstrual cycle management</h1>
+
+
   <hr>
   <div class="main-layout">
-    <!-- Sidebar với các nút chức năng -->
-    <div class="sidebar">
-      <button (click)="openAddForm()">New Cycle</button>
-      <button (click)="openPredict()">Predict menstrual cycle</button>
-      <!-- <button (click)="remindCycle()">Remind</button> -->
+    <div class="left-side">
+      <div class="chart-container">
+        <canvas baseChart [data]="pieChartData" [options]="pieChartOptions" [type]="'pie'">
+        </canvas>
+      </div>
+      <!-- Sidebar với các nút chức năng -->
+      <div class="sidebar" style="margin-left: 50px;margin-top: 40px;">
+        <button (click)="openAddForm()">New Cycle</button>
+        <button (click)="openPredict()">Predict menstrual cycle</button>
+        <!-- <button (click)="remindCycle()">Remind</button> -->
+      </div>
     </div>
+
 
     <!-- Content: Bảng danh sách chu kỳ -->
     <div class="content">

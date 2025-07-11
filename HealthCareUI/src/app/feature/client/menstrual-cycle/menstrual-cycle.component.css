@@ -171,7 +171,10 @@ td button:hover {
   .container {
     padding: 110px 12px 80px;
   }
-  .table-wrapper {
+ 
+
+}
+ .table-wrapper {
   max-height: 400px; /* Giới hạn chiều cao vùng hiển thị bảng */
   overflow-y: auto;  /* Scroll dọc */
   border: 1px solid #e5e7eb;
@@ -195,6 +198,4 @@ td button:hover {
 
 .table-wrapper::-webkit-scrollbar-track {
   background: #f1f5f9;
-}
-
 }
