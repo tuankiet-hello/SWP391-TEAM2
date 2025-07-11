@@ -15,6 +15,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   padding: 24px;
   transition: all 0.3s ease;
+  min-width: 230px;
 }
 
 .sidebar .username {
@@ -65,6 +66,7 @@
   height: 520px;
   display: flex;
   flex-direction: column;
+  min-width: 942px;
 }
 
 .profile-header {
@@ -115,7 +117,8 @@
 }
 
 .booking-history,
-.question-history {
+.question-history
+.appointment-history {
   flex: 1;
   overflow-y: auto;
   display: flex;
@@ -142,7 +145,8 @@
 .edit-profile p,
 .booking-history p,
 .change-password p,
-.question-history p {
+.question-history p,
+.appointment-history p {
   margin: 0;
   padding: 12px 16px;
   background-color: #f9fafb;
@@ -204,153 +208,105 @@
   cursor: pointer;
   color: #555;
 }
+
 .change-password form {
   background: #fff;
   border-radius: 12px;
-  /* box-shadow: 0 4px 16px rgba(0,0,0,0.08); */
-  padding: 32px 24px;
-  /* max-width: 420px;*/
+  padding: 24px 24px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  min-width: 500px; /* Chiều rộng cố định */
-  margin: 0 auto;
-  position: relative;
-  /* Các style khác giữ nguyên */
+  /* gap: 20px; */
+  max-width: 400px;
+  width: 100%;
 }
 
-.change-password label {
-  font-size: 15px;
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+label {
   font-weight: 600;
+  font-size: 14px;
   color: #111827;
-  margin-bottom: 8px;
-  margin-right: 50px;
-  width: 30px;
 }
 
-.change-password input[type="password"],
-.change-password input[type="text"] {
-  padding: 12px 16px;
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="password"],
+input[type="text"] {
+  padding: 10px 12px;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 15px;
+  border-radius: 6px;
+  font-size: 14px;
   background: #f9fafb;
-  color: #374151;
-  transition: border-color 0.2s, background 0.2s;
   outline: none;
-  margin-bottom: 4px;
-  width: 600px;
-  /* min-width: 400px; */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
 }
 
-.change-password input:focus {
+input:focus {
   border-color: #6366f1;
-  background: #f1f5ff;
+  background: #eef2ff;
 }
 
-.change-password button[type="submit"] {
-  background: linear-gradient(90deg, #6366f1, #4f46e5);
-  color: #fff;
+.input-message {
+  /* display: block; */
+  font-size: 12px;
+  min-height: 20px; /* luôn chừa chỗ cho thông báo */
+  margin-top: 2px;
+}
+
+.input-message.success {
+  color: #059669;
+}
+
+.input-message.error {
+  color: #dc2626;
+}
+
+.form-error {
+  font-size: 13px;
+  color: #dc2626;
+  text-align: left;
+  padding-left: 4px;
+}
+
+.message {
+  font-size: 14px;
+  text-align: center;
+  color: #059669;
   font-weight: 600;
-  padding: 12px 0;
+}
+
+.message.error {
+  color: #dc2626;
+}
+
+button[type="submit"] {
+  background: linear-gradient(90deg, #6366f1, #4f46e5);
+  color: white;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 6px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  letter-spacing: 1px;
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.09);
-  margin-top: 8px;
+  transition: all 0.2s;
+  /* margin-top: 10px; */
 }
 
-.change-password button[type="submit"]:hover:not(:disabled) {
+button[type="submit"]:hover:not(:disabled) {
   background: linear-gradient(90deg, #4f46e5, #6366f1);
-  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.12);
 }
 
-.change-password button[type="submit"]:disabled {
-  background: #a5b4fc;
+button[type="submit"]:disabled {
+  background: #c7d2fe;
   cursor: not-allowed;
 }
 
-.change-password .message {
-  /* margin-top: 18px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 500;
-  background: #f9fafb; */
-  color: #1f782e;
-  font-weight: 600;
-  text-align: center;
-}
-
-.change-password .message.error {
-  /* background: #fee2e2; */
-  color: #dc2626;
-  text-align: center;
-  font-weight: 600;
-  /* border: 1px solid #fecaca; */
-}
-.change-password .error {
-  /* background: #fee2e2; */
-  color: #dc2626;
-  text-align: center;
-  font-weight: 600;
-  /* border: 1px solid #fecaca; */
-}
-
-/* .change-password .message.success {
-  background: #d1fae5;
-  color: #059669;
-  border: 1px solid #6ee7b7;
-} */
-
-.change-password .form-row {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-bottom: 12px;
-}
-
-.change-password label {
-  width: 180px;
-  min-width: 140px;
-  margin: 0;
-  text-align: left;
-  font-size: 15px;
-  font-weight: 600;
-  color: #111827;
-}
-
-/* .change-password input[type="password"],
-.change-password input[type="text"] {
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-}
-.change-password .input-message {
-  min-width: 120px;
-  margin-left: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  display: block;
-  white-space: nowrap;
-} */
-.change-password input[type="password"],
-.change-password input[type="text"] {
-  min-width: 180px;
-  max-width: 150px;
-}
-
-.change-password .input-message.error {
-  color: #dc2626;
-}
-.change-password .input-message.success {
-  color: #059669;
-}
 .cardInf {
   display: flex;
   justify-content: space-between;
@@ -375,4 +331,21 @@
 .cardInf p {
  max-width:800px;
  min-width: 700px;
+ display: flex;
+ justify-content: space-between;
+}
+
+.password-group {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 18px;
+  padding-bottom: 20px;
 }

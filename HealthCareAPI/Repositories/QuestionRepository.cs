@@ -44,6 +44,16 @@ namespace HealthCareAPI.Repositories
             _context.Questions.Update(entity);
         }
 
+        public async Task<IEnumerable<Question>> GetQuestionsByAccountIdAsync(Guid accountId)
+        {
+            return await _context.Questions
+                .Include(q => q.Account)
+                .Where(q => q.AccountID == accountId)
+                .OrderByDescending(q => q.CreatedAt)
+                .ToListAsync(); // Không sao, vì List kế thừa IEnumerable
+        }
+
+
         // public async Task<QuestionDTO?> GetQuestionDetailAsync(int questionId)
         // {
         //     var question = await _dbSet

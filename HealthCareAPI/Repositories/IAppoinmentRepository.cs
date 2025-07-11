@@ -6,6 +6,7 @@ namespace HealthCareAPI.Repositories
     {
         Task<IEnumerable<Appoinment>> GetAllWithAccountAsync();
         Task<List<Appoinment>> GetByAccountAndDateAsync(Guid accountID, DateOnly date);
+        Task<List<Appoinment>> GetAppointmentsByAccountIdAsync(Guid accountId);
         // Task<bool> UpdateAppoinmentAsync(AppoinmentDTO dto);
     }
 } 

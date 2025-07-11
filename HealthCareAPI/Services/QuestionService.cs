@@ -78,6 +78,32 @@ namespace HealthCareAPI.Services
             dto.CreatedAt = entity.CreatedAt;
             return dto;
         }
+
+        public async Task<IEnumerable<QuestionDTO>> GetQuestionsByAccountIdAsync(Guid accountId)
+        {
+            var questions = await _unitOfWork.QuestionRepository.GetQuestionsWithAccountAsync();
+            var filtered = questions.Where(q => q.AccountID == accountId);
+
+            return filtered.Select(q => new QuestionDTO
+            {
+                QuestionID = q.QuestionID,
+                AccountID = q.AccountID,
+                Title = q.Title,
+                Description = q.Description,
+                Status = q.Status,
+                CreatedAt = q.CreatedAt,
+                UpdatedAt = q.UpdatedAt,
+                Answer = q.Answer,
+                Account = new AccountViewDTO
+                {
+                    FirstName = q.Account.FirstName,
+                    LastName = q.Account.LastName,
+                    DateOfBirth = q.Account.DateOfBirth,
+                    Email = q.Account.Email
+                }
+            });
+        }
+
     }
 }
 
