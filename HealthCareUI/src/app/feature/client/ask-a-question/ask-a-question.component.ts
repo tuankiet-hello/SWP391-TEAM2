@@ -16,6 +16,8 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 })
 export class AskAQuestionComponent {
   @Output() close = new EventEmitter<void>();
+  isSubmitting = false;
+
 
   question = {
     title: '',
@@ -47,6 +49,7 @@ export class AskAQuestionComponent {
       ...this.question,
       accountID: accountId
     };
+    this.isSubmitting = true;
 
     console.log('Payload gửi đi:', questionWithId);
 
@@ -62,6 +65,7 @@ export class AskAQuestionComponent {
         // });
         this.closeModal();
         this.question = { title: '', description: '' };
+        this.isSubmitting = false;
       },
       error: (err) => {
         console.error('Error submitting question:', err);
@@ -70,6 +74,7 @@ export class AskAQuestionComponent {
           nzDuration: 3000,
           nzStyle: { top: '80px' }
         });
+        this.isSubmitting = false;
       }
     });
   }

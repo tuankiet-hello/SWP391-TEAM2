@@ -44,8 +44,13 @@
       </div>
     </div>
 
-    <button type="submit" class="submit-btn" [disabled]="appointmentForm.invalid">
-      Book Appointment
-    </button>
+    <button
+  type="submit"
+  class="submit-btn"
+  [disabled]="appointmentForm.invalid || isSubmitting || isAppointmentDone"
+>
+  {{ isAppointmentDone ? 'Appointment Booked' : 'Book Appointment' }}
+</button>
+
   </form>
 </div>
