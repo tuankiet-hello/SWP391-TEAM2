@@ -101,6 +101,15 @@ namespace HealthCareAPI.Controller
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("remind/latest/{accountId}")]
+        public async Task<IActionResult> GetLatestRemind(Guid accountId)
+        {
+            var remind = await _menstrualCycleService.GetLatestRemindByAccountIdAsync(accountId);
+            if (remind == null)
+                return NotFound("No remind found for this account.");
+
+            return Ok(remind);
+        }
 
         //[HttpPost("send-reminders")]
         //public async Task<IActionResult> SendReminders()

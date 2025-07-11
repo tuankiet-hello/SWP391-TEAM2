@@ -12,5 +12,6 @@ namespace HealthCareAPI.Repositories
         Task<object> PredictCycleAsync(Guid accountId);
         Task<List<Remind>> GetPendingRemindersWithAccountAsync();
         Task UpdateReminderAsync(Remind reminder);
+        Task<Remind> GetLatestRemindByAccountIdAsync(Guid accountId);
     }
 } 
