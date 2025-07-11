@@ -117,7 +117,7 @@
 }
 
 .booking-history,
-.question-history
+.question-history,
 .appointment-history {
   flex: 1;
   overflow-y: auto;
