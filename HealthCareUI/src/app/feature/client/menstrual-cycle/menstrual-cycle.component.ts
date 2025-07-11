@@ -1,23 +1,25 @@
 import { CreatedMenstrualCycleComponent } from './created-menstrual-cycle/created-menstrual-cycle.component';
 import { PredictViewComponent } from './predict-cycle/predict-cycle.component';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MenstrualCycleDTO,
   MenstrualService,
+  Remind,
 } from '../../../../services/menstrual-cycle.service';
 import { AuthService } from '../../../../services/auth.service';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { ChartOptions } from 'chart.js';
+import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 interface MenstrualCycle {
   start_date: string; // ISO date string
   end_date: string;
   note?: string;
 }
+
 
 @Component({
   selector: 'app-menstrual-cycle',
@@ -30,7 +32,7 @@ interface MenstrualCycle {
     FooterComponent,
     BaseChartDirective
   ],
-   providers: [provideCharts(withDefaultRegisterables())],
+  providers: [provideCharts(withDefaultRegisterables())],
   templateUrl: './menstrual-cycle.component.html',
   styleUrls: ['./menstrual-cycle.component.css'],
 })
@@ -45,10 +47,37 @@ export class MenstrualCycleComponent implements OnInit {
   cycle!: MenstrualCycleDTO;
   accountId!: string;
   predict!: any;
+  pieChartData!: ChartData<'pie', number[], string | string[]>;
+   pieChartOptions: ChartOptions<'pie'> = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 13 } } },
+     tooltip: {
+  enabled: true,
+  callbacks: {
+    label: context => {
+      const label = context.label || '';
+      const valueRaw = context.parsed;
+      // Ép kiểu valueRaw thành number (nếu không phải số, gán 0)
+      const value = typeof valueRaw === 'number' ? valueRaw : 0;
+
+      const data = context.chart.data.datasets[0].data;
+      const sum = (data as number[]).reduce((a, b) => a + (typeof b === 'number' ? b : 0), 0);
+      const percentage = sum ? ((value / sum) * 100).toFixed(1) : '0';
+
+      return `${label}: ${value} ngày (${percentage}%)`;
+    }
+  }
+}
+
+    }
+  };
+  pieChartType: ChartType = 'pie';
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
   constructor(
     private authService: AuthService,
     private mestrualCycleService: MenstrualService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.accountId = this.authService.getIdFromToken();
@@ -61,7 +90,37 @@ export class MenstrualCycleComponent implements OnInit {
     } else {
       console.error('Không tìm thấy accountId');
     }
+    if (this.accountId) {
+      this.mestrualCycleService.getLatestRemind(this.accountId).subscribe({
+        next: (remind) => this.updateChart(remind),
+        error: (err) => console.error('Lỗi khi lấy remind:', err)
+      });
+    }
   }
+  updateChart(remind: Remind) {
+    const cycleLength = 28;
+    const menstruationDays = 5;
+
+    const fertileStart = new Date(remind.fertileWindowStart);
+    const fertileEnd = new Date(remind.fertileWindowEnd);
+    const fertileDays = Math.floor((fertileEnd.getTime() - fertileStart.getTime()) / (1000 * 3600 * 24)) + 1;
+
+    const ovulationDays = 1;
+    const lowRiskDays = cycleLength - menstruationDays - fertileDays - ovulationDays;
+
+    this.pieChartData = {
+      labels: ['menstruationDays ', 'ovulationDays ', ' fertileDays', 'lowRiskDays '],
+      datasets: [{
+        data: [menstruationDays, ovulationDays, fertileDays, lowRiskDays],
+        backgroundColor: ['#e57373', '#ffd54f', '#64b5f6', '#81c784'],
+        hoverBackgroundColor: ['#ef5350', '#ffb300', '#1976d2', '#388e3c']
+      }]
+    };
+
+    // Gọi update để biểu đồ render lại với dữ liệu mới
+    this.chart?.update();
+  }
+
   openAddForm() {
     this.selectMode = 'new';
     this.showForm = true;
@@ -87,38 +146,7 @@ export class MenstrualCycleComponent implements OnInit {
   openPredict() {
     this.predictCycle();
   }
-  // handleSaveCycle() {
-  //   const accountId = this.authService.getIdFromToken();
 
-  //   if (!accountId) {
-  //     alert('Không tìm thấy tài khoản, vui lòng đăng nhập lại.');
-  //     return;
-  //   }
-  //   const cycle = {
-  //     accountID: accountId,
-  //     start_date: this.form.start_date,
-  //     end_date: this.form.end_date,
-  //     note: this.form.note,
-  //     reminder_enabled: true,
-  //   };
-  //   // Gán accountID vào cycle
-
-  //   if (this.editingCycle) {
-  //     // TODO: xử lý cập nhật chu kỳ
-  //   } else {
-  //     this.mestrualCycleService.createCycle(cycle).subscribe({
-  //       next: (res) => {
-  //         // alert(res.message);
-  //         this.cycles.push(cycle);
-  //         this.showForm = false;
-  //       },
-  //       error: (err) => {
-  //         console.error('Lỗi khi tạo chu kỳ:', err);
-  //         alert('Tạo chu kỳ thất bại, vui lòng thử lại.');
-  //       },
-  //     });
-  //   }
-  // }
   loadCycles() {
     this.mestrualCycleService
       .getCycleByAccId(this.accountId)
@@ -165,31 +193,31 @@ export class MenstrualCycleComponent implements OnInit {
       },
     });
   }
-  
-    pieChartData = {
-      labels: ['Ngày có kinh', 'Ngày kết thúc', 'Ngày dễ có thai'],
-      datasets: [{
-        data: [10, 5, 15],
-        backgroundColor: ['#4f46e5', '#6366f1', '#a78bfa'],
-        hoverBackgroundColor: ['#4338ca', '#4f46e5', '#8b5cf6']
-      }]
-    };
-  
-  pieChartOptions: ChartOptions<'pie'> = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'bottom',  // giá trị này hợp lệ
-        labels: {
-          font: {
-            size: 13
-          }
-        }
-      },
-      tooltip: {
-        enabled: true
-      }
-    }
-  };
-  
+
+  //   pieChartData = {
+  //     labels: ['Ngày có kinh', 'Ngày kết thúc', 'Ngày dễ có thai'],
+  //     datasets: [{
+  //       data: [10, 5, 15],
+  //       backgroundColor: ['#4f46e5', '#6366f1', '#a78bfa'],
+  //       hoverBackgroundColor: ['#4338ca', '#4f46e5', '#8b5cf6']
+  //     }]
+  //   };
+
+  // pieChartOptions: ChartOptions<'pie'> = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: 'bottom',  // giá trị này hợp lệ
+  //       labels: {
+  //         font: {
+  //           size: 13
+  //         }
+  //       }
+  //     },
+  //     tooltip: {
+  //       enabled: true
+  //     }
+  //   }
+  // };
+
 }
