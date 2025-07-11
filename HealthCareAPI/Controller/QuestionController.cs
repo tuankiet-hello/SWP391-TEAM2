@@ -115,7 +115,7 @@ namespace HealthCareAPI.Controller
         }
 
         [HttpPost]
-// [Authorize]
+        // [Authorize]
         public async Task<IActionResult> CreateQuestion([FromBody] NewQuestionDTO dto)
         {
             if (dto.AccountID == Guid.Empty)
@@ -177,5 +177,11 @@ namespace HealthCareAPI.Controller
             return Ok(dto);
         }
 
+        [HttpGet("account/{accountId}")]
+        public async Task<IActionResult> GetQuestionsByAccountId(Guid accountId)
+        {
+            var questions = await _service.GetQuestionsByAccountIdAsync(accountId);
+            return Ok(questions);
+        }
     }
 }

@@ -47,4 +47,8 @@ export class AppointmentService {
     );
   }
 
+  getAppointmentsByAccountID(accountID: string): Observable<AppointmentDTO[]> {
+    return this.http.get<AppointmentDTO[]>(`${this.apiUrl}/account/${accountID}`);
+  }
+
 }

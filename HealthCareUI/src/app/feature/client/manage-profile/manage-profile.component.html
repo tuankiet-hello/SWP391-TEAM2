@@ -57,16 +57,19 @@
           *ngIf="selectedFeature === 'Booking History'"
         >
           <div class="cardInf" *ngFor="let booking of bookings">
-            <p> 
-              
-              {{ booking.test.testName }}  -  
-              Date: {{ booking.bookingDate }}     
-              - {{ statusMap[booking.status] || 'Unknown Status' }}
+            <p>
+              <span>
+                {{ booking.test.testName }}
+              </span>
+              <span>
+                {{ booking.bookingDate | date : "mediumDate" }} -
+                {{ statusMap[booking.status] || "Unknown Status" }}
+              </span>
             </p>
-            
-            <button
-             (click)="viewBookingDetail(booking.bookingID)"
-            >View Details</button>
+
+            <button (click)="viewBookingDetail(booking.bookingID)">
+              View Details
+            </button>
           </div>
         </div>
 
@@ -74,10 +77,37 @@
           class="question-history"
           *ngIf="selectedFeature === 'Question History'"
         >
-          <p *ngFor="let question of questions">
-            ID: {{ question.id }} - Question: {{ question.title }} - Date:
-            {{ question.date }} - Status: {{ question.status }}
-          </p>
+          <div class="cardInf" *ngFor="let question of questions">
+            <p>
+              <span>
+                {{ question.title }}
+              </span>
+              <span>
+                {{ question.createdAt | date : "mediumDate" }} -
+                {{ statusMap[question.status] || "Unknown" }}
+              </span>
+            </p>
+
+            <hr />
+            <button (click)="viewQuestionDetail(question)">View Details</button>
+          </div>
+        </div>
+
+        <div
+          class="appointment-history"
+          *ngIf="selectedFeature === 'Appointment History'"
+        >
+          <div class="cardInf" *ngFor="let appt of appointments">
+            <p>
+              <span>
+                Date: {{ appt.appointmentDate | date : "mediumDate" }}
+              </span>
+              <span>
+                Time: {{ formatTime(appt.appointmentTime) | date : "HH:mm" }}
+              </span>
+              <span>{{ statusMap[appt.status] || "Unknown" }} </span>
+            </p>
+          </div>
         </div>
 
         <!-- Change Password -->
@@ -89,92 +119,113 @@
             [formGroup]="changePasswordForm"
             (ngSubmit)="onSubmitChangePwd()"
           >
-            <div class="form-row">
+            <!-- Mật khẩu hiện tại -->
+            <div class="form-row" >
               <label for="currentPassword">Current Password:</label>
-              <input
-                id="currentPassword"
-                type="password"
-                formControlName="currentPassword"
-                required
-                (blur)="onCheckCurrentPassword()"
-              />
-              <span
-                *ngIf="checkPasswordMessage"
-                [ngClass]="{
-                  error: !isPasswordValid,
-                  success: isPasswordValid
-                }"
-                class="input-message"
-              >
-                {{ checkPasswordMessage }}
-              </span>
+              <div class="input-group password-group">
+                <input
+                  id="currentPassword"
+                  [type]="showCurrentPassword ? 'text' : 'password'"
+                  formControlName="currentPassword"
+                  required
+                  (blur)="onCheckCurrentPassword()"
+                />
+                <i nz-icon
+                  [nzType]="showCurrentPassword ? 'eye-invisible' : 'eye'"
+                  (click)="showCurrentPassword = !showCurrentPassword"
+                  class="eye-icon"
+                ></i>
+                <span class="input-message error">
+                  <span *ngIf="changePasswordForm.get('currentPassword')?.hasError('required') && changePasswordForm.get('currentPassword')?.touched">
+                    Please enter current password
+                  </span>
+                  <span *ngIf="!changePasswordForm.get('currentPassword')?.hasError('required')">
+                    {{ checkPasswordMessage || '‎' }}
+                  </span>
+                </span>
+              </div>
             </div>
 
+            <!-- Mật khẩu mới -->
             <div class="form-row">
               <label for="newPassword">New Password:</label>
-              <input
-                id="newPassword"
-                type="password"
-                formControlName="newPassword"
-                required
-              />
+              <div class="input-group password-group">
+                <input
+                  id="newPassword"
+                  [type]="showNewPassword ? 'text' : 'password'"
+                  formControlName="newPassword"
+                  required
+                />
+                <i nz-icon
+                  [nzType]="showNewPassword ? 'eye-invisible' : 'eye'"
+                  (click)="showNewPassword = !showNewPassword"
+                  class="eye-icon"
+                ></i>
+                <span class="input-message error">
+                  <span
+                    *ngIf="
+                      changePasswordForm
+                        .get('newPassword')
+                        ?.hasError('required') &&
+                      changePasswordForm.get('newPassword')?.touched
+                    "
+                  >
+                    Please enter new password
+                  </span>
+                  <span
+                    *ngIf="
+                      changePasswordForm.get('newPassword')?.hasError('pattern')
+                    "
+                  >
+                    Min 6 characters: upper, lower, number & special
+                  </span>
+                  <span class="input-message error" *ngIf="changePasswordForm.hasError('duplicatePassword') && changePasswordForm.get('newPassword')?.touched">
+                    New password cannot be the same as current password
+                  </span>
+                </span>
+              </div>
             </div>
 
+            <!-- Nhập lại mật khẩu -->
             <div class="form-row">
-              <label for="confirmPassword">Confirm New Password:</label>
-              <input
-                id="confirmPassword"
-                type="password"
-                formControlName="confirmPassword"
-                required
-              />
+              <label for="confirmPassword">Confirm Password:</label>
+              <div class="input-group password-group">
+                <input
+                  id="confirmPassword"
+                  [type]="showConfirmPassword ? 'text' : 'password'"
+                  formControlName="confirmPassword"
+                  required
+                />
+                <i nz-icon
+                  [nzType]="showConfirmPassword ? 'eye-invisible' : 'eye'"
+                  (click)="showConfirmPassword = !showConfirmPassword"
+                  class="eye-icon"
+                ></i>
+                <span class="input-message error">
+                  <span *ngIf="changePasswordForm.get('confirmPassword')?.hasError('required') && changePasswordForm.get('confirmPassword')?.touched">
+                    Please enter confirm password
+                  </span>
+                  <span *ngIf="changePasswordForm.hasError('passwordMismatch') && !changePasswordForm.get('confirmPassword')?.hasError('required')">
+                    Confirm password must match new password
+                  </span>
+                </span>
+
+              </div>
             </div>
 
-            <!-- Hiển thị lỗi custom validator -->
-            <div
-              *ngIf="
-                changePasswordForm.hasError('passwordMismatch') &&
-                changePasswordForm.get('confirmPassword')?.touched
-              "
-              class="error"
-            >
-              *Confirmation password does not match!
+            <!-- Thông báo submit -->
+            <div class="form-row">
+              <div class="input-group">
+
+                <span class="input-message" [ngClass]="{ error: message.includes('Failed') }" *ngIf="message">
+                  {{ message }}
+                </span>
+              </div>
             </div>
-            <div
-              *ngIf="
-                changePasswordForm.get('newPassword')?.touched &&
-                changePasswordForm.get('newPassword')?.invalid
-              "
-              class="error"
-            >
-              <span
-                *ngIf="
-                  changePasswordForm.get('newPassword')?.hasError('required')
-                "
-              >
-                *Please enter new password!
-              </span>
-              <span
-                *ngIf="
-                  changePasswordForm.get('newPassword')?.hasError('pattern')
-                "
-              >
-                *Must be at least 6 characters and contain lowercase, uppercase,
-                numbers, special!
-              </span>
-            </div>
-            <div
-              *ngIf="
-                changePasswordForm.hasError('duplicatePassword') &&
-                changePasswordForm.get('newPassword')?.touched
-              "
-              class="error"
-            >
-              *New password cannot be the same as current password!
-            </div>
-            <div *ngIf="message" class="message">
-              {{ message }}
-            </div>
+
+
+
+            <!-- Nút -->
             <button
               type="submit"
               [disabled]="changePasswordForm.invalid || !isPasswordValid"
@@ -183,6 +234,7 @@
             </button>
           </form>
         </div>
+
         <!--  -->
       </div>
     </div>
@@ -206,8 +258,16 @@
 </div>
 
 <app-footer></app-footer>
- <app-view-booking-detail
-        *ngIf="isModalVisible && selectedBooking"
-        [booking]="selectedBooking"
-        (close)="handleModalCancel()"
-      ></app-view-booking-detail>
+
+<app-view-booking-detail
+  *ngIf="isModalVisible && selectedBooking"
+  [booking]="selectedBooking"
+  (close)="handleModalCancel()"
+></app-view-booking-detail>
+
+<app-view-question-detail
+  *ngIf="isQuestionModalVisible && selectedQuestion"
+  [question]="selectedQuestion"
+  [visible]="isQuestionModalVisible"
+  (close)="handleQuestionModalClose()"
+></app-view-question-detail>

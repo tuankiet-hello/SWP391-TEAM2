@@ -9,6 +9,8 @@ namespace HealthCareAPI.Repositories
     {
         Task<IEnumerable<Question>> GetQuestionsWithAccountAsync();
         Task<IEnumerable<QuestionDTO>> GetAllQuestionsAsync();
+        Task<IEnumerable<Question>> GetQuestionsByAccountIdAsync(Guid accountId);
+
         // Task<QuestionDTO?> GetQuestionDetailAsync(int questionId);
     }
 }

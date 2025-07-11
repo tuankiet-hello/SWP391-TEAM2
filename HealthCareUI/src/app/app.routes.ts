@@ -39,6 +39,7 @@ export const routes: Routes = [
   //Client routes
   { path: 'home', component: HomeComponent },
   { path: 'sexual-testing', component: SexualTestingComponent },
+  { path: 'menstrual-cycle', component: MenstrualCycleComponent },
   { path: 'edit-profile-customer', component: EditProfileComponent },
   { path: 'manage-profile-customer', component: ManageProfileComponent },
 
@@ -59,7 +60,7 @@ export const routes: Routes = [
     path: 'blog/sexually-transmitted-infections-stis',
     component: Blog5Component,
   },
-  { path: 'menstrual-cycle', component: MenstrualCycleComponent },
+
   //Authentication routes
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
