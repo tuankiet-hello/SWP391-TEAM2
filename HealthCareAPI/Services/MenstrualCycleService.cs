@@ -125,6 +125,11 @@ namespace HealthCareAPI.Services
 
             return sentCount;
         }
+        public async Task<Remind> GetLatestRemindByAccountIdAsync(Guid accountId)
+        {
+            return await _unitOfWork.MenstrualCycleRepository.GetLatestRemindByAccountIdAsync(accountId);
+        }
+
 
     }
 }

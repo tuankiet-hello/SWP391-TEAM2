@@ -106,6 +106,15 @@ namespace HealthCareAPI.Repositories
             };
         }
 
+        public async Task<Remind> GetLatestRemindByAccountIdAsync(Guid accountId)
+        {
+            return await _context.Reminds
+                .Where(r => r.AccountID == accountId)
+                .Include(tb => tb.Account)
+                .OrderByDescending(r => r.PredictedStartDate)
+                .FirstOrDefaultAsync();
+        }
+
 
 
     }
