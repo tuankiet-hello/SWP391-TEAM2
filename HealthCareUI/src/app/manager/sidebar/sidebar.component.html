@@ -10,7 +10,7 @@
       </li>
       <!-- Admin -->
       <li routerLinkActive="active" *ngIf="role === 'admin'">
-        <a class="menu-item">
+        <a class="menu-item" [routerLink]="['/dash-board']">
           <nz-icon nzType="bar-chart" nzTheme="outline"></nz-icon>
           <span class="menu-text">Dashboard</span>
         </a>

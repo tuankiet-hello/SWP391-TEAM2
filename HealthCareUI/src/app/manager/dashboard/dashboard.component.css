@@ -1,0 +1,152 @@
+:root {
+  --color-primary: #2563eb;
+  --surface-bg: #ffffff;
+  --border: #e5e7eb;
+  --text-muted: #6b7280;
+}
+
+.dashboard-modern {
+  padding: 2rem;
+  background-color: #f3f4f6;
+  font-family: "Inter", sans-serif;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  /* margin-bottom: 2rem; */
+  font-weight: 600;
+  color: #111827;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.card-analytics {
+  background-color: var(--surface-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: -1px 0px 16px rgba(68, 68, 69, 0.637);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.card-analytics:hover {
+  box-shadow: -1px 0px 16px rgba(73, 187, 228, 0.637);
+}
+
+.card-analytics.card-full {
+  grid-column: span 2;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1f2937;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.card-number {
+  margin-top: 60px;
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.card-description {
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+.stats-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  color: #374151;
+  font-size: 1rem;
+}
+
+.stats-list li {
+  margin-bottom: 0.5rem;
+}
+
+.table-modern {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.table-modern thead th {
+  background-color: #f9fafb;
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  /* color: #1f2937; */
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center; /* ✅ Thêm dòng này */
+}
+
+.table-modern td {
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #374151;
+  border-bottom: 1px solid #f1f5f9;
+  text-align: center; /* ✅ Thêm dòng này */
+}
+
+.table-modern tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-modern tbody tr:hover {
+  background-color: #f9fafb;
+  transition: background 0.2s ease;
+}
+
+.scroll-x {
+  overflow-x: auto;
+}
+
+.grid-row-1 {
+  margin-bottom: 2rem; /* 👈 cách giữa 2 hàng */
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.grid-row-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+.active {
+  color: green;
+}
+.banned {
+  color: red;
+}
+.role {
+  font-weight: 600;
+}
+#cycle {
+  background-color: rgb(225, 123, 157);
+}
+.btnhome {
+  background: #1866ba;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: auto;
+  margin-bottom: 25px;
+}

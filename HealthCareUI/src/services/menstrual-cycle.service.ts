@@ -25,6 +25,11 @@ export class MenstrualService {
       `${this.apiUrl}/menstrual-cycle-by-account-id/${id}`
     );
   }
+  getCycleList(): Observable<MenstrualCycleDTO[]> {
+    return this.http.get<MenstrualCycleDTO[]>(
+      `${this.apiUrl}/list-menstrual-cycle`
+    );
+  }
   createCycle(cycle: MenstrualCycleDTO): Observable<MenstrualCycleDTO> {
     return this.http.post<MenstrualCycleDTO>(
       `${this.apiUrl}/add-menstrual-cycle`,

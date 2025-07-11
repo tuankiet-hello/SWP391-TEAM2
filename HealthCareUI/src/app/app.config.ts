@@ -8,8 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { provideAnimations } from '@angular/platform-browser/animations';
-// Import thêm từ ng2-charts
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+
+// ✅ Chart.js + ng2-charts cấu hình đúng cho v8
+import { provideCharts } from 'ng2-charts';
+import { Chart, registerables } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+// ✅ Đăng ký toàn bộ chart types + plugin datalabels
+Chart.register(...registerables, ChartDataLabels);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,21 +23,19 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withInMemoryScrolling({
-        scrollPositionRestoration: 'enabled' // hoặc 'top'
+        scrollPositionRestoration: 'enabled',
       })
     ),
-     // Thêm provider cho ng2-charts
-    provideCharts(withDefaultRegisterables()),
+    provideCharts(), // ✅ KHÔNG dùng withDefaultRegisterables() nữa
     provideHttpClient(),
     importProvidersFrom(BrowserAnimationsModule),
     provideAnimations(),
-    { provide: NZ_I18N, useValue: en_US }, // đổi ngôn ngữ ở đây
-    provideNzConfig({}), // nếu muốn cấu hình thêm cho toàn bộ ng-zorro
+    { provide: NZ_I18N, useValue: en_US },
+    provideNzConfig({}),
   ],
 };
+
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:5000',
 };
-
-

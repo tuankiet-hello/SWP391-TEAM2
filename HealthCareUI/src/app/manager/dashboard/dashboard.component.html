@@ -1,0 +1,100 @@
+<app-header-manager></app-header-manager>
+<div class="dashboard-modern">
+  <!-- <h1 class="dashboard-title">Dashboard</h1> -->
+  <button class="btnhome" routerLink="/manager-users">Back</button>
+  <!-- ROW 1: Users + Cycle -->
+  <div class="dashboard-grid grid-row-1">
+    <!-- CARD 1: User Summary -->
+    <div class="card-analytics span-2" id="users">
+      <div class="card-header">
+        <h3>👥 Users</h3>
+      </div>
+      <div class="scroll-x">
+        <table class="table-modern">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Total</th>
+              <th class="active">Active</th>
+              <th class="banned">Ban</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="userStatsByRole">
+            <tr *ngFor="let role of accountRoles">
+              <td class="role">{{ role.label }}</td>
+              <td>{{ userStatsByRole[role.key].total }}</td>
+              <td>{{ userStatsByRole[role.key].active }}</td>
+              <td>{{ userStatsByRole[role.key].banned }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CARD 2: Cycle -->
+    <div class="card-analytics" id="revenue">
+      <div class="card-header">
+        <h3>📈 Total Revenue</h3>
+      </div>
+      <div class="card-number">{{ revenue }}$</div>
+      <p class="card-description">
+        From {{ testStats.completed }} was completed
+      </p>
+    </div>
+  </div>
+
+  <!-- ROW 2: 3 Tables -->
+  <div class="dashboard-grid grid-row-2">
+    <div class="card-analytics" id="cycle">
+      <div class="card-header">
+        <h3>🩺 Cycle Tracking</h3>
+      </div>
+      <div class="card-number">{{ cycleUsers }}</div>
+      <p class="card-description">Users using menstrual tracking</p>
+    </div>
+    <!-- CARD 3: Consultation -->
+    <div class="card-analytics" id="consultant">
+      <div class="card-header">
+        <h3>📅 Consultations</h3>
+        <p><strong>Total:</strong> {{ appointmentStats.total }}</p>
+      </div>
+      <canvas
+        baseChart
+        [data]="pieChartData"
+        [options]="pieChartOptions"
+        [type]="'pie'"
+      >
+      </canvas>
+    </div>
+
+    <!-- CARD 4: Test -->
+    <div class="card-analytics">
+      <div class="card-header">
+        <h3>🧪 Test Bookings</h3>
+        <p><strong>Total:</strong> {{ testStats.total }}</p>
+      </div>
+      <canvas
+        baseChart
+        [data]="pieChartDataTest"
+        [options]="pieChartOptions"
+        [type]="'pie'"
+      >
+      </canvas>
+    </div>
+
+    <!-- CARD 5: Questions -->
+    <div class="card-analytics">
+      <div class="card-header">
+        <h3>❓ User Questions</h3>
+        <p><strong>Total:</strong> {{ questionStats.total }}</p>
+      </div>
+      <canvas
+        baseChart
+        [data]="pieChartDataQuestion"
+        [options]="pieChartOptions"
+        [type]="'pie'"
+      >
+      </canvas>
+    </div>
+  </div>
+</div>

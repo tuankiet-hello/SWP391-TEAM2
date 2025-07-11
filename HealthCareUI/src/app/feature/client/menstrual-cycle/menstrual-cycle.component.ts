@@ -10,7 +10,11 @@ import {
 import { AuthService } from '../../../../services/auth.service';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
-import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import {
+  BaseChartDirective,
+  provideCharts,
+  withDefaultRegisterables,
+} from 'ng2-charts';
 import { ChartOptions } from 'chart.js';
 
 interface MenstrualCycle {
@@ -28,9 +32,9 @@ interface MenstrualCycle {
     PredictViewComponent,
     HeaderComponent,
     FooterComponent,
-    BaseChartDirective
+    BaseChartDirective,
   ],
-   providers: [provideCharts(withDefaultRegisterables())],
+  providers: [provideCharts(withDefaultRegisterables())],
   templateUrl: './menstrual-cycle.component.html',
   styleUrls: ['./menstrual-cycle.component.css'],
 })
@@ -152,44 +156,31 @@ export class MenstrualCycleComponent implements OnInit {
   //     alert('Cần ít nhất 2 chu kỳ để dự đoán.');
   //     return;
   //   }
-
-    this.mestrualCycleService.remindCycle(this.accountId).subscribe({
-      next: (res) => {
-        // alert(res.message);
-        console.log('thành công nhắc');
-        console.log(res);
-      },
-      error: (err) => {
-        console.error('Lỗi khi nhắc đoán chu kỳ:', err);
-        alert('nhắc dự đoán chu kỳ thất bại, vui lòng thử lại.');
-      },
-    });
-  }
-
-    pieChartData = {
-      labels: ['Ngày có kinh', 'Ngày kết thúc', 'Ngày dễ có thai'],
-      datasets: [{
+  pieChartData = {
+    labels: ['Ngày có kinh', 'Ngày kết thúc', 'Ngày dễ có thai'],
+    datasets: [
+      {
         data: [10, 5, 15],
         backgroundColor: ['#4f46e5', '#6366f1', '#a78bfa'],
-        hoverBackgroundColor: ['#4338ca', '#4f46e5', '#8b5cf6']
-      }]
-    };
+        hoverBackgroundColor: ['#4338ca', '#4f46e5', '#8b5cf6'],
+      },
+    ],
+  };
 
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'bottom',  // giá trị này hợp lệ
+        position: 'bottom', // giá trị này hợp lệ
         labels: {
           font: {
-            size: 13
-          }
-        }
+            size: 13,
+          },
+        },
       },
       tooltip: {
-        enabled: true
-      }
-    }
+        enabled: true,
+      },
+    },
   };
-
 }

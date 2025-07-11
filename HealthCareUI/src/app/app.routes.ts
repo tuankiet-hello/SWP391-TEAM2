@@ -13,6 +13,7 @@ import {
   ViewConsultationScheduleComponent,
   ManageServiceComponent,
   ViewQuestionComponent,
+  DashboardComponent,
 } from './manager';
 
 import {
@@ -29,7 +30,6 @@ import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view
 import { EditProfileComponent } from './feature/client/edit-profile/edit-profile.component';
 import { ConfirmChangeEmailComponent } from './feature/client/confirm-change-email/confirm-change-email.component';
 import { MenstrualCycleComponent } from './feature/client/menstrual-cycle/menstrual-cycle.component';
-
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -69,6 +69,7 @@ export const routes: Routes = [
   { path: 'confirm-change-email', component: ConfirmChangeEmailComponent },
   //Admin routes
   { path: 'manager-users', component: ManagerUsersComponent },
+  { path: 'dash-board', component: DashboardComponent },
 
   //Manager routes
   { path: 'manager-customers', component: ManagerCustomersComponent },
