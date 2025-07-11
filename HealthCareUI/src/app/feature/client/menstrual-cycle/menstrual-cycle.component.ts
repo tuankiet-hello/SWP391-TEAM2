@@ -109,7 +109,7 @@ export class MenstrualCycleComponent implements OnInit {
     const lowRiskDays = cycleLength - menstruationDays - fertileDays - ovulationDays;
 
     this.pieChartData = {
-      labels: ['Kinh nguyệt', 'Rụng trứng', 'Nguy cơ cao', 'Nguy cơ thấp'],
+      labels: ['menstruationDays ', 'ovulationDays ', ' fertileDays', 'lowRiskDays '],
       datasets: [{
         data: [menstruationDays, ovulationDays, fertileDays, lowRiskDays],
         backgroundColor: ['#e57373', '#ffd54f', '#64b5f6', '#81c784'],

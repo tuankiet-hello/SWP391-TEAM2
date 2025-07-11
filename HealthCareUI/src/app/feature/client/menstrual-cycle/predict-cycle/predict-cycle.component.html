@@ -4,9 +4,9 @@
       <span class="close-button" (click)="onClose()">&times;</span>
     </div>
     <h2><strong>Your Prediction Cycle</strong></h2>
-    <p><strong>Start Date</strong> : {{ predict.predictedStartDate }}</p>
-    <p><strong>Ovulation Date</strong> :{{ predict.predictedOvulationDate }}</p>
-    <p><strong>Fertile Date</strong> : {{ start }} to {{ end }}</p>
+    <p><strong>Start Date</strong>: {{ predict.predictedStartDate| date : "mediumDate" }}</p>
+    <p><strong>Ovulation Date</strong>:  {{ predict.predictedOvulationDate| date : "mediumDate" }}</p>
+    <p><strong>Fertile Date</strong>: {{ start| date : "mediumDate" }} - {{ end | date : "mediumDate"}}</p>
     <button (click)="remindCycle()">Remind</button>
   </div>
 </div>

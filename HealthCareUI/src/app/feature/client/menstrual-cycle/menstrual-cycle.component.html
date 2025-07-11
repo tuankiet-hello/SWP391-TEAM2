@@ -34,8 +34,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let cycle of cycles">
-              <td>{{ cycle.start_date }}</td>
-              <td>{{ cycle.end_date }}</td>
+              <td>{{ cycle.start_date| date : "mediumDate" }}</td>
+              <td>{{ cycle.end_date | date : "mediumDate"}}</td>
               <td>{{ cycle.note }}</td>
               <td>
                 <button (click)="openEditForm(cycle)">Edit</button>
