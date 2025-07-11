@@ -27,6 +27,14 @@ namespace HealthCareAPI.Repositories
                 .Where(a => a.AccountID == accountID && a.AppointmentDate == date)
                 .ToListAsync();
         }
+
+        public async Task<List<Appoinment>> GetAppointmentsByAccountIdAsync(Guid accountId)
+        {
+            return await _context.Appoinments
+                .Include(a => a.Account)
+                .Where(a => a.AccountID == accountId)
+                .ToListAsync();
+        }
     }
 }
 //Các file I___ sẽ là lớp định nghĩa cho các class Repository

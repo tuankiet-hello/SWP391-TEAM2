@@ -11,6 +11,15 @@ import {
   UserService,
   AccountDetailDTO,
 } from '../../../../services/manager-user.service';
+import {
+  QuestionService,
+  QuestionTableDTO,
+} from '../../../../services/question.service';
+import {
+  AppointmentService,
+  AppointmentDTO,
+} from '../../../../services/appointment.service';
+
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 import {
   FormBuilder,
@@ -19,13 +28,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { ViewBookingDetailComponent } from '../../../manager/staff/view-booking-detail/view-booking-detail.component';
+import { ViewQuestionDetailComponent } from '../../../manager/consultant/view-question-detail/view-question-detail.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
-interface Booking {
-  id: string;
-  date: string;
-  service: string;
-  status: 'Pending' | 'Confirmed' | 'Cancelled';
-}
+
 interface Question {
   id: string;
   date: string;
@@ -42,7 +48,9 @@ interface Question {
     FooterComponent,
     EditProfileComponent,
     ReactiveFormsModule,
-    ViewBookingDetailComponent
+    ViewBookingDetailComponent,
+    ViewQuestionDetailComponent,
+    NzIconModule
   ],
   templateUrl: './manage-profile.component.html',
   styleUrls: ['./manage-profile.component.css'],
@@ -59,29 +67,45 @@ export class ManageProfileComponent implements OnInit {
 
   showEditProfile = false;
   statusMap: { [key: number]: string } = {
-  0: 'Submitted',
-  1: 'Pending',
-  2: 'Confirmed',
-  3: 'Canceled',
-  4: 'Completed'
-};
+    0: 'Submitted',
+    1: 'Pending',
+    2: 'Confirmed',
+    3: 'Canceled',
+    4: 'Completed',
+  };
   features = [
     'Your Profile',
     'Change Password',
     'Booking History',
     'Question History',
+    'Appointment History',
   ];
 
   bookings: TestBookingDTO[] = [];
-  questions: Question[] = [];
+  questions: QuestionTableDTO[] = [];
+  appointments: AppointmentDTO[] = [];
+
   isPasswordValid: boolean | undefined;
   checkPasswordMessage: string | undefined;
+
+  isModalVisible: boolean = false;
+  selectedBooking?: TestBookingDTO;
+
+  selectedQuestion?: QuestionTableDTO;
+  isQuestionModalVisible: boolean = false;
+
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private questionService: QuestionService,
+    private appointmentService: AppointmentService
   ) {
     this.changePasswordForm = this.fb.group(
       {
@@ -140,15 +164,15 @@ export class ManageProfileComponent implements OnInit {
       next: (res) => {
         if (res.valid) {
           this.isPasswordValid = true;
-          this.checkPasswordMessage = '✔️';
+          this.checkPasswordMessage = '';
         } else {
           this.isPasswordValid = false;
-          this.checkPasswordMessage = '❌';
+          this.checkPasswordMessage = 'Current password is incorrect';
         }
       },
       error: () => {
         this.isPasswordValid = false;
-        this.checkPasswordMessage = 'Có lỗi xảy ra khi kiểm tra mật khẩu!';
+        this.checkPasswordMessage = 'Your session has expired. Please login again to continue';
       },
     });
   }
@@ -190,27 +214,30 @@ export class ManageProfileComponent implements OnInit {
     });
 
     this.loadFakeBookings();
-    this.loadFakeQuestions();
+    this.loadQuestionsFromApi();
+    this.loadAppointmentsFromApi();
   }
 
   selectFeature(feature: string) {
     this.selectedFeature = feature;
   }
-  isModalVisible: boolean = false;
-  selectedBooking?: TestBookingDTO;
- viewBookingDetail(id: number): void {
+
+  viewBookingDetail(id: number): void {
     this.bookingService.getBookingById(id).subscribe((booking) => {
       this.selectedBooking = booking;
       this.isModalVisible = true;
     });
   }
+
   handleModalCancel(): void {
     this.isModalVisible = false;
     this.selectedBooking = undefined;
   }
+
   toggleEditProfile() {
     this.showEditProfile = !this.showEditProfile;
   }
+
   update() {
     this.showEditProfile = !this.showEditProfile;
     this.userService.getUserById(this.userid).subscribe((user) => {
@@ -226,41 +253,41 @@ export class ManageProfileComponent implements OnInit {
     });
   }
 
-  loadFakeQuestions(): void {
-    this.questions = [
-      { id: 'BK001', date: '2025-07-01', title: 'Spa', status: 'Confirmed' },
-      { id: 'BK002', date: '2025-07-02', title: 'Massage', status: 'Pending' },
-      {
-        id: 'BK003',
-        date: '2025-07-03',
-        title: 'Yoga Class',
-        status: 'Cancelled',
+  loadQuestionsFromApi(): void {
+    this.questionService.getQuestionsByAccountId(this.userid).subscribe({
+      next: (res) => {
+        this.questions = res;
+        console.log('✅ Nạp question OK:', this.questions);
       },
-      {
-        id: 'BK004',
-        date: '2025-07-04',
-        title: 'Fitness',
-        status: 'Confirmed',
+      error: (err) => {
+        console.error('❌ Lỗi nạp question:', err);
       },
-      {
-        id: 'BK005',
-        date: '2025-07-05',
-        title: 'Nutrition',
-        status: 'Pending',
+    });
+  }
+
+  loadAppointmentsFromApi(): void {
+    this.appointmentService.getAppointmentsByAccountID(this.userid).subscribe({
+      next: (res) => {
+        this.appointments = res;
+        console.log('✅ Nạp appointment OK:', this.appointments);
       },
-      {
-        id: 'BK006',
-        date: '2025-07-06',
-        title: 'Swimming',
-        status: 'Confirmed',
+      error: (err) => {
+        console.error('❌ Lỗi nạp appointment:', err);
       },
-      {
-        id: 'BK007',
-        date: '2025-07-07',
-        title: 'Haircut',
-        status: 'Cancelled',
-      },
-      { id: 'BK008', date: '2025-07-08', title: 'Facial', status: 'Confirmed' },
-    ];
+    });
+  }
+
+  viewQuestionDetail(question: QuestionTableDTO): void {
+    this.selectedQuestion = question;
+    this.isQuestionModalVisible = true;
+  }
+
+  handleQuestionModalClose(): void {
+    this.isQuestionModalVisible = false;
+    this.selectedQuestion = undefined;
+  }
+
+  formatTime(timeStr: string): Date {
+    return new Date(`1970-01-01T${timeStr}`);
   }
 }

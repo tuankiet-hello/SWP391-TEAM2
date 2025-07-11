@@ -83,4 +83,24 @@ public class AppoinmentService
             }
         }).ToList();
     }
+
+    public async Task<List<AppoinmentDTO>> GetAppointmentsByAccountIDAsync(Guid accountId)
+    {
+        var appointments = await _unitOfWork.AppoinmentRepository.GetAppointmentsByAccountIdAsync(accountId);
+
+        return appointments.Select(a => new AppoinmentDTO
+        {
+            AppointmentID = a.AppointmentID,
+            AccountID = a.AccountID,
+            AppointmentDate = a.AppointmentDate,
+            AppointmentTime = a.AppointmentTime,
+            Status = a.Status,
+            Account = new AccountViewDTO 
+            {
+                FirstName = a.Account.FirstName,
+                LastName = a.Account.LastName,
+                Email = a.Account.Email
+            }
+        }).ToList();
+    }
 }

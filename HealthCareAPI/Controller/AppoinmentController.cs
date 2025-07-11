@@ -253,6 +253,12 @@ namespace HealthCareAPI.Controller
             return Ok(dtos);
         }
 
+        [HttpGet("account/{accountId}")]
+        public async Task<IActionResult> GetAppointmentsByAccountID(Guid accountId)
+        {
+            var result = await _service.GetAppointmentsByAccountIDAsync(accountId);
+            return Ok(result);
+        }
 
        
     }
