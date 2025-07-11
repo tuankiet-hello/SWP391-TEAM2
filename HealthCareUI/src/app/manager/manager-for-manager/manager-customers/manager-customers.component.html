@@ -1,5 +1,5 @@
-<app-header-manager></app-header-manager>
-<div class="customer-manager">
+<div class="customer-manager" *ngIf="roleLogin == 'manager'">
+  <app-header-manager></app-header-manager>
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
 

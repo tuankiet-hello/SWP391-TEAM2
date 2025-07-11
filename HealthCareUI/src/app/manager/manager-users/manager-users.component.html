@@ -1,10 +1,10 @@
-<app-header-manager></app-header-manager>
-<div class="user-manager">
+<div class="user-manager" *ngIf="roleLogin == 'admin'">
+  <app-header-manager></app-header-manager>
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
 
   <!-- Main Content -->
-  <div class="main">
+  <div class="main" *ngIf="roleLogin == 'admin'">
     <!-- User List -->
 
     <div class="user-list">

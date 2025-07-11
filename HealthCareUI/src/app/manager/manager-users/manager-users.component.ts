@@ -20,10 +20,13 @@ import {
   AccountTableDTO,
   UserService,
 } from '../../../services/manager-user.service';
+import { AuthService } from '../../../services/auth.service';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UserEditComponent } from './edit-user/edit-user.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { routes } from '../../app.routes';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-manager-users',
   standalone: true,
@@ -41,7 +44,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
     NzDropDownModule,
     NzIconModule,
     NzTagModule,
-    CreateUserComponent
+    CreateUserComponent,
   ],
   providers: [{ provide: NZ_ICONS, useValue: [FilterOutline, SearchOutline] }],
   templateUrl: './manager-users.component.html',
@@ -61,28 +64,36 @@ export class ManagerUsersComponent implements OnInit {
   isEditModalVisible: boolean = false;
   idChoose: string = '';
   searchTerm: string = '';
+  roleLogin!: string | null;
 
   // Phân trang
   currentPage = 1;
   pageSize = 5; // số user trên mỗi trang
   totalUsers = 0;
   totalPages = 0;
-  modalType:'user' | 'customer' | 'booking' | null = null;
+  modalType: 'user' | 'customer' | 'booking' | null = null;
 
   constructor(
     private userService: UserService,
     private modal: NzModalService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.roleLogin = this.authService.getRoleFromToken();
+    if (this.roleLogin != 'admin') {
+      this.router.navigate(['/home']);
+    } else {
+      this.loadUsers();
+    }
   }
 
   closeModal() {
     this.modalType = null;
   }
-  
+
   loadUsers(): void {
     this.userService.getAllUsers().subscribe((data) => {
       this.users = data;

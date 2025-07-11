@@ -11,7 +11,11 @@ import {
 import { AuthService } from '../../../../services/auth.service';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
-import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import {
+  BaseChartDirective,
+  provideCharts,
+  withDefaultRegisterables,
+} from 'ng2-charts';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 interface MenstrualCycle {
@@ -19,7 +23,6 @@ interface MenstrualCycle {
   end_date: string;
   note?: string;
 }
-
 
 @Component({
   selector: 'app-menstrual-cycle',
@@ -30,7 +33,7 @@ interface MenstrualCycle {
     PredictViewComponent,
     HeaderComponent,
     FooterComponent,
-    BaseChartDirective
+    BaseChartDirective,
   ],
   providers: [provideCharts(withDefaultRegisterables())],
   templateUrl: './menstrual-cycle.component.html',
@@ -48,36 +51,41 @@ export class MenstrualCycleComponent implements OnInit {
   accountId!: string;
   predict!: any;
   pieChartData!: ChartData<'pie', number[], string | string[]>;
-   pieChartOptions: ChartOptions<'pie'> = {
+  pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     plugins: {
-      legend: { position: 'bottom', labels: { font: { size: 13 } } },
-     tooltip: {
-  enabled: true,
-  callbacks: {
-    label: context => {
-      const label = context.label || '';
-      const valueRaw = context.parsed;
-      // Ép kiểu valueRaw thành number (nếu không phải số, gán 0)
-      const value = typeof valueRaw === 'number' ? valueRaw : 0;
+      legend: {
+        position: 'bottom',
+        labels: { color: ' #1f2937', font: { size: 13 } },
+      },
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          label: (context) => {
+            const label = context.label || '';
+            const valueRaw = context.parsed;
+            // Ép kiểu valueRaw thành number (nếu không phải số, gán 0)
+            const value = typeof valueRaw === 'number' ? valueRaw : 0;
 
-      const data = context.chart.data.datasets[0].data;
-      const sum = (data as number[]).reduce((a, b) => a + (typeof b === 'number' ? b : 0), 0);
-      const percentage = sum ? ((value / sum) * 100).toFixed(1) : '0';
+            const data = context.chart.data.datasets[0].data;
+            const sum = (data as number[]).reduce(
+              (a, b) => a + (typeof b === 'number' ? b : 0),
+              0
+            );
+            const percentage = sum ? ((value / sum) * 100).toFixed(1) : '0';
 
-      return `${label}: ${value} ngày (${percentage}%)`;
-    }
-  }
-}
-
-    }
+            return `${label}: ${value} ngày (${percentage}%)`;
+          },
+        },
+      },
+    },
   };
   pieChartType: ChartType = 'pie';
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
   constructor(
     private authService: AuthService,
     private mestrualCycleService: MenstrualService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.accountId = this.authService.getIdFromToken();
@@ -93,7 +101,7 @@ export class MenstrualCycleComponent implements OnInit {
     if (this.accountId) {
       this.mestrualCycleService.getLatestRemind(this.accountId).subscribe({
         next: (remind) => this.updateChart(remind),
-        error: (err) => console.error('Lỗi khi lấy remind:', err)
+        error: (err) => console.error('Lỗi khi lấy remind:', err),
       });
     }
   }
@@ -103,18 +111,29 @@ export class MenstrualCycleComponent implements OnInit {
 
     const fertileStart = new Date(remind.fertileWindowStart);
     const fertileEnd = new Date(remind.fertileWindowEnd);
-    const fertileDays = Math.floor((fertileEnd.getTime() - fertileStart.getTime()) / (1000 * 3600 * 24)) + 1;
+    const fertileDays =
+      Math.floor(
+        (fertileEnd.getTime() - fertileStart.getTime()) / (1000 * 3600 * 24)
+      ) + 1;
 
     const ovulationDays = 1;
-    const lowRiskDays = cycleLength - menstruationDays - fertileDays - ovulationDays;
+    const lowRiskDays =
+      cycleLength - menstruationDays - fertileDays - ovulationDays;
 
     this.pieChartData = {
-      labels: ['menstruationDays ', 'ovulationDays ', ' fertileDays', 'lowRiskDays '],
-      datasets: [{
-        data: [menstruationDays, ovulationDays, fertileDays, lowRiskDays],
-        backgroundColor: ['#e57373', '#ffd54f', '#64b5f6', '#81c784'],
-        hoverBackgroundColor: ['#ef5350', '#ffb300', '#1976d2', '#388e3c']
-      }]
+      labels: [
+        'menstruationDays ',
+        'ovulationDays ',
+        ' fertileDays',
+        'lowRiskDays ',
+      ],
+      datasets: [
+        {
+          data: [menstruationDays, ovulationDays, fertileDays, lowRiskDays],
+          backgroundColor: ['#e57373', '#ffd54f', '#64b5f6', '#81c784'],
+          hoverBackgroundColor: ['#ef5350', '#ffb300', '#1976d2', '#388e3c'],
+        },
+      ],
     };
 
     // Gọi update để biểu đồ render lại với dữ liệu mới
@@ -219,5 +238,4 @@ export class MenstrualCycleComponent implements OnInit {
   //     }
   //   }
   // };
-
 }

@@ -19,7 +19,7 @@ export class PredictViewComponent implements OnInit {
   end!: string;
   constructor(private menstrualCycleService: MenstrualService) {}
   ngOnInit(): void {
-    console.log('Hiển Thị Predict trong predictcomponent', this.predict);
+    console.log('Hiển Thị Predict trong predictComponent', this.predict);
     this.start = this.predict.fertileWindow[0];
     this.end = this.predict.fertileWindow[1];
     console.log(this.start);

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { HeaderManagerComponent } from '../../header/header.component';
@@ -21,6 +21,7 @@ import { TestEditComponent } from './edit-test-service/edit-test.component';
 import { CreateCustomerComponent } from '../../manager-for-manager/create-customer/create-customer.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-manage-service',
   standalone: true,
@@ -44,7 +45,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   templateUrl: './manage-service.component.html',
   styleUrl: './manage-service.component.css',
 })
-export class ManageServiceComponent {
+export class ManageServiceComponent implements OnInit {
   search: string = '';
   role: string | null = null;
   isLoggedIn = false;
@@ -63,7 +64,8 @@ export class ManageServiceComponent {
     private authService: AuthService,
     private fb: FormBuilder,
     private testService: TestService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private router: Router
   ) {}
 
   tests: TestDTO[] = [];
@@ -202,7 +204,9 @@ export class ManageServiceComponent {
     this.role = this.authService.getRoleFromToken();
     console.log('🔐 isLoggedIn:', this.isLoggedIn);
     console.log('🧑‍💼 role:', this.role);
-
+    if (this.role != 'manager') {
+      this.router.navigate(['/home']);
+    }
     this.loadTests();
   }
 

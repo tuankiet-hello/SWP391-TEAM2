@@ -40,22 +40,26 @@
           </div>
           <h3>Health Tracker</h3>
           <p>
-            Monitor your vital health metrics and keep a personal
-            health diary for better wellness management.
+            Monitor your vital health metrics and keep a personal health diary
+            for better wellness management.
           </p>
-          <button>View Details</button>
+          <button routerLink="/menstrual-cycle">View Details</button>
         </div>
         <div class="service-card">
           <div class="icon icon-bg"><i class="fa-solid fa-vials"></i></div>
           <h3>Online Consultation</h3>
           <p>
-            Easily schedule a video or chat consultation with doctors
-            and health experts from anywhere.
+            Easily schedule a video or chat consultation with doctors and health
+            experts from anywhere.
           </p>
-          <button nz-button nzType="primary" (click)="openAppointmentModal()">View Details</button>
+          <button nz-button nzType="primary" (click)="openAppointmentModal()">
+            View Details
+          </button>
         </div>
         <div class="service-card">
-          <div class="icon icon-bg"><i class="fa-solid fa-book-medical"></i></div>
+          <div class="icon icon-bg">
+            <i class="fa-solid fa-book-medical"></i>
+          </div>
           <h3>Q&A / Ask Doctor</h3>
           <p>
             Submit your health-related questions and receive professional
@@ -64,7 +68,9 @@
           <button nz-button (click)="showModal = true">View Details</button>
         </div>
         <div class="service-card">
-          <div class="icon icon-bg"><i class="fa-solid fa-heart-pulse"></i></div>
+          <div class="icon icon-bg">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
           <h3>Book a Test</h3>
           <p>
             Select and book laboratory tests or health screenings at your
@@ -75,14 +81,13 @@
       </div>
     </section>
 
-    <app-ask-a-question
-      *ngIf="showModal"
-      (close)="showModal = false">
+    <app-ask-a-question *ngIf="showModal" (close)="showModal = false">
     </app-ask-a-question>
 
     <app-make-appointment
       *ngIf="showMakeAppointment"
-      (close)="closeAppointmentModal()">
+      (close)="closeAppointmentModal()"
+    >
     </app-make-appointment>
 
     <!-- Blog chia sẻ -->

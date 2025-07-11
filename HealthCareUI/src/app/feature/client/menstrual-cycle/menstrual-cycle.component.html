@@ -1,23 +1,26 @@
 <app-header></app-header>
 <div class="container">
-  <h1 style="text-align: left;">Menstrual cycle management</h1>
+  <h1 style="text-align: left">Menstrual cycle management</h1>
 
-
-  <hr>
+  <hr />
   <div class="main-layout">
     <div class="left-side">
       <div class="chart-container">
-        <canvas baseChart [data]="pieChartData" [options]="pieChartOptions" [type]="'pie'">
+        <canvas
+          baseChart
+          [data]="pieChartData"
+          [options]="pieChartOptions"
+          [type]="'pie'"
+        >
         </canvas>
       </div>
       <!-- Sidebar với các nút chức năng -->
-      <div class="sidebar" style="margin-left: 50px;margin-top: 40px;">
+      <div class="sidebar" style="margin-left: 50px; margin-top: 40px">
         <button (click)="openAddForm()">New Cycle</button>
         <button (click)="openPredict()">Predict menstrual cycle</button>
         <!-- <button (click)="remindCycle()">Remind</button> -->
       </div>
     </div>
-
 
     <!-- Content: Bảng danh sách chu kỳ -->
     <div class="content">
@@ -41,21 +44,32 @@
                 <button (click)="openEditForm(cycle)">Edit</button>
               </td>
             </tr>
+            <!-- Nếu không có dữ liệu -->
+            <div class="nodataa" *ngIf="!cycles || cycles.length === 0">
+              <div class="message">No Data</div>
+            </div>
           </tbody>
         </table>
       </div>
     </div>
   </div>
-
 </div>
 <!-- Popup form tạo/sửa chu kỳ -->
 <div class="popup" *ngIf="showForm">
-  <app-created-menstrual-cycle (cancel)="handleCancelForm()" [selectmode]="selectMode" [cycle]="cycle"
-    (success)="loadCycles()"></app-created-menstrual-cycle>
+  <app-created-menstrual-cycle
+    (cancel)="handleCancelForm()"
+    [selectmode]="selectMode"
+    [cycle]="cycle"
+    (success)="loadCycles()"
+  ></app-created-menstrual-cycle>
 </div>
 <div class="popup" *ngIf="showFormPredict">
-  <app-predict-view (close)="handleCancelForm()" (success)="loadCycles()" [accountId]="accountId"
-    [predict]="predict"></app-predict-view>
+  <app-predict-view
+    (close)="handleCancelForm()"
+    (success)="loadCycles()"
+    [accountId]="accountId"
+    [predict]="predict"
+  ></app-predict-view>
 </div>
 
 <app-footer></app-footer>

@@ -13,6 +13,7 @@ import {
   ViewConsultationScheduleComponent,
   ManageServiceComponent,
   ViewQuestionComponent,
+  DashboardComponent,
 } from './manager';
 
 import {
@@ -29,7 +30,6 @@ import { ViewTestBookingComponent } from './manager/staff/view-test-booking/view
 import { EditProfileComponent } from './feature/client/edit-profile/edit-profile.component';
 import { ConfirmChangeEmailComponent } from './feature/client/confirm-change-email/confirm-change-email.component';
 import { MenstrualCycleComponent } from './feature/client/menstrual-cycle/menstrual-cycle.component';
-
 
 export const routes: Routes = [
   //cái này để trên cùng
@@ -69,14 +69,15 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'confirm-change-email', component: ConfirmChangeEmailComponent },
   //Admin routes
-  { path: 'manager-users', component: ManagerUsersComponent },
+  { path: 'manager-users', component: ManagerUsersComponent }, //đã chặn
+  { path: 'dash-board', component: DashboardComponent }, //đã chặn
 
   //Manager routes
-  { path: 'manager-customers', component: ManagerCustomersComponent },
-  { path: 'manage-service', component: ManageServiceComponent },
+  { path: 'manager-customers', component: ManagerCustomersComponent }, //đã chặn
+  { path: 'manage-service', component: ManageServiceComponent }, //đã chặn
 
   //Staff routes
-  { path: 'view-test-booking', component: ViewTestBookingComponent },
+  { path: 'view-test-booking', component: ViewTestBookingComponent }, //đã chặn
 
   //Consultant routes
   {
@@ -84,7 +85,8 @@ export const routes: Routes = [
     component: ViewConsultationScheduleComponent,
   },
   { path: 'view-question', component: ViewQuestionComponent },
-
+  //customer
+  { path: 'menstrual-cycle', component: MenstrualCycleComponent },
   //cái này phải để cuối cùng
   { path: '**', redirectTo: 'home' }, //invalid đẩy về home
 ]; //ko chơi thay đổi thứ tự route nha mấy ní

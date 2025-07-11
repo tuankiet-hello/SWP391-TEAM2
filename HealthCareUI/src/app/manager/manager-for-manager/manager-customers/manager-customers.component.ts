@@ -24,6 +24,8 @@ import { ViewCustomerComponent } from '../view-customer/view-customer.component'
 import { EditCustomerComponent } from '../edit-customer/edit-customer.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { CreateUserComponent } from '../../manager-users/create-user/create-user.component';
+import { AuthService } from '../../../../services/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-manager-customers',
   imports: [
@@ -60,7 +62,7 @@ export class ManagerCustomersComponent implements OnInit {
   isEditModalVisible: boolean = false;
   idChoose: string = '';
   searchTerm: string = '';
-
+  roleLogin!: string | null;
   // Phân trang
   currentPage = 1;
   pageSize = 6; // số user trên mỗi trang
@@ -70,11 +72,18 @@ export class ManagerCustomersComponent implements OnInit {
   constructor(
     private userService: UserService,
     private modal: NzModalService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.roleLogin = this.authService.getRoleFromToken();
+    if (this.roleLogin != 'admin') {
+      this.router.navigate(['/home']);
+    } else {
+      this.loadUsers();
+    }
   }
 
   loadUsers(): void {

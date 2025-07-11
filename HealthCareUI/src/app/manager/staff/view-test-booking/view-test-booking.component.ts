@@ -20,9 +20,11 @@ import {
   EditTestBookingDTO,
   TestBookingDTO,
 } from '../../../../services/test-booking.service';
+import { AuthService } from '../../../../services/auth.service';
 import { ViewBookingDetailComponent } from '../view-booking-detail/view-booking-detail.component';
 import { EditBookingComponent } from '../edit-booking/edit-booking.component';
 import { CreateBookingComponent } from '../create-booking/create-booking.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-view-test-booking',
   imports: [
@@ -83,15 +85,22 @@ export class ViewTestBookingComponent implements OnInit {
   pageSize = 5;
   totalPages = 0;
   modalType: 'booking' | null = null;
-
+  roleLogin!: string | null;
   constructor(
     private bookingService: BookingService,
     private modal: NzModalService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadTestBooking();
+    this.roleLogin = this.authService.getRoleFromToken();
+    if (this.roleLogin != 'admin') {
+      this.router.navigate(['/home']);
+    } else {
+      this.loadTestBooking();
+    }
   }
 
   loadTestBooking(): void {
