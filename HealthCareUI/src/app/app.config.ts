@@ -8,7 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { provideAnimations } from '@angular/platform-browser/animations';
-
+// Import thêm từ ng2-charts
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,6 +20,8 @@ export const appConfig: ApplicationConfig = {
         scrollPositionRestoration: 'enabled' // hoặc 'top'
       })
     ),
+     // Thêm provider cho ng2-charts
+    provideCharts(withDefaultRegisterables()),
     provideHttpClient(),
     importProvidersFrom(BrowserAnimationsModule),
     provideAnimations(),
