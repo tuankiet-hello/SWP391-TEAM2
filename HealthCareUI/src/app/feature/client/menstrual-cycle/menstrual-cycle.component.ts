@@ -54,7 +54,10 @@ export class MenstrualCycleComponent implements OnInit {
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     plugins: {
-      legend: { position: 'bottom', labels: { font: { size: 13 } } },
+      legend: {
+        position: 'bottom',
+        labels: { color: ' #1f2937', font: { size: 13 } },
+      },
       tooltip: {
         enabled: true,
         callbacks: {

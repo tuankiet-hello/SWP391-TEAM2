@@ -69,15 +69,15 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'confirm-change-email', component: ConfirmChangeEmailComponent },
   //Admin routes
-  { path: 'manager-users', component: ManagerUsersComponent },
-  { path: 'dash-board', component: DashboardComponent },
+  { path: 'manager-users', component: ManagerUsersComponent }, //đã chặn
+  { path: 'dash-board', component: DashboardComponent }, //đã chặn
 
   //Manager routes
-  { path: 'manager-customers', component: ManagerCustomersComponent },
-  { path: 'manage-service', component: ManageServiceComponent },
+  { path: 'manager-customers', component: ManagerCustomersComponent }, //đã chặn
+  { path: 'manage-service', component: ManageServiceComponent }, //đã chặn
 
   //Staff routes
-  { path: 'view-test-booking', component: ViewTestBookingComponent },
+  { path: 'view-test-booking', component: ViewTestBookingComponent }, //đã chặn
 
   //Consultant routes
   {

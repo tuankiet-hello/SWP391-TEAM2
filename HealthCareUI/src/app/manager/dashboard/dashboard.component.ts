@@ -17,6 +17,7 @@ import {
   AppointmentService,
   AppointmentDTO,
 } from '../../../services/appointment.service';
+import { AuthService } from '../../../services/auth.service';
 import { QuestionService } from '../../../services/question.service';
 import {
   BaseChartDirective,
@@ -87,58 +88,74 @@ export class DashboardComponent implements OnInit {
   pieChartData!: any;
   pieChartDataTest!: any;
   pieChartDataQuestion!: any;
+  roleLogin!: string | null;
   revenue?: number;
   constructor(
     private userService: UserService,
     private menstrualService: MenstrualService,
     private appointmentService: AppointmentService,
     private bookingService: BookingService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private authService: AuthService,
+    private router: Router
   ) {}
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe((data) => {
-      this.user = data;
-      this.loadUser();
-    });
-    this.menstrualService.getCycleList().subscribe((data) => {
-      this.cycles = data;
-      this.cycleUsers = new Set(data.map((c) => c.accountID)).size;
-    });
-    this.appointmentService.getAllAppointments().subscribe((data) => {
-      this.appointmentStats.total = new Set(data.map((c) => c.accountID)).size;
-      this.appointmentStats.completed = data.filter(
-        (u) => u.status == 4
-      ).length;
-      this.appointmentStats.inProgress = data.filter(
-        (u) => u.status == 2
-      ).length;
-      this.appointmentStats.submitted = data.filter(
-        (u) => u.status == 0
-      ).length;
-      this.appointmentStats.pending = data.filter((u) => u.status == 1).length;
-      this.appointmentStats.canceled = data.filter((u) => u.status == 3).length;
-      this.loadPieChartConsultation();
-    });
-    this.bookingService.getAllBookings().subscribe((data) => {
-      this.testStats.total = data.length;
-      this.testStats.inProgress = data.filter((u) => u.status == 2).length;
-      this.testStats.submitted = data.filter((u) => u.status == 0).length;
-      this.testStats.pending = data.filter((u) => u.status == 1).length;
-      this.testStats.canceled = data.filter((u) => u.status == 3).length;
-      this.testStats.completed = data.filter((u) => u.status == 4).length;
-      this.tests = data.filter((u) => u.status == 4);
-      this.revenueTotal();
-      console.log(this.tests);
-      this.loadPieChartBooking();
-    });
-    this.questionService.getAllQuestions().subscribe((data) => {
-      this.questionStats.total = data.length;
-      console.log(this.questionStats.total);
-      this.questionStats.answered = data.filter((u) => u.status == 4).length;
-      this.questionStats.unanswered = data.filter((u) => u.status == 0).length;
-      this.questionStats.canceled = data.filter((u) => u.status == 3).length;
-      this.loadPieChartQuestion();
-    });
+    this.roleLogin = this.authService.getRoleFromToken();
+    if (this.roleLogin != 'admin') {
+      this.router.navigate(['/home']);
+    } else {
+      this.userService.getAllUsers().subscribe((data) => {
+        this.user = data;
+        this.loadUser();
+      });
+      this.menstrualService.getCycleList().subscribe((data) => {
+        this.cycles = data;
+        this.cycleUsers = new Set(data.map((c) => c.accountID)).size;
+      });
+      this.appointmentService.getAllAppointments().subscribe((data) => {
+        this.appointmentStats.total = new Set(
+          data.map((c) => c.accountID)
+        ).size;
+        this.appointmentStats.completed = data.filter(
+          (u) => u.status == 4
+        ).length;
+        this.appointmentStats.inProgress = data.filter(
+          (u) => u.status == 2
+        ).length;
+        this.appointmentStats.submitted = data.filter(
+          (u) => u.status == 0
+        ).length;
+        this.appointmentStats.pending = data.filter(
+          (u) => u.status == 1
+        ).length;
+        this.appointmentStats.canceled = data.filter(
+          (u) => u.status == 3
+        ).length;
+        this.loadPieChartConsultation();
+      });
+      this.bookingService.getAllBookings().subscribe((data) => {
+        this.testStats.total = data.length;
+        this.testStats.inProgress = data.filter((u) => u.status == 2).length;
+        this.testStats.submitted = data.filter((u) => u.status == 0).length;
+        this.testStats.pending = data.filter((u) => u.status == 1).length;
+        this.testStats.canceled = data.filter((u) => u.status == 3).length;
+        this.testStats.completed = data.filter((u) => u.status == 4).length;
+        this.tests = data.filter((u) => u.status == 4);
+        this.revenueTotal();
+        console.log(this.tests);
+        this.loadPieChartBooking();
+      });
+      this.questionService.getAllQuestions().subscribe((data) => {
+        this.questionStats.total = data.length;
+        console.log(this.questionStats.total);
+        this.questionStats.answered = data.filter((u) => u.status == 4).length;
+        this.questionStats.unanswered = data.filter(
+          (u) => u.status == 0
+        ).length;
+        this.questionStats.canceled = data.filter((u) => u.status == 3).length;
+        this.loadPieChartQuestion();
+      });
+    }
   }
 
   revenueTotal() {
