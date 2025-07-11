@@ -13,7 +13,7 @@
 
       <!-- Right: Form -->
       <div class="formContent">
-        <form [formGroup]="form" class="modal-form">
+        <form [formGroup]="form" class="modal-form" (ngSubmit)="onSubmit()">
           <div class="title">Medical Examination Information</div>
 
           <div class="form-group">
@@ -22,6 +22,7 @@
               type="text"
               formControlName="firstName"
               placeholder="First Name"
+              readonly
             />
           </div>
 
@@ -31,13 +32,14 @@
               type="text"
               formControlName="lastName"
               placeholder="Last Name"
+              readonly
             />
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Date Of Birth</label>
-            <input formControlName="dateOfBirth" type="date" />
-          </div>
+            <input formControlName="dateOfBirth" type="date" readonly/>
+          </div> -->
 
           <div class="form-group">
             <label>Email</label>
@@ -52,13 +54,35 @@
           <div class="form-group">
             <label>Booking Date</label>
             <input formControlName="bookingDate" type="date" />
+            <!-- Hiển thị lỗi nếu ngày đã chọn nhỏ hơn hôm nay -->
+            <div
+              class="error-message"
+              [class.visible]="form.get('bookingDate')?.touched && form.get('bookingDate')?.errors?.['pastDate']"
+              [class.hidden]="!(form.get('bookingDate')?.touched && form.get('bookingDate')?.errors?.['pastDate'])"
+            >
+              Booking date must be today or in the future.
+            </div>
           </div>
 
           <div class="form-group">
             <label>Booking Time</label>
             <input formControlName="bookingTime" type="time" />
+            <div
+              class="error-message"
+              [class.visible]="form.errors?.['pastTimeToday'] && form.get('bookingTime')?.touched"
+              [class.hidden]="!form.errors?.['pastTimeToday'] || !form.get('bookingTime')?.touched"
+            >
+              Booking time must be in the future.
+            </div>
           </div>
-          <button type="submit" (click)="onSubmit()">Send Information</button>
+
+          <button
+            type="submit"
+            [disabled]="form.invalid || isSubmitting"
+            style="margin-top: 15px"
+          >
+            {{ isSubmitting ? 'Sending...' : 'Send Information' }}
+          </button>
         </form>
       </div>
     </div>

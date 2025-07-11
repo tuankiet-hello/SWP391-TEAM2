@@ -62,7 +62,7 @@ export interface CreateTestBookingDTO {
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
-  private apiUrl = environment.apiUrl + '/api/booking';
+  private apiUrl = environment.apiUrl + '/api/Booking';
   constructor(private http: HttpClient) {}
   getAllBookings(): Observable<TestBookingDTO[]> {
     return this.http.get<TestBookingDTO[]>(this.apiUrl + '/list-booking');
@@ -77,34 +77,20 @@ export class BookingService {
     });
   }
 
-  // editBooking(
-  //   id: number,
-  //   payload: {
-  //     testID: number;
-  //     result: string;
-  //     bookingDate: string;
-  //     bookingTime: string;
-  //     status: number;
-  //   }
-  // ): Observable<any> {
-  //   return this.http.put(`${this.apiUrl}/${id}`, payload);
-  // }
-
   editBooking(
-  id: number,
-  accountID: string, // 👈 thêm tham số accountID ở đây
-  payload: {
-    testID: number;
-    result: string;
-    bookingDate: string;
-    bookingTime: string;
-    status: number;
+    id: number,
+    accountID: string, // 👈 thêm tham số accountID ở đây
+    payload: {
+      testID: number;
+      result: string;
+      bookingDate: string;
+      bookingTime: string;
+      status: number;
+    }
+  ): Observable<any> {
+    const params = new HttpParams().set('accountID', accountID); // 👈 thêm accountID vào query
+    return this.http.put(`${this.apiUrl}/${id}`, payload, { params });
   }
-): Observable<any> {
-  const params = new HttpParams().set('accountID', accountID); // 👈 thêm accountID vào query
-  return this.http.put(`${this.apiUrl}/${id}`, payload, { params });
-}
-
 
   addBooking(payload: {
     accountID: string;
@@ -115,5 +101,16 @@ export class BookingService {
     status: number;
   }): Observable<any> {
     return this.http.post(this.apiUrl + '/add-booking', payload);
+  }
+
+  createBookingForUser(payload: {
+    accountID: string;
+    testID: number;
+    result: string;
+    bookingDate: string;
+    bookingTime: string;
+    status: number;
+  }): Observable<any> {
+    return this.http.post( `${this.apiUrl}/create-booking`, payload);
   }
 }

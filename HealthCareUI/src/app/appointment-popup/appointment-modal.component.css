@@ -130,3 +130,31 @@ h2 {
   padding: 3px 10px;
   font-weight: 400;
 }
+
+/* ::ng-deep .cdk-overlay-container,
+::ng-deep .cdk-global-overlay-wrapper,
+::ng-deep .nz-notification {
+  z-index: 5000 !important;
+} */
+
+.error-message {
+  min-height: 10px; /* luôn chiếm khoảng */
+  font-size: 10px;
+  color: red;
+  margin-top: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.error-message.hidden {
+  visibility: hidden;
+}
+
+.error-message.visible {
+  visibility: visible;
+}
+
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
