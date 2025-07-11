@@ -30,7 +30,7 @@ import {
 import { ViewBookingDetailComponent } from '../../../manager/staff/view-booking-detail/view-booking-detail.component';
 import { ViewQuestionDetailComponent } from '../../../manager/consultant/view-question-detail/view-question-detail.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-
+import { Router, RouterModule } from '@angular/router';
 
 interface Question {
   id: string;
@@ -50,7 +50,8 @@ interface Question {
     ReactiveFormsModule,
     ViewBookingDetailComponent,
     ViewQuestionDetailComponent,
-    NzIconModule
+    NzIconModule,
+    RouterModule,
   ],
   templateUrl: './manage-profile.component.html',
   styleUrls: ['./manage-profile.component.css'],
@@ -62,6 +63,7 @@ export class ManageProfileComponent implements OnInit {
   user!: AccountDetailDTO;
   changePasswordForm: FormGroup;
   message: string = '';
+  forceRedirect = false;
   regexpassword =
     '^[A-Z](?=.*[!@#$%^&*()_+\\-=\\[\\]{};\':"\\\\|,.<>\\/\\?]).{5,}$';
 
@@ -98,8 +100,8 @@ export class ManageProfileComponent implements OnInit {
   showNewPassword = false;
   showConfirmPassword = false;
 
-
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
@@ -164,15 +166,18 @@ export class ManageProfileComponent implements OnInit {
       next: (res) => {
         if (res.valid) {
           this.isPasswordValid = true;
-          this.checkPasswordMessage = '';
+          this.checkPasswordMessage = '✔️';
         } else {
           this.isPasswordValid = false;
-          this.checkPasswordMessage = 'Current password is incorrect';
+          this.checkPasswordMessage = '❌';
         }
       },
       error: () => {
         this.isPasswordValid = false;
-        this.checkPasswordMessage = 'Your session has expired. Please login again to continue';
+        this.checkPasswordMessage =
+          'Your session has expired. Please login again to continue';
+        this.message = this.checkPasswordMessage;
+        console.warn('🚨 Session expired: triggering popup');
       },
     });
   }
@@ -249,7 +254,7 @@ export class ManageProfileComponent implements OnInit {
   loadFakeBookings() {
     this.bookingService.getBookingHisById(this.userid).subscribe((booking) => {
       this.bookings = booking;
-      console.log('Nạp  booking ok', this.bookings);
+      console.log('Nạp booking ok', this.bookings);
     });
   }
 

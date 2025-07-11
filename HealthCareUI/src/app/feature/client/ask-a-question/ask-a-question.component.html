@@ -46,6 +46,9 @@
       </div>
     </div>
 
-    <button type="submit" [disabled]="questionForm.invalid">Submit Question</button>
+    <button type="submit" [disabled]="questionForm.invalid || isSubmitting">
+      {{ isSubmitting ? 'Submitting...' : 'Submit Question' }}
+    </button>
+
   </form>
 </div>

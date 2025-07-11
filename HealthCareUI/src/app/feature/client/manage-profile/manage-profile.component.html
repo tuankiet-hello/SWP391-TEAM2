@@ -123,26 +123,35 @@
             <div class="form-row" >
               <label for="currentPassword">Current Password:</label>
               <div class="input-group password-group">
-                <input
-                  id="currentPassword"
-                  [type]="showCurrentPassword ? 'text' : 'password'"
-                  formControlName="currentPassword"
-                  required
-                  (blur)="onCheckCurrentPassword()"
-                />
-                <i nz-icon
-                  [nzType]="showCurrentPassword ? 'eye-invisible' : 'eye'"
-                  (click)="showCurrentPassword = !showCurrentPassword"
-                  class="eye-icon"
-                ></i>
+
+                <div class="input-wrapper">
+                  <input
+                    id="currentPassword"
+                    [type]="showCurrentPassword ? 'text' : 'password'"
+                    formControlName="currentPassword"
+                    required
+                    (blur)="onCheckCurrentPassword()"
+                    style="min-width: 352px;"
+                  />
+                  <i nz-icon
+                    [nzType]="showCurrentPassword ? 'eye-invisible' : 'eye'"
+                    (click)="showCurrentPassword = !showCurrentPassword"
+                    class="eye-icon"
+                  ></i>
+                <!-- </div>
+                <div> -->
+                  <a style="display: flex;" *ngIf="!changePasswordForm.get('currentPassword')?.hasError('required')">
+                    {{ checkPasswordMessage || '‎' }}
+                  </a>
+                </div>
+
+
                 <span class="input-message error">
                   <span *ngIf="changePasswordForm.get('currentPassword')?.hasError('required') && changePasswordForm.get('currentPassword')?.touched">
                     Please enter current password
                   </span>
-                  <span *ngIf="!changePasswordForm.get('currentPassword')?.hasError('required')">
-                    {{ checkPasswordMessage || '‎' }}
-                  </span>
                 </span>
+
               </div>
             </div>
 
@@ -179,7 +188,7 @@
                   >
                     Min 6 characters: upper, lower, number & special
                   </span>
-                  <span class="input-message error" *ngIf="changePasswordForm.hasError('duplicatePassword') && changePasswordForm.get('newPassword')?.touched">
+                  <span *ngIf="changePasswordForm.hasError('duplicatePassword') && changePasswordForm.get('newPassword')?.touched">
                     New password cannot be the same as current password
                   </span>
                 </span>
@@ -205,8 +214,16 @@
                   <span *ngIf="changePasswordForm.get('confirmPassword')?.hasError('required') && changePasswordForm.get('confirmPassword')?.touched">
                     Please enter confirm password
                   </span>
+
                   <span *ngIf="changePasswordForm.hasError('passwordMismatch') && !changePasswordForm.get('confirmPassword')?.hasError('required')">
                     Confirm password must match new password
+                  </span>
+
+                  <span class="input-message"
+                  [ngClass]="{ error: message.includes('Failed') }"
+                  *ngIf="message"
+                  style="color: green; font-weight: bold; display: flex; justify-self: center; font-size: 13px;">
+                    {{ message }}
                   </span>
                 </span>
 
@@ -214,24 +231,24 @@
             </div>
 
             <!-- Thông báo submit -->
-            <div class="form-row">
+            <!-- <div class="form-row">
               <div class="input-group">
 
                 <span class="input-message" [ngClass]="{ error: message.includes('Failed') }" *ngIf="message">
                   {{ message }}
                 </span>
               </div>
-            </div>
-
-
+            </div> -->
 
             <!-- Nút -->
             <button
+              *ngIf="!forceRedirect"
               type="submit"
               [disabled]="changePasswordForm.invalid || !isPasswordValid"
             >
               Change Password
             </button>
+
           </form>
         </div>
 
@@ -271,3 +288,13 @@
   [visible]="isQuestionModalVisible"
   (close)="handleQuestionModalClose()"
 ></app-view-question-detail>
+
+<!-- Popup lỗi không tắt được -->
+<div class="modal-overlay" *ngIf="message && message.includes('Your session has expired. Please login again to continue')">
+
+  <div class="modal-content no-close" (click)="$event.stopPropagation()">
+    <h3>Error</h3>
+    <p class="error-text">{{ message }}</p>
+    <button [routerLink]="['/login']">Go to Login</button>
+  </div>
+</div>

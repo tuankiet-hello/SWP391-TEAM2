@@ -51,4 +51,8 @@ export class AppointmentService {
     return this.http.get<AppointmentDTO[]>(`${this.apiUrl}/account/${accountID}`);
   }
 
+  updateAppointmentFromUser(dto: AppointmentDTO): Observable<any> {
+    return this.http.put(`${this.apiUrl}/user-update/${dto.appointmentID}`, dto);
+  }
+
 }

@@ -18,6 +18,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 export class MakeAppointmentComponent {
   @Output() close = new EventEmitter<void>();
   submitted = false;
+  isSubmitting = false; // đang gửi
+  isAppointmentDone = false; // gửi xong thành công
 
   appointment = {
     appointmentDate: null as Date | null,
@@ -132,7 +134,8 @@ export class MakeAppointmentComponent {
   }
 
   updateAppointment(updated: any) {
-    this.appointmentService.updateAppointment(updated).subscribe({
+    this.isSubmitting = true;
+    this.appointmentService.updateAppointmentFromUser(updated).subscribe({
       next: () => {
         this.notification.success(
           'Success',
@@ -143,7 +146,8 @@ export class MakeAppointmentComponent {
             nzStyle: { top: '80px' },
           }
         );
-        this.resetForm();
+        this.isAppointmentDone = true;
+        this.closeModal();
       },
       error: () => {
         this.notification.error('Error', 'Failed to update appointment.', {
@@ -152,10 +156,14 @@ export class MakeAppointmentComponent {
           nzStyle: { top: '80px' },
         });
       },
+      complete: () => {
+        this.isSubmitting = false;
+      },
     });
   }
 
   createAppointment(accountID: string, dateStr: string, timeStr: string) {
+    this.isSubmitting = true;
     const payload = {
       accountID,
       appointmentDate: dateStr,
@@ -173,7 +181,8 @@ export class MakeAppointmentComponent {
             nzStyle: { top: '80px' },
           }
         );
-        this.resetForm();
+        this.isAppointmentDone = true; // ✅ disable sau khi thành công
+        this.closeModal();
       },
       error: () => {
         this.notification.error('Error', 'Failed to create appointment.', {
@@ -181,6 +190,9 @@ export class MakeAppointmentComponent {
           nzDuration: 3000,
           nzStyle: { top: '80px' },
         });
+      },
+      complete: () => {
+        this.isSubmitting = false;
       },
     });
   }

@@ -143,13 +143,18 @@ namespace HealthCareAPI.Controller
                 var emailBody = $@"
                     <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
                         <p>Dear <b>{fullName}</b>,</p>
+                        <p>Thanks for reaching out to <b>Gender Health Care</b></p>
                         <p>Your appointment has been successfully booked.</p>
                         <p>Below are the details of your appointment:</p>
                         <ul>
                             <li><b>Date:</b> {dto.AppointmentDate:dd/MM/yyyy}</li>
                             <li><b>Time:</b> {dto.AppointmentTime:HH\:mm}</li>
                         </ul>
+                        <p>Best regards,</p>
                         <p><b>Gender Health Care Team</b></p>
+                        <p style='margin-top:32px;'>If you have any concerns, please contact our team.</p>
+                        <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+                        <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically, please do not reply.</p>
                     </div>";
 
                 if (!string.IsNullOrEmpty(userEmail))
@@ -199,7 +204,8 @@ namespace HealthCareAPI.Controller
                     dto.AppointmentID = existingAppt.AppointmentID;
                     await SendConfirmationEmail(dto);
 
-                    return Ok(new {
+                    return Ok(new
+                    {
                         message = $"Rescheduled from {existingAppt.AppointmentTime:HH\\:mm} to {dto.AppointmentTime:HH\\:mm}.",
                         dto
                     });
@@ -225,7 +231,7 @@ namespace HealthCareAPI.Controller
 
             return Ok(dto);
         }
-        
+
         [HttpGet("by-account-and-date")]
         public async Task<IActionResult> GetByAccountAndDate([FromQuery] Guid accountID, [FromQuery] DateOnly date)
         {
@@ -260,7 +266,62 @@ namespace HealthCareAPI.Controller
             return Ok(result);
         }
 
-       
+        [HttpPut("user-update/{id}")]
+        public async Task<IActionResult> UpdateAppointmentFromUser(int id, [FromBody] AppoinmentDTO dto)
+        {
+            if (id != dto.AppointmentID)
+                return BadRequest("Appointment ID mismatch.");
+
+            var existingAppt = await _unitOfWork.AppoinmentRepository.GetByIdAsync(id);
+            if (existingAppt == null)
+                return NotFound("Appointment not found.");
+
+            if (existingAppt.Status == StatusType.Completed || existingAppt.Status == StatusType.Canceled)
+                return BadRequest("You cannot update a completed or canceled appointment.");
+
+            // Cập nhật thông tin
+            existingAppt.AppointmentDate = dto.AppointmentDate;
+            existingAppt.AppointmentTime = dto.AppointmentTime;
+            existingAppt.Status = StatusType.Submitted;
+
+            await _unitOfWork.CompleteAsync();
+
+            // Gửi email xác nhận update
+            try
+            {
+                var account = await _unitOfWork.Repository<Account>().GetByIdAsync(dto.AccountID);
+                var fullName = $"{account.FirstName} {account.LastName}".Trim();
+                var userEmail = account.Email;
+
+                var subject = "Your Appointment Has Been Updated - Gender Health Care";
+                var emailBody = $@"
+                    <div style='max-width:500px;margin:40px auto;padding:32px 24px;background:#222;border-radius:12px;color:#eee;font-family:sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
+                        <p>Dear <b>{fullName}</b>,</p>
+                        <p>Your appointment has been successfully updated.</p>
+                        <p>Below are the updated details of your appointment:</p>
+                        <ul style='margin:18px 0 24px 18px;padding:0;list-style:disc;color:#fff;'>
+                            <li><b>Date:</b> {dto.AppointmentDate:dd/MM/yyyy}</li>
+                            <li><b>Time:</b> {dto.AppointmentTime:HH\:mm}</li>
+                        </ul>
+                        <p>Best regards,</p>
+                        <p><b>Gender Health Care Team</b></p>
+                        <p style='margin-top:32px;'>If you have any concerns, please contact our team.</p>
+                        <hr style='margin:32px 0;border:none;border-top:1px solid #444;'/>
+                        <p style='font-size:13px;color:#aaa;text-align:center;'>This email was sent automatically. Please do not reply.</p>
+                    </div>";
+
+                if (!string.IsNullOrEmpty(userEmail))
+                    await _emailService.SendEmailAsync(userEmail, subject, emailBody);
+            }
+            catch (Exception ex)
+            {
+                // TODO: log error nếu cần
+            }
+
+            return Ok(new { message = "Appointment updated successfully." });
+        }
+
+
     }
 
 }
