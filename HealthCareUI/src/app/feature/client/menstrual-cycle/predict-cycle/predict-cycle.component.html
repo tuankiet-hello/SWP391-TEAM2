@@ -3,10 +3,10 @@
     <div class="btnclose">
       <span class="close-button" (click)="onClose()">&times;</span>
     </div>
-    <h2><strong>Your Prediction</strong></h2>
-    <p><strong>Start Date</strong> :{{ predict.predictedStartDate }}</p>
+    <h2><strong>Your Prediction Cycle</strong></h2>
+    <p><strong>Start Date</strong> : {{ predict.predictedStartDate }}</p>
     <p><strong>Ovulation Date</strong> :{{ predict.predictedOvulationDate }}</p>
-    <p><strong>Fertile Date</strong> :{{ start }} - {{ end }}</p>
+    <p><strong>Fertile Date</strong> : {{ start }} to {{ end }}</p>
     <button (click)="remindCycle()">Remind</button>
   </div>
 </div>

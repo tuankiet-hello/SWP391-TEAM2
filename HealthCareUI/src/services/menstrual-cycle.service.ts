@@ -3,7 +3,14 @@ import { Injectable } from '@angular/core';
 import { environment } from '../app/app.config';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-
+export interface Remind {
+  accountID: string;
+  predictedStartDate: string;
+  predictedOvulationDate: string;
+  fertileWindowStart: string;
+  fertileWindowEnd: string;
+  // các trường khác nếu có
+}
 export interface MenstrualCycleDTO {
   cycleID: number;
   accountID: string;
@@ -19,6 +26,9 @@ export class MenstrualService {
   private apiUrl = environment.apiUrl + '/api/MenstrualCycle'; // Đổi thành API thực tế của cậu
 
   constructor(private http: HttpClient) {}
+   getLatestRemind(accountId: string): Observable<Remind> {
+  return this.http.get<Remind>(`${this.apiUrl}/remind/latest/${accountId}`);
+}
 
   getCycleByAccId(id: string): Observable<MenstrualCycleDTO[]> {
     return this.http.get<MenstrualCycleDTO[]>(
