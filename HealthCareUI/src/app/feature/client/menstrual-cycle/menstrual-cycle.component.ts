@@ -16,12 +16,6 @@ import {
   provideCharts,
   withDefaultRegisterables,
 } from 'ng2-charts';
-import { ChartOptions } from 'chart.js';
-import {
-  BaseChartDirective,
-  provideCharts,
-  withDefaultRegisterables,
-} from 'ng2-charts';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 interface MenstrualCycle {
