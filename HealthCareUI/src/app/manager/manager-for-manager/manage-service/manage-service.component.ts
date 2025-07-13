@@ -204,7 +204,7 @@ export class ManageServiceComponent implements OnInit {
     this.role = this.authService.getRoleFromToken();
     console.log('🔐 isLoggedIn:', this.isLoggedIn);
     console.log('🧑‍💼 role:', this.role);
-    if (this.role != 'manager') {
+    if (this.role !== 'manager' && this.role !== 'staff') {
       this.router.navigate(['/home']);
     }
     this.loadTests();

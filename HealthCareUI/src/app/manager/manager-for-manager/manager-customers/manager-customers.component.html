@@ -1,5 +1,8 @@
-<div class="customer-manager" *ngIf="roleLogin == 'manager'">
-  <app-header-manager></app-header-manager>
+<app-header-manager></app-header-manager>
+<div
+  class="customer-manager"
+  *ngIf="roleLogin == 'manager' || 'staff' || 'consultant'"
+>
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
 
@@ -22,7 +25,13 @@
               (ngModelChange)="onSearchChange()"
             />
           </div>
-          <button class="new-btn" (click)="openUserModal()">+ New User</button>
+          <button
+            class="new-btn"
+            *ngIf="roleLogin == 'manager'"
+            (click)="openUserModal()"
+          >
+            + New User
+          </button>
         </div>
       </div>
 
@@ -169,14 +178,16 @@
                   class="icon-box edit"
                   title="Edit"
                   (click)="editUser(user.id)"
+                  *ngIf="roleLogin == 'manager'"
                 >
                   <i class="fa-solid fa-edit"></i>
                 </div>
 
-                <!-- <div
+                <div
                   class="icon-box lock"
                   [title]="user.accountStatus === 'Inactive' ? 'Unban' : 'Ban'"
                   (click)="toggleBanUser(user)"
+                  *ngIf="roleLogin == 'manager'"
                 >
                   <i
                     class="fa-solid"
@@ -190,7 +201,7 @@
                     ]"
                   >
                   </i>
-                </div> -->
+                </div>
               </td>
             </tr>
           </tbody>

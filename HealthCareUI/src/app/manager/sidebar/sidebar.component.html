@@ -25,7 +25,10 @@
       </li> -->
 
       <!-- Manager -->
-      <li routerLinkActive="active" *ngIf="role === 'manager'">
+      <li
+        routerLinkActive="active"
+        *ngIf="role === 'manager' || 'staff' || 'consultant'"
+      >
         <a class="menu-item" [routerLink]="['/manager-customers']">
           <nz-icon nzType="team" nzTheme="outline"></nz-icon>
           <span class="menu-text">User Management</span>

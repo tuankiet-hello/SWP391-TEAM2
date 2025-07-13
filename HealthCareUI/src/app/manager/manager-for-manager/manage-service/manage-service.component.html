@@ -47,7 +47,9 @@
 
               <th>
                 <div style="display: flex; align-items: center">
-                  <span class="taghead namehead" style="max-width: 320px; min-width: 320px;"
+                  <span
+                    class="taghead namehead"
+                    style="max-width: 320px; min-width: 320px"
                     >Test Name</span
                   >
                   <nz-filter-trigger
@@ -126,9 +128,7 @@
                   </nz-filter-trigger>
                   <nz-dropdown-menu #statusMenu="nzDropdownMenu">
                     <ul nz-menu>
-                      <li nz-menu-item (click)="filterStatus(null)">
-                        All
-                      </li>
+                      <li nz-menu-item (click)="filterStatus(null)">All</li>
                       <li nz-menu-item (click)="filterStatus('active')">
                         Active
                       </li>
@@ -148,7 +148,7 @@
             </tr>
           </thead>
 
-          <tbody >
+          <tbody>
             <tr *ngFor="let user of displayedTest; let i = index">
               <td>
                 <span class="tag no">{{
@@ -166,9 +166,19 @@
               </td>
 
               <td>
-  <nz-tag class ="tag active" *ngIf="user.active === true" nzColor="green">Active</nz-tag>
-  <nz-tag class = "tag inactive" *ngIf="user.active === false" nzColor="red">Inactive</nz-tag>
-</td>
+                <nz-tag
+                  class="tag active"
+                  *ngIf="user.active === true"
+                  nzColor="green"
+                  >Active</nz-tag
+                >
+                <nz-tag
+                  class="tag inactive"
+                  *ngIf="user.active === false"
+                  nzColor="red"
+                  >Inactive</nz-tag
+                >
+              </td>
 
               <td class="operation-icons" *ngIf="role === 'manager'">
                 <div

@@ -79,7 +79,11 @@ export class ManagerCustomersComponent implements OnInit {
 
   ngOnInit(): void {
     this.roleLogin = this.authService.getRoleFromToken();
-    if (this.roleLogin != 'admin') {
+    if (
+      this.roleLogin != 'manager' &&
+      this.roleLogin != 'staff' &&
+      this.roleLogin != 'consultant'
+    ) {
       this.router.navigate(['/home']);
     } else {
       this.loadUsers();

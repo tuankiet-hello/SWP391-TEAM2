@@ -86,7 +86,7 @@ export class ManageProfileComponent implements OnInit {
   bookings: TestBookingDTO[] = [];
   questions: QuestionTableDTO[] = [];
   appointments: AppointmentDTO[] = [];
-
+  role!: string | null;
   isPasswordValid: boolean | undefined;
   checkPasswordMessage: string | undefined;
 
@@ -212,7 +212,10 @@ export class ManageProfileComponent implements OnInit {
     console.log('✅ Manage Profile ngOnInit called');
     this.userName = this.authService.getUserNameToken();
     this.userid = this.authService.getIdFromToken();
-
+    this.role = this.authService.getRoleFromToken();
+    if (this.role != 'customer') {
+      this.features = ['Your Profile', 'Change Password'];
+    }
     this.userService.getUserById(this.userid).subscribe((user) => {
       this.user = user;
       console.log('đã nạp data user', this.user);

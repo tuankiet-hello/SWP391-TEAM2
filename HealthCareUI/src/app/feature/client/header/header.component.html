@@ -113,7 +113,16 @@
               >
             </li>
             <li>
-              <a routerLink="/view-test-booking" *ngIf="role == 'staff'">Manage Booking</a>
+              <a routerLink="/view-test-booking" *ngIf="role == 'staff'"
+                >Manage System</a
+              >
+            </li>
+            <li>
+              <a
+                routerLink="/view-consultation-schedule"
+                *ngIf="role == 'consultant'"
+                >Manage System</a
+              >
             </li>
             <li><a href="#" (click)="logout()">Logout</a></li>
           </ul>

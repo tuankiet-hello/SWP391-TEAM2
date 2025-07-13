@@ -96,7 +96,7 @@ export class ViewTestBookingComponent implements OnInit {
 
   ngOnInit(): void {
     this.roleLogin = this.authService.getRoleFromToken();
-    if (this.roleLogin != 'admin') {
+    if (this.roleLogin != 'staff') {
       this.router.navigate(['/home']);
     } else {
       this.loadTestBooking();
