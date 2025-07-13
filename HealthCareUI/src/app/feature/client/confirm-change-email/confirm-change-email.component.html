@@ -1,12 +1,12 @@
 <div class="container">
     <!-- Màn hình đổi email thành công, chờ xác nhận -->
     <div *ngIf="status === 'change'" class="email-confirmation">
-        <div class="title">Xác nhận Email mới</div>
+        <div class="title">Confirm New Email</div>
         <div class="confirmation-content">
             <img src="https://vngsuite.com/wp-content/uploads/2021/10/Gmail-logo.png" alt="Email sent" class="email-icon">
-            <p>Chúng tôi đã gửi một email xác nhận đến:</p>
+            <p>We have sent a confirmation email to:</p>
             <p class="email-address">{{ email }}</p>
-            <p>Vui lòng kiểm tra hộp thư và nhấp vào liên kết xác nhận.</p>
+            <p>Please check your email and click the confirmation link.</p>
             <div class="resend-section">
                 <!-- <p>Không nhận được email?</p>
                 <button (click)="resendConfirmationEmail()" class="resend-button">
@@ -14,7 +14,7 @@
                 </button> -->
             </div>
             <div class="back-login">
-                <a [routerLink]="['/login']">← Quay lại trang đăng nhập</a>
+                <a [routerLink]="['/login']">← Back to login page</a>
             </div>
         </div>
     </div>
@@ -23,8 +23,8 @@
     <div *ngIf="status === 'pending'" class="email-confirmation">
         <div class="confirmation-content">
             <div class="spinner"></div>
-            <h2>Đang xác nhận email...</h2>
-            <p>Vui lòng đợi trong giây lát.</p>
+            <h2>Confirming email...</h2>
+            <p>Please wait a moment.</p>
         </div>
     </div>
 
@@ -32,9 +32,9 @@
     <div *ngIf="status === 'success'" class="email-confirmation">
         <div class="confirmation-content success">
             <img src="https://cdn-icons-png.flaticon.com/512/148/148767.png" alt="Success" class="success-icon">
-            <h2>Xác nhận email thành công!</h2>
+            <h2>Email confirmation successful!</h2>
             <p>{{ message }}</p>
-            <p>Bạn sẽ được chuyển về trang đăng nhập trong vài giây...</p>
+            <p>You will be redirected to the login page in a few seconds...</p>
         </div>
     </div>
 
@@ -42,16 +42,16 @@
     <div *ngIf="status === 'error'" class="email-confirmation">
         <div class="confirmation-content error">
             <img src="https://cdn-icons-png.flaticon.com/512/1828/1828843.png" alt="Error" class="error-icon">
-            <h2>Xác nhận email thất bại</h2>
+            <h2>Email confirmation failed</h2>
             <p>{{ message }}</p>
             <div class="resend-section" *ngIf="email">
-                <p>Bạn có muốn nhận email xác nhận mới?</p>
+                <p>Do you want to receive new confirmation emails??</p>
                 <!-- <button (click)="resendConfirmationEmail()" class="resend-button">
                     Gửi lại email xác nhận
                 </button> -->
             </div>
             <div class="back-login">
-                <a [routerLink]="['/login']">← Quay lại trang đăng nhập</a>
+                <a [routerLink]="['/login']">← Back to login page</a>
             </div>
         </div>
     </div>

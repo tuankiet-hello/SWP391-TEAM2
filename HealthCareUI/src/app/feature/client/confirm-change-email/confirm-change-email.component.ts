@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../services/auth.service';
-import { HttpParams } from '@angular/common/http'; 
+import { HttpParams } from '@angular/common/http';
 @Component({
   selector: 'app-confirm-change-email',
   standalone: true,
@@ -36,7 +36,7 @@ export class ConfirmChangeEmailComponent implements OnInit {
       this.confirmChangeEmail();
     } else {
       this.status = 'error';
-      this.message = 'Thiếu thông tin xác nhận email.';
+      this.message = 'Missing email confirmation information.';
     }
   });
 }
@@ -65,7 +65,7 @@ confirmChangeEmail() {
     next: (response: any) => {
       console.log('Response from confirmChangeEmail:', response); // Debug response
       this.status = 'success';
-      this.message = response?.message || 'Xác nhận email thành công!';
+      this.message = response?.message || 'Email confirmation successful!';
       // setTimeout(() => {
       //   this.router.navigate(['/login']);
       // }, 5000);
@@ -73,7 +73,7 @@ confirmChangeEmail() {
     error: (error) => {
       console.error('Error from confirmChangeEmail:', error); // Debug lỗi
       this.status = 'error';
-      this.message = error.error?.message || 'Xác nhận email thất bại. Vui lòng thử lại.';
+      this.message = error.error?.message || 'Email confirmation failed. Please try again.';
     }
   });
 }
