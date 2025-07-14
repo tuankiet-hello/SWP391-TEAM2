@@ -101,7 +101,7 @@ export class DashboardComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.roleLogin = this.authService.getRoleFromToken();
-    if (this.roleLogin != 'admin') {
+    if (this.roleLogin != 'admin' && this.roleLogin != 'manager') {
       this.router.navigate(['/home']);
     } else {
       this.userService.getAllUsers().subscribe((data) => {

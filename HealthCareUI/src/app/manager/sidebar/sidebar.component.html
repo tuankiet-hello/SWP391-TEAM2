@@ -9,7 +9,10 @@
         </a>
       </li>
       <!-- Admin -->
-      <li routerLinkActive="active" *ngIf="role === 'admin'">
+      <li
+        routerLinkActive="active"
+        *ngIf="role === 'admin' || role == 'manager'"
+      >
         <a class="menu-item" [routerLink]="['/dash-board']">
           <nz-icon nzType="bar-chart" nzTheme="outline"></nz-icon>
           <span class="menu-text">Dashboard</span>
@@ -25,17 +28,14 @@
       </li> -->
 
       <!-- Manager -->
-      <li
-        routerLinkActive="active"
-        *ngIf="role === 'manager' || 'staff' || 'consultant'"
-      >
+      <li routerLinkActive="active" *ngIf="role == 'manager'">
         <a class="menu-item" [routerLink]="['/manager-customers']">
           <nz-icon nzType="team" nzTheme="outline"></nz-icon>
           <span class="menu-text">User Management</span>
         </a>
       </li>
       <!-- Manager -->
-      <li routerLinkActive="active" *ngIf="role === 'manager'">
+      <li routerLinkActive="active" *ngIf="role == 'manager'">
         <a class="menu-item" [routerLink]="['/manage-service']">
           <nz-icon nzType="database" nzTheme="outline"></nz-icon>
           <span class="menu-text">Test Management</span>
@@ -43,14 +43,20 @@
       </li>
 
       <!-- Consultant-->
-      <li routerLinkActive="active" *ngIf="role == 'consultant'">
+      <li
+        routerLinkActive="active"
+        *ngIf="role == 'consultant' || role == 'manager'"
+      >
         <a class="menu-item" [routerLink]="['/view-consultation-schedule']">
           <nz-icon nzType="schedule" nzTheme="outline"></nz-icon>
           <span class="menu-text">Consultation Schedule Management</span>
         </a>
       </li>
       <!-- Consultant  -->
-      <li routerLinkActive="active" *ngIf="role == 'consultant'">
+      <li
+        routerLinkActive="active"
+        *ngIf="role == 'consultant' || role == 'manager'"
+      >
         <a class="menu-item" [routerLink]="['/view-question']">
           <nz-icon nzType="question-circle" nzTheme="outline"></nz-icon>
           <span class="menu-text">Question Management</span>
@@ -58,14 +64,17 @@
       </li>
 
       <!-- Staff -->
-      <li routerLinkActive="active" *ngIf="role === 'staff'">
+      <li
+        routerLinkActive="active"
+        *ngIf="role == 'staff' || role == 'manager'"
+      >
         <a class="menu-item" [routerLink]="['/view-test-booking']">
           <nz-icon nzType="database" nzTheme="outline"></nz-icon>
           <span class="menu-text">Booking Management</span>
         </a>
       </li>
       <!-- Staff -->
-      <li routerLinkActive="active" *ngIf="role === 'staff'">
+      <li routerLinkActive="active" *ngIf="role == 'staff'">
         <a class="menu-item" [routerLink]="['/manage-service']">
           <nz-icon nzType="database" nzTheme="outline"></nz-icon>
           <span class="menu-text">Test Type Management</span>

@@ -7,6 +7,7 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { CommonModule } from '@angular/common';
 import { AskAQuestionComponent } from '../ask-a-question/ask-a-question.component';
 import { MakeAppointmentComponent } from '../make-appointment/make-appointment.component';
+import { AuthService } from '../../../../services/auth.service';
 @Component({
   selector: 'app-home',
   imports: [
@@ -17,7 +18,7 @@ import { MakeAppointmentComponent } from '../make-appointment/make-appointment.c
     NzCarouselModule,
     RouterLink,
     AskAQuestionComponent,
-    MakeAppointmentComponent
+    MakeAppointmentComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -26,6 +27,14 @@ export class HomeComponent {
   showModal = false;
 
   showMakeAppointment = false;
+  role!: string | null;
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    console.log('✅ Header-Manager ngOnInit called');
+    this.role = this.authService.getRoleFromToken();
+    console.log('🧑‍💼 role:', this.role);
+  }
 
   openAppointmentModal() {
     this.showMakeAppointment = true;
@@ -144,12 +153,16 @@ export class HomeComponent {
     if (!search) {
       this.filteredBlogs = this.blogs;
     } else {
-      this.filteredBlogs = this.blogs.filter(blog =>
-        blog.title.toLowerCase().includes(search) ||
-        blog.desc.toLowerCase().includes(search)
+      this.filteredBlogs = this.blogs.filter(
+        (blog) =>
+          blog.title.toLowerCase().includes(search) ||
+          blog.desc.toLowerCase().includes(search)
       );
     }
     // Reset carousel index nếu muốn
     this.currentIndex = 0;
+  }
+  errorDimension() {
+    window.alert('You do not have permission to access');
   }
 }

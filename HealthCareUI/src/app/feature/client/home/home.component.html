@@ -43,7 +43,12 @@
             Monitor your vital health metrics and keep a personal health diary
             for better wellness management.
           </p>
-          <button routerLink="/menstrual-cycle">View Details</button>
+          <button routerLink="/menstrual-cycle" *ngIf="role == 'customer'">
+            View Details
+          </button>
+          <button (click)="errorDimension()" *ngIf="role != 'customer'">
+            View Details
+          </button>
         </div>
         <div class="service-card">
           <div class="icon icon-bg"><i class="fa-solid fa-vials"></i></div>
@@ -52,7 +57,15 @@
             Easily schedule a video or chat consultation with doctors and health
             experts from anywhere.
           </p>
-          <button nz-button nzType="primary" (click)="openAppointmentModal()">
+          <button
+            nz-button
+            nzType="primary"
+            (click)="openAppointmentModal()"
+            *ngIf="role == 'customer'"
+          >
+            View Details
+          </button>
+          <button (click)="errorDimension()" *ngIf="role != 'customer'">
             View Details
           </button>
         </div>
@@ -65,7 +78,16 @@
             Submit your health-related questions and receive professional
             answers from certified specialists.
           </p>
-          <button nz-button (click)="showModal = true">View Details</button>
+          <button
+            nz-button
+            (click)="showModal = true"
+            *ngIf="role == 'customer'"
+          >
+            View Details
+          </button>
+          <button (click)="errorDimension()" *ngIf="role != 'customer'">
+            View Details
+          </button>
         </div>
         <div class="service-card">
           <div class="icon icon-bg">
@@ -76,7 +98,12 @@
             Select and book laboratory tests or health screenings at your
             convenience, either at home or at a clinic.
           </p>
-          <button routerLink="/sexual-testing">View Details</button>
+          <button routerLink="/sexual-testing" *ngIf="role == 'customer'">
+            View Details
+          </button>
+          <button (click)="errorDimension()" *ngIf="role != 'customer'">
+            View Details
+          </button>
         </div>
       </div>
     </section>

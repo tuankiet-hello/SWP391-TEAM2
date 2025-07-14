@@ -4,7 +4,11 @@
     <p>GenHealth</p>
   </div>
   <div class="right-header">
-    <div class="user-info" [class.dropdown-active]="dropdownOpen" (click)="toggleDropdown()">
+    <div
+      class="user-info"
+      [class.dropdown-active]="dropdownOpen"
+      (click)="toggleDropdown()"
+    >
       <span class="user-name">{{ userName }}</span>
       <div class="user-icon-wrapper">
         <img src="assets/user-icon.png" alt="User Icon" class="user-icon" />
@@ -13,9 +17,7 @@
     </div>
 
     <ul class="dropdown-menu" [class.show]="dropdownOpen">
-      <li>
-        <a routerLink="/edit-profile-customer">Edit Profile</a>
-      </li>
+      <li><a routerLink="/manage-profile-customer">Your profile</a></li>
       <li>
         <a href="javascript:void(0)" (click)="logout()">Logout</a>
       </li>

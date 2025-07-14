@@ -1,7 +1,20 @@
 <app-header-manager></app-header-manager>
 <div class="dashboard-modern">
   <!-- <h1 class="dashboard-title">Dashboard</h1> -->
-  <button class="btnhome" routerLink="/manager-users">Back</button>
+  <button
+    class="btnhome"
+    routerLink="/manager-users"
+    *ngIf="roleLogin == 'admin'"
+  >
+    Back
+  </button>
+  <button
+    class="btnhome"
+    routerLink="/manager-customers"
+    *ngIf="roleLogin == 'manager'"
+  >
+    Back
+  </button>
   <!-- ROW 1: Users + Cycle -->
   <div class="dashboard-grid grid-row-1">
     <!-- CARD 1: User Summary -->
